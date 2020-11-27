@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: 123
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/FMH_DB

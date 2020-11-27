@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  pg_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: FMH_DB
+    ports:
+    - "5432:5432"
