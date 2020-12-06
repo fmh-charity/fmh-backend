@@ -1,12 +1,12 @@
 
 spring:
-  profiles: dev
+#  profiles: dev
   datasource:
+    url: jdbc:postgresql://localhost:5400/FMH_DB
     driverClassName: org.postgresql.Driver
     username: postgres
     password: 123
     platform: postgres
-    url: jdbc:postgresql://localhost:5400/FMH_DB
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
@@ -16,12 +16,12 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
         format_sql: true
----
-spring:
-  profiles: test
-  datasource:
-    url: jdbc:tc:postgresql:13-alpine:///PMH
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    spring:
-      jpa:
-        database-platform:  org.hibernate.dialect.PostgreSQL9Dialect
+#---
+#spring:
+#  profiles: test
+#  datasource:
+#    url: jdbc:tc:postgresql:13-alpine:///FMH_TEST
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+#    spring:
+#      jpa:
+#        database-platform:  org.hibernate.dialect.PostgreSQL9Dialect
