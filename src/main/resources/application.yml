@@ -1,7 +1,27 @@
+
 spring:
+  profiles: dev
   datasource:
     driverClassName: org.postgresql.Driver
     username: postgres
     password: 123
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/FMH_DB
+    url: jdbc:postgresql://localhost:5400/FMH_DB
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob.non_contextual_creation: true
+        format_sql: true
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:tc:postgresql:13-alpine:///PMH
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    spring:
+      jpa:
+        database-platform:  org.hibernate.dialect.PostgreSQL9Dialect

@@ -9,4 +9,4 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: FMH_DB
     ports:
-    - "5432:5432"
+    - "5400:5432"
