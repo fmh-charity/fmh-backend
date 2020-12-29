@@ -11,12 +11,14 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 public class NoteDto {
-    @ApiModelProperty("исполнитель, в формате \"Кузнецова Н.П.\"")
-    private String executor;
-    @ApiModelProperty("описание записки")
+    @ApiModelProperty("идентификатор пациента")
+    private Integer patientId;
+    @ApiModelProperty("суть записки")
     private String description;
-    @ApiModelProperty("плановое время выполнения")
-    private LocalDateTime planExecuteDate;
-    @ApiModelProperty("признак актуальности записки")
-    private Boolean isActual;
+    @ApiModelProperty("плановое время исполнения")
+    private LocalDateTime planExecuteTime;
+    @ApiModelProperty("идентификатор исполнителя")
+    private Integer executorId;
+    @ApiModelProperty("комментарий к записке")
+    private String comment;
 }
