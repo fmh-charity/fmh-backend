@@ -15,9 +15,8 @@ public class NoteDto {
     private String executor;
     @ApiModelProperty("описание записки")
     private String description;
-    //TODO какое время записки исполнения или создания
-    @ApiModelProperty("время записки")
-    private LocalDateTime dateTime;
+    @ApiModelProperty("плановое время выполнения")
+    private LocalDateTime planExecuteDate;
     @ApiModelProperty("признак актуальности записки")
     private Boolean isActual;
 }
