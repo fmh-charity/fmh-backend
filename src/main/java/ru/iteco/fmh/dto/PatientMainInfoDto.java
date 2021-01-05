@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Builder
 @Data
 public class PatientMainInfoDto {
+    @ApiModelProperty("id пациента")
+    private Integer id;
     @ApiModelProperty("имя пациента")
     private String name;
     @ApiModelProperty("фамилия пациента")
