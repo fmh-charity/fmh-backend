@@ -7,20 +7,16 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-@ApiModel(description = "информация по госпитализации")
+@ApiModel(description = "краткая информация по госпитализации")
 @Builder
 @Data
-public class AdmissionDto {
+public class AdmissionShortInfoDto {
     @ApiModelProperty("идентификатор госпитализации")
     private Integer id;
     @ApiModelProperty("дата поступления")
     private LocalDate dateIn;
     @ApiModelProperty("дата выписки")
     private LocalDate dateOut;
-    @ApiModelProperty(value = "фактическое поступление")
+    @ApiModelProperty(value = "фактическое поступление, признак того, что пациент находится в хосписе")
     private Boolean factIn;
-    @ApiModelProperty(value = "фактическая выписка")
-    private Boolean factOut;
-    @ApiModelProperty(value = "комментарий")
-    private String comment;
 }

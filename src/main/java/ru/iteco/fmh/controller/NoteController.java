@@ -41,7 +41,7 @@ public class NoteController {
     }
 
     @ApiOperation(value = "обновляет информацию по записке")
-    @PutMapping
+    @PatchMapping
     public void updateNote(
             @RequestBody NoteDto noteDto
     ){
