@@ -13,6 +13,8 @@ import java.time.LocalDate;
 public class AdmissionDto {
     @ApiModelProperty("идентификатор госпитализации")
     private Integer id;
+    @ApiModelProperty("пациент")
+    private PatientDto patient;
     @ApiModelProperty("дата поступления")
     private LocalDate dateIn;
     @ApiModelProperty("дата выписки")
