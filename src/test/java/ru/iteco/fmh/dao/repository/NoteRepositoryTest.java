@@ -6,11 +6,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.model.Employee;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertNotNull;
 import static ru.iteco.fmh.TestUtils.getAlphabeticString;
@@ -24,11 +25,11 @@ public class NoteRepositoryTest {
     @Autowired
     PatientRepository patientRepository;
     @Autowired
-    EmployeeRepository employeeRepository;
+    UserRepository userRepository;
 
     static Patient patient;
-    static Employee author;
-    static Employee doer;
+    static User author;
+    static User doer;
     static Note entity;
     static Note entity2;
 
@@ -37,27 +38,27 @@ public class NoteRepositoryTest {
     public void testWriteSuccess() {
         patient = getPatient();
         patient = patientRepository.save(patient);
-        author = getEmployer();
-        employeeRepository.save(author);
-        doer = getEmployer();
-        employeeRepository.save(doer);
+        author = getUser();
+        userRepository.save(author);
+        doer = getUser();
+        userRepository.save(doer);
         entity = Note.builder()
-                .text(getAlphabeticString())
+                .description(getAlphabeticString())
                 .patient(patient)
-                .author(author)
-                .doer(doer)
-                .dateCreate(LocalDate.now())
+                .creator(author)
+                .executor(doer)
+                .createDate(LocalDateTime.now())
                 .comment(getAlphabeticString())
                 .build();
 
         entity = repository.save(entity);
 
         entity2 = Note.builder()
-                .text(getAlphabeticString())
+                .description(getAlphabeticString())
                 .patient(patient)
-                .author(author)
-                .doer(doer)
-                .dateCreate(LocalDate.now())
+                .creator(author)
+                .executor(doer)
+                .createDate(LocalDateTime.now())
                 .comment(getAlphabeticString())
                 .build();
 
@@ -70,8 +71,8 @@ public class NoteRepositoryTest {
 
         repository.delete(entity);
         repository.delete(entity2);
-        employeeRepository.delete(author);
-        employeeRepository.delete(doer);
+        userRepository.delete(author);
+        userRepository.delete(doer);
     }
 
     private Patient getPatient() {
@@ -83,8 +84,8 @@ public class NoteRepositoryTest {
                 .build();
     }
 
-    private Employee getEmployer() {
-        return Employee.builder()
+    private User getUser() {
+        return User.builder()
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())

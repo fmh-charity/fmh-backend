@@ -14,30 +14,34 @@ import java.util.Collection;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "employee")
-public class Employee {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @OneToMany(mappedBy = "author")
     Collection<Advertisement> advertisementCollections = new ArrayList<>();
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "creator")
     Collection<Note> myNotes = new ArrayList<>();
-    @OneToMany(mappedBy = "doer")
+    @OneToMany(mappedBy = "executor")
     Collection<Note> myTasks = new ArrayList<>();
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "creator")
     Collection<Claim> myClaims = new ArrayList<>();
-    @OneToMany(mappedBy = "doer")
+    @OneToMany(mappedBy = "executor")
     Collection<Claim> doClaims = new ArrayList<>();
 
+    String login;
+    String password;
     String firstName;
     String middleName;
     String lastName;
+    String phoneNumber;
+    String email;
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +

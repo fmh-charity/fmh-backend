@@ -20,9 +20,9 @@ public class Claim {
     Long id;
 
     @ManyToOne
-    Employee author;
+    User creator;
     @ManyToOne
-    Employee doer;
+    User executor;
 
     String text;
     LocalDate dateCreate;
