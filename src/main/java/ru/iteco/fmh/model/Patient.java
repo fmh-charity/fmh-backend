@@ -19,7 +19,7 @@ import java.util.Collection;
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
     Collection<Note> noteCollection = new ArrayList<>();

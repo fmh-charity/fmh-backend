@@ -18,7 +18,7 @@ import java.util.Collection;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @OneToMany(mappedBy = "author")
     Collection<Advertisement> advertisementCollections = new ArrayList<>();

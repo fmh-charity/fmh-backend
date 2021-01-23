@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @ManyToOne
     Employee author;

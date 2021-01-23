@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @ManyToOne
     Employee author;

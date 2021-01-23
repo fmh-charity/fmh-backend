@@ -14,15 +14,9 @@ public interface AdmissionService {
     AdmissionDto getAdmissionInfo(Integer id);
 
     /**
-     * создает запись о госпитализации
+     * создает или обновляет запись о госпитализации
      * @param admissionDto информация по новой госпитализации
      * @return идентификатор новой сущности
      */
-    Integer createAdmission(AdmissionDto admissionDto);
-
-    /**
-     * изменяет информацию по конкретной госпитализации
-     * @param admissionDto обновленная информация о госпитализации
-     */
-    void updateAdmission(AdmissionDto admissionDto);
+    Integer createOrUpdateAdmission(AdmissionDto admissionDto);
 }
