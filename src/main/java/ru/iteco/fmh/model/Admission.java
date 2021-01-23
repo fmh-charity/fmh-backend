@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Admission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @ManyToOne
     Patient patient;

@@ -74,6 +74,19 @@ create table status
 	code        varchar
 );
 
+create sequence admission_seq;
+create table admission
+(
+	id          int not null primary key default nextval('admission_seq'),
+	patient_id  int not null,
+	date_from   date not null,
+	date_to     date,
+	fact_in     boolean,
+	fact_out    boolean,
+	comment     varchar
+);
+comment on table admission is 'госпитализация';
+
 create table role
 (
 	id          int not null primary key,
