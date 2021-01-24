@@ -1,13 +1,10 @@
 package ru.iteco.fmh.service;
 
-import com.sun.istack.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.converter.AdmissionDtoToAdmissionConverter;
 import ru.iteco.fmh.converter.AdmissionToAdmissionDtoConverter;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.AdmissionDto;
-import ru.iteco.fmh.dto.PatientDto;
 import ru.iteco.fmh.model.Admission;
 
 import java.util.Optional;
