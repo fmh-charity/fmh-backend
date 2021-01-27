@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.AdmissionShortInfoDto;
-import ru.iteco.fmh.dto.PatientNoteDto;
 import ru.iteco.fmh.dto.PatientDto;
+import ru.iteco.fmh.dto.PatientNoteDto;
 
 import java.util.List;
 
@@ -39,6 +39,7 @@ public class PatientController {
     @ApiOperation(value = "возвращает информацию по госпитализациям пациента")
     @GetMapping("/{patientId}/admission")
     public List<AdmissionShortInfoDto> getAdmissions(
+            // TODO: 27.01.2021 Перенести в сервис admissions
             @ApiParam(value = "идентификатор пациента", required = true)@PathVariable Integer patientId
     ){
         return null;
@@ -47,6 +48,7 @@ public class PatientController {
     @ApiOperation(value = "возвращает информацию по запискам пациента")
     @GetMapping("/{patientId}/note")
     public List<PatientNoteDto> getNotes(
+            // TODO: 27.01.2021 перенести в сервис Note
             @ApiParam(value = "идентификатор пациента", required = true)@PathVariable Integer patientId
     ){
         return null;
@@ -54,17 +56,17 @@ public class PatientController {
 
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public Integer createPatient(
+    public PatientDto createPatient(
             @RequestBody PatientDto patientDto
-    ){
+    ) {
         return null;
     }
 
     @ApiOperation(value = "изменение пациента")
     @PatchMapping
-    public void updatePatient(
+    public PatientDto updatePatient(
             @RequestBody PatientDto patientDto
-    ){
-
+    ) {
+        return null;
     }
 }

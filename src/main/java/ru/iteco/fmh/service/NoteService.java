@@ -9,7 +9,6 @@ import ru.iteco.fmh.dto.NoteDto;
 import ru.iteco.fmh.dto.NoteShortInfoDto;
 import ru.iteco.fmh.model.Note;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,10 +24,8 @@ public class NoteService implements INoteService {
 
 
     public List<NoteShortInfoDto> getAllNotes() {
-        List<Note> list = new LinkedList<>();
+        List<Note> list = noteRepository.findAll();
         ConversionService conversionService = factoryBean.getObject();
-        noteRepository.findAll().forEach(e -> list.add(e));
-
         return list.stream()
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
                 .collect(Collectors.toList());
