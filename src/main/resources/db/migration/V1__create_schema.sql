@@ -17,9 +17,9 @@ create table note
 	description         varchar not null,
 	creator_id          int not null,
 	executor_id         int,
-	create_data         timestamp,
-	plan_execute_date   timestamp,
-	fact_execute_date   timestamp,
+	create_date         timestamp,
+	plan_execute_time   timestamp,
+	fact_execute_time   timestamp,
 	status_id           int not null,
 	comment             varchar
 );

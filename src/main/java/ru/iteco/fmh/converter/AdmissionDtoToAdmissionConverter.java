@@ -8,12 +8,11 @@ import ru.iteco.fmh.model.Admission;
 /**
  * конвертер из {@link AdmissionDto} в {@link Admission}
  */
-@Service
 public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto, Admission> {
 
-    private PatientDtoToPatientConverter patientConverter;
+    private IPatientDtoToPatientConverter patientConverter;
 
-    public AdmissionDtoToAdmissionConverter(PatientDtoToPatientConverter patientConverter) {
+    public AdmissionDtoToAdmissionConverter(IPatientDtoToPatientConverter patientConverter) {
         this.patientConverter = patientConverter;
     }
 
