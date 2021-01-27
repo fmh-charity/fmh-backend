@@ -1,7 +1,7 @@
 package ru.iteco.fmh.dao.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import ru.iteco.fmh.model.Note;
 
-public interface NoteRepository extends JpaRepository<Note, Long> {
+public interface NoteRepository extends CrudRepository<Note, Integer> {
 }

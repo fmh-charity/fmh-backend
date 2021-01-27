@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.Employee;
+import ru.iteco.fmh.model.User;
 
 import java.time.LocalDate;
 
@@ -21,24 +21,24 @@ public class ClaimRepositoryTest {
     @Autowired
     ClaimRepository repository;
     @Autowired
-    EmployeeRepository employeeRepository;
+    UserRepository userRepository;
 
-    Employee author;
-    Employee doer;
+    User author;
+    User doer;
     Claim entity;
     Claim entity2;
 
 
     @Test
     public void testWriteSuccess() {
-        author = getEmployer();
-        employeeRepository.save(author);
-        doer = getEmployer();
-        employeeRepository.save(doer);
+        author = getUser();
+        userRepository.save(author);
+        doer = getUser();
+        userRepository.save(doer);
         entity = Claim.builder()
                 .text(getAlphabeticString())
-                .author(author)
-                .doer(doer)
+                .creator(author)
+                .executor(doer)
                 .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
@@ -47,8 +47,8 @@ public class ClaimRepositoryTest {
 
         entity2 = Claim.builder()
                 .text(getAlphabeticString())
-                .author(author)
-                .doer(doer)
+                .creator(author)
+                .executor(doer)
                 .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
@@ -62,12 +62,12 @@ public class ClaimRepositoryTest {
 
         repository.delete(entity);
         repository.delete(entity2);
-        employeeRepository.delete(author);
-        employeeRepository.delete(doer);
+        userRepository.delete(author);
+        userRepository.delete(doer);
     }
 
-    private Employee getEmployer() {
-        return Employee.builder()
+    private User getUser() {
+        return User.builder()
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())

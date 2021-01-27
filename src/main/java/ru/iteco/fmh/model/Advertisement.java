@@ -24,7 +24,7 @@ public class Advertisement {
     Long id;
 
     @ManyToOne
-    Employee author;
+    User author;
 
     String title;
     String description;

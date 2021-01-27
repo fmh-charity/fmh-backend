@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Advertisement;
-import ru.iteco.fmh.model.Employee;
+import ru.iteco.fmh.model.User;
 
 import java.time.LocalDate;
 
@@ -21,12 +21,12 @@ public class AdvertisementRepositoryTest {
     @Autowired
     AdvertisementRepository repository;
     @Autowired
-    EmployeeRepository employeeRepository;
+    UserRepository userRepository;
 
     @Test
     public void testWriteSuccess() {
-        Employee employee = getEmployer();
-        employee = employeeRepository.save(employee);
+        User employee = getUser();
+        employee = userRepository.save(employee);
         Advertisement entity = Advertisement.builder()
                 .author(employee)
                 .title(getAlphabeticString())
@@ -36,7 +36,7 @@ public class AdvertisementRepositoryTest {
 
         Advertisement finalEntity = repository.save(entity);
 
-        Employee finalEmployee = employeeRepository.findById(employee.getId()).orElse(null);
+        User finalEmployee = userRepository.findById(employee.getId()).orElse(null);
 
         Assertions.assertAll(
                 () -> assertNotNull(finalEntity.getId()),
@@ -44,11 +44,11 @@ public class AdvertisementRepositoryTest {
         );
 
         repository.delete(entity);
-        employeeRepository.delete(employee);
+        userRepository.delete(employee);
     }
 
-    private Employee getEmployer() {
-        return Employee.builder()
+    private User getUser() {
+        return User.builder()
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())

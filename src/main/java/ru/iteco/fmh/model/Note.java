@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
@@ -17,32 +17,34 @@ import java.time.LocalDate;
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Integer id;
 
     @ManyToOne
     Patient patient;
     @ManyToOne
-    Employee author;
+    User creator;
     @ManyToOne
-    Employee doer;
+    User executor;
 
-    String text;
-    LocalDate dateCreate;
-    LocalDate dateUpdate;
-    LocalDate dateEnd;
+//    Status status;
+
+    String description;
+    LocalDateTime createDate;
+    LocalDateTime planExecuteTime;
+    LocalDateTime factExecuteTime;
     String comment;
 
     @Override
     public String toString() {
         return "Note{" +
                 "id=" + id +
-                ", patient=" + patient.getId() +
-                ", text='" + text + '\'' +
-                ", author_id=" + author +
-                ", doer_id=" + doer +
-                ", dateCreate=" + dateCreate +
-                ", dateUpdate=" + dateUpdate +
-                ", dateEnd=" + dateEnd +
+                ", patient=" + patient +
+                ", creator=" + creator +
+                ", executor=" + executor +
+                ", description='" + description + '\'' +
+                ", createDate=" + createDate +
+                ", planExecuteDate=" + planExecuteTime +
+                ", factExecuteDate=" + factExecuteTime +
                 ", comment='" + comment + '\'' +
                 '}';
     }
