@@ -2,11 +2,22 @@ version: '3'
 
 services:
   pg_db:
-    image: postgres
+    container_name: pg_database
+    image: library/postgres:12
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: FMH_DB
     ports:
-    - "5400:5432"
+      - "5400:5432"
+  backend:
+    image: fmh_back:1.0
+    restart: always
+    depends_on:
+      - pg_db
+    environment:
+      DB_PORT: 5432
+      DB_HOST: pg_database
+      DB_USER: postgres
+      DB_PASS: 123

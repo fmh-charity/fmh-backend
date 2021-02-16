@@ -2,10 +2,10 @@
 spring:
 #  profiles: dev
   datasource:
-    url: jdbc:postgresql://localhost:5400/FMH_DB
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/FMH_DB
     driverClassName: org.postgresql.Driver
-    username: postgres
-    password: 123
+    username: ${DB_USER}
+    password: ${DB_PASS}
     platform: postgres
   jpa:
     open-in-view: false
