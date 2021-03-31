@@ -13,20 +13,23 @@ import java.time.LocalDate;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "claim")
-public class Claim {
+@Table(name = "admission")
+public class Admission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @ManyToOne
-    User creator;
-    @ManyToOne
-    User executor;
+    Patient patient;
 
-    String text;
-    LocalDate dateCreate;
-    LocalDate dateUpdate;
-    LocalDate dateEnd;
+    //Дата поступления
+    LocalDate dateFrom;
+    //Дата выписки
+    LocalDate dateTo;
+    //Фактически поступил
+    Boolean factIn;
+    //Фактически выписан
+    Boolean factOut;
+    //Комментарии
     String comment;
 }

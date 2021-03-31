@@ -15,11 +15,18 @@ public class Config {
     public ConversionServiceFactoryBean conversionServiceFactoryBean() {
         ConversionServiceFactoryBean factoryBean = new ConversionServiceFactoryBean();
         Set<Converter> converterSet = new HashSet<>();
-        converterSet.add(new DtoToPatientConverter());
+        DtoToPatientConverter dtoToPatientConverter = new DtoToPatientConverter();
+        converterSet.add(dtoToPatientConverter);
         converterSet.add(new PatientToDtoConverter());
         converterSet.add(new NoteToDtoConverter(new PatientToDtoConverter()));
-        converterSet.add(new DtoToNoteConverter(new DtoToPatientConverter()));
+        converterSet.add(new DtoToNoteConverter(dtoToPatientConverter));
         converterSet.add(new NoteToShortDtoConverter());
+        PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
+        PatientDtoToPatientConverter patientDtoToPatientConverter = new PatientDtoToPatientConverter();
+        converterSet.add(patientToPatientDtoConverter);
+        converterSet.add(patientDtoToPatientConverter);
+        converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
+        converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
         factoryBean.setConverters(converterSet);
 
         return factoryBean;

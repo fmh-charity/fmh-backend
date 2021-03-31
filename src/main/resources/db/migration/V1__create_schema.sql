@@ -17,9 +17,9 @@ create table note
 	description         varchar not null,
 	creator_id          int not null,
 	executor_id         int,
-	create_data         timestamp,
-	plan_execute_date   timestamp,
-	fact_execute_date   timestamp,
+	create_date         timestamp,
+	plan_execute_time   timestamp,
+	fact_execute_time   timestamp,
 	status_id           int not null,
 	comment             varchar
 );
@@ -73,6 +73,19 @@ create table status
 	name        varchar,
 	code        varchar
 );
+
+create sequence admission_seq;
+create table admission
+(
+	id          int not null primary key default nextval('admission_seq'),
+	patient_id  int not null,
+	date_from   date not null,
+	date_to     date,
+	fact_in     boolean,
+	fact_out    boolean,
+	comment     varchar
+);
+comment on table admission is 'госпитализация';
 
 create table role
 (
