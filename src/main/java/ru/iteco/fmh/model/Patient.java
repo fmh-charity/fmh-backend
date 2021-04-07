@@ -25,6 +25,9 @@ public class Patient {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
     Collection<Note> noteCollection = new ArrayList<>();
 
+    @ManyToOne
+    Room room;
+
     String firstName;
     String middleName;
     String lastName;
