@@ -5,7 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 
 @Builder
@@ -16,6 +16,7 @@ import java.util.Collection;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "room")
+@ToString
 public class Room {
 
     @Id
@@ -27,8 +28,9 @@ public class Room {
     @ManyToOne
     NurseStation nurseStation;
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
-    Collection<Patient> patientCollection = new ArrayList<>();
+    List<Patient> patientCollection = new ArrayList<>();
 
 
     int maxCapacity;

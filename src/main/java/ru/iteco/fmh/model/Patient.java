@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class Patient {
     Integer id;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
-    Collection<Note> noteCollection = new ArrayList<>();
+    List<Note> noteCollection = new ArrayList<>();
 
     @ManyToOne
     Room room;

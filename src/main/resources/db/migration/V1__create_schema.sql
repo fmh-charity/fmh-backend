@@ -56,6 +56,7 @@ create table claim
     comment           varchar,
     status_id         int     not null
 );
+comment on table claim is 'заявки';
 
 create sequence advertisement_seq;
 create table advertisement
@@ -67,6 +68,7 @@ create table advertisement
     create_data date,
     status_id   int not null
 );
+comment on table advertisement is 'новости';
 
 create table status
 (
@@ -103,6 +105,7 @@ create table block
     symbol  bytea,
     comment varchar
 );
+comment on table block is 'блоки';
 
 create sequence nurseStation_seq;
 create table nurseStation
@@ -111,16 +114,20 @@ create table nurseStation
     name    varchar,
     comment varchar
 );
+comment on table nurseStation is 'посты';
 
 create sequence room_seq;
 create table room
 (
     id                int not null primary key default nextval('room_seq'),
+    block_id          int,
+    nurse_station     int,
     max_capacity      int,
     current_occupancy int,
     room              varchar,
     comment           varchar
 );
+comment on table room is 'палаты';
 
 
 

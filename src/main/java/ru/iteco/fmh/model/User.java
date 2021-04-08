@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -21,15 +22,15 @@ public class User {
     Integer id;
 
     @OneToMany(mappedBy = "author")
-    Collection<Advertisement> advertisementCollections = new ArrayList<>();
+    List<Advertisement> advertisementCollections = new ArrayList<>();
     @OneToMany(mappedBy = "creator")
-    Collection<Note> myNotes = new ArrayList<>();
+    List<Note> myNotes = new ArrayList<>();
     @OneToMany(mappedBy = "executor")
-    Collection<Note> myTasks = new ArrayList<>();
+    List<Note> myTasks = new ArrayList<>();
     @OneToMany(mappedBy = "creator")
-    Collection<Claim> myClaims = new ArrayList<>();
+    List<Claim> myClaims = new ArrayList<>();
     @OneToMany(mappedBy = "executor")
-    Collection<Claim> doClaims = new ArrayList<>();
+    List<Claim> doClaims = new ArrayList<>();
 
     String login;
     String password;

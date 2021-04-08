@@ -15,14 +15,14 @@ import java.util.Collection;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "block")
+@ToString
 public class Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "block")
-    Collection<Room> roomsCollection = new ArrayList<>();
+
     byte[] symbol;
     String blocksName;
     String comment;
