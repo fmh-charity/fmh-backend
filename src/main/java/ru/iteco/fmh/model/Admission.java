@@ -23,13 +23,13 @@ public class Admission {
     Patient patient;
 
     //Дата поступления
-    LocalDate dateFrom;
+    LocalDate planDateIn;
     //Дата выписки
-    LocalDate dateTo;
+    LocalDate planDateOut;
     //Фактически поступил
-    Boolean factIn;
+    LocalDate factDateIn;
     //Фактически выписан
-    Boolean factOut;
+    LocalDate factDateOut;
     //Комментарии
     String comment;
 }
