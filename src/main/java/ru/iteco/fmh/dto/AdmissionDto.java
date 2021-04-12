@@ -15,14 +15,19 @@ public class AdmissionDto {
     private Integer id;
     @ApiModelProperty("пациент")
     private PatientDto patient;
-    @ApiModelProperty("дата поступления")
-    private LocalDate dateIn;
-    @ApiModelProperty("дата выписки")
-    private LocalDate dateOut;
-    @ApiModelProperty(value = "фактическое поступление")
-    private Boolean factIn;
-    @ApiModelProperty(value = "фактическая выписка")
-    private Boolean factOut;
+
+    //для сценария "Запланировать госпитализацию пациента"
+    @ApiModelProperty("плановая дата поступления")
+    private LocalDate planDateIn;
+    @ApiModelProperty("плановая дата выписки")
+    private LocalDate planDateOut;
+
+    //для сценария "Госпитализация пациента"
+    @ApiModelProperty(value = "фактическая дата поступления")
+    private LocalDate factDateIn;
+    @ApiModelProperty(value = "фактическая дата выписки")
+    private LocalDate factDateOut;
+
     @ApiModelProperty(value = "комментарий")
     private String comment;
 }

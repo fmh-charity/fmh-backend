@@ -1,7 +1,6 @@
 package ru.iteco.fmh.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dto.AdmissionDto;
 import ru.iteco.fmh.model.Admission;
 
@@ -21,10 +20,10 @@ public class AdmissionToAdmissionDtoConverter implements Converter<Admission, Ad
         return AdmissionDto.builder()
                 .id(admission.getId())
                 .patient(patientConverter.convert(admission.getPatient()))
-                .dateIn(admission.getDateFrom())
-                .dateOut(admission.getDateTo())
-                .factIn(admission.getFactIn())
-                .factOut(admission.getFactOut())
+                .planDateIn(admission.getPlanDateIn())
+                .planDateOut(admission.getPlanDateOut())
+                .factDateIn(admission.getFactDateIn())
+                .factDateOut(admission.getFactDateOut())
                 .comment(admission.getComment())
                 .build();
     }

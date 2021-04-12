@@ -13,4 +13,7 @@ public class DtoToPatientConverter implements Converter<PatientDto, Patient>, ID
         BeanUtils.copyProperties(dto, entity);
         return entity;
     }
+
+    public DtoToPatientConverter() {
+    }
 }
