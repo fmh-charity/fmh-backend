@@ -15,7 +15,7 @@ public class UserShortInfoDto {
     private Integer id;
     @ApiModelProperty("имя")
     private String name;
-    @ApiModelProperty("фамилие")
+    @ApiModelProperty("фамилия")
     private String lastName;
     @ApiModelProperty("отчество")
     private String middleName;
