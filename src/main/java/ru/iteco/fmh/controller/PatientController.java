@@ -25,7 +25,7 @@ public class PatientController {
             @ApiParam(value = "конечная позиция пагинации", required = true)@RequestParam("limit") Integer limit,
             @ApiParam(value = "показывать только пациентов в хосписе")@RequestParam("show_active") Boolean showActive
     ){
-        return null;
+        return null;ссссс
     }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
