@@ -1,7 +1,7 @@
 package ru.iteco.fmh;
 
-import ru.iteco.fmh.dto.NoteDto;
-import ru.iteco.fmh.dto.PatientDto;
+import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
 

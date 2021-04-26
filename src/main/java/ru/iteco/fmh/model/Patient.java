@@ -33,23 +33,25 @@ public class Patient {
     String middleName;
     String lastName;
     LocalDate birthday;
+    PatientsStatus patientsStatus;
+//    @Formula(
+//            "CONCAT_WS(' ', first_name ," +
+//                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
+//                    "SUBSTRING(UPPER(last_name),1,1) )" +
+//                    ")")
+//    String shortPatientName;
 
-    @Formula(
-            "CONCAT_WS(' ', first_name ," +
-                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
-                    "SUBSTRING(UPPER(last_name),1,1) )" +
-                    ")")
-    String shortPatientName;
 
     @Override
     public String toString() {
         return "Patient{" +
                 "id=" + id +
+                ", room=" + room +
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +
-                ", shortPatientName='" + shortPatientName + '\'' +
+                ", patientsStatus=" + patientsStatus +
                 '}';
     }
 }

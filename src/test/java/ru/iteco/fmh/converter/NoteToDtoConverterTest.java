@@ -3,7 +3,9 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.iteco.fmh.dto.NoteDto;
+import ru.iteco.fmh.converter.note.NoteToDtoConverter;
+import ru.iteco.fmh.converter.patient.fromPatient.IPatientToDtoConverter;
+import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.Note;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

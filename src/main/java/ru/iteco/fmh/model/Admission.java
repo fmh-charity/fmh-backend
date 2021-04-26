@@ -22,6 +22,8 @@ public class Admission {
     @ManyToOne
     Patient patient;
 
+    //Статус госпитализации
+    AdmissionsStatus admissionsStatus;
     //Дата поступления
     LocalDate planDateIn;
     //Дата выписки

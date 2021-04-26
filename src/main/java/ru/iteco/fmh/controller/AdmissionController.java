@@ -5,12 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.AdmissionDto;
-import ru.iteco.fmh.dto.NoteDto;
-import ru.iteco.fmh.dto.NoteShortInfoDto;
-import ru.iteco.fmh.service.AdmissionService;
-
-import java.util.List;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.service.admission.AdmissionService;
 
 @Api(description = "Госпитализация")
 @RestController

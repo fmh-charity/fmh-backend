@@ -6,4 +6,5 @@ import ru.iteco.fmh.model.Admission;
 
 @Repository
 public interface AdmissionRepository extends JpaRepository<Admission, Integer> {
+
 }

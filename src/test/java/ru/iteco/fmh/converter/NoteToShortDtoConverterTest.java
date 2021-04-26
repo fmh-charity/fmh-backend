@@ -2,7 +2,8 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.dto.NoteShortInfoDto;
+import ru.iteco.fmh.converter.note.NoteToShortDtoConverter;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Note;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
