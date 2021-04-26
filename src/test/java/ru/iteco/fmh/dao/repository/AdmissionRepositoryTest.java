@@ -38,7 +38,7 @@ public class AdmissionRepositoryTest {
         patient = patientRepository.save(patient);
 
         entity = Admission.builder()
-                .dateFrom(LocalDate.now())
+                .factDateIn(LocalDate.now())
                 .patient(patient)
                 .build();
 

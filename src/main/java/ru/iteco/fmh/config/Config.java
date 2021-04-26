@@ -4,7 +4,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
-import ru.iteco.fmh.converter.*;
+import ru.iteco.fmh.converter.admission.AdmissionDtoToAdmissionConverter;
+import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
+import ru.iteco.fmh.converter.dto.fromDto.DtoToNoteConverter;
+import ru.iteco.fmh.converter.dto.fromDto.DtoToPatientConverter;
+import ru.iteco.fmh.converter.note.NoteToDtoConverter;
+import ru.iteco.fmh.converter.note.NoteToShortDtoConverter;
+import ru.iteco.fmh.converter.patient.fromPatient.PatientToDtoConverter;
+import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
+import ru.iteco.fmh.converter.patient.fromPatientDto.PatientToPatientAdmissionDtoConverter;
+import ru.iteco.fmh.model.Admission;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +37,10 @@ public class Config {
         converterSet.add(patientDtoToPatientConverter);
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
+
+        Admission admission = new Admission();
+        converterSet.add(new PatientToPatientAdmissionDtoConverter(admission));
+
         factoryBean.setConverters(converterSet);
 
         return factoryBean;

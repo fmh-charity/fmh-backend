@@ -2,7 +2,8 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.dto.PatientDto;
+import ru.iteco.fmh.converter.patient.fromPatient.PatientToDtoConverter;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

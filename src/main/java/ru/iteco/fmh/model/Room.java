@@ -28,9 +28,9 @@ public class Room {
     @ManyToOne
     NurseStation nurseStation;
 
-    @ToString.Exclude
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
-    List<Patient> patientCollection = new ArrayList<>();
+//    @ToString.Exclude
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
+//    List<Patient> patientCollection = new ArrayList<>();
 
 
     int maxCapacity;

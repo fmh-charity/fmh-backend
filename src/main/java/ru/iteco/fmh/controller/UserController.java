@@ -4,7 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.*;
+import ru.iteco.fmh.dto.user.UserDto;
+import ru.iteco.fmh.dto.user.UserShortInfoDto;
 
 import java.util.List;
 
