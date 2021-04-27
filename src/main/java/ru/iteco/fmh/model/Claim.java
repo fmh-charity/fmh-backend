@@ -2,10 +2,13 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-
+/**
+ * Заявка
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,20 +16,28 @@ import java.time.LocalDate;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@ToString
 @Table(name = "claim")
 public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    String description;
+
+    //many claim can have one user
     @ManyToOne
     User creator;
     @ManyToOne
     User executor;
 
-    String text;
-    LocalDate dateCreate;
-    LocalDate dateUpdate;
-    LocalDate dateEnd;
+    LocalDate createDate;
+    LocalDate planExecuteDate;
+    LocalDate factExecuteDate;
+
+    //many claim can have one status
+    @ManyToOne
+    Status status;
     String comment;
+    boolean deleted;
 }

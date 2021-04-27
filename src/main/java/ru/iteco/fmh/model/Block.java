@@ -6,7 +6,9 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
+/**
+ * Блок
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,10 +24,9 @@ public class Block {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
-    byte[] symbol;
     String blocksName;
     String comment;
+    boolean deleted;
 
 
 }

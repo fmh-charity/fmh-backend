@@ -5,8 +5,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.model.Admission;
-import ru.iteco.fmh.service.admission.AdmissionService;
+import ru.iteco.fmh.model.admission.Admission;
 
 /**
  * Реализация сервиса для работы с госпитализацией {@link AdmissionService}

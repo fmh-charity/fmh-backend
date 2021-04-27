@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.model.Admission;
+import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
