@@ -21,36 +21,26 @@ import java.util.List;
 public class PatientController {
     private final PatientService patientService;
 
-
-
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
     }
 
+//    TODO: Anastasya
+//    @RequestMapping(value =  "/patient/{patients_status}",method = RequestMethod.GET)
+//    public List<PatientDto>getAllPatientsByStatus(@PathVariable List <PatientsStatus> patients_status) {
+//        //получаем список всех пациентов в нужной форме
+//        List<PatientAdmissionDto> list = patientService.getAllPatients();
+//        return null;
+//    }
 
-
-    @RequestMapping(value =  "/patient/{patients_status}",method = RequestMethod.GET)
-    public List<PatientDto>getAllPatientsByStatus(@PathVariable List <PatientsStatus> patients_status) {
-        //получаем список всех пациентов в нужной форме
-        List<PatientAdmissionDto> list = patientService.getAllPatients();
-
-       while (true){
-           for (PatientDto patientDto:allPatients){
-               patientDto.
-           }
-       }
-
-    }
-
-
-
-    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
-    @GetMapping
-    public List<PatientDto> getAllPatients(
-            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
-            @ApiParam(value = "показывать только пациентов в хосписе") @RequestParam("patients_status") PatientsStatus patients_status
-    ) {
+//    TODO: Anastasya
+//    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
+//    @GetMapping
+//    public List<PatientDto> getAllPatients(
+//            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
+//            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
+//            @ApiParam(value = "показывать только пациентов в хосписе") @RequestParam("patients_status") PatientsStatus patients_status
+//    ) {
 
 //        switch (patients_status) {
 //            case Active:
@@ -69,8 +59,8 @@ public class PatientController {
 //                return patientService.getAllPatients();
 //                break;
 //        }
-return null;
-    }
+//        return null;
+//    }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")

@@ -31,6 +31,7 @@ public class PatientService implements IPatientService {
                 .collect(Collectors.toList());
     }
 
+//    TODO: Anastasya
 //    @Override
 //    public List<PatientDto> getAllPatients() {
 //        List<Patient> patientList = patientRepository.findAll();
@@ -40,14 +41,15 @@ public class PatientService implements IPatientService {
 //                .collect(Collectors.toList());
 //    }
 
-    @Override
-    public List<PatientDto> getPatientsByStatus(PatientsStatus patientsStatus) {
-        List<Patient> patientList = patientRepository.findByStatus(patientsStatus);
-        ConversionService conversionService = factoryBean.getObject();
-        return patientList.stream()
-                .map(i -> conversionService.convert(i, PatientDto.class))
-                .collect(Collectors.toList());
-    }
+//    TODO: Anastasya
+//    @Override
+//    public List<PatientDto> getPatientsByStatus(PatientsStatus patientsStatus) {
+//        List<Patient> patientList = patientRepository.findByStatus(patientsStatus);
+//        ConversionService conversionService = factoryBean.getObject();
+//        return patientList.stream()
+//                .map(i -> conversionService.convert(i, PatientDto.class))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public PatientDto getPatient(Integer id) {
