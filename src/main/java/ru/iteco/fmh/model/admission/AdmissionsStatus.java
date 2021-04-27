@@ -1,15 +1,12 @@
-package ru.iteco.fmh.model;
+package ru.iteco.fmh.model.admission;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-
 
 /**
- * Новость
+ * Статус госпитализации
  */
 @Builder
 @NoArgsConstructor
@@ -19,21 +16,13 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "advertisement")
-public class Advertisement {
+@Table(name = "adm_status")
+public class AdmissionsStatus {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
-    //many advertisement can have one user
-    @ManyToOne
-    User creator;
-
-    String title;
-    String description;
-    LocalDate dateCreate;
-
+    AdmissionsStatusE name;
+    String code;
     boolean deleted;
-
-
 }

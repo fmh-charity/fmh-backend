@@ -2,14 +2,14 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Formula;
+import ru.iteco.fmh.model.admission.Admission;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
+/**
+ * Пациент
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,23 +17,28 @@ import java.util.List;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@ToString
 @Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
-    List<Note> noteCollection = new ArrayList<>();
-
-    @ManyToOne
-    Room room;
-
     String firstName;
-    String middleName;
     String lastName;
+    String middleName;
     LocalDate birthday;
-    PatientsStatus patientsStatus;
+
+    @OneToOne//но я не уверена
+    Admission currentAdmission;
+
+    boolean deleted;
+
+
+
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
+//    List<Note> noteCollection = new ArrayList<>();
+
 //    @Formula(
 //            "CONCAT_WS(' ', first_name ," +
 //                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
@@ -41,17 +46,4 @@ public class Patient {
 //                    ")")
 //    String shortPatientName;
 
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", room=" + room +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", patientsStatus=" + patientsStatus +
-                '}';
-    }
 }

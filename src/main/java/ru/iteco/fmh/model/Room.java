@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Палата
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,20 +25,23 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    String roomName;
+
+    //many room can have one block
     @ManyToOne
     Block block;
+    //many room can have one nurseStation
     @ManyToOne
     NurseStation nurseStation;
+
+    int maxCapacity;
+
+    String comment;
+    boolean deleted;
 
 //    @ToString.Exclude
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
 //    List<Patient> patientCollection = new ArrayList<>();
-
-
-    int maxCapacity;
-    int currentOccupancy;
-    String roomName;
-    String comment;
-
+//    int currentOccupancy;
 
 }

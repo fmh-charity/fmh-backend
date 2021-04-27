@@ -8,8 +8,6 @@ import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.PatientNoteDto;
-import ru.iteco.fmh.model.PatientsStatus;
-import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.util.List;

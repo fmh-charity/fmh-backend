@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.User;
+import ru.iteco.fmh.model.user.User;
 
 import java.time.LocalDate;
 

@@ -1,15 +1,13 @@
-package ru.iteco.fmh.model;
+package ru.iteco.fmh.model.user;
+
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-
 
 /**
- * Новость
+ * Роли пользователя
  */
 @Builder
 @NoArgsConstructor
@@ -19,21 +17,18 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "advertisement")
-public class Advertisement {
+@Table(name = "user_role")
+public class UserRole {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
-    //many advertisement can have one user
+    //many userRole can have one user
     @ManyToOne
-    User creator;
-
-    String title;
-    String description;
-    LocalDate dateCreate;
-
+    User user;
+    //many userRole can have one role
+    @ManyToOne
+    Role rol;
     boolean deleted;
-
-
 }

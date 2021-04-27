@@ -14,7 +14,7 @@ import ru.iteco.fmh.converter.patient.fromPatient.PatientToDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.PatientToPatientAdmissionDtoConverter;
-import ru.iteco.fmh.model.Admission;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.util.HashSet;
 import java.util.Set;

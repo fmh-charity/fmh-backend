@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Пост
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +25,8 @@ public class NurseStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
     String nurseStationName;
     String comment;
-
+    boolean deleted;
 
 }
