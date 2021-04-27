@@ -1,9 +1,8 @@
-package ru.iteco.fmh.converter.admission;
+package ru.iteco.fmh.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import ru.iteco.fmh.converter.patient.fromPatientDto.IPatientDtoToPatientConverter;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.dto.AdmissionDto;
+import ru.iteco.fmh.model.Admission;
 
 /**
  * конвертер из {@link AdmissionDto} в {@link Admission}
@@ -11,8 +10,6 @@ import ru.iteco.fmh.model.admission.Admission;
 public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto, Admission> {
 
     private IPatientDtoToPatientConverter patientConverter;
-
-
 
     public AdmissionDtoToAdmissionConverter(IPatientDtoToPatientConverter patientConverter) {
         this.patientConverter = patientConverter;
