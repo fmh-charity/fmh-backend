@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.PatientNoteDto;
+import ru.iteco.fmh.dto.patient.PatientNoteDto;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.util.List;
@@ -61,6 +61,21 @@ public class PatientController {
 //        }
 //        return null;
 //    }
+
+
+    //    TODO: ПРОВЕРИТЬ
+   //       Что за параметры offset, limit?
+    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
+    @GetMapping
+    public List<PatientAdmissionDto> getAllPatientsByStatus(
+            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
+            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
+            @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
+    ) {
+        return patientService.getAllPatientsByStatus(patientsStatusList);
+    }
+
+
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")

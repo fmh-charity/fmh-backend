@@ -34,7 +34,4 @@ public class AdmissionServiceImpl implements AdmissionService {
         Admission admission = factoryBean.getObject().convert(admissionDto, Admission.class);
         return admissionRepository.save(admission).getId();
     }
-
-
-
 }

@@ -38,8 +38,11 @@ public class Config {
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
 
-        Admission admission = new Admission();
-        converterSet.add(new PatientToPatientAdmissionDtoConverter(admission));
+        // УДАЛИТЬ!
+//        Admission admission = new Admission();
+//        converterSet.add(new PatientToPatientAdmissionDtoConverter(admission));
+
+        converterSet.add(new PatientToPatientAdmissionDtoConverter());
 
         factoryBean.setConverters(converterSet);
 

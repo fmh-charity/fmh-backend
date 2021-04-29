@@ -1,5 +1,6 @@
 package ru.iteco.fmh.dto.patient;
 
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +20,6 @@ import java.util.List;
 @Builder
 @Data
 public class PatientAdmissionDto {
-
     @ApiModelProperty("id пациента")
     private Integer id;
     @ApiModelProperty("имя пациента")
@@ -29,17 +30,29 @@ public class PatientAdmissionDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private LocalDate birthday;
-    //
 
-    @ApiModelProperty("дата поступления")
+    @ApiModelProperty(value = "статус госпитализации")
+    private AdmissionsStatus admissionsStatus;
+    @ApiModelProperty("фактическая/плановая дата поступления")
     private LocalDate dateIn;
-    @ApiModelProperty("дата выписки")
+    @ApiModelProperty("фактическая/плановая дата выписки")
     private LocalDate dateOut;
+    @ApiModelProperty("признак для даты поступления")
+    private boolean dateInBoolean;
+    @ApiModelProperty("признак для даты выписки")
+    private boolean dateOutBoolean;
 
-    private boolean isPlanDateIn;
-    private boolean isPlanDateOut;
-
-
-
-
+    // поля из Admission - на фронт эти поля не отправляем,
+    @JsonIgnore
+//    @ApiModelProperty("плановая дата поступления")
+    private LocalDate planDateIn;
+    @JsonIgnore
+//    @ApiModelProperty("плановая дата выписки")
+    private LocalDate planDateOut;
+    @JsonIgnore
+//    @ApiModelProperty(value = "фактическая дата поступления")
+    private LocalDate factDateIn;
+    @JsonIgnore
+//    @ApiModelProperty(value = "фактическая дата выписки")
+    private LocalDate factDateOut;
 }
