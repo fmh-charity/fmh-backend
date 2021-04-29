@@ -32,6 +32,4 @@ public class AdmissionDto {
 
     @ApiModelProperty(value = "комментарий")
     private String comment;
-
-
 }

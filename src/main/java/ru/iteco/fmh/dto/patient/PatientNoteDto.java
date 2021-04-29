@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto;
+package ru.iteco.fmh.dto.patient;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

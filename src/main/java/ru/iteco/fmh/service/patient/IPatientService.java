@@ -9,11 +9,14 @@ public interface IPatientService {
 
 //    List<PatientDto> getAllPatients();
 
-    List<PatientAdmissionDto> getAllPatients();
+//    List<PatientAdmissionDto> getAllPatients();
 
-    PatientDto getPatient(Integer id);
+    // просмотр списка пациентов
+    List<PatientAdmissionDto> getAllPatientsByStatus(List<String> status);
 
     PatientDto createPatient(PatientDto patientDto);
+
+    PatientDto getPatient(Integer id);
 
     PatientDto updatePatient(PatientDto patientDto);
 }
