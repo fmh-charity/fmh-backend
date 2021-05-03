@@ -22,17 +22,17 @@ public class AdmissionController {
 
     @ApiOperation(value = "возвращает полную информацию по госпитализации")
     @GetMapping("/{id}")
-    public AdmissionDto getNote(
-            @ApiParam(value = "идентификатор", required = true)@PathVariable("id") Integer id
-    ){
-        return admissionService.getAdmissionInfo(id);
+    public AdmissionDto getAdmission(
+            @ApiParam(value = "идентификатор", required = true) @PathVariable("id") Integer id
+    ) {
+        return admissionService.getAdmission(id);
     }
 
     @ApiOperation(value = "создание госпитализации")
     @PostMapping
     public Integer createAdmission(
             @RequestBody AdmissionDto admissionDto
-    ){
+    ) {
         return admissionService.createOrUpdateAdmission(admissionDto);
     }
 
@@ -40,7 +40,7 @@ public class AdmissionController {
     @PatchMapping
     public void updateAdmission(
             @RequestBody AdmissionDto admissionDto
-    ){
+    ) {
         admissionService.createOrUpdateAdmission(admissionDto);
     }
 }

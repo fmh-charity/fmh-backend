@@ -5,7 +5,11 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
 import ru.iteco.fmh.model.admission.Admission;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса для работы с госпитализацией {@link AdmissionService}
@@ -22,9 +26,17 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public AdmissionDto getAdmissionInfo(Integer id) {
+    public List<AdmissionDto> getPatientAdmissions(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
-        return admissionRepository.findById(id)
+        return admissionRepository.findAllByPatient_Id(patientId).stream()
+                .map(admission -> conversionService.convert(admission, AdmissionDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AdmissionDto getAdmission(Integer admissionId) {
+        ConversionService conversionService = factoryBean.getObject();
+        return admissionRepository.findById(admissionId)
                 .map(admission -> conversionService.convert(admission, AdmissionDto.class))
                 .orElse(null);
     }

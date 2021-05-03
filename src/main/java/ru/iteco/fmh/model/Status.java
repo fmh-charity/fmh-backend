@@ -18,14 +18,10 @@ import javax.persistence.*;
 @ToString
 @Table(name = "status")
 public class Status {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     StatusE name;
     String code;
     boolean deleted;
-
-
 }
