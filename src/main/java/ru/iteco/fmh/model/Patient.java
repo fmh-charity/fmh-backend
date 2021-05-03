@@ -2,10 +2,14 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.model.admission.AdmissionsStatusE;
+import ru.iteco.fmh.service.admission.AdmissionService;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * Пациент
@@ -34,7 +38,11 @@ public class Patient {
 
     boolean deleted;
 
-
+    // возвращаем статус пациента текущей госпитализации
+    // если госпитализации нет - то статус пациента AdmissionsStatusE.Expected
+    public AdmissionsStatusE getStatus() {
+        return Optional.ofNullable(currentAdmission.getAdmissionsStatus()).orElse(AdmissionsStatusE.Expected);
+    }
 
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
 //    List<Note> noteCollection = new ArrayList<>();

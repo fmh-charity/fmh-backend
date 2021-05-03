@@ -50,23 +50,23 @@ comment on column note.comment is 'комментарий';
 comment on column note.deleted is 'флаг удаления';
 
 
-
-CREATE TYPE status_n AS ENUM ('Canceled', 'Active', 'Executed');
-
-create sequence status_seq;
-create table status
-(
-    id      int not null primary key default nextval('status_seq'),
-    name    status_n,
-    code    varchar,
-    deleted boolean
-);
-
-comment on table status is 'Статус для заявки и для записки';
-comment on column status.id is 'Id в системе';
-comment on column status.name is 'наименование enum';
-comment on column status.code is 'код';
-comment on column status.deleted is 'флаг удаления';
+// удалить
+-- CREATE TYPE status_n AS ENUM ('Canceled', 'Active', 'Executed');
+--
+-- create sequence status_seq;
+-- create table status
+-- (
+--     id      int not null primary key default nextval('status_seq'),
+--     name    status_n,
+--     code    varchar,
+--     deleted boolean
+-- );
+--
+-- comment on table status is 'Статус для заявки и для записки';
+-- comment on column status.id is 'Id в системе';
+-- comment on column status.name is 'наименование enum';
+-- comment on column status.code is 'код';
+-- comment on column status.deleted is 'флаг удаления';
 
 
 create sequence user_seq;

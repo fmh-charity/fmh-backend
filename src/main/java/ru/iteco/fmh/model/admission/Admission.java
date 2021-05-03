@@ -40,10 +40,15 @@ public class Admission {
     //Фактическая дата выписки
     LocalDate factDateOut;
 
-    //Статус госпитализации
-    //many admission can have one admissionsStatus
-    @ManyToOne
-    AdmissionsStatus admissionsStatus;
+    // Статус госпитализации
+    AdmissionsStatusE admissionsStatus;
+
+
+//    Убираем
+//    Статус госпитализации
+//    many admission can have one admissionsStatus
+//    @ManyToOne
+//    AdmissionsStatus admissionsStatus;
 
     //many admissions can have one room
     @ManyToOne

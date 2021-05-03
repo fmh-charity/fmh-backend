@@ -1,6 +1,9 @@
 package ru.iteco.fmh.service.admission;
 
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
+
+import java.util.List;
 
 /**
  * сервис для работы с госпитализацией
@@ -8,10 +11,10 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 public interface AdmissionService {
     /**
      * возвращает полную инфу по конкретной госпитализации
-     * @param id ид госпитализации
+     * @param admissionId ид госпитализации
      * @return полная инфа по госпитализации
      */
-    AdmissionDto getAdmissionInfo(Integer id);
+    AdmissionDto getAdmission(Integer admissionId);
 
     /**
      * создает или обновляет запись о госпитализации
@@ -20,5 +23,10 @@ public interface AdmissionService {
      */
     Integer createOrUpdateAdmission(AdmissionDto admissionDto);
 
-
+    /**
+     * возвращает список всех госпитализаций пациента
+     * @param patientId ид пациента
+     * @return список с полной инфой по всем госпитализациям пациента
+     */
+    List<AdmissionDto> getPatientAdmissions(Integer patientId);
 }
