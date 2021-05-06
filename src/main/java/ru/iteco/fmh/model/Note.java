@@ -37,14 +37,12 @@ public class Note {
     User executor;
 
     LocalDateTime createDate;
-    LocalDateTime planExecuteDate;
-    LocalDateTime factExecuteDate;
+    LocalDateTime planExecuteTime;
+    LocalDateTime factExecuteTime;
 
-    //many note can have one status
-    @ManyToOne
-    Status status;
+    @Enumerated(EnumType.STRING)
+    StatusE status;
 
     String comment;
     boolean deleted;
-
 }

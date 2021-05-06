@@ -28,7 +28,7 @@ public class AdvertisementRepositoryTest {
         User employee = getUser();
         employee = userRepository.save(employee);
         Advertisement entity = Advertisement.builder()
-                .author(employee)
+//                .author(employee)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
                 .dateCreate(LocalDate.now())

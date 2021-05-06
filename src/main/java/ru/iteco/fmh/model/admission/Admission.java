@@ -41,14 +41,8 @@ public class Admission {
     LocalDate factDateOut;
 
     // Статус госпитализации
-    AdmissionsStatusE admissionsStatus;
-
-
-//    Убираем
-//    Статус госпитализации
-//    many admission can have one admissionsStatus
-//    @ManyToOne
-//    AdmissionsStatus admissionsStatus;
+    @Enumerated(EnumType.STRING)
+    AdmissionsStatus admissionsStatus;
 
     //many admissions can have one room
     @ManyToOne

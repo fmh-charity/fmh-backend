@@ -23,8 +23,8 @@ class NoteToShortDtoConverterTest {
                 () -> assertEquals(note.getId(), shortInfoDto.getId()),
                 () -> assertEquals(note.getPlanExecuteTime(), shortInfoDto.getPlanExecuteTime()),
                 () -> assertEquals(note.getFactExecuteTime(), shortInfoDto.getFactExecuteTime()),
-                () -> assertEquals(note.getPatient().getShortPatientName(), shortInfoDto.getShortPatientName())
-//                () ->  assertEquals(note.ge,shortInfoDto.getStatus())
+                () -> assertEquals(note.getPatient().getShortPatientName(), shortInfoDto.getShortPatientName()),
+                () ->  assertEquals(note.getStatus(),shortInfoDto.getStatus())
         );
     }
 }

@@ -28,7 +28,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     @Override
     public List<AdmissionDto> getPatientAdmissions(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
-        return admissionRepository.findAllByPatient_Id(patientId).stream()
+        return admissionRepository.findAllByPatient_IdAndDeletedIsFalse(patientId).stream()
                 .map(admission -> conversionService.convert(admission, AdmissionDto.class))
                 .collect(Collectors.toList());
     }

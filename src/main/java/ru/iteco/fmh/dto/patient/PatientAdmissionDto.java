@@ -7,11 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDate;
-import java.util.List;
 
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")

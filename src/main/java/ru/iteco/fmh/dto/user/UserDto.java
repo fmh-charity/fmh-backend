@@ -28,6 +28,8 @@ public class UserDto {
     private String phoneNumber;
     @ApiModelProperty("электронная почта")
     private String eMail;
+    @ApiModelProperty("ФИО пользователя, в формате \"Кузнецова Н.П.\"")
+    private String userShortName;
     @ApiModelProperty("роли")
     private List<String> roles;
 }

@@ -15,8 +15,6 @@ import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getNoteDto;
 
 class DtoToNoteConverterTest {
-
-
     IDtoToPatientConverter dtoToPatientConverter = Mockito.mock(IDtoToPatientConverter.class);
     DtoToNoteConverter convert = new DtoToNoteConverter(dtoToPatientConverter);
 

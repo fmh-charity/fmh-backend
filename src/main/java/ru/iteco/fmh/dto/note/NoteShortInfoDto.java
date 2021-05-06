@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.iteco.fmh.model.StatusE;
 
 import java.time.LocalDateTime;
 
@@ -26,5 +27,5 @@ public class NoteShortInfoDto {
     @ApiModelProperty("исполнитель, в формате \"Кузнецова Н.П.\"")
     private String shortExecutorName;
     @ApiModelProperty("статус записки")
-    private String status;
+    private StatusE status;
 }

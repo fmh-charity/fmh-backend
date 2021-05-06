@@ -33,6 +33,7 @@ public class User {
     String middleName;
     String phoneNumber;
     String email;
+    String shortUserName;
     boolean deleted;
 
 //    @OneToMany(mappedBy = "author")

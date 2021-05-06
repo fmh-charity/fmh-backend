@@ -35,9 +35,9 @@ public class Claim {
     LocalDate planExecuteDate;
     LocalDate factExecuteDate;
 
-    //many claim can have one status
-    @ManyToOne
-    Status status;
+    @Enumerated(EnumType.STRING)
+    StatusE status;
+
     String comment;
     boolean deleted;
 }

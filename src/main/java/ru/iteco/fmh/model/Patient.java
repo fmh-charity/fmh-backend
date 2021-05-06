@@ -2,10 +2,8 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatusE;
-import ru.iteco.fmh.service.admission.AdmissionService;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,14 +34,15 @@ public class Patient {
     @OneToOne//но я не уверена
     Admission currentAdmission;
 
+    String shortPatientName;
+
     boolean deleted;
 
-    // возвращаем статус пациента текущей госпитализации
-    // если госпитализации нет - то статус пациента AdmissionsStatusE.Expected
-    public AdmissionsStatusE getStatus() {
-        return Optional.ofNullable(currentAdmission.getAdmissionsStatus()).orElse(AdmissionsStatusE.Expected);
+    public AdmissionsStatus getStatus() {
+        return currentAdmission != null ? currentAdmission.getAdmissionsStatus() : AdmissionsStatus.EXPECTED;
     }
 
+//    TODO: дорабоать
 //    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
 //    List<Note> noteCollection = new ArrayList<>();
 
@@ -52,6 +51,6 @@ public class Patient {
 //                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
 //                    "SUBSTRING(UPPER(last_name),1,1) )" +
 //                    ")")
-//    String shortPatientName;
+
 
 }

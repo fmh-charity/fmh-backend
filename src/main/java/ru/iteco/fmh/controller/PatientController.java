@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientNoteDto;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Api(description = "Информация по пациенту")
 @RestController
-//@RequestMapping("/patient")
+@RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
     private final AdmissionService admissionService;
@@ -32,19 +33,17 @@ public class PatientController {
         this.noteService = noteService;
     }
 
-    // Что за параметры offset, limit - paging?
-    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
-    @GetMapping
+
+    @ApiOperation(value = "реестр всех пациентов")
+    @GetMapping("/getAll")
     public List<PatientAdmissionDto> getAllPatientsByStatus(
-            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
             @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
     ) {
         return patientService.getAllPatientsByStatus(patientsStatusList);
     }
 
     @ApiOperation(value = "создание пациента")
-    @PostMapping
+    @PostMapping("/create")
     public PatientDto createPatient(@RequestBody PatientDto patientDto) {
         return patientService.createOrUpdatePatient(patientDto);
     }
@@ -66,14 +65,15 @@ public class PatientController {
 
     @ApiOperation(value = "возвращает информацию по запискам пациента")
     @GetMapping("/{patientId}/note")
-    public List<PatientNoteDto> getNotes(
+//    public List<PatientNoteDto> getNotes(
+    public List<NoteDto> getNotes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
         return noteService.getPatientNotes(patientId);
     }
 
     @ApiOperation(value = "изменение пациента")
-    @PatchMapping
+    @PatchMapping("/update")
     public PatientDto updatePatient(
             @RequestBody PatientDto patientDto
     ) {

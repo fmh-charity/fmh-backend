@@ -5,11 +5,10 @@ import ru.iteco.fmh.converter.patient.fromPatient.IPatientToPatientDtoConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 
-
 /**
  * конвертер из {@link Admission} в {@link AdmissionDto}
  */
-public class AdmissionToAdmissionDtoConverter implements Converter<Admission, AdmissionDto> {
+public class AdmissionToAdmissionDtoConverter implements Converter<Admission, AdmissionDto>{
 
     private IPatientToPatientDtoConverter patientConverter;
 

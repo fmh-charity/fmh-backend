@@ -11,10 +11,10 @@ public class NoteToShortDtoConverter implements Converter<Note, NoteShortInfoDto
         NoteShortInfoDto dto = new NoteShortInfoDto();
         BeanUtils.copyProperties(note, dto);
 
-//        TODO: 27.04.2021 delete, shortPatientName not actual?
-//        dto.setShortPatientName(note.getPatient().getShortPatientName());
+        dto.setShortPatientName(note.getPatient().getShortPatientName());
+//        не работает, посмотреть
+//        dto.setShortExecutorName(note.getExecutor().getShortUserName());
 
-        // TODO: 19.01.2021 добавить исполнителя
         return dto;
     }
 }

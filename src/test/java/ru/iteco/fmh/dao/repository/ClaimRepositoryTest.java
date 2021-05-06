@@ -36,20 +36,20 @@ public class ClaimRepositoryTest {
         doer = getUser();
         userRepository.save(doer);
         entity = Claim.builder()
-                .text(getAlphabeticString())
+//                .text(getAlphabeticString())
                 .creator(author)
                 .executor(doer)
-                .dateCreate(LocalDate.now())
+//                .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
 
         entity = repository.save(entity);
 
         entity2 = Claim.builder()
-                .text(getAlphabeticString())
+//                .text(getAlphabeticString())
                 .creator(author)
                 .executor(doer)
-                .dateCreate(LocalDate.now())
+//                .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
 
