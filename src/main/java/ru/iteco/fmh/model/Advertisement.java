@@ -2,13 +2,14 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 
 /**
- * ОбЪявления
+ * Новость
  */
 @Builder
 @NoArgsConstructor
@@ -17,27 +18,22 @@ import java.time.LocalDate;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@ToString
 @Table(name = "advertisement")
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    //many advertisement can have one user
     @ManyToOne
-    User author;
+    User creator;
 
     String title;
     String description;
     LocalDate dateCreate;
 
-    @Override
-    public String toString() {
-        return "Advertisement{" +
-                "id=" + id +
-                ", author=" + author +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", dateCreate=" + dateCreate +
-                '}';
-    }
+    boolean deleted;
+
+
 }

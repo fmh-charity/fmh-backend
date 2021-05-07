@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.NoteDto;
-import ru.iteco.fmh.dto.NoteShortInfoDto;
-import ru.iteco.fmh.service.INoteService;
+import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.service.note.NoteService;
 
 import java.util.List;
 
@@ -15,9 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/note")
 public class NoteController {
+    private NoteService noteService;
 
     @Autowired
-    INoteService noteService;
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
+    }
 
     @ApiOperation(value = "реестр всех записок с учетом пагинации")
     @GetMapping

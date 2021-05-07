@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.User;
+import ru.iteco.fmh.model.user.User;
 
 import java.time.LocalDate;
 
@@ -36,20 +36,20 @@ public class ClaimRepositoryTest {
         doer = getUser();
         userRepository.save(doer);
         entity = Claim.builder()
-                .text(getAlphabeticString())
+//                .text(getAlphabeticString())
                 .creator(author)
                 .executor(doer)
-                .dateCreate(LocalDate.now())
+//                .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
 
         entity = repository.save(entity);
 
         entity2 = Claim.builder()
-                .text(getAlphabeticString())
+//                .text(getAlphabeticString())
                 .creator(author)
                 .executor(doer)
-                .dateCreate(LocalDate.now())
+//                .dateCreate(LocalDate.now())
                 .comment(getAlphabeticString())
                 .build();
 

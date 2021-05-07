@@ -4,9 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.AdmissionShortInfoDto;
-import ru.iteco.fmh.dto.PatientDto;
-import ru.iteco.fmh.dto.PatientNoteDto;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientNoteDto;
+import ru.iteco.fmh.service.admission.AdmissionService;
+import ru.iteco.fmh.service.note.NoteService;
+import ru.iteco.fmh.service.patient.PatientService;
 
 import java.util.List;
 
@@ -17,56 +22,61 @@ import java.util.List;
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
+    private final PatientService patientService;
+    private final AdmissionService admissionService;
+    private final NoteService noteService;
 
-    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
-    @GetMapping
-    public List<PatientDto> getAllPatients(
-            @ApiParam(value = "начальная позиция пагинации", required = true)@RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true)@RequestParam("limit") Integer limit,
-            @ApiParam(value = "показывать только пациентов в хосписе")@RequestParam("show_active") Boolean showActive
-    ){
-        return null;
+
+    public PatientController(PatientService patientService, AdmissionService admissionService, NoteService noteService) {
+        this.patientService = patientService;
+        this.admissionService = admissionService;
+        this.noteService = noteService;
+    }
+
+
+    @ApiOperation(value = "реестр всех пациентов")
+    @GetMapping("/getAll")
+    public List<PatientAdmissionDto> getAllPatientsByStatus(
+            @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
+    ) {
+        return patientService.getAllPatientsByStatus(patientsStatusList);
+    }
+
+    @ApiOperation(value = "создание пациента")
+    @PostMapping("/create")
+    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
+        return patientService.createOrUpdatePatient(patientDto);
     }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
-    @GetMapping("/{id}")
+    @GetMapping("/{patientId}")
     public PatientDto getPatient(
-            @ApiParam(value = "идентификатор пациента", required = true)@PathVariable Integer id
-    ){
-        return null;
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId) {
+        return patientService.getPatient(patientId);
     }
 
-    @ApiOperation(value = "возвращает информацию по госпитализациям пациента")
-    @GetMapping("/{patientId}/admission")
-    public List<AdmissionShortInfoDto> getAdmissions(
-            // TODO: 27.01.2021 Перенести в сервис admissions
-            @ApiParam(value = "идентификатор пациента", required = true)@PathVariable Integer patientId
-    ){
-        return null;
+    @ApiOperation(value = "возвращает информацию по всем госпитализациям пациента")
+    @GetMapping("/{patientId}/admissions")
+    public List<AdmissionDto> getAdmissions(
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
+    ) {
+        return admissionService.getPatientAdmissions(patientId);
     }
 
     @ApiOperation(value = "возвращает информацию по запискам пациента")
     @GetMapping("/{patientId}/note")
-    public List<PatientNoteDto> getNotes(
-            // TODO: 27.01.2021 перенести в сервис Note
-            @ApiParam(value = "идентификатор пациента", required = true)@PathVariable Integer patientId
-    ){
-        return null;
-    }
-
-    @ApiOperation(value = "создание пациента")
-    @PostMapping
-    public PatientDto createPatient(
-            @RequestBody PatientDto patientDto
+//    public List<PatientNoteDto> getNotes(
+    public List<NoteDto> getNotes(
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
-        return null;
+        return noteService.getPatientNotes(patientId);
     }
 
     @ApiOperation(value = "изменение пациента")
-    @PatchMapping
+    @PatchMapping("/update")
     public PatientDto updatePatient(
             @RequestBody PatientDto patientDto
     ) {
-        return null;
+       return patientService.createOrUpdatePatient(patientDto);
     }
 }
