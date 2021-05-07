@@ -22,7 +22,7 @@ public class AdmissionServiceTest {
     ConversionServiceFactoryBean factoryBean;
 
     @Test
-    void getPatientAdmissionsShouldPassSuccess() {
+  public   void getPatientAdmissionsShouldPassSuccess() {
     }
 }
 
