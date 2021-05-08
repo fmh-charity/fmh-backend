@@ -111,7 +111,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
@@ -121,14 +121,14 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();
     }
 
     private Admission getAdmission(AdmissionsStatus admissionsStatus) {
         return Admission.builder()
-                .admissionsStatus(admissionsStatus)
+                .status(admissionsStatus)
                 .build();
     }
 }

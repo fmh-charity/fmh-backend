@@ -80,7 +80,7 @@ public class NoteRepositoryTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .build();
     }
 

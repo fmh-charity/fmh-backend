@@ -62,7 +62,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .shortPatientName(getAlphabeticString())
                 .build();
         return patient;

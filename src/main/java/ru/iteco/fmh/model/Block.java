@@ -24,9 +24,7 @@ public class Block {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String blocksName;
+    String name;
     String comment;
     boolean deleted;
-
-
 }

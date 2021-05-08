@@ -17,7 +17,7 @@ import java.util.Collection;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "nurseStation")
+@Table(name = "nurse_station")
 @ToString
 public class NurseStation {
 
@@ -25,7 +25,7 @@ public class NurseStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String nurseStationName;
+    String name;
     String comment;
     boolean deleted;
 

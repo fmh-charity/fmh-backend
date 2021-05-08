@@ -32,7 +32,7 @@ public class AdmissionRepositoryTest {
                 .firstName("first")
                 .middleName("first")
                 .lastName("first")
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .build();
 
         patient = patientRepository.save(patient);
