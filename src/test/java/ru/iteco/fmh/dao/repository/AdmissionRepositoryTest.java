@@ -5,15 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
+
 import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
 
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +39,9 @@ public class AdmissionRepositoryTest {
         patient = patientRepository.save(patient);
 
         entity = Admission.builder()
+
+                .planDateIn(LocalDate.now())
+
                 .factDateIn(LocalDate.now())
                 .patient(patient)
                 .build();
