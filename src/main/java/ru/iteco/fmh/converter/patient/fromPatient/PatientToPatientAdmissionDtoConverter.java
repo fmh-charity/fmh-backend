@@ -1,6 +1,7 @@
-package ru.iteco.fmh.converter.patient.fromPatientDto;
+package ru.iteco.fmh.converter.patient.fromPatient;
 
 import org.springframework.core.convert.converter.Converter;
+import ru.iteco.fmh.converter.patient.fromPatient.IPatientToPatientAdmissionDtoConverter;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;

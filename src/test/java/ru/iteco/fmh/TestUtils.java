@@ -4,6 +4,7 @@ import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -63,6 +64,7 @@ public class TestUtils {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
+                .currentAdmission(Admission.builder().build())
                 .shortPatientName(getAlphabeticString())
                 .build();
         return patient;
