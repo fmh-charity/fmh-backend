@@ -2,12 +2,12 @@ package ru.iteco.fmh.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Formula;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Optional;
 
 /**
  * Пациент
@@ -29,28 +29,22 @@ public class Patient {
     String firstName;
     String lastName;
     String middleName;
-    LocalDate birthday;
+    LocalDate birthDate;
 
-    @OneToOne//но я не уверена
+    @OneToOne
+    @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
-
-    String shortPatientName;
 
     boolean deleted;
 
+    @Formula(
+            "CONCAT_WS(' ', first_name ," +
+                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
+                    "SUBSTRING(UPPER(last_name),1,1) )" +
+                    ")")
+    String shortPatientName;
+
     public AdmissionsStatus getStatus() {
-        return currentAdmission != null ? currentAdmission.getAdmissionsStatus() : AdmissionsStatus.EXPECTED;
+        return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
     }
-
-//    TODO: дорабоать
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "patient")
-//    List<Note> noteCollection = new ArrayList<>();
-
-//    @Formula(
-//            "CONCAT_WS(' ', first_name ," +
-//                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
-//                    "SUBSTRING(UPPER(last_name),1,1) )" +
-//                    ")")
-
-
 }

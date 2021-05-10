@@ -2,6 +2,7 @@ package ru.iteco.fmh.model.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-
     String login;
     String password;
     String firstName;
@@ -33,8 +33,15 @@ public class User {
     String middleName;
     String phoneNumber;
     String email;
-    String shortUserName;
     boolean deleted;
+
+    @Formula(
+            "CONCAT_WS(' ', first_name ," +
+                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
+                    "SUBSTRING(UPPER(last_name),1,1) )" +
+                    ")")
+    String shortUserName;
+
 
 //    @OneToMany(mappedBy = "author")
 //    List<Advertisement> advertisementCollections = new ArrayList<>();
@@ -46,5 +53,4 @@ public class User {
 //    List<Claim> myClaims = new ArrayList<>();
 //    @OneToMany(mappedBy = "executor")
 //    List<Claim> doClaims = new ArrayList<>();
-
 }

@@ -27,7 +27,7 @@ public class PatientRepositoryTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .build();
 
         entity = repository.save(entity);

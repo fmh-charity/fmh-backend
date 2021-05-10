@@ -1,4 +1,5 @@
-
 spring:
   profiles:
     active: @activatedProperties@
+#    active: test
+#    active: dev

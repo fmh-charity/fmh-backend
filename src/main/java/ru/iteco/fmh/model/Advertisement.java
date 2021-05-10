@@ -25,8 +25,8 @@ public class Advertisement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    //many advertisement can have one user
     @ManyToOne
+    @JoinColumn(name = "creator_id")
     User creator;
 
     String title;
@@ -34,6 +34,4 @@ public class Advertisement {
     LocalDate dateCreate;
 
     boolean deleted;
-
-
 }

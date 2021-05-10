@@ -17,7 +17,6 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-
 				<activatedProperties>dev</activatedProperties>
 			</properties>
 		</profile>
@@ -86,15 +85,14 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
-			<version>1.15.3</version>
+			<version>1.14.3</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>1.15.3</version>
-			<scope>test</scope>
+			<version>1.14.3</version>
 		</dependency>
 
 		<dependency>
@@ -102,16 +100,12 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.12</version>
 		</dependency>
-
-
-
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>5.7.1</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -139,5 +133,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

@@ -25,23 +25,18 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String roomName;
+    String name;
 
-    //many room can have one block
     @ManyToOne
+    @JoinColumn(name="block_id")
     Block block;
-    //many room can have one nurseStation
+
     @ManyToOne
+    @JoinColumn(name="nurse_station_id")
     NurseStation nurseStation;
 
-    int maxCapacity;
+    int maxOccupancy;
 
     String comment;
     boolean deleted;
-
-//    @ToString.Exclude
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
-//    List<Patient> patientCollection = new ArrayList<>();
-//    int currentOccupancy;
-
 }

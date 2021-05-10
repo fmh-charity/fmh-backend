@@ -5,8 +5,6 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.LocalDate;
-
 /**
  * конвертер из {@link Patient} в {@link PatientAdmissionDto}//для «Пациенты» (Просмотр списка пациентов)
  */
@@ -22,7 +20,7 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .middleName(patient.getMiddleName())
-                .birthday(patient.getBirthday())
+                .birthday(patient.getBirthDate())
                 .admissionsStatus(patient.getStatus())
                 .factDateIn(currentAdmission != null ? currentAdmission.getFactDateIn() : null)
                 .factDateOut(currentAdmission != null ? currentAdmission.getFactDateOut() : null)

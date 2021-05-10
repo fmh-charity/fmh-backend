@@ -25,10 +25,11 @@ public class Claim {
 
     String description;
 
-    //many claim can have one user
     @ManyToOne
+    @JoinColumn(name = "creator_id")
     User creator;
     @ManyToOne
+    @JoinColumn(name = "executor_id")
     User executor;
 
     LocalDate createDate;

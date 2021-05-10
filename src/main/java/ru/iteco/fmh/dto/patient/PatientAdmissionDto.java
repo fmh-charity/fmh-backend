@@ -40,17 +40,13 @@ public class PatientAdmissionDto {
     @ApiModelProperty("признак для даты выписки")
     private boolean dateOutBoolean;
 
-    // поля из Admission - на фронт эти поля не отправляем,
+    // данные для формирования dateIn, dateOut
     @JsonIgnore
-//    @ApiModelProperty("плановая дата поступления")
     private LocalDate planDateIn;
     @JsonIgnore
-//    @ApiModelProperty("плановая дата выписки")
     private LocalDate planDateOut;
     @JsonIgnore
-//    @ApiModelProperty(value = "фактическая дата поступления")
     private LocalDate factDateIn;
     @JsonIgnore
-//    @ApiModelProperty(value = "фактическая дата выписки")
     private LocalDate factDateOut;
 }

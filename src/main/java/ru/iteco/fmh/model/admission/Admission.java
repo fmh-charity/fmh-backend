@@ -22,14 +22,13 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "admission")
 public class Admission {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    //many admissions can have one patient
-    @ManyToOne
-    Patient patient;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    Patient patient;
 
     //Планируемая дата поступления
     LocalDate planDateIn;
@@ -42,14 +41,13 @@ public class Admission {
 
     // Статус госпитализации
     @Enumerated(EnumType.STRING)
-    AdmissionsStatus admissionsStatus;
+    AdmissionsStatus status;
 
-    //many admissions can have one room
     @ManyToOne
+    @JoinColumn(name = "room_id")
     Room room;
 
     //Комментарий
     String comment;
     boolean deleted;
-
 }

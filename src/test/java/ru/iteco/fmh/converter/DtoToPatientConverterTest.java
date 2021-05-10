@@ -23,7 +23,7 @@ class DtoToPatientConverterTest {
                 () -> assertEquals(patientDto.getFirstName(), patient.getFirstName()),
                 () -> assertEquals(patientDto.getLastName(), patient.getLastName()),
                 () -> assertEquals(patientDto.getMiddleName(), patient.getMiddleName()),
-                () -> assertEquals(patientDto.getBirthday(), patient.getBirthday()),
+                () -> assertEquals(patientDto.getBirthday(), patient.getBirthDate()),
                 () -> assertEquals(patientDto.getShortPatientName(), patient.getShortPatientName())
         );
     }

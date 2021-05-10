@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -24,6 +25,7 @@ public class PatientServiceImpl implements PatientService {
         this.factoryBean = factoryBean;
     }
 
+    @Transactional
     @Override
     public List<PatientAdmissionDto> getAllPatientsByStatus(List<String> statusList) {
         List<Patient> patientList = patientRepository.findAll();
@@ -44,6 +46,7 @@ public class PatientServiceImpl implements PatientService {
         return conversionService.convert(entity, PatientDto.class);
     }
 
+    @Transactional
     @Override
     public PatientDto getPatient(Integer id) {
         Patient patient = patientRepository.getOne(id);
