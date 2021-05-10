@@ -1,9 +1,6 @@
 spring:
   datasource:
-    url: jdbc:tc:postgresql:9.6:///
+    url: jdbc:tc:postgresql:9.6:///FMH_TEST
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-#  flyway:
-#    baseline-on-migrate: true
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
