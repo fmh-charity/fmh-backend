@@ -1,3 +1,4 @@
+
 insert into block (id, name, comment, deleted)
 values (1, 'block1', 'block1_comment', false),
        (2, 'block2', 'block2_comment', false),

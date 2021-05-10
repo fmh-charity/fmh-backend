@@ -69,6 +69,32 @@ public class PatientControllerTest {
         System.out.println(patient);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    @Test
 //    public void createPatientShouldPassSuccess() {
 //        // given
