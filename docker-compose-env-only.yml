@@ -1,13 +1,13 @@
-#version: '3'
-#
-#services:
-#  pg_db:
-#    container_name: pg_database
-#    image: library/postgres:12
-#    restart: always
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: 123
-#      POSTGRES_DB: FMH_DB
-#    ports:
-#      - "5400:5432"
+version: '3'
+
+services:
+  pg_db:
+    container_name: pg_database
+    image: library/postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: FMH_DB
+    ports:
+      - "5400:5432"

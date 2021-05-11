@@ -40,11 +40,12 @@ public class PatientServiceTest {
         when(patientRepository.findAll()).thenReturn(getPatientList());
 
         // given
-        List<String> statusListAll = List.of("DISCHARGED", "ACTIVE", "EXPECTED");
-        List<String> statusListDISCHARGED = List.of("DISCHARGED");
-        List<String> statusListACTIVE = List.of("ACTIVE");
-        List<String> statusListEXPECTED = List.of("EXPECTED");
-        List<String> statusListMIXED = List.of("DISCHARGED", "EXPECTED");
+        List<String> statusListAll = List.of(AdmissionsStatus.EXPECTED.name(),
+                AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name());
+        List<String> statusListDISCHARGED = List.of(AdmissionsStatus.DISCHARGED.name());
+        List<String> statusListACTIVE = List.of(AdmissionsStatus.ACTIVE.name());
+        List<String> statusListEXPECTED = List.of(AdmissionsStatus.EXPECTED.name());
+        List<String> statusListMIXED = List.of(AdmissionsStatus.EXPECTED.name(), AdmissionsStatus.DISCHARGED.name());
         List<String> statusListEmpty = List.of();
 
         // result
