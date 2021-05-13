@@ -19,13 +19,8 @@ public class NoteToDtoConverter implements Converter<Note, NoteDto> {
     public NoteDto convert(Note note) {
         NoteDto dto = new NoteDto();
         BeanUtils.copyProperties(note, dto);
-
-        // TODO: 18.01.2021  добавить конверторы
-        // реализовано же? теперь это тодо можно удалить?
-
         PatientDto patientDto = patientToDtoConverter.convert(note.getPatient());
         dto.setPatient(patientDto);
-
         return dto;
     }
 }

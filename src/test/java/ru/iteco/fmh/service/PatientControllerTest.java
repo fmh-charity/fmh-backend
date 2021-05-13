@@ -33,10 +33,10 @@ public class PatientControllerTest {
     @Test
     public void aGetAllPatientsByStatusTestShouldPassSuccess() {
         // given
-        int countExpected = 3;
+        int countExpected = 3;//тут ожидает 5
         int countActive = 2;
         int countDischarged = 1;
-        int countAll = 6;
+        int countAll = 6;//тут ожидает 8
 
         List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name()));
         List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.ACTIVE.name()));
