@@ -13,13 +13,13 @@ import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
-
 // тест метода createPatient добавляет запись в БД, поэтому задается порядок выполнения
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
@@ -32,6 +32,12 @@ public class PatientControllerTest {
 
     @Test
     public void aGetAllPatientsByStatusTestShouldPassSuccess() {
+        // given
+        int countExpected = 3;
+        int countActive = 2;
+        int countDischarged = 1;
+        int countAll = 6;
+
         List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name()));
         List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.ACTIVE.name()));
         List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.DISCHARGED.name()));
@@ -39,10 +45,10 @@ public class PatientControllerTest {
                 AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
 
         assertAll(
-                ()-> assertEquals(3, resultExpected.size()),
-                ()-> assertEquals(2, resultActive.size()),
-                ()-> assertEquals(1, resultDischarged.size()),
-                ()-> assertEquals(6, resultAll.size())
+                () -> assertEquals(countExpected, resultExpected.size()),
+                () -> assertEquals(countActive, resultActive.size()),
+                () -> assertEquals(countDischarged, resultDischarged.size()),
+                () -> assertEquals(countAll, resultAll.size())
         );
     }
 
@@ -53,10 +59,10 @@ public class PatientControllerTest {
         PatientDto result = sut.createPatient(given);
 
         assertAll(
-                ()->   assertEquals(given.getFirstName(), result.getFirstName()),
-                ()->   assertEquals(given.getLastName(), result.getLastName()),
-                ()->   assertEquals(given.getMiddleName(), result.getMiddleName()),
-                ()->   assertEquals(given.getBirthDate(), result.getBirthDate())
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate())
         );
     }
 
@@ -64,41 +70,46 @@ public class PatientControllerTest {
     @Test
     public void getPatientShouldPassSuccess() {
         // given
-        String PATIENT_NAME = "Patient1-firstname";
+        int patientId = 1;
+        String patientFirstName = "Patient1-firstname";
 
-        PatientDto result = sut.getPatient(1);
+        PatientDto result = sut.getPatient(patientId);
 
-        assertEquals(PATIENT_NAME, result.getFirstName());
+        assertEquals(patientFirstName, result.getFirstName());
     }
 
 
     @Test
     public void getAdmissionsShouldPassSuccess() {
         // given
-        String ADMISSION1_COMMENT = "admission6-comment";
-        String ADMISSION2_COMMENT = "admission7-comment";
+        int patientId = 6;
+        int admissionsCount = 2;
+        String admissionComment0 = "admission6-comment";
+        String admissionComment1 = "admission7-comment";
 
-        List<AdmissionDto> result = sut.getAdmissions(6);
+        List<AdmissionDto> result = sut.getAdmissions(patientId);
 
         assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertEquals(ADMISSION1_COMMENT, result.get(0).getComment()),
-                () -> assertEquals(ADMISSION2_COMMENT, result.get(1).getComment())
+                () -> assertEquals(admissionsCount, result.size()),
+                () -> assertEquals(admissionComment0, result.get(0).getComment()),
+                () -> assertEquals(admissionComment1, result.get(1).getComment())
         );
     }
 
     @Test
     public void getNotesShouldPassSuccess() {
         // given
-        String NOTE1_DESCRIPTION = "note1-description";
-        String NOTE2_DESCRIPTION = "note6-description";
+        int patientId = 1;
+        int notesCount =2;
+        String noteDescription0 = "note1-description";
+        String noteDescription1 = "note6-description";
 
-        List<NoteDto> result = sut.getNotes(1);
+        List<NoteDto> result = sut.getNotes(patientId);
 
         assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertEquals(NOTE1_DESCRIPTION, result.get(0).getDescription()),
-                () -> assertEquals(NOTE2_DESCRIPTION, result.get(1).getDescription())
+                () -> assertEquals(notesCount, result.size()),
+                () -> assertEquals(noteDescription0, result.get(0).getDescription()),
+                () -> assertEquals(noteDescription1, result.get(1).getDescription())
         );
     }
 }
