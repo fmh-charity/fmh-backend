@@ -56,7 +56,7 @@ public class PatientControllerTest {
                 ()->   assertEquals(given.getFirstName(), result.getFirstName()),
                 ()->   assertEquals(given.getLastName(), result.getLastName()),
                 ()->   assertEquals(given.getMiddleName(), result.getMiddleName()),
-                ()->   assertEquals(given.getBirthday(), result.getBirthday())
+                ()->   assertEquals(given.getBirthDate(), result.getBirthDate())
         );
     }
 

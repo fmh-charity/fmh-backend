@@ -16,7 +16,7 @@ public class PatientToPatientDtoConverter implements Converter<Patient, PatientD
                 .firstName(patient.getFirstName())
                 .middleName(patient.getMiddleName())
                 .lastName(patient.getLastName())
-                .birthday(patient.getBirthDate())
+                .birthDate(patient.getBirthDate())
                 .build();
     }
 }

@@ -33,7 +33,7 @@ public class PatientController {
     }
 
     @ApiOperation(value = "реестр всех пациентов")
-    @GetMapping("/get-all")
+    @GetMapping
     public List<PatientAdmissionDto> getAllPatientsByStatus(
             @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
     ) {
@@ -63,7 +63,6 @@ public class PatientController {
 
     @ApiOperation(value = "возвращает информацию по запискам пациента")
     @GetMapping("/{patientId}/notes")
-//    public List<PatientNoteDto> getNotes(
     public List<NoteDto> getNotes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
