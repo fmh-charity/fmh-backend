@@ -14,6 +14,8 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
         format_sql: true
+  flyway:
+    locations: classpath:db/migration/dev
 server:
   servlet:
     context-path: "/fmh"

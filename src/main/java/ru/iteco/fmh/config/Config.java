@@ -34,7 +34,6 @@ public class Config {
 //        converterSet.add(new DtoToNoteConverter(dtoToPatientConverter));
 //        converterSet.add(new NoteToShortDtoConverter());
 
-
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
 

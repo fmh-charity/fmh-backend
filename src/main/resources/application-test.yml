@@ -4,3 +4,5 @@ spring:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    locations: classpath:db/migration/test
