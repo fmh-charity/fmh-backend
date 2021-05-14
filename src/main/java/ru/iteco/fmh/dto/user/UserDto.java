@@ -2,8 +2,10 @@ package ru.iteco.fmh.dto.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 @ApiModel(description = "информация по пользователю")
 @Builder
 @Data
+@AllArgsConstructor//generates a constructor with 1 parameter for each field in your class
+@NoArgsConstructor
 public class UserDto {
     @ApiModelProperty("id пользователя")
     private Integer id;
@@ -30,6 +34,6 @@ public class UserDto {
     private String eMail;
     @ApiModelProperty("ФИО пользователя, в формате \"Кузнецова Н.П.\"")
     private String userShortName;
-    @ApiModelProperty("роли")
-    private List<String> roles;
+//    @ApiModelProperty("роли")
+//    private List<String> roles;
 }

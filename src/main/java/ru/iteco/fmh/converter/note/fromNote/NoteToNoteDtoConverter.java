@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.note;
+package ru.iteco.fmh.converter.note.fromNote;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
@@ -7,11 +7,11 @@ import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Note;
 
-
-public class NoteToDtoConverter implements Converter<Note, NoteDto> {
+//не х
+public class NoteToNoteDtoConverter implements Converter<Note, NoteDto> {
     private final IPatientToPatientDtoConverter patientToDtoConverter;
 
-    public NoteToDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter) {
+    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter) {
         this.patientToDtoConverter = patientToDtoConverter;
     }
 
