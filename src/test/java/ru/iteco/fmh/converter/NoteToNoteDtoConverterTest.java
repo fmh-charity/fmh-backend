@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.iteco.fmh.converter.note.fromNote.NoteToNoteDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatient.IPatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.Note;
 
@@ -17,7 +18,8 @@ import static ru.iteco.fmh.TestUtils.getPatientDto;
 class NoteToNoteDtoConverterTest {
 
     IPatientToPatientDtoConverter patientToDtoConverter = Mockito.mock(IPatientToPatientDtoConverter.class);
-    NoteToNoteDtoConverter convertor = new NoteToNoteDtoConverter(patientToDtoConverter);
+    IUserToUserDtoConverter userToUserDtoConverter = Mockito.mock(IUserToUserDtoConverter.class);
+    NoteToNoteDtoConverter convertor = new NoteToNoteDtoConverter(patientToDtoConverter,userToUserDtoConverter);
 
     @Test
     void convert() {
@@ -31,7 +33,8 @@ class NoteToNoteDtoConverterTest {
                 () -> assertEquals(note.getDescription(), dto.getDescription()),
                 () -> assertEquals(note.getComment(), dto.getComment()),
                 () -> assertEquals(note.getPlanExecuteTime(), dto.getPlanExecuteTime()),
-                () ->  assertEquals(note.getStatus(),dto.getStatus())
+                () ->  assertEquals(note.getStatus(),dto.getStatus()),
+                () ->  assertEquals(note.getExecutor(),dto.getExecutor())
         );
     }
 }

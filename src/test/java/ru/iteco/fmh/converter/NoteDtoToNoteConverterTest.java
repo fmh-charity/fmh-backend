@@ -14,6 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getNoteDto;
 
+//НЕДОДЕЛАНО
 class NoteDtoToNoteConverterTest {
     IPatientDtoToPatientConverter dtoToPatientConverter = Mockito.mock(IPatientDtoToPatientConverter.class);
     NoteDtoToNoteConverter convert = new NoteDtoToNoteConverter(dtoToPatientConverter);

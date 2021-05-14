@@ -7,7 +7,7 @@ import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
 
-
+//НЕДОДЕЛАНО
 public class NoteDtoToNoteConverter implements Converter<NoteDto, Note> {
 
     private final IPatientDtoToPatientConverter dtoToPatientConverter;
