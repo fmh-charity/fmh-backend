@@ -6,7 +6,7 @@ build-job:
 test-job:
   stage: test
   script:
-    - mvn test -P test, !dev
+    - mvn test -P test,!dev
 
 deploy-prod:
   stage: deploy
