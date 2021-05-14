@@ -1,7 +1,7 @@
 build-job:
   stage: build
   script:
-    - mvn clean install
+    - mvn clean install -P test,!dev
 
 test-job:
   stage: test
