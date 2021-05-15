@@ -76,6 +76,7 @@ public class NoteRepositoryTest {
         repository.delete(entity2);
         userRepository.delete(author);
         userRepository.delete(doer);
+        patientRepository.delete(patient);
     }
 
     private Patient getPatient() {

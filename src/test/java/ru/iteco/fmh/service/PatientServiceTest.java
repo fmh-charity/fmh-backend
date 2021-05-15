@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
@@ -18,6 +19,7 @@ import ru.iteco.fmh.service.patient.PatientService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -89,7 +91,7 @@ public class PatientServiceTest {
         // given
         Patient patient = getPatient();
 
-        when(patientRepository.getOne(any())).thenReturn(patient);
+        when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 
         PatientDto expected = conversionService.convert(patient, PatientDto.class);
         PatientDto result = sut.getPatient(0);

@@ -51,5 +51,7 @@ public class AdmissionRepositoryTest {
         Assertions.assertNotNull(entity.getId());
 
         repository.delete(entity);
+
+        patientRepository.delete(patient);
     }
 }

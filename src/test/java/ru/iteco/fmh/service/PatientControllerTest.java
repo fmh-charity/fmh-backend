@@ -1,13 +1,13 @@
 package ru.iteco.fmh.service;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
+import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
@@ -19,30 +19,34 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
 
-// ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
-// тест метода createPatient добавляет запись в БД, поэтому задается порядок выполнения
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
+// ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 public class PatientControllerTest {
     @Autowired
     PatientController sut;
 
+    @Autowired
+    PatientRepository patientRepository;
+    @Autowired
+    ConversionServiceFactoryBean factoryBean;
 
     @Test
-    public void aGetAllPatientsByStatusTestShouldPassSuccess() {
+    public void getAllPatientsByStatusTestShouldPassSuccess() {
         // given
-        int countExpected = 3;//тут ожидает 5
+        int countExpected = 3;
         int countActive = 2;
         int countDischarged = 1;
-        int countAll = 6;//тут ожидает 8
+        int countAll = 6;
 
         List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name()));
         List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.ACTIVE.name()));
         List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.DISCHARGED.name()));
         List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name(),
                 AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
+
+        resultAll.forEach(System.out::println);
 
         assertAll(
                 () -> assertEquals(countExpected, resultExpected.size()),
@@ -54,7 +58,9 @@ public class PatientControllerTest {
 
     @Test
     public void createOrUpdatePatientShouldPassSuccess() {
+        //given
         PatientDto given = getPatientDto();
+        given.setId(7);
 
         PatientDto result = sut.createPatient(given);
 
@@ -64,8 +70,10 @@ public class PatientControllerTest {
                 () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
                 () -> assertEquals(given.getBirthDate(), result.getBirthDate())
         );
-    }
 
+       // deleting result entity
+        patientRepository.deleteById(result.getId());
+    }
 
     @Test
     public void getPatientShouldPassSuccess() {
@@ -77,7 +85,6 @@ public class PatientControllerTest {
 
         assertEquals(patientFirstName, result.getFirstName());
     }
-
 
     @Test
     public void getAdmissionsShouldPassSuccess() {
