@@ -5,4 +5,4 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
   flyway:
-    locations: classpath:db/migration/test
+    locations: classpath:db/migration/dev, classpath:db/migration/test
