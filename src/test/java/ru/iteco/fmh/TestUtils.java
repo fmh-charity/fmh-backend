@@ -4,6 +4,9 @@ import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.Room;
+import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,7 +65,8 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
+                .currentAdmission(Admission.builder().build())
                 .shortPatientName(getAlphabeticString())
                 .build();
         return patient;
@@ -85,9 +89,23 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .shortPatientName(getAlphabeticString())
                 .build();
         return patientDto;
+    }
+
+    public static Admission getAdmission (){
+        return Admission.builder()
+                .id(Integer.valueOf(getNumeric(1)))
+                .patient(null)
+                .planDateIn(null)
+                .planDateOut(null)
+                .factDateIn(LocalDate.now())
+                .factDateOut(null)
+                .status(AdmissionsStatus.ACTIVE)
+                .room(new Room())
+                .comment(getAlphabeticString())
+                .build();
     }
 }

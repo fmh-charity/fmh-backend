@@ -24,15 +24,15 @@ public class PatientDto {
     @ApiModelProperty("отчество пациента")
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
-    private LocalDate birthday;
+    private LocalDate birthDate;
     @ApiModelProperty("ФИО пациента, в формате \"Кузнецова Н.П.\"")
     private String shortPatientName;
 
 
-    public PatientDto(String firstName, String lastName, String middleName, LocalDate birthday) {
+    public PatientDto(String firstName, String lastName, String middleName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
-        this.birthday = birthday;
+        this.birthDate = birthDate;
     }
 }

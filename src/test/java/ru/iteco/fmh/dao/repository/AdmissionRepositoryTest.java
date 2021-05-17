@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
 
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,12 +33,15 @@ public class AdmissionRepositoryTest {
                 .firstName("first")
                 .middleName("first")
                 .lastName("first")
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .build();
 
         patient = patientRepository.save(patient);
 
         entity = Admission.builder()
+
+                .planDateIn(LocalDate.now())
+
                 .factDateIn(LocalDate.now())
                 .patient(patient)
                 .build();
@@ -47,5 +51,7 @@ public class AdmissionRepositoryTest {
         Assertions.assertNotNull(entity.getId());
 
         repository.delete(entity);
+
+        patientRepository.delete(patient);
     }
 }

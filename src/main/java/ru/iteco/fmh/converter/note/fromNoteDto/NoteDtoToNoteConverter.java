@@ -1,17 +1,18 @@
-package ru.iteco.fmh.converter.dto.fromDto;
+package ru.iteco.fmh.converter.note.fromNoteDto;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
+import ru.iteco.fmh.converter.patient.fromPatientDto.IPatientDtoToPatientConverter;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
 
+//НЕДОДЕЛАНО
+public class NoteDtoToNoteConverter implements Converter<NoteDto, Note> {
 
-public class DtoToNoteConverter implements Converter<NoteDto, Note> {
+    private final IPatientDtoToPatientConverter dtoToPatientConverter;
 
-    private final IDtoToPatientConverter dtoToPatientConverter;
-
-    public DtoToNoteConverter(IDtoToPatientConverter dtoToPatientConverter) {
+    public NoteDtoToNoteConverter(IPatientDtoToPatientConverter dtoToPatientConverter) {
         this.dtoToPatientConverter = dtoToPatientConverter;
     }
 

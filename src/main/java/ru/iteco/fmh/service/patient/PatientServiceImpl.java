@@ -46,7 +46,10 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto getPatient(Integer id) {
-        Patient patient = patientRepository.getOne(id);
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        }
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(patient, PatientDto.class);
     }

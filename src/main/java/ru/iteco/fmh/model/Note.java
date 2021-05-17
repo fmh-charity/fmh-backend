@@ -24,16 +24,18 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    //many note can have one patient
     @ManyToOne
+    @JoinColumn(name = "patient_id")
     Patient patient;
+
     String description;
 
-    //many note can have one user
     @ManyToOne
+    @JoinColumn(name = "creator_id")
     User creator;
-    //many note can have one user
+
     @ManyToOne
+    @JoinColumn(name = "executor_id")
     User executor;
 
     LocalDateTime createDate;

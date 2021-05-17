@@ -1,113 +1,122 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
-import ru.iteco.fmh.dao.repository.AdmissionRepository;
-import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
-import ru.iteco.fmh.service.admission.AdmissionService;
-import ru.iteco.fmh.service.note.NoteService;
-import ru.iteco.fmh.service.patient.PatientService;
-import ru.iteco.fmh.testentity.PatientAdmissionDtoList;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
 
+
+// ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest()
 public class PatientControllerTest {
     @Autowired
-    TestRestTemplate restTemplate;
-
-    @Autowired
-    PatientController patientController;
+    PatientController sut;
 
     @Autowired
     PatientRepository patientRepository;
     @Autowired
-    AdmissionRepository admissionRepository;
-    @Autowired
-    NoteRepository noteRepository;
+    ConversionServiceFactoryBean factoryBean;
 
-    // defined не читается из проперти...
-    @LocalServerPort
-    int randomServerPort;
+    @Test
+    public void getAllPatientsByStatusTestShouldPassSuccess() {
+        // given
+        int countExpected = 3;
+        int countActive = 2;
+        int countDischarged = 1;
+        int countAll = 6;
 
-    @AfterEach
-    public void resetDb() {
-        patientRepository.deleteAll();
-        admissionRepository.deleteAll();
-        noteRepository.deleteAll();
-    }
+        List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name()));
+        List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.ACTIVE.name()));
+        List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.DISCHARGED.name()));
+        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name(),
+                AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
 
-    @BeforeEach
-    public void initDb() {
+        resultAll.forEach(System.out::println);
 
+        assertAll(
+                () -> assertEquals(countExpected, resultExpected.size()),
+                () -> assertEquals(countActive, resultActive.size()),
+                () -> assertEquals(countDischarged, resultDischarged.size()),
+                () -> assertEquals(countAll, resultAll.size())
+        );
     }
 
     @Test
-    public void probeTest() {
-        PatientDto patientDto = new PatientDto();
+    public void createOrUpdatePatientShouldPassSuccess() {
+        //given
+        PatientDto given = getPatientDto();
+        given.setId(7);
 
-        PatientDto patient = patientController.createPatient(patientDto);
-        System.out.println(patient);
+        PatientDto result = sut.createPatient(given);
+
+        assertAll(
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate())
+        );
+
+       // deleting result entity
+        patientRepository.deleteById(result.getId());
     }
 
-//    @Test
-//    public void createPatientShouldPassSuccess() {
-//        // given
-//        PatientDto given = getPatientDto();
-//
-//        PatientDto result = restTemplate.postForObject(getUri("/create"), given, PatientDto.class);
-//
-//        assertEquals(given,result);
-//    }
-//
-//    @Test
-//    public void getAllPatientsByStatusShouldPassSuccess() {
-//       // given
-//        List<String> given = List.of(AdmissionsStatus.EXPECTED.name(), AdmissionsStatus.DISCHARGED.name());
-//
-//        PatientAdmissionDtoList resultWrapper = restTemplate.getForObject(getUri("/getAll"), PatientAdmissionDtoList.class, given);
-//
-//        List<PatientAdmissionDto> result = resultWrapper.getPatientAdmissionDtoList();
-//
-//        // TODO:
-//        int expectedAdmissionsCount = 0;
-//
-//        assertEquals(expectedAdmissionsCount, result.size());
-//    }
+    @Test
+    public void getPatientShouldPassSuccess() {
+        // given
+        int patientId = 1;
+        String patientFirstName = "Patient1-firstname";
 
+        PatientDto result = sut.getPatient(patientId);
 
-    private String getUri(String endpoint) {
-        return "http://localhost:" + randomServerPort + "/fmh/patient" + endpoint;
+        assertEquals(patientFirstName, result.getFirstName());
     }
 
+    @Test
+    public void getAdmissionsShouldPassSuccess() {
+        // given
+        int patientId = 6;
+        int admissionsCount = 2;
+        String admissionComment0 = "admission6-comment";
+        String admissionComment1 = "admission7-comment";
 
-//    @ApiOperation(value = "реестр всех пациентов с учетом пагинации")
-//    @GetMapping
-//    public List<PatientAdmissionDto> getAllPatientsByStatus(
-//            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
-//            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
-//            @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
-//    ) {
-//        return patientService.getAllPatientsByStatus(patientsStatusList);
-//    }
+        List<AdmissionDto> result = sut.getAdmissions(patientId);
 
+        assertAll(
+                () -> assertEquals(admissionsCount, result.size()),
+                () -> assertEquals(admissionComment0, result.get(0).getComment()),
+                () -> assertEquals(admissionComment1, result.get(1).getComment())
+        );
+    }
+
+    @Test
+    public void getNotesShouldPassSuccess() {
+        // given
+        int patientId = 1;
+        int notesCount =2;
+        String noteDescription0 = "note1-description";
+        String noteDescription1 = "note6-description";
+
+        List<NoteDto> result = sut.getNotes(patientId);
+
+        assertAll(
+                () -> assertEquals(notesCount, result.size()),
+                () -> assertEquals(noteDescription0, result.get(0).getDescription()),
+                () -> assertEquals(noteDescription1, result.get(1).getDescription())
+        );
+    }
 }

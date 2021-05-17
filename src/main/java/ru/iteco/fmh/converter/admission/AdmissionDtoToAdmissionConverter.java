@@ -1,8 +1,11 @@
 package ru.iteco.fmh.converter.admission;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.IPatientDtoToPatientConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
 /**
@@ -10,7 +13,7 @@ import ru.iteco.fmh.model.admission.Admission;
  */
 public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto, Admission> {
 
-    private IPatientDtoToPatientConverter patientConverter;
+    private final IPatientDtoToPatientConverter patientConverter;
 
     public AdmissionDtoToAdmissionConverter(IPatientDtoToPatientConverter patientConverter) {
         this.patientConverter = patientConverter;
@@ -18,14 +21,11 @@ public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto,
 
     @Override
     public Admission convert(AdmissionDto admissionDto) {
-        return Admission.builder()
-                .id(admissionDto.getId())
-                .patient(patientConverter.convert(admissionDto.getPatient()))
-                .planDateIn(admissionDto.getPlanDateIn())
-                .planDateOut(admissionDto.getPlanDateOut())
-                .factDateIn(admissionDto.getFactDateIn())
-                .factDateOut(admissionDto.getFactDateOut())
-                .comment(admissionDto.getComment())
-                .build();
+        Admission admission = new Admission();
+        BeanUtils.copyProperties(admissionDto, admission);
+        Patient patient = patientConverter.convert(admissionDto.getPatient());
+        admission.setPatient(patient);
+        return admission;
     }
+
 }

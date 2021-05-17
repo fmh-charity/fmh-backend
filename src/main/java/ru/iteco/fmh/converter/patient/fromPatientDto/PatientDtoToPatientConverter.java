@@ -1,5 +1,6 @@
 package ru.iteco.fmh.converter.patient.fromPatientDto;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
@@ -10,13 +11,9 @@ import ru.iteco.fmh.model.Patient;
 public class PatientDtoToPatientConverter implements Converter<PatientDto, Patient>, IPatientDtoToPatientConverter {
 
     @Override
-    public Patient convert(PatientDto patientDto) {
-        return Patient.builder()
-                .id(patientDto.getId())
-                .firstName(patientDto.getFirstName())
-                .middleName(patientDto.getMiddleName())
-                .lastName(patientDto.getLastName())
-                .birthday(patientDto.getBirthday())
-                .build();
+    public Patient convert(PatientDto dto) {
+        Patient entity = new Patient();
+        BeanUtils.copyProperties(dto, entity);
+        return entity;
     }
 }

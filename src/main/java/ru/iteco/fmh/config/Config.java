@@ -6,15 +6,12 @@ import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.converter.admission.AdmissionDtoToAdmissionConverter;
 import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
-import ru.iteco.fmh.converter.dto.fromDto.DtoToNoteConverter;
-import ru.iteco.fmh.converter.dto.fromDto.DtoToPatientConverter;
-import ru.iteco.fmh.converter.note.NoteToDtoConverter;
-import ru.iteco.fmh.converter.note.NoteToShortDtoConverter;
-import ru.iteco.fmh.converter.patient.fromPatient.PatientToDtoConverter;
+
+import ru.iteco.fmh.converter.note.fromNote.NoteToNoteDtoConverter;
+import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientAdmissionDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
-import ru.iteco.fmh.converter.patient.fromPatientDto.PatientToPatientAdmissionDtoConverter;
-import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,27 +22,23 @@ public class Config {
     public ConversionServiceFactoryBean conversionServiceFactoryBean() {
         ConversionServiceFactoryBean factoryBean = new ConversionServiceFactoryBean();
         Set<Converter> converterSet = new HashSet<>();
-        DtoToPatientConverter dtoToPatientConverter = new DtoToPatientConverter();
-        converterSet.add(dtoToPatientConverter);
-        converterSet.add(new PatientToDtoConverter());
-        converterSet.add(new NoteToDtoConverter(new PatientToDtoConverter()));
-        converterSet.add(new DtoToNoteConverter(dtoToPatientConverter));
-        converterSet.add(new NoteToShortDtoConverter());
         PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
         PatientDtoToPatientConverter patientDtoToPatientConverter = new PatientDtoToPatientConverter();
+
         converterSet.add(patientToPatientDtoConverter);
         converterSet.add(patientDtoToPatientConverter);
+        converterSet.add(new PatientToPatientAdmissionDtoConverter());
+
+        converterSet.add(new UserToUserDtoConverter());
+        converterSet.add(new NoteToNoteDtoConverter(new PatientToPatientDtoConverter(),new UserToUserDtoConverter()));
+//        converterSet.add(new DtoToNoteConverter(dtoToPatientConverter));
+//        converterSet.add(new NoteToShortDtoConverter());
+
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
 
-        // УДАЛИТЬ!
-//        Admission admission = new Admission();
-//        converterSet.add(new PatientToPatientAdmissionDtoConverter(admission));
-
-        converterSet.add(new PatientToPatientAdmissionDtoConverter());
 
         factoryBean.setConverters(converterSet);
-
         return factoryBean;
     }
 }

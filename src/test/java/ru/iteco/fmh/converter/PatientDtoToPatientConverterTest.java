@@ -2,15 +2,15 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.dto.fromDto.DtoToPatientConverter;
+import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getPatientDto;
 
-class DtoToPatientConverterTest {
-    DtoToPatientConverter dto = new DtoToPatientConverter();
+class PatientDtoToPatientConverterTest {
+    PatientDtoToPatientConverter dto = new  PatientDtoToPatientConverter();
 
     @Test
     void convert() {
@@ -23,7 +23,7 @@ class DtoToPatientConverterTest {
                 () -> assertEquals(patientDto.getFirstName(), patient.getFirstName()),
                 () -> assertEquals(patientDto.getLastName(), patient.getLastName()),
                 () -> assertEquals(patientDto.getMiddleName(), patient.getMiddleName()),
-                () -> assertEquals(patientDto.getBirthday(), patient.getBirthday()),
+                () -> assertEquals(patientDto.getBirthDate(), patient.getBirthDate()),
                 () -> assertEquals(patientDto.getShortPatientName(), patient.getShortPatientName())
         );
     }

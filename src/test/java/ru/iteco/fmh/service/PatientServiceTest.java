@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
@@ -18,6 +19,7 @@ import ru.iteco.fmh.service.patient.PatientService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,11 +42,12 @@ public class PatientServiceTest {
         when(patientRepository.findAll()).thenReturn(getPatientList());
 
         // given
-        List<String> statusListAll = List.of("DISCHARGED", "ACTIVE", "EXPECTED");
-        List<String> statusListDISCHARGED = List.of("DISCHARGED");
-        List<String> statusListACTIVE = List.of("ACTIVE");
-        List<String> statusListEXPECTED = List.of("EXPECTED");
-        List<String> statusListMIXED = List.of("DISCHARGED", "EXPECTED");
+        List<String> statusListAll = List.of(AdmissionsStatus.EXPECTED.name(),
+                AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name());
+        List<String> statusListDISCHARGED = List.of(AdmissionsStatus.DISCHARGED.name());
+        List<String> statusListACTIVE = List.of(AdmissionsStatus.ACTIVE.name());
+        List<String> statusListEXPECTED = List.of(AdmissionsStatus.EXPECTED.name());
+        List<String> statusListMIXED = List.of(AdmissionsStatus.EXPECTED.name(), AdmissionsStatus.DISCHARGED.name());
         List<String> statusListEmpty = List.of();
 
         // result
@@ -88,7 +91,7 @@ public class PatientServiceTest {
         // given
         Patient patient = getPatient();
 
-        when(patientRepository.getOne(any())).thenReturn(patient);
+        when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 
         PatientDto expected = conversionService.convert(patient, PatientDto.class);
         PatientDto result = sut.getPatient(0);
@@ -111,7 +114,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
@@ -121,14 +124,14 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();
     }
 
     private Admission getAdmission(AdmissionsStatus admissionsStatus) {
         return Admission.builder()
-                .admissionsStatus(admissionsStatus)
+                .status(admissionsStatus)
                 .build();
     }
 }

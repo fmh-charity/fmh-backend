@@ -26,16 +26,14 @@ public class PatientController {
     private final AdmissionService admissionService;
     private final NoteService noteService;
 
-
     public PatientController(PatientService patientService, AdmissionService admissionService, NoteService noteService) {
         this.patientService = patientService;
         this.admissionService = admissionService;
         this.noteService = noteService;
     }
 
-
     @ApiOperation(value = "реестр всех пациентов")
-    @GetMapping("/getAll")
+    @GetMapping
     public List<PatientAdmissionDto> getAllPatientsByStatus(
             @ApiParam(value = "список статусов для отображения") @RequestParam("patients_status_list") List<String> patientsStatusList
     ) {
@@ -64,8 +62,7 @@ public class PatientController {
     }
 
     @ApiOperation(value = "возвращает информацию по запискам пациента")
-    @GetMapping("/{patientId}/note")
-//    public List<PatientNoteDto> getNotes(
+    @GetMapping("/{patientId}/notes")
     public List<NoteDto> getNotes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {

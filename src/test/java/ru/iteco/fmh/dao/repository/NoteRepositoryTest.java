@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.LocalDate;
@@ -48,6 +49,7 @@ public class NoteRepositoryTest {
                 .creator(author)
                 .executor(doer)
                 .createDate(LocalDateTime.now())
+                .status(StatusE.active)
                 .comment(getAlphabeticString())
                 .build();
 
@@ -59,6 +61,7 @@ public class NoteRepositoryTest {
                 .creator(author)
                 .executor(doer)
                 .createDate(LocalDateTime.now())
+                .status(StatusE.active)
                 .comment(getAlphabeticString())
                 .build();
 
@@ -73,6 +76,7 @@ public class NoteRepositoryTest {
         repository.delete(entity2);
         userRepository.delete(author);
         userRepository.delete(doer);
+        patientRepository.delete(patient);
     }
 
     private Patient getPatient() {
@@ -80,7 +84,7 @@ public class NoteRepositoryTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthday(LocalDate.now())
+                .birthDate(LocalDate.now())
                 .build();
     }
 
