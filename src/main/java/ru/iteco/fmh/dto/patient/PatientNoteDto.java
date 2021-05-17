@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-
+//непонятный класс.если не пригодиться - delete
 @ApiModel(description = "записка по пациенту")
 @Builder
 @Data

@@ -76,7 +76,7 @@ public class TestUtils {
         NoteDto noteDto = NoteDto.builder()
                 .patient(new PatientDto())
                 .description(getAlphabeticString())
-                .planExecuteTime(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
                 .executor(null)
                 .comment(getAlphabeticString())
                 .build();

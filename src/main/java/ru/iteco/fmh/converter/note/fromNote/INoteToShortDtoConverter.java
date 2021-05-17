@@ -1,6 +1,6 @@
-//package ru.iteco.fmh.converter.note.fromNote;
-//
-//public interface INoteToShortDtoConverter {
-//}
+package ru.iteco.fmh.converter.note.fromNote;
+
+public interface INoteToShortDtoConverter {
+}
 
 
