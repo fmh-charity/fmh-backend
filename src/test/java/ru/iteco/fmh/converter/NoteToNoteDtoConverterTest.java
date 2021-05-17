@@ -32,7 +32,7 @@ class NoteToNoteDtoConverterTest {
                 () -> assertEquals(note.getId(), dto.getId()),
                 () -> assertEquals(note.getDescription(), dto.getDescription()),
                 () -> assertEquals(note.getComment(), dto.getComment()),
-                () -> assertEquals(note.getPlanExecuteTime(), dto.getPlanExecuteTime()),
+                () -> assertEquals(note.getPlanExecuteTime(), dto.getPlanExecuteDate()),
                 () ->  assertEquals(note.getStatus(),dto.getStatus()),
                 () ->  assertEquals(note.getExecutor(),dto.getExecutor())
         );

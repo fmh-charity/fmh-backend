@@ -28,7 +28,7 @@ class NoteDtoToNoteConverterTest {
 
         Assertions.assertAll(
                 () -> assertEquals(noteDto.getDescription(), note.getDescription()),
-                () -> assertEquals(noteDto.getPlanExecuteTime(), note.getPlanExecuteTime()),
+                () -> assertEquals(noteDto.getPlanExecuteDate(), note.getPlanExecuteTime()),
                 () -> assertEquals(noteDto.getComment(), note.getComment())
         );
     }

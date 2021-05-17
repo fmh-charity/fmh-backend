@@ -26,10 +26,12 @@ public class NoteDto {
     private String description;
     @ApiModelProperty("идентификатор исполнителя")
     private UserDto executor;
-    @ApiModelProperty("плановое время исполнения")
-    private LocalDateTime planExecuteTime;
+    @ApiModelProperty("дата создания")
+    private LocalDateTime createDate;
+    @ApiModelProperty("плановая дата исполнения")
+    private LocalDateTime planExecuteDate;
     @ApiModelProperty("фактическое время исполнения")
-    private LocalDateTime factExecuteTime;
+    private LocalDateTime factExecuteDate;
     @ApiModelProperty("статус записки")
     private StatusE status;
     @ApiModelProperty("комментарий к записке")
