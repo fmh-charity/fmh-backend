@@ -1,12 +1,12 @@
 build-job:
-  stage: build
+  stage: build-dev
   script:
     - mvn clean install -P dev
 
 test-job:
-  stage: test
+  stage: build-test
   script:
-    - mvn test -P test
+    - mvn clean install -P test
 
 deploy-prod:
   stage: deploy
