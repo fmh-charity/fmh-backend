@@ -11,8 +11,6 @@ import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
 
-import static ru.iteco.fmh.TestUtils.getAlphabeticStringR;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PatientRepositoryTest {

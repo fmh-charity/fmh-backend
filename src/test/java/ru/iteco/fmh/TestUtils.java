@@ -18,10 +18,10 @@ import java.util.Random;
 public class TestUtils {
 
     public static String getAlphabeticStringR() {
-        return getAlphabeticStringR(10);
+        return getAlphabeticString(10);
     }
 
-    public static String getAlphabeticStringR(int targetStringLength) {
+    public static String getAlphabeticString(int targetStringLength) {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         Random random = new Random();
