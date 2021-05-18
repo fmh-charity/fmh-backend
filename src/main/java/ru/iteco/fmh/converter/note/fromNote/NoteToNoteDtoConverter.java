@@ -14,7 +14,8 @@ public class NoteToNoteDtoConverter implements Converter<Note, NoteDto> {
     private final IPatientToPatientDtoConverter patientToDtoConverter;
     private final IUserToUserDtoConverter userToUserDtoConverter;
 
-    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,IUserToUserDtoConverter userToUserDtoConverter) {
+    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,
+                                  IUserToUserDtoConverter userToUserDtoConverter) {
         this.patientToDtoConverter = patientToDtoConverter;
         this.userToUserDtoConverter = userToUserDtoConverter;
     }

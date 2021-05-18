@@ -24,6 +24,8 @@ public class NoteDto {
     private PatientDto patient;
     @ApiModelProperty("описание записки")
     private String description;
+    @ApiModelProperty("идентификатор создателя")
+    private UserDto creator;
     @ApiModelProperty("идентификатор исполнителя")
     private UserDto executor;
     @ApiModelProperty("дата создания")
