@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.StatusE;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertNotNull;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
+import static ru.iteco.fmh.TestUtils.getAlphabeticStringR;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,25 +45,27 @@ public class NoteRepositoryTest {
         doer = getUser();
         userRepository.save(doer);
         entity = Note.builder()
-                .description(getAlphabeticString())
+                .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
                 .createDate(LocalDateTime.now())
+//                .factExecuteDate(LocalDateTime.now())
+//                .planExecuteDate(null)
                 .status(StatusE.active)
-                .comment(getAlphabeticString())
+                .comment(TestUtils.getAlphabeticStringR())
                 .build();
 
         entity = repository.save(entity);
 
         entity2 = Note.builder()
-                .description(getAlphabeticString())
+                .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
                 .createDate(LocalDateTime.now())
                 .status(StatusE.active)
-                .comment(getAlphabeticString())
+                .comment(TestUtils.getAlphabeticStringR())
                 .build();
 
         entity2 = repository.save(entity2);
@@ -81,18 +84,18 @@ public class NoteRepositoryTest {
 
     private Patient getPatient() {
         return Patient.builder()
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
+                .firstName(TestUtils.getAlphabeticStringR())
+                .lastName(TestUtils.getAlphabeticStringR())
+                .middleName(TestUtils.getAlphabeticStringR())
                 .birthDate(LocalDate.now())
                 .build();
     }
 
     private User getUser() {
         return User.builder()
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
+                .firstName(TestUtils.getAlphabeticStringR())
+                .lastName(TestUtils.getAlphabeticStringR())
+                .middleName(TestUtils.getAlphabeticStringR())
                 .build();
     }
 }

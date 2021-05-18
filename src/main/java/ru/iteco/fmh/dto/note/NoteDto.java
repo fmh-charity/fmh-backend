@@ -30,7 +30,7 @@ public class NoteDto {
     private LocalDateTime createDate;
     @ApiModelProperty("плановая дата исполнения")
     private LocalDateTime planExecuteDate;
-    @ApiModelProperty("фактическое время исполнения")
+    @ApiModelProperty("фактическая дата исполнения")
     private LocalDateTime factExecuteDate;
     @ApiModelProperty("статус записки")
     private StatusE status;

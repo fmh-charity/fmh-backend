@@ -35,11 +35,7 @@ public class User {
     String email;
     boolean deleted;
 
-    @Formula(
-            "CONCAT_WS(' ', first_name ," +
-                    "CONCAT_WS('.', SUBSTRING(UPPER(middle_name),1,1), " +
-                    "SUBSTRING(UPPER(last_name),1,1) )" +
-                    ")")
+    @Formula("CONCAT_WS(' ', last_name ," + "CONCAT_WS('.', SUBSTRING(UPPER(first_name),1,1), " + "SUBSTRING(UPPER(middle_name),1,1) )" + ")")
     String shortUserName;
 
 

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
@@ -111,9 +110,9 @@ public class PatientServiceTest {
     private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
+                .firstName(getAlphabeticStringR())
+                .lastName(getAlphabeticStringR())
+                .middleName(getAlphabeticStringR())
                 .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
@@ -121,9 +120,9 @@ public class PatientServiceTest {
 
     private Patient getEmptyAdmissionPatient() {
         return Patient.builder()
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
+                .firstName(getAlphabeticStringR())
+                .lastName(getAlphabeticStringR())
+                .middleName(getAlphabeticStringR())
                 .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();
