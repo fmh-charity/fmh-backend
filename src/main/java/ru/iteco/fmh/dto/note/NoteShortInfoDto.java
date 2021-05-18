@@ -19,9 +19,9 @@ public class NoteShortInfoDto {
     @ApiModelProperty("идентификатор записки")
     private Integer id;
     @ApiModelProperty("плановое время выполнения")
-    private LocalDateTime planExecuteTime;
+    private LocalDateTime planExecuteDate;
     @ApiModelProperty("фактическое время выполнения")
-    private LocalDateTime factExecuteTime;
+    private LocalDateTime factExecuteDate;
     @ApiModelProperty("ФИО пациента, в формате \"Кузнецова Н.П.\"")
     private String shortPatientName;
     @ApiModelProperty("исполнитель, в формате \"Кузнецова Н.П.\"")

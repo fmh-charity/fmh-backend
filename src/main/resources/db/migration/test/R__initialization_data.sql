@@ -47,8 +47,8 @@ values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lasttname', '
        ('user4-login', 'user4-password', 'user4-firstname', 'user4-lasttname', 'user4-middletname', 'user4-phonenumber', 'user2-email', false),
        ('user5-login', 'user5-password', 'user5-firstname', 'user5-lasttname', 'user5-middletname', 'user5-phonenumber', 'user5-email', false);
 
-insert into note (patient_id, description, creator_id, executor_id, create_date, plan_execute_time,
-                  fact_execute_time, status, comment, deleted)
+insert into note (patient_id, description, creator_id, executor_id, create_date, plan_execute_date,
+                  fact_execute_date, status, comment, deleted)
 values (1, 'note1-description', 1, 1, now(), now(), now(), 'active', 'note1-comment', false),
        (2, 'note2-description', 2, 2, now(), now(), now(), 'active', 'note2-comment', false),
        (3, 'note3-description', 3, 3, now(), now(), now(), 'active', 'note3-comment', false),

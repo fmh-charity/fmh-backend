@@ -52,8 +52,8 @@ public class TestUtils {
                 .executor(null)
                 .description(getAlphabeticString())
                 .createDate(LocalDateTime.now())
-                .planExecuteTime(LocalDateTime.now())
-                .factExecuteTime(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(LocalDateTime.now())
                 .comment(getAlphabeticString())
                 .build();
         return note;
