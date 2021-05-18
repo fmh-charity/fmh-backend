@@ -106,8 +106,8 @@ create table note
     creator_id        int     not null,
     executor_id       int,
     create_date       timestamp,
-    plan_execute_time timestamp,
-    fact_execute_time timestamp,
+    plan_execute_date timestamp,
+    fact_execute_date timestamp,
     status            varchar not null,
     comment           varchar,
     deleted           boolean
@@ -119,8 +119,8 @@ comment on column note.description is 'описание';
 comment on column note.creator_id is 'id автора';
 comment on column note.executor_id is 'id исполнителя';
 comment on column note.create_date is 'дата создания';
-comment on column note.plan_execute_time is 'плановое время исполнения';
-comment on column note.fact_execute_time is 'фактическое время исполнения';
+comment on column note.plan_execute_date is 'плановое время исполнения';
+comment on column note.fact_execute_date is 'фактическое время исполнения';
 comment on column note.status is 'статус';
 comment on column note.comment is 'комментарий';
 comment on column note.deleted is 'флаг удаления';

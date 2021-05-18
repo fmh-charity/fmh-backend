@@ -18,14 +18,16 @@ import java.time.LocalDateTime;
 public class NoteShortInfoDto {
     @ApiModelProperty("идентификатор записки")
     private Integer id;
-    @ApiModelProperty("плановое время выполнения")
-    private LocalDateTime planExecuteTime;
-    @ApiModelProperty("фактическое время выполнения")
-    private LocalDateTime factExecuteTime;
+    @ApiModelProperty("плановая дата исполнения")
+    private LocalDateTime planExecuteDate;
+    @ApiModelProperty("фактическая дата исполнения")
+    private LocalDateTime factExecuteDate;
     @ApiModelProperty("ФИО пациента, в формате \"Кузнецова Н.П.\"")
     private String shortPatientName;
     @ApiModelProperty("исполнитель, в формате \"Кузнецова Н.П.\"")
     private String shortExecutorName;
     @ApiModelProperty("статус записки")
     private StatusE status;
+    @ApiModelProperty("описание записки")
+    private String description;
 }

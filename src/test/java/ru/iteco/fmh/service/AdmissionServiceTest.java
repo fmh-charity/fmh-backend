@@ -82,7 +82,7 @@ public class AdmissionServiceTest {
     private Admission getAdmission() {
         return Admission.builder()
                 .patient(Patient.builder().build())
-                .comment(getAlphabeticString())
+                .comment(getAlphabeticStringR())
                 .id(Integer.valueOf(getNumeric(2)))
                 .factDateIn(LocalDate.now())
                 .factDateOut(LocalDate.now())

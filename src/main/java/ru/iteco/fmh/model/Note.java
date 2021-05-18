@@ -39,8 +39,8 @@ public class Note {
     User executor;
 
     LocalDateTime createDate;
-    LocalDateTime planExecuteTime;
-    LocalDateTime factExecuteTime;
+    LocalDateTime planExecuteDate;
+    LocalDateTime factExecuteDate;
 
     @Enumerated(EnumType.STRING)
     StatusE status;
