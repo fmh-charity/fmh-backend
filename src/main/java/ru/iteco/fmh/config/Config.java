@@ -8,10 +8,13 @@ import ru.iteco.fmh.converter.admission.AdmissionDtoToAdmissionConverter;
 import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
 
 import ru.iteco.fmh.converter.note.fromNote.NoteToNoteDtoConverter;
+import ru.iteco.fmh.converter.note.fromNote.NoteToShortDtoConverter;
+import ru.iteco.fmh.converter.note.fromNoteDto.NoteDtoToNoteConverter;
 import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientAdmissionDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
 import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,8 +34,8 @@ public class Config {
 
         converterSet.add(new UserToUserDtoConverter());
         converterSet.add(new NoteToNoteDtoConverter(new PatientToPatientDtoConverter(),new UserToUserDtoConverter()));
-//        converterSet.add(new DtoToNoteConverter(dtoToPatientConverter));
-//        converterSet.add(new NoteToShortDtoConverter());
+        converterSet.add(new NoteDtoToNoteConverter(patientDtoToPatientConverter,new UserDtoToUserConverter()));
+        converterSet.add(new NoteToShortDtoConverter());
 
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));

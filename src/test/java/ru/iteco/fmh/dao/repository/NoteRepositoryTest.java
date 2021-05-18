@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertNotNull;
-import static ru.iteco.fmh.TestUtils.getAlphabeticStringR;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

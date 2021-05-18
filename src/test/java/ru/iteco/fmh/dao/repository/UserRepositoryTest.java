@@ -9,8 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.user.User;
 
-import static ru.iteco.fmh.TestUtils.getAlphabeticStringR;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserRepositoryTest {
