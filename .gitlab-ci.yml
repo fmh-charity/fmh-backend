@@ -1,8 +1,5 @@
 image: docker:latest, maven:3-jdk-11
 
-services:
-  - docker:dind
-
 variables:
   # Instruct Testcontainers to use the daemon of DinD.
   DOCKER_HOST: "tcp://docker:2375"
@@ -11,8 +8,14 @@ variables:
   # Improve performance with overlayfs.
   DOCKER_DRIVER: overlay2
 
+services:
+  - docker:dind
+
 build-job:
   stage: build
+  image: maven:3.6.3-openjdk-11
+  services:
+   - docker:dind
   script:
     - mvn clean install -P test
 
