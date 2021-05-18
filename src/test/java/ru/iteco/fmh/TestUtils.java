@@ -6,6 +6,7 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
+import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.user.User;
@@ -118,10 +119,14 @@ public class TestUtils {
     public static NoteDto getNoteDto() {
 
         return NoteDto.builder()
-                .patient(new PatientDto())
+                .patient(getPatientDto())
                 .description(getAlphabeticStringR())
                 .planExecuteDate(LocalDateTime.now())
-                .executor(null)
+                .createDate(LocalDateTime.now())
+                .factExecuteDate(null)
+                .executor(getUserDto())
+                .creator(getUserDto())
+                .status(StatusE.active)
                 .comment(getAlphabeticStringR())
                 .build();
     }
