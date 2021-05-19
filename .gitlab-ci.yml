@@ -11,7 +11,7 @@ services:
 
 build-job:
   stage: build
-  image: maven:3-jdk-11
+  image: docker, maven:3-jdk-11
   services:
    - docker:dind
   script:
