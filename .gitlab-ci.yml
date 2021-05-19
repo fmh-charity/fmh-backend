@@ -1,5 +1,3 @@
-image: docker:latest
-
 variables:
   # Instruct Testcontainers to use the daemon of DinD.
   DOCKER_HOST: "tcp://docker:2375"
@@ -13,7 +11,7 @@ services:
 
 build-job:
   stage: build
-  image: docker:latest
+  image: maven:3-jdk-11
   services:
    - docker:dind
   script:
