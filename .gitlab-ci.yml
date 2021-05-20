@@ -18,12 +18,6 @@ build-job:
 
 test-job:
   stage: test
-  image: maven:3-jdk-11
-  services:
-   - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375/
   script:
     - mvn test -P test
 
