@@ -9,6 +9,9 @@ import java.util.List;
  * сервис для работы с записками
  */
 public interface NoteService {
+    /**
+     * возвращает список всех записок co статусом active
+     */
     List<NoteShortInfoDto> getAllNotes();
 
     NoteDto getNote(Integer id);

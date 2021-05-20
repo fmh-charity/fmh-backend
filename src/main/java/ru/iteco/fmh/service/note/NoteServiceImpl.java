@@ -1,7 +1,9 @@
 package ru.iteco.fmh.service.note;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
@@ -10,6 +12,7 @@ import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,16 +20,17 @@ import java.util.stream.Collectors;
 @Service
 public class NoteServiceImpl implements NoteService {
 
-    private NoteRepository noteRepository;
-    private ConversionServiceFactoryBean factoryBean;
+    private final NoteRepository noteRepository;
+    private final ConversionServiceFactoryBean factoryBean;
 
+    @Autowired
     public NoteServiceImpl(NoteRepository noteRepository, ConversionServiceFactoryBean factoryBean) {
         this.noteRepository = noteRepository;
         this.factoryBean = factoryBean;
     }
-
+    @Override
     public List<NoteShortInfoDto> getAllNotes() {
-        List<Note> list = noteRepository.findAll();
+        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDateAsc(StatusE.active);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))

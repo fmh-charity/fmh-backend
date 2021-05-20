@@ -15,9 +15,7 @@ import ru.iteco.fmh.service.patient.PatientService;
 
 import java.util.List;
 
-/**
- * Информация по пациенту
- */
+
 @Api(description = "Информация по пациенту")
 @RestController
 @RequestMapping("/patient")
