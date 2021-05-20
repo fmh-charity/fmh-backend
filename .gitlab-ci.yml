@@ -1,4 +1,4 @@
-image: docker
+image: maven:3-jdk-11
 
 variables:
   # Instruct Testcontainers to use the daemon of DinD.
@@ -13,12 +13,6 @@ services:
 
 build-job:
   stage: build
-  image: maven:3-jdk-11
-  services:
-   - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay2
-    DOCKER_HOST: tcp://docker:2375/
   script:
     - mvn clean install -P test
 
