@@ -1,3 +1,5 @@
+image: docker
+
 variables:
   # Instruct Testcontainers to use the daemon of DinD.
   DOCKER_HOST: "tcp://docker:2375"
