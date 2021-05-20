@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
+import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;
@@ -45,8 +46,6 @@ public class PatientControllerTest {
         List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.DISCHARGED.name()));
         List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name(),
                 AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
-
-        resultAll.forEach(System.out::println);
 
         assertAll(
                 () -> assertEquals(countExpected, resultExpected.size()),
@@ -111,12 +110,13 @@ public class PatientControllerTest {
         String noteDescription0 = "note1-description";
         String noteDescription1 = "note6-description";
 
-        List<NoteDto> result = sut.getNotes(patientId);
+        List<NoteDto> notes = sut.getNotes(patientId);
+        List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
 
         assertAll(
-                () -> assertEquals(notesCount, result.size()),
-                () -> assertEquals(noteDescription0, result.get(0).getDescription()),
-                () -> assertEquals(noteDescription1, result.get(1).getDescription())
+                () -> assertEquals(notesCount, notes.size()),
+                () -> assertTrue(result.contains(noteDescription0)),
+                () -> assertTrue(result.contains(noteDescription1))
         );
     }
 }

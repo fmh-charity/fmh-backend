@@ -55,4 +55,13 @@ public class NoteController {
     ) {
         return noteService.createNote(noteDto);
     }
+
+    @ApiOperation(value = "формирование комментария по запискам")
+    @PostMapping("/comment/{noteId}")
+    public NoteDto addComment(
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") Integer noteId,
+            @RequestBody String comment
+    )  {
+        return noteService.addComment(noteId, comment);
+    }
 }

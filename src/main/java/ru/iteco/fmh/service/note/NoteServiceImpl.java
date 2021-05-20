@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.note;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
@@ -56,5 +57,26 @@ public class NoteServiceImpl implements NoteService {
         return noteRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, StatusE.active).stream()
                 .map(note -> conversionService.convert(note, NoteDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public NoteDto addComment(Integer noteId, String comment) {
+        Optional<Note> optionalNote = noteRepository.findById(noteId);
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+
+            if (!note.getComment().isEmpty()) {
+                note.setComment(note.getComment().concat(", ").concat(comment));
+            } else {
+                note.setComment(comment);
+            }
+
+//            noteRepository.save(note);
+            ConversionService conversionService = factoryBean.getObject();
+            return conversionService.convert(note, NoteDto.class);
+        } else {
+            return null;
+        }
     }
 }

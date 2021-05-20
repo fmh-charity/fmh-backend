@@ -21,4 +21,12 @@ public interface NoteService {
      * @return список всех активных записок с полной инфой по пациенту
      */
     List<NoteDto> getPatientNotes(Integer patientId);
+
+    /**
+     * добавляет комментарий в записку и возвращает записку
+     * @param noteId ид записки
+     * @param comment комментарий для записки
+     * @return записку с добавленным комментарием
+     */
+    NoteDto addComment(Integer noteId, String comment);
 }
