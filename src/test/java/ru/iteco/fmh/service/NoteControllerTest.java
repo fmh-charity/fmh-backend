@@ -9,6 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NoteController;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -34,5 +38,14 @@ public class NoteControllerTest {
         NoteDto noteDto = sut.addComment(noteId, givenComment);
 
         assertEquals(expected, noteDto.getComment());
+    }
+
+    @Test
+    public void getAllActiveNotesSort() {
+
+        List<NoteShortInfoDto> noteShortInfoDtoList = sut.getAllNotes();
+        assertEquals(5, noteShortInfoDtoList.size());
+        assertTrue(noteShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
+                (noteShortInfoDtoList.get(2).getPlanExecuteDate()));
     }
 }

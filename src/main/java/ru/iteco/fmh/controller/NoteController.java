@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.service.note.NoteService;
 
 import java.util.List;
@@ -15,22 +16,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/note")
 public class NoteController {
-    private NoteService noteService;
+    private final NoteService noteService;
 
     @Autowired
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
-    @ApiOperation(value = "реестр всех записок с учетом пагинации")
+    @ApiOperation(value = "реестр всех записок со статусом active")
     @GetMapping
-    public List<NoteShortInfoDto> getAllNotes(
-            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
-            @ApiParam(value = "показывать только активные записки") @RequestParam("show_active") Boolean showActive
-    ) {
+    public List<NoteShortInfoDto> getAllNotes() {
         return noteService.getAllNotes();
     }
+
 
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")

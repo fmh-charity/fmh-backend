@@ -8,9 +8,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +30,7 @@ public class NoteServiceTest {
 
     @MockBean
     NoteRepository noteRepository;
+
 
     @Test
     public void addCommentShouldPassSuccess() {
@@ -41,4 +47,7 @@ public class NoteServiceTest {
 
         assertEquals(expected, result.getComment());
     }
+
+
+
 }
