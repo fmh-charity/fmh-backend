@@ -15,7 +15,9 @@ public interface NoteService {
     List<NoteShortInfoDto> getAllNotes();
 
     NoteDto getNote(Integer id);
-
+    /**
+     * возвращает новую записку
+     */
     NoteDto createNote(NoteDto noteDto);
 
     /**

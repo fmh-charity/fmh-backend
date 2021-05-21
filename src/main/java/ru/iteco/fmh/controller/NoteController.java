@@ -29,6 +29,12 @@ public class NoteController {
         return noteService.getAllNotes();
     }
 
+    @ApiOperation(value = "Создание новой записки")
+    @PostMapping
+    public NoteDto createNote(@RequestBody NoteDto noteDto) {
+        return noteService.createNote(noteDto);
+    }
+
 
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
@@ -38,13 +44,7 @@ public class NoteController {
         return noteService.getNote(id);
     }
 
-    @ApiOperation(value = "создает новую записку, возвращает ид новой записки")
-    @PostMapping
-    public NoteDto createNote(
-            @RequestBody NoteDto noteDto
-    ) {
-        return noteService.createNote(noteDto);
-    }
+
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping

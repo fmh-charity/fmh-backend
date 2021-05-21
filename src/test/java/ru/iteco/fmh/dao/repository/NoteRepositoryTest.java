@@ -49,8 +49,8 @@ public class NoteRepositoryTest {
                 .creator(author)
                 .executor(doer)
                 .createDate(LocalDateTime.now())
-//                .factExecuteDate(LocalDateTime.now())
-//                .planExecuteDate(null)
+                .factExecuteDate(null)
+                .planExecuteDate(LocalDateTime.now().plusDays(2))
                 .status(StatusE.active)
                 .comment(TestUtils.getAlphabeticStringR())
                 .build();
@@ -62,8 +62,10 @@ public class NoteRepositoryTest {
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
-                .createDate(LocalDateTime.now())
-                .status(StatusE.active)
+                .createDate(LocalDateTime.now().minusDays(1))
+                .factExecuteDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now().plusDays(2))
+                .status(StatusE.executed)
                 .comment(TestUtils.getAlphabeticStringR())
                 .build();
 

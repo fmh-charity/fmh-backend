@@ -36,6 +36,13 @@ public class NoteServiceImpl implements NoteService {
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
                 .collect(Collectors.toList());
     }
+    @Override
+    public NoteDto createNote(NoteDto noteDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Note note = conversionService.convert(noteDto, Note.class);
+        note = noteRepository.save(note);
+        return conversionService.convert(note, NoteDto.class);
+    }
 
     public NoteDto getNote(Integer id) {
         Optional<Note> optionalNote = noteRepository.findById(id);
@@ -48,12 +55,7 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
-    public NoteDto createNote(NoteDto noteDto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Note note = conversionService.convert(noteDto, Note.class);
-        note = noteRepository.save(note);
-        return conversionService.convert(note, NoteDto.class);
-    }
+
 
     @Override
     public List<NoteDto> getPatientNotes(Integer patientId) {

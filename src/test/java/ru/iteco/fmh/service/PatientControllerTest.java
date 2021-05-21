@@ -59,18 +59,18 @@ public class PatientControllerTest {
     public void createOrUpdatePatientShouldPassSuccess() {
         //given
         PatientDto given = getPatientDto();
-        given.setId(7);
 
         PatientDto result = sut.createPatient(given);
-
+        given.setId(result.getId());
         assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
                 () -> assertEquals(given.getFirstName(), result.getFirstName()),
                 () -> assertEquals(given.getLastName(), result.getLastName()),
                 () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
                 () -> assertEquals(given.getBirthDate(), result.getBirthDate())
         );
 
-       // deleting result entity
+        // deleting result entity
         patientRepository.deleteById(result.getId());
     }
 
@@ -106,7 +106,7 @@ public class PatientControllerTest {
     public void getNotesShouldPassSuccess() {
         // given
         int patientId = 1;
-        int notesCount =2;
+        int notesCount = 2;
         String noteDescription0 = "note1-description";
         String noteDescription1 = "note6-description";
 

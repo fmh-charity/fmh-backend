@@ -5,11 +5,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
@@ -31,6 +35,9 @@ public class NoteServiceTest {
     @MockBean
     NoteRepository noteRepository;
 
+    @Autowired
+    ConversionServiceFactoryBean factoryBean;
+
 
     @Test
     public void addCommentShouldPassSuccess() {
@@ -48,6 +55,20 @@ public class NoteServiceTest {
         assertEquals(expected, result.getComment());
     }
 
+    @Test
+    public void createNoteShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
 
+        // given
+        Note note = getNote();
+
+        when(noteRepository.save(any())).thenReturn(note);
+
+        // result
+        NoteDto expected = conversionService.convert(note, NoteDto.class);
+        NoteDto result = sut.createNote(expected);
+
+        assertEquals(expected, result);
+    }
 
 }
