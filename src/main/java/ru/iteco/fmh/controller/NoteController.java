@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
 import java.util.List;
@@ -61,5 +61,14 @@ public class NoteController {
             @RequestBody String comment
     )  {
         return noteService.addComment(noteId, comment);
+    }
+
+    @ApiOperation(value = "обработка записок по статусной модели")
+    @PostMapping("/status/{noteId}")
+    public NoteDto changeStatus(
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") Integer noteId,
+            @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status
+            )  {
+        return noteService.changeStatus(noteId, status);
     }
 }

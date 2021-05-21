@@ -8,14 +8,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
-import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,19 +31,58 @@ public class NoteServiceTest {
     @Test
     public void addCommentShouldPassSuccess() {
         // given
-        int noteId = 1;
-        Note note = getNote();
-        String previousComment = note.getComment();
+        Note note = getNote(StatusE.active);
+        Note resultNote = getNote(StatusE.active);
         String newComment = "test comment";
-        String expected = previousComment.concat(", ").concat(newComment);
+        String expected = "first comment".concat(", ").concat(newComment);
+        resultNote.setComment(expected);
 
         when(noteRepository.findById(any())).thenReturn(Optional.of(note));
+        when(noteRepository.save(any())).thenReturn(resultNote);
 
-        NoteDto result = sut.addComment(noteId, newComment);
+        NoteDto result = sut.addComment(any(), newComment);
 
         assertEquals(expected, result.getComment());
     }
 
+    @Test
+    public void changeStatusShouldPassSuccess() {
+        // given
+        Note activeNote = getNote(StatusE.active);
+        Note cancelledNote = getNote(StatusE.canceled);
 
+        when(noteRepository.findById(any())).thenReturn(Optional.of(activeNote));
+        when(noteRepository.save(any())).thenReturn(cancelledNote);
 
+        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
+
+        assertEquals(StatusE.canceled, result.getStatus());
+    }
+
+    @Test
+    public void changeStatusWhenNonActiveNoteShouldPassSuccess() {
+        // given
+        Note executedNote = getNote(StatusE.executed);
+
+        when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
+
+        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
+
+        assertEquals(StatusE.executed, result.getStatus());
+    }
+
+    private static Note getNote(StatusE status) {
+        return Note.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .patient(getPatient())
+                .creator(getUser())
+                .executor(getUser())
+                .description(getAlphabeticStringR())
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(LocalDateTime.now())
+                .comment("first comment")
+                .status(status)
+                .build();
+    }
 }

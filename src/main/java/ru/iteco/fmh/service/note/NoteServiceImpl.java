@@ -28,6 +28,7 @@ public class NoteServiceImpl implements NoteService {
         this.noteRepository = noteRepository;
         this.factoryBean = factoryBean;
     }
+
     @Override
     public List<NoteShortInfoDto> getAllNotes() {
         List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDateAsc(StatusE.active);
@@ -67,20 +68,54 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public NoteDto addComment(Integer noteId, String comment) {
         Optional<Note> optionalNote = noteRepository.findById(noteId);
-        if (optionalNote.isPresent()) {
-            Note note = optionalNote.get();
 
-            if (!note.getComment().isEmpty()) {
-                note.setComment(note.getComment().concat(", ").concat(comment));
+        // TODO: 21.05 подумать о синхронизации
+        synchronized (optionalNote) {
+            if (optionalNote.isPresent()) {
+                Note note = optionalNote.get();
+
+                if (!note.getComment().isEmpty()) {
+                    note.setComment(note.getComment().concat(", ").concat(comment));
+                } else {
+                    note.setComment(comment);
+                }
+
+                note = noteRepository.save(note);
+                ConversionService conversionService = factoryBean.getObject();
+                return conversionService.convert(note, NoteDto.class);
             } else {
-                note.setComment(comment);
+                return null;
             }
+        }
 
-//            noteRepository.save(note);
-            ConversionService conversionService = factoryBean.getObject();
-            return conversionService.convert(note, NoteDto.class);
-        } else {
-            return null;
+    }
+
+    @Transactional
+    @Override
+    public NoteDto changeStatus(Integer noteId, StatusE status) {
+        Optional<Note> optionalNote = noteRepository.findById(noteId);
+
+        // TODO: 21.05 подумать о синхронизации
+        synchronized (optionalNote) {
+            if (optionalNote.isPresent()) {
+                Note note = optionalNote.get();
+                ConversionService conversionService = factoryBean.getObject();
+
+                if (StatusE.active.equals(optionalNote.get().getStatus())) {
+                    note.setStatus(status);
+                    note = noteRepository.save(note);
+//                    return conversionService.convert(note, NoteDto.class);
+                }
+
+                // TODO: 20.05. подумать нужен ли exception
+                // else {
+                // throw new RuntimeException();
+                // }
+                return conversionService.convert(note, NoteDto.class);
+
+            } else {
+                return null;
+            }
         }
     }
 }
