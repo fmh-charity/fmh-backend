@@ -71,12 +71,20 @@ public class NoteServiceTest {
     public void changeStatusWhenNonActiveNoteShouldPassSuccess() {
         // given
         Note executedNote = getNote(StatusE.executed);
+
+        when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
+
+        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
+
+        assertEquals(StatusE.executed, result.getStatus());
+    }
+
     @Test
     public void createNoteShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
 
         // given
-        Note note = getNote();
+        Note note = getNote(StatusE.active);
 
         when(noteRepository.save(any())).thenReturn(note);
 
@@ -86,12 +94,8 @@ public class NoteServiceTest {
 
         assertEquals(expected, result);
     }
-        when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
 
-        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
 
-        assertEquals(StatusE.executed, result.getStatus());
-    }
 
     private static Note getNote(StatusE status) {
         return Note.builder()
