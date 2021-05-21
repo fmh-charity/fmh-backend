@@ -60,6 +60,7 @@ public class TestUtils {
                 .factExecuteDate(LocalDateTime.now())
                 .status(StatusE.active)
                 .comment(getAlphabeticStringR())
+                .status(StatusE.active)
                 .build();
     }
 
