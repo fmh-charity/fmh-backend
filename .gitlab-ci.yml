@@ -14,7 +14,7 @@ services:
 build-job:
   stage: build
   script:
-    - mvn clean install -P test
+    - mvn clean install -P dev
 
 test-job:
   stage: test
