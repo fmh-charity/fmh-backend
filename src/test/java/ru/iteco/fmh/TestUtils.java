@@ -124,7 +124,7 @@ public class TestUtils {
         return NoteDto.builder()
                 .patient(getPatientDto())
                 .description(getAlphabeticStringR())
-                .planExecuteDate(LocalDateTime.now().plusDays(2))
+                .planExecuteDate(LocalDateTime.now())
                 .createDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .executor(getUserDto())

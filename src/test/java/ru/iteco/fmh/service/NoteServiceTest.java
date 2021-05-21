@@ -10,10 +10,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
-import ru.iteco.fmh.dto.note.NoteShortInfoDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
+
 import ru.iteco.fmh.model.Note;
-import ru.iteco.fmh.model.Patient;
+
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 import java.time.LocalDateTime;

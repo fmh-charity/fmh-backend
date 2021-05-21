@@ -36,6 +36,7 @@ public class NoteController {
     }
 
 
+
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
     public NoteDto getNote(
