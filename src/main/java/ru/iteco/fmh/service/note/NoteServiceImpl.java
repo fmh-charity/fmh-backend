@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
@@ -37,6 +38,7 @@ public class NoteServiceImpl implements NoteService {
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
                 .collect(Collectors.toList());
     }
+
     @Override
     public NoteDto createNote(NoteDto noteDto) {
         ConversionService conversionService = factoryBean.getObject();
@@ -57,7 +59,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
-
     @Override
     public List<NoteDto> getPatientNotes(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
@@ -71,25 +72,21 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto addComment(Integer noteId, String comment) {
         Optional<Note> optionalNote = noteRepository.findById(noteId);
 
-        // TODO: 21.05 подумать о синхронизации
-        synchronized (optionalNote) {
-            if (optionalNote.isPresent()) {
-                Note note = optionalNote.get();
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
 
-                if (!note.getComment().isEmpty()) {
-                    note.setComment(note.getComment().concat(", ").concat(comment));
-                } else {
-                    note.setComment(comment);
-                }
-
-                note = noteRepository.save(note);
-                ConversionService conversionService = factoryBean.getObject();
-                return conversionService.convert(note, NoteDto.class);
+            if (!note.getComment().isEmpty()) {
+                note.setComment(note.getComment().concat(", ").concat(comment));
             } else {
-                return null;
+                note.setComment(comment);
             }
-        }
 
+            note = noteRepository.save(note);
+            ConversionService conversionService = factoryBean.getObject();
+            return conversionService.convert(note, NoteDto.class);
+        } else {
+            return null;
+        }
     }
 
     @Transactional
@@ -97,27 +94,21 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto changeStatus(Integer noteId, StatusE status) {
         Optional<Note> optionalNote = noteRepository.findById(noteId);
 
-        // TODO: 21.05 подумать о синхронизации
-        synchronized (optionalNote) {
-            if (optionalNote.isPresent()) {
-                Note note = optionalNote.get();
-                ConversionService conversionService = factoryBean.getObject();
+        if (optionalNote.isPresent()) {
+            Note note = optionalNote.get();
+            ConversionService conversionService = factoryBean.getObject();
 
-                if (StatusE.active.equals(optionalNote.get().getStatus())) {
-                    note.setStatus(status);
-                    note = noteRepository.save(note);
-//                    return conversionService.convert(note, NoteDto.class);
-                }
-
-                // TODO: 20.05. подумать нужен ли exception
-                // else {
-                // throw new RuntimeException();
-                // }
+            if (StatusE.active.equals(optionalNote.get().getStatus())) {
+                note.setStatus(status);
+                note = noteRepository.save(note);
                 return conversionService.convert(note, NoteDto.class);
-
             } else {
-                return null;
+                throw new NoteException("невозможно изменить статус неактивной записки!");
             }
+
+        } else {
+            return null;
         }
+
     }
 }

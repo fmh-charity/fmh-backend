@@ -4,9 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
@@ -35,17 +38,13 @@ public class NoteController {
         return noteService.createNote(noteDto);
     }
 
-
-
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
     public NoteDto getNote(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") Integer id
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id
     ){
         return noteService.getNote(id);
     }
-
-
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping
@@ -58,7 +57,7 @@ public class NoteController {
     @ApiOperation(value = "формирование комментария по запискам")
     @PostMapping("/comment/{noteId}")
     public NoteDto addComment(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") Integer noteId,
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
             @RequestBody String comment
     )  {
         return noteService.addComment(noteId, comment);
@@ -67,9 +66,15 @@ public class NoteController {
     @ApiOperation(value = "обработка записок по статусной модели")
     @PostMapping("/status/{noteId}")
     public NoteDto changeStatus(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") Integer noteId,
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
             @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status
             )  {
         return noteService.changeStatus(noteId, status);
+    }
+
+    // ошибки при работе с записками
+    @ExceptionHandler(NoteException.class)
+    public ResponseEntity<?> handleStorageExceptions(NoteException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
