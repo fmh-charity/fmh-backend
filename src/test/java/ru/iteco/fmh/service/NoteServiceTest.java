@@ -11,10 +11,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 
+import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.Note;
 
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -33,7 +35,6 @@ public class NoteServiceTest {
 
     @Autowired
     ConversionServiceFactoryBean factoryBean;
-
 
     @Test
     public void addCommentShouldPassSuccess() {
@@ -67,15 +68,14 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void changeStatusWhenNonActiveNoteShouldPassSuccess() {
+    public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
         Note executedNote = getNote(StatusE.executed);
 
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
 
-        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
-
-        assertEquals(StatusE.executed, result.getStatus());
+        assertThrows(NoteException.class,
+                () -> sut.changeStatus(any(), StatusE.canceled));
     }
 
     @Test
@@ -93,7 +93,6 @@ public class NoteServiceTest {
 
         assertEquals(expected, result);
     }
-
 
 
     private static Note getNote(StatusE status) {

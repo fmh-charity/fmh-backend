@@ -100,6 +100,7 @@ comment on column patient.deleted is 'флаг удаления';
 create sequence note_seq;
 create table note
 (
+    version           int,
     id                int     not null primary key default nextval('note_seq'),
     patient_id        int     not null,
     description       varchar not null,

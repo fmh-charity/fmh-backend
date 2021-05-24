@@ -74,13 +74,11 @@ public class NoteServiceImpl implements NoteService {
 
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
-
             if (!note.getComment().isEmpty()) {
                 note.setComment(note.getComment().concat(", ").concat(comment));
             } else {
                 note.setComment(comment);
             }
-
             note = noteRepository.save(note);
             ConversionService conversionService = factoryBean.getObject();
             return conversionService.convert(note, NoteDto.class);

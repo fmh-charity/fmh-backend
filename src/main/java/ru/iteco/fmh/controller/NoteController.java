@@ -13,6 +13,7 @@ import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 @Api(description = "Работа с записками")
@@ -76,5 +77,12 @@ public class NoteController {
     @ExceptionHandler(NoteException.class)
     public ResponseEntity<?> handleStorageExceptions(NoteException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    // ощибки оптимистичной блокировки
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<?> handleOptimisticLockExceptions(OptimisticLockException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Невозможно выполнить действие, т.к. данные были изменены другим пользователем");
     }
 }
