@@ -22,18 +22,13 @@ class NoteDtoToNoteConverterTest {
     PatientDtoToPatientConverter dtoToPatientConverter = new PatientDtoToPatientConverter();
     UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
     NoteDtoToNoteConverter convert = new NoteDtoToNoteConverter(dtoToPatientConverter,userDtoToUserConverter);
-
-
     PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
 
-
     @Test
     void convert() {
-
         NoteDto noteDto = getNoteDto();
         Note note = convert.convert(noteDto);
-
         Assertions.assertAll(
                 () -> assertEquals(noteDto.getId(), note.getId()),
                 () -> assertEquals(noteDto.getPatient(), patientToPatientDtoConverter.convert(note.getPatient())),
@@ -45,5 +40,4 @@ class NoteDtoToNoteConverterTest {
                 () -> assertEquals(noteDto.getExecutor(), userToUserDtoConverter.convert(note.getExecutor()))
         );
     }
-
 }

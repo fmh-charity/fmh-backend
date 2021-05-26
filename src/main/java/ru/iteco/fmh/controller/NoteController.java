@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/note")
 public class NoteController {
     private final NoteService noteService;
-
     @Autowired
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
@@ -34,31 +33,28 @@ public class NoteController {
     @ApiOperation(value = "Создание новой записки")
     @PostMapping
     public NoteDto createNote(@RequestBody NoteDto noteDto) {
-        return noteService.createNote(noteDto);
+        return noteService.createOrUpdateNote(noteDto);
     }
 
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
     public NoteDto getNote(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id
-    ){
+            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id){
         return noteService.getNote(id);
     }
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping
     public NoteDto updateNote(
-            @RequestBody NoteDto noteDto
-    ) {
-        return noteService.createNote(noteDto);
+            @RequestBody NoteDto noteDto) {
+        return noteService.createOrUpdateNote(noteDto);
     }
 
     @ApiOperation(value = "формирование комментария по запискам")
     @PostMapping("/comment/{noteId}")
     public NoteDto addComment(
             @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
-            @RequestBody String comment
-    )  {
+            @RequestBody String comment)  {
         return noteService.addComment(noteId, comment);
     }
 

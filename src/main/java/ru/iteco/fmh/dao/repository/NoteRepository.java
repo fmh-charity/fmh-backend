@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Integer> {
 
-    List <Note> findAllByStatusOrderByPlanExecuteDateAsc (StatusE status);
+    List <Note> findAllByStatusOrderByPlanExecuteDate(StatusE status);
     List<Note> findAllByPatient_IdAndDeletedIsFalseAndStatus(Integer patientId, StatusE status);
 }

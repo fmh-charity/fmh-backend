@@ -21,17 +21,13 @@ import static ru.iteco.fmh.TestUtils.getNote;
 import static ru.iteco.fmh.TestUtils.getPatientDto;
 
 class NoteToNoteDtoConverterTest {
-
     PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
     NoteToNoteDtoConverter convertor = new NoteToNoteDtoConverter(patientToPatientDtoConverter,userToUserDtoConverter);
-
     @Test
     void convert() {
-
         Note note = getNote();
         NoteDto dto = convertor.convert(note);
-
         Assertions.assertAll(
                 () -> assertEquals(note.getId(), dto.getId()),
                 () -> assertEquals(patientToPatientDtoConverter.convert(note.getPatient()), dto.getPatient()),

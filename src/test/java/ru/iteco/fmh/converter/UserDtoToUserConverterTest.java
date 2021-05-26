@@ -10,9 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getUserDto;
 
 public class UserDtoToUserConverterTest {
-
     UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
-
     @Test
     void convert() {
         UserDto userDto = getUserDto();

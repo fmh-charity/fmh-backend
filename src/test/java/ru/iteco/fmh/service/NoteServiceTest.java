@@ -86,7 +86,7 @@ public class NoteServiceTest {
 
         // result
         NoteDto expected = conversionService.convert(note, NoteDto.class);
-        NoteDto result = sut.createNote(expected);
+        NoteDto result = sut.createOrUpdateNote(expected);
 
         assertEquals(expected, result);
     }

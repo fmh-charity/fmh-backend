@@ -29,7 +29,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<NoteShortInfoDto> getAllNotes() {
-        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDateAsc(StatusE.active);
+        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDate(StatusE.active);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
@@ -37,7 +37,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto createNote(NoteDto noteDto) {
+    public NoteDto createOrUpdateNote(NoteDto noteDto) {
         ConversionService conversionService = factoryBean.getObject();
         Note note = conversionService.convert(noteDto, Note.class);
         note = noteRepository.save(note);

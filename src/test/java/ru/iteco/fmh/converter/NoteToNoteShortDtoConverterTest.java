@@ -10,15 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getNote;
 
 class NoteToNoteShortDtoConverterTest {
-
     NoteToShortDtoConverter convertor = new NoteToShortDtoConverter();
-
     @Test
     void convert() {
         Note note = getNote();
-
         NoteShortInfoDto shortInfoDto = convertor.convert(note);
-
         Assertions.assertAll(
                 () -> assertEquals(note.getId(), shortInfoDto.getId()),
                 () -> assertEquals(note.getPlanExecuteDate(), shortInfoDto.getPlanExecuteDate()),
