@@ -10,9 +10,6 @@ variables:
   CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
-services:
-  - docker:dind
-
 build-job:
   image: docker:19.03.12
   stage: build
@@ -24,6 +21,8 @@ build-job:
 
 test-job:
   stage: test
+  services:
+    - docker:dind
   script:
     - mvn test -P test
 
