@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
-import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;

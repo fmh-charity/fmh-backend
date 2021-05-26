@@ -3,17 +3,14 @@ package ru.iteco.fmh.service.note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
-import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -83,7 +80,7 @@ public class NoteServiceImpl implements NoteService {
             ConversionService conversionService = factoryBean.getObject();
             return conversionService.convert(note, NoteDto.class);
         } else {
-            return null;
+            throw new IllegalArgumentException("записка не найдена!");
         }
     }
 
@@ -96,16 +93,16 @@ public class NoteServiceImpl implements NoteService {
             Note note = optionalNote.get();
             ConversionService conversionService = factoryBean.getObject();
 
-            if (StatusE.active.equals(optionalNote.get().getStatus())) {
+            if (StatusE.active.equals(note.getStatus())) {
                 note.setStatus(status);
                 note = noteRepository.save(note);
                 return conversionService.convert(note, NoteDto.class);
             } else {
-                throw new NoteException("невозможно изменить статус неактивной записки!");
+                throw new IllegalArgumentException("невозможно изменить статус неактивной записки!");
             }
 
         } else {
-            return null;
+           throw new IllegalArgumentException("записка не найдена!");
         }
 
     }

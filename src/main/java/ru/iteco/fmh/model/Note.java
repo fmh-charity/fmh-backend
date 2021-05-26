@@ -20,10 +20,6 @@ import java.time.LocalDateTime;
 @ToString
 @Table(name = "note")
 public class Note {
-    @Transient
-    @Version
-    Integer version;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

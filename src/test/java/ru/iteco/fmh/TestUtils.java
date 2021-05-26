@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class TestUtils {
-
     public static String getAlphabeticStringR() {
         return getAlphabeticString(10);
     }

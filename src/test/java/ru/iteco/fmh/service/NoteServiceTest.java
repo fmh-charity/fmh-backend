@@ -10,10 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
-
-import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.Note;
-
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
@@ -74,7 +71,7 @@ public class NoteServiceTest {
 
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
 
-        assertThrows(NoteException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> sut.changeStatus(any(), StatusE.canceled));
     }
 

@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
-import ru.iteco.fmh.exception.NoteException;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.note.NoteService;
 
-import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 @Api(description = "Работа с записками")
@@ -73,16 +71,9 @@ public class NoteController {
         return noteService.changeStatus(noteId, status);
     }
 
-    // ошибки при работе с записками
-    @ExceptionHandler(NoteException.class)
-    public ResponseEntity<?> handleStorageExceptions(NoteException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-
-    // ощибки оптимистичной блокировки
-    @ExceptionHandler(OptimisticLockException.class)
-    public ResponseEntity<?> handleOptimisticLockExceptions(OptimisticLockException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Невозможно выполнить действие, т.к. данные были изменены другим пользователем");
+    // все ошибки
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }
