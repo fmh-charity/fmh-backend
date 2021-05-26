@@ -46,8 +46,6 @@ public class PatientControllerTest {
         List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name(),
                 AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
 
-        resultAll.forEach(System.out::println);
-
         assertAll(
                 () -> assertEquals(countExpected, resultExpected.size()),
                 () -> assertEquals(countActive, resultActive.size()),
@@ -60,18 +58,18 @@ public class PatientControllerTest {
     public void createOrUpdatePatientShouldPassSuccess() {
         //given
         PatientDto given = getPatientDto();
-        given.setId(7);
 
         PatientDto result = sut.createPatient(given);
-
+        given.setId(result.getId());
         assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
                 () -> assertEquals(given.getFirstName(), result.getFirstName()),
                 () -> assertEquals(given.getLastName(), result.getLastName()),
                 () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
                 () -> assertEquals(given.getBirthDate(), result.getBirthDate())
         );
 
-       // deleting result entity
+        // deleting result entity
         patientRepository.deleteById(result.getId());
     }
 
@@ -107,16 +105,17 @@ public class PatientControllerTest {
     public void getNotesShouldPassSuccess() {
         // given
         int patientId = 1;
-        int notesCount =2;
+        int notesCount = 2;
         String noteDescription0 = "note1-description";
         String noteDescription1 = "note6-description";
 
-        List<NoteDto> result = sut.getNotes(patientId);
+        List<NoteDto> notes = sut.getNotes(patientId);
+        List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
 
         assertAll(
-                () -> assertEquals(notesCount, result.size()),
-                () -> assertEquals(noteDescription0, result.get(0).getDescription()),
-                () -> assertEquals(noteDescription1, result.get(1).getDescription())
+                () -> assertEquals(notesCount, notes.size()),
+                () -> assertTrue(result.contains(noteDescription0)),
+                () -> assertTrue(result.contains(noteDescription1))
         );
     }
 }

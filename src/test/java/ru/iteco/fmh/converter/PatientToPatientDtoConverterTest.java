@@ -10,12 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getPatient;
 
 public class PatientToPatientDtoConverterTest {
-
     PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
-
     @Test
     void convert() {
-
         Patient patient = getPatient();
         PatientDto patientDto = patientToPatientDtoConverter.convert(patient);
         Assertions.assertAll(
@@ -25,6 +22,5 @@ public class PatientToPatientDtoConverterTest {
                 () -> assertEquals(patient.getMiddleName(), patientDto.getMiddleName()),
                 () -> assertEquals(patient.getBirthDate(), patientDto.getBirthDate())
         );
-
     }
 }

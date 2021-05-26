@@ -6,12 +6,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
-
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,9 +23,9 @@ public class PatientRepositoryTest {
     @Test
     public void testWriteSuccess() {
         entity = Patient.builder()
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
+                .firstName(TestUtils.getAlphabeticStringR())
+                .lastName(TestUtils.getAlphabeticStringR())
+                .middleName(TestUtils.getAlphabeticStringR())
                 .birthDate(LocalDate.now())
                 .build();
 

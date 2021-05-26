@@ -19,7 +19,7 @@ public class UserDto {
     @ApiModelProperty("id пользователя")
     private Integer id;
     @ApiModelProperty("имя")
-    private String name;
+    private String firstName;
     @ApiModelProperty("фамилия")
     private String lastName;
     @ApiModelProperty("отчество")
@@ -31,9 +31,9 @@ public class UserDto {
     @ApiModelProperty("телефон")
     private String phoneNumber;
     @ApiModelProperty("электронная почта")
-    private String eMail;
+    private String email;
     @ApiModelProperty("ФИО пользователя, в формате \"Кузнецова Н.П.\"")
-    private String userShortName;
+    private String shortUserName;
 //    @ApiModelProperty("роли")
 //    private List<String> roles;
 }

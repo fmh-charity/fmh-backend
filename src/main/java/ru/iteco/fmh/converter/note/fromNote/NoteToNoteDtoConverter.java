@@ -14,7 +14,8 @@ public class NoteToNoteDtoConverter implements Converter<Note, NoteDto> {
     private final IPatientToPatientDtoConverter patientToDtoConverter;
     private final IUserToUserDtoConverter userToUserDtoConverter;
 
-    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,IUserToUserDtoConverter userToUserDtoConverter) {
+    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,
+                                  IUserToUserDtoConverter userToUserDtoConverter) {
         this.patientToDtoConverter = patientToDtoConverter;
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
@@ -24,9 +25,11 @@ public class NoteToNoteDtoConverter implements Converter<Note, NoteDto> {
         NoteDto dto = new NoteDto();
         BeanUtils.copyProperties(note, dto);
         PatientDto patientDto = patientToDtoConverter.convert(note.getPatient());
-        UserDto userDto = userToUserDtoConverter.convert(note.getExecutor());
+        UserDto executor = userToUserDtoConverter.convert(note.getExecutor());
+        UserDto creator = userToUserDtoConverter.convert(note.getCreator());
         dto.setPatient(patientDto);
-        dto.setExecutor(userDto);
+        dto.setExecutor(executor);
+        dto.setCreator(creator);
         return dto;
     }
 }

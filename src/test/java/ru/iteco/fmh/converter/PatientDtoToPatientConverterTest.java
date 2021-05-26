@@ -11,13 +11,10 @@ import static ru.iteco.fmh.TestUtils.getPatientDto;
 
 class PatientDtoToPatientConverterTest {
     PatientDtoToPatientConverter dto = new  PatientDtoToPatientConverter();
-
     @Test
     void convert() {
         PatientDto patientDto = getPatientDto();
-
         Patient patient = dto.convert(patientDto);
-
         Assertions.assertAll(
                 () -> assertEquals(patientDto.getId(), patient.getId()),
                 () -> assertEquals(patientDto.getFirstName(), patient.getFirstName()),
@@ -27,6 +24,4 @@ class PatientDtoToPatientConverterTest {
                 () -> assertEquals(patientDto.getShortPatientName(), patient.getShortPatientName())
         );
     }
-
-
 }

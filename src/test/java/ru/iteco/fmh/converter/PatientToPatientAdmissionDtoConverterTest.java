@@ -11,16 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getPatient;
 
 public class PatientToPatientAdmissionDtoConverterTest {
-
     PatientToPatientAdmissionDtoConverter converter = new PatientToPatientAdmissionDtoConverter();
-
     @Test
     void convert() {
-
         Patient patient = getPatient();
-        Admission currentAdmission = patient.getCurrentAdmission();
         PatientAdmissionDto patientAdmissionDto = converter.convert(patient);
-
         Assertions.assertAll(
                 () -> assertEquals(patient.getId(), patientAdmissionDto.getId()),
                 () -> assertEquals(patient.getFirstName(), patientAdmissionDto.getFirstName()),
@@ -33,7 +28,6 @@ public class PatientToPatientAdmissionDtoConverterTest {
                 () -> assertEquals(patient.getCurrentAdmission().getPlanDateIn(), patientAdmissionDto.getPlanDateIn()),
                 () -> assertEquals(patient.getCurrentAdmission().getPlanDateOut(), patientAdmissionDto.getPlanDateOut())
         );
-
     }
 }
 

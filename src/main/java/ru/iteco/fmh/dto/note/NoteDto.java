@@ -24,12 +24,16 @@ public class NoteDto {
     private PatientDto patient;
     @ApiModelProperty("описание записки")
     private String description;
+    @ApiModelProperty("идентификатор создателя")
+    private UserDto creator;
     @ApiModelProperty("идентификатор исполнителя")
     private UserDto executor;
-    @ApiModelProperty("плановое время исполнения")
-    private LocalDateTime planExecuteTime;
-    @ApiModelProperty("фактическое время исполнения")
-    private LocalDateTime factExecuteTime;
+    @ApiModelProperty("дата создания")
+    private LocalDateTime createDate;
+    @ApiModelProperty("плановая дата исполнения")
+    private LocalDateTime planExecuteDate;
+    @ApiModelProperty("фактическая дата исполнения")
+    private LocalDateTime factExecuteDate;
     @ApiModelProperty("статус записки")
     private StatusE status;
     @ApiModelProperty("комментарий к записке")
