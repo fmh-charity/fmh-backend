@@ -6,6 +6,8 @@ import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * Заявка
  */
@@ -32,9 +34,9 @@ public class Claim {
     @JoinColumn(name = "executor_id")
     User executor;
 
-    LocalDate createDate;
-    LocalDate planExecuteDate;
-    LocalDate factExecuteDate;
+    LocalDateTime createDate;
+    LocalDateTime planExecuteDate;
+    LocalDateTime factExecuteDate;
 
     @Enumerated(EnumType.STRING)
     StatusE status;

@@ -163,7 +163,7 @@ create table claim
     create_data       date,
     plan_execute_date date,
     fact_execute_date date,
-    status            int     not null,
+    status            varchar not null,
     comment           varchar,
     deleted           boolean
 );
@@ -199,17 +199,28 @@ comment on column advertisement.create_data is 'дата создания';
 comment on column claim.deleted is 'флаг удаления';
 
 
-alter table admission add foreign key (patient_id) references patient;
-alter table admission add foreign key (room_id) references room;
-alter table advertisement add foreign key (creator_id) references users;
-alter table claim add foreign key (creator_id) references users;
-alter table claim add foreign key (executor_id) references users;
-alter table note add foreign key (creator_id) references users;
-alter table note add foreign key (executor_id) references users;
-alter table note add foreign key (patient_id) references patient;
-alter table patient add foreign key (current_admission_id) references admission;
-alter table room add foreign key (block_id) references block;
-alter table room add foreign key (nurse_station_id) references nurse_station;
+alter table admission
+    add foreign key (patient_id) references patient;
+alter table admission
+    add foreign key (room_id) references room;
+alter table advertisement
+    add foreign key (creator_id) references users;
+alter table claim
+    add foreign key (creator_id) references users;
+alter table claim
+    add foreign key (executor_id) references users;
+alter table note
+    add foreign key (creator_id) references users;
+alter table note
+    add foreign key (executor_id) references users;
+alter table note
+    add foreign key (patient_id) references patient;
+alter table patient
+    add foreign key (current_admission_id) references admission;
+alter table room
+    add foreign key (block_id) references block;
+alter table room
+    add foreign key (nurse_station_id) references nurse_station;
 
 
 -- ДАЛЬШЕ НЕ ПОКА НЕ ТРОГАЛ !

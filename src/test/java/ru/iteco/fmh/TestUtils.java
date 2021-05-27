@@ -1,12 +1,10 @@
 package ru.iteco.fmh;
 
+import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.Note;
-import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.Room;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.*;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.user.User;
@@ -59,7 +57,6 @@ public class TestUtils {
                 .factExecuteDate(LocalDateTime.now())
                 .status(StatusE.active)
                 .comment(getAlphabeticStringR())
-                .status(StatusE.active)
                 .build();
     }
 
@@ -159,4 +156,33 @@ public class TestUtils {
                 .comment(getAlphabeticStringR())
                 .build();
     }
+    public static Claim getClaim() {
+
+        return Claim.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .creator(getUser())
+                .executor(getUser())
+                .description(getAlphabeticStringR())
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(LocalDateTime.now())
+                .status(StatusE.active)
+                .comment(getAlphabeticStringR())
+                .build();
+    }
+
+    public static ClaimDto getClaimDto() {
+
+        return ClaimDto.builder()
+                .description(getAlphabeticStringR())
+                .planExecuteDate(LocalDateTime.now())
+                .createDate(LocalDateTime.now().plusDays(2))
+                .factExecuteDate(null)
+                .executor(getUserDto())
+                .creator(getUserDto())
+                .status(StatusE.active)
+                .comment(getAlphabeticStringR())
+                .build();
+    }
+
 }

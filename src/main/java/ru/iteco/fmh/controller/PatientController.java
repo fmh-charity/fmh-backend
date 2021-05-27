@@ -8,7 +8,6 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientNoteDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.note.NoteService;
 import ru.iteco.fmh.service.patient.PatientService;
