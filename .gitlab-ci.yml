@@ -1,5 +1,13 @@
 image: maven:3-jdk-11
 
+before_script : 
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh fmh@130.193.44.96
+
 variables:
   # Instruct Docker not to start over TLS.
   DOCKER_TLS_CERTDIR: ""
