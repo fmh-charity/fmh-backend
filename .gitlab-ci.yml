@@ -23,6 +23,7 @@ build-job:
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
       - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
       - ssh-add ~/.ssh/id_rsa
       - ssh fmh@130.193.44.96
 #   image: docker:19.03.12
