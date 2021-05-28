@@ -25,6 +25,7 @@ test-job:
     - mvn test -P test
 
 deploy-prod:
+  image: docker:19.03.12
   stage: deploy
   script:
     - docker pull $CONTAINER_TEST_IMAGE
