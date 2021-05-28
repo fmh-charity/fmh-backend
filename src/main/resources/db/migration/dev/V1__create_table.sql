@@ -160,7 +160,7 @@ create table claim
     description       varchar not null,
     creator_id        int     not null,
     executor_id       int,
-    create_data       date,
+    create_date       date,
     plan_execute_date date,
     fact_execute_date date,
     status            varchar not null,
@@ -172,7 +172,7 @@ comment on column claim.id is 'id в системе';
 comment on column claim.description is 'описание';
 comment on column claim.creator_id is 'id автора';
 comment on column claim.executor_id is 'id исполнителя';
-comment on column claim.create_data is 'дата создания';
+comment on column claim.create_date is 'дата создания';
 comment on column claim.plan_execute_date is 'плановое время исполнителя';
 comment on column claim.fact_execute_date is 'фактическое время исполнения';
 comment on column claim.status is 'статус';

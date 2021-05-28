@@ -41,11 +41,11 @@ update patient set current_admission_id = 4 where id=4;
 update patient set current_admission_id = 5 where id=5;
 
 insert into users (login, password, first_name, last_name, middle_name, phone_number, email, deleted)
-values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lasttname', 'user1-middletname', 'user1-phonenumber', 'user1-email', false),
-       ('user2-login', 'user2-password', 'user2-firstname', 'user2-lasttname', 'user2-middletname', 'user2-phonenumber', 'user2-email', false),
-       ('user3-login', 'user3-password', 'user3-firstname', 'user3-lasttname', 'user3-middletname', 'user3-phonenumber', 'user3-email', false),
-       ('user4-login', 'user4-password', 'user4-firstname', 'user4-lasttname', 'user4-middletname', 'user4-phonenumber', 'user2-email', false),
-       ('user5-login', 'user5-password', 'user5-firstname', 'user5-lasttname', 'user5-middletname', 'user5-phonenumber', 'user5-email', false);
+values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lastname', 'user1-middlename', 'user1-phonenumber', 'user1-email', false),
+       ('user2-login', 'user2-password', 'user2-firstname', 'user2-lastname', 'user2-middlename', 'user2-phonenumber', 'user2-email', false),
+       ('user3-login', 'user3-password', 'user3-firstname', 'user3-lastname', 'user3-middlename', 'user3-phonenumber', 'user3-email', false),
+       ('user4-login', 'user4-password', 'user4-firstname', 'user4-lastname', 'user4-middlename', 'user4-phonenumber', 'user2-email', false),
+       ('user5-login', 'user5-password', 'user5-firstname', 'user5-lastname', 'user5-middlename', 'user5-phonenumber', 'user5-email', false);
 
 insert into note (patient_id, description, creator_id, executor_id, create_date, plan_execute_date,
                   fact_execute_date, status, comment, deleted)
@@ -55,3 +55,11 @@ values (1, 'note1-description', 1, 1, now(), now(), now(), 'active', 'note1-comm
        (4, 'note4-description', 4, 4, now(), now(), now(), 'executed', 'note4-comment', false),
        (5, 'note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', now(), 'active', 'note5-comment', true),
        (1, 'note6-description', 5, 5, now(), now(), now(), 'active', 'note6-comment', false);
+
+insert into claim (description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
+                   status, comment, deleted)
+values ('claim1-description', 1, 1, now(), now(), now(), 'active', 'claim1-comment', false),
+       ('claim2-description', 2, 2, now(), now(), now(), 'active', 'claim2-comment', false),
+       ('claim3-description', 3, 3, now(), now(), now(), 'active', 'claim3-comment', false),
+       ('claim4-description', 4, 4, now(), now(), now(), 'active', 'claim4-comment', false),
+       ('claim5-description', 5, 5, now(), now(), now(), 'active', 'claim5-comment', false);

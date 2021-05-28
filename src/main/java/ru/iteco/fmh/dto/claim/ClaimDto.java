@@ -35,7 +35,6 @@ public class ClaimDto {
     private StatusE status;
     @ApiModelProperty("комментарий к заявке")
     private String comment;
-
 }
 
 
