@@ -25,7 +25,7 @@ build-job:
       - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
       - chmod 600 ~/.ssh/id_rsa
       - ssh-add ~/.ssh/id_rsa
-      - ssh fmh@130.193.44.96
+      - ssh -t fmh@130.193.44.96<<EOT sudo -i EOT
 #   image: docker:19.03.12
 #   stage: build
 #   before_script:
