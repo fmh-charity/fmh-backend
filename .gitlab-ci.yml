@@ -1,13 +1,5 @@
 image: maven:3-jdk-11
 
-# before_script : 
-#   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-#   - eval $(ssh-agent -s)
-#   - echo $SSH_PRIVATE_KEY | tr -d '\r' | ssh-add -
-#   - mkdir -p ~/.ssh
-#   - chmod 700 ~/.ssh
-#   - ssh fmh@130.193.44.96
-
 variables:
   # Instruct Docker not to start over TLS.
   DOCKER_TLS_CERTDIR: ""
@@ -17,9 +9,26 @@ variables:
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 build-job:
+  image: docker:19.03.12
+  stage: build
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+test-job:
+  stage: test
+  services:
+    - docker:dind
+  script:
+    - mvn test -P test
+
+deploy-prod:
+  image: docker:19.03.12
+  stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    ## Install rsync to create mirror between runner and host.
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
@@ -27,30 +36,11 @@ build-job:
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - echo $SSH_USER@"$SSH_HOST"
     - ssh $SSH_USER@"$SSH_HOST" 'cd /usr/src/docker && docker-compose stop && docker-compose pull && docker-compose up -d'
-#   image: docker:19.03.12
-#   stage: build
-#   before_script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#   script:
-#     - docker build --pull -t $CONTAINER_TEST_IMAGE .
-#     - docker push $CONTAINER_TEST_IMAGE
-
-# test-job:
-#   stage: test
-#   services:
-#     - docker:dind
-#   script:
-#     - mvn test -P test
-
-# deploy-prod:
-#   image: docker:19.03.12
-#   stage: deploy
-#   script:
-#     - docker pull $CONTAINER_TEST_IMAGE
-#     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-#     - docker push $CONTAINER_RELEASE_IMAGE
-#   only:
-#     - develop
+  only:
+    - develop
