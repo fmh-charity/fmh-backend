@@ -29,7 +29,7 @@ build-job:
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - echo $SSH_USER@"$SSH_HOST"
-    - ssh $SSH_USER@"$SSH_HOST" '"sudo -i && cd /usr/src/docker && docker-compose stop && docker-compose pull && docker-compose up -d"'
+    - ssh $SSH_USER@"$SSH_HOST" '"sudo -i && cd /usr/src/"'
 #   image: docker:19.03.12
 #   stage: build
 #   before_script:
