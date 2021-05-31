@@ -29,7 +29,7 @@ build-job:
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - echo $SSH_USER@"$SSH_HOST"
-    - ssh $SSH_USER@"$SSH_HOST" '"sudo -i"'
+    - ssh $SSH_USER@"$SSH_HOST" '"cd /usr"'
 #   image: docker:19.03.12
 #   stage: build
 #   before_script:
