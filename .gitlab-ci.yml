@@ -27,7 +27,7 @@ build-job:
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 --decode)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - ssh -o StrictHostKeyChecking=no $SSH_USER@"$SSH_HOST" 'ls -la && ssh user@host "cd ~/api && docker-compose stop && docker-compose pull && docker-compose up -d"'
 #   image: docker:19.03.12
 #   stage: build
