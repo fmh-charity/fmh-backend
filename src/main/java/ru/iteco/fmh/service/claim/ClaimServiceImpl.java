@@ -6,10 +6,16 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.StatusE;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClaimServiceImpl implements ClaimService{
@@ -22,10 +28,14 @@ public class ClaimServiceImpl implements ClaimService{
         this.factoryBean = factoryBean;
     }
 
-    // TODO: 28.05 Nastya
+
     @Override
-    public List<ClaimDto> getClaims() {
-        return null;
+    public List<ClaimShortInfoDto> getAllClaims() {
+        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(StatusE.active);
+        ConversionService conversionService = factoryBean.getObject();
+        return list.stream()
+                .map(i -> conversionService.convert(i, ClaimShortInfoDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

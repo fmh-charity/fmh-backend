@@ -11,7 +11,11 @@ import ru.iteco.fmh.controller.ClaimController;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.dto.user.UserDto;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -84,4 +88,13 @@ public class ClaimControllerTest {
 
         );
     }
+
+    @Test
+    public void getAllActiveNotesSort() {
+        List<ClaimShortInfoDto> claimShortInfoDtoList = sut.getAllClaims();
+        assertEquals(5, claimShortInfoDtoList.size());
+        assertTrue(claimShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
+                (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
+        }
+
 }

@@ -6,7 +6,11 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.service.claim.ClaimService;
+
+import java.util.List;
 
 @Api(description = "Заявки")
 @RestController
@@ -17,6 +21,12 @@ public class ClaimController {
     @Autowired
     public ClaimController(ClaimService claimService) {
         this.claimService = claimService;
+    }
+
+    @ApiOperation(value = "реестр всех заявок со статусом active")
+    @GetMapping
+    public List<ClaimShortInfoDto> getAllClaims() {
+        return claimService.getAllClaims();
     }
 
     @ApiOperation(value = "Создание новой заявки")
