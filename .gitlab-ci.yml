@@ -28,7 +28,7 @@ build-job:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
-    - ssh -o StrictHostKeyChecking=no $SSH_USER@"$SSH_HOST" 'ls -la && ssh user@host "cd ~/api && docker-compose stop && docker-compose pull && docker-compose up -d"'
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@"$SSH_HOST" 'ls -la && ssh $SSH_USER@"$SSH_HOST" "sudo -i && cd /usr/src/docker && docker-compose stop && docker-compose pull && docker-compose up -d"'
 #   image: docker:19.03.12
 #   stage: build
 #   before_script:
