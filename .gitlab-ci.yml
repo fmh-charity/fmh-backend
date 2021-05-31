@@ -20,7 +20,6 @@ build-job:
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     ## Install rsync to create mirror between runner and host.
-    - apt-get install -y rsync
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - eval $(ssh-agent -s)
