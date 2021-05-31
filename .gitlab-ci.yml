@@ -1,5 +1,9 @@
 image: maven:3-jdk-11
 
+services:
+    - name: docker:dind
+      entrypoint: ["env", "-u", "DOCKER_HOST"]
+      command: ["dockerd-entrypoint.sh"]
 variables:
   # Instruct Docker not to start over TLS.
     DOCKER_TLS_CERTDIR: ""
@@ -19,15 +23,6 @@ build-job:
 
 test-job:
   stage: test
-  services:
-    - docker:dind
-  variables:
-    # Instruct Docker not to start over TLS.
-    DOCKER_TLS_CERTDIR: ""
-    # Improve performance with overlayfs.
-    DOCKER_DRIVER: overlay2
-    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest  
   script:
     - mvn test -P test
 
