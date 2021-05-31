@@ -1,13 +1,5 @@
 image: maven:3-jdk-11
 
-variables:
-  # Instruct Docker not to start over TLS.
-  DOCKER_TLS_CERTDIR: ""
-  # Improve performance with overlayfs.
-  DOCKER_DRIVER: overlay2
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
-
 build-job:
   image: docker:19.03.12
   stage: build
@@ -21,6 +13,13 @@ test-job:
   stage: test
   services:
     - docker:dind
+  variables:
+    # Instruct Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ""
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest  
   script:
     - mvn test -P test
 
