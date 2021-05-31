@@ -17,15 +17,19 @@ variables:
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
 
 build-job:
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    ## Install rsync to create mirror between runner and host.
+    - apt-get install -y rsync
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
-      - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
-      - eval $(ssh-agent -s)
-      - mkdir -p ~/.ssh
-      - chmod 700 ~/.ssh
-      - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - ssh-add ~/.ssh/id_rsa
-      - ssh fmh@130.193.44.96 sudo -i
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 --decode)
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@"$SSH_HOST" 'ls -la && ssh user@host "cd ~/api && docker-compose stop && docker-compose pull && docker-compose up -d"'
 #   image: docker:19.03.12
 #   stage: build
 #   before_script:
