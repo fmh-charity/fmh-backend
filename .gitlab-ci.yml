@@ -1,11 +1,15 @@
 image: maven:3-jdk-11
 
 variables:
+  # Instruct Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ""
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
     CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
     CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest  
 
 build-job:
-  image: docker:19.03.12
+  image: docker:stable
   stage: build
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -28,7 +32,7 @@ test-job:
     - mvn test -P test
 
 deploy-prod:
-  image: docker:19.03.12
+  image: docker:stable
   stage: deploy
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
