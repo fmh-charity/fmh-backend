@@ -59,7 +59,7 @@ public class NoteController {
     }
 
     @ApiOperation(value = "обработка записок по статусной модели")
-    @PostMapping("/status/{noteId}")
+    @PatchMapping("/status/{noteId}")
     public NoteDto changeStatus(
             @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
             @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status

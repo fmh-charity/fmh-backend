@@ -47,6 +47,18 @@ public class ClaimServiceImpl implements ClaimService{
     }
 
     @Override
+    public ClaimDto updateClaim(ClaimDto claimDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Claim claim = conversionService.convert(claimDto, Claim.class);
+        if (StatusE.active.equals(claim.getStatus())){
+            claim = claimRepository.save(claim);
+            return conversionService.convert(claim, ClaimDto.class);
+        }else {
+            throw new IllegalArgumentException("невозможно записку с данным статусом !");
+        }
+    }
+
+    @Override
     public ClaimDto getClaim(Integer id) {
         Optional<Claim> optionalClaim = claimRepository.findById(id);
         if (optionalClaim.isPresent()) {

@@ -27,4 +27,8 @@ public interface ClaimService {
      * @return заявка с полной инфой
      */
     ClaimDto getClaim(Integer id);
+    /**
+     * возвращает обновлённую записку
+     */
+    ClaimDto updateClaim(ClaimDto claimDto);
 }

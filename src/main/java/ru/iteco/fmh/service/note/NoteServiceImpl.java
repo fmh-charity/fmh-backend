@@ -43,7 +43,7 @@ public class NoteServiceImpl implements NoteService {
         note = noteRepository.save(note);
         return conversionService.convert(note, NoteDto.class);
     }
-
+    @Override
     public NoteDto getNote(Integer id) {
         Optional<Note> optionalNote = noteRepository.findById(id);
         if (optionalNote.isPresent()) {

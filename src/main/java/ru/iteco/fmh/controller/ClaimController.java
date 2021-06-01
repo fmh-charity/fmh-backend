@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -35,9 +36,15 @@ public class ClaimController {
         return claimService.createClaim(claimDto);
     }
 
-    @ApiOperation(value = "Получения полной инфы завяки по id")
+    @ApiOperation(value = "Получения полной информации заявки по id")
     @GetMapping("/{id}")
     public ClaimDto getClaim(@ApiParam(value = "идентификатор заявки", required = true) @PathVariable int id) {
         return claimService.getClaim(id);
+    }
+
+    @ApiOperation(value = "изменение информации по заявке")
+    @PatchMapping
+    public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
+        return claimService.updateClaim(claimDtoDto);
     }
 }
