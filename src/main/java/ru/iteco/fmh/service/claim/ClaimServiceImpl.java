@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.model.Claim;
 import ru.iteco.fmh.model.StatusE;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,8 +53,37 @@ public class ClaimServiceImpl implements ClaimService{
             claim = claimRepository.save(claim);
             return conversionService.convert(claim, ClaimDto.class);
         }else {
-            throw new IllegalArgumentException("невозможно записку с данным статусом !");
+            throw new IllegalArgumentException("невозможно изменить заявку с данным статусом");
         }
+    }
+
+    @Transactional
+    @Override
+    public ClaimDto changeStatus(Integer claimId, StatusE status) {
+        Optional<Claim> optionalClaim = claimRepository.findById(claimId);
+        if (optionalClaim.isPresent()) {
+            ConversionService conversionService = factoryBean.getObject();
+            Claim claim = optionalClaim.get();
+            if (claim.getStatus().equals(StatusE.active)) {
+                switch (status) {
+                    case canceled:
+                        claim.setStatus(StatusE.canceled);
+                        claim.setFactExecuteDate(null);
+                        break;
+                    case executed:
+                        claim.setStatus(StatusE.executed);
+                        claim.setFactExecuteDate(LocalDateTime.now().withNano(0));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("невозможно изменить статус, т.к. " +
+                                "устанавливаемого статуса не существует");
+                }
+                claim = claimRepository.save(claim);
+                return conversionService.convert(claim, ClaimDto.class);
+            }
+            throw new IllegalArgumentException("Невозможно изменить статус неактивной заявки");
+        }
+        throw new IllegalArgumentException("Заявки с таким ID не существует");
     }
 
     @Override
@@ -67,3 +98,5 @@ public class ClaimServiceImpl implements ClaimService{
         }
     }
 }
+
+

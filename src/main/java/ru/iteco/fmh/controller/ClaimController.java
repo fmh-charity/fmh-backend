@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
@@ -44,5 +46,13 @@ public class ClaimController {
     @PatchMapping
     public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
         return claimService.updateClaim(claimDtoDto);
+    }
+
+    @ApiOperation(value = "изменение заявки по статусной модели")
+    @PatchMapping("/status/{claimId}")
+    public ClaimDto changeStatus(
+            @ApiParam(value = "идентификатор заявки", required = true)@PathVariable("claimId") int claimId,
+            @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") StatusE status)  {
+        return claimService.changeStatus(claimId, status);
     }
 }

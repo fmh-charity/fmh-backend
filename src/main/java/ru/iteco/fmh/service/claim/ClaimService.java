@@ -1,6 +1,8 @@
 package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.model.StatusE;
 
 import java.util.List;
 
@@ -10,25 +12,33 @@ import java.util.List;
 public interface ClaimService {
     /**
      * возвращает полный перечень всех заявок
-     * @return список с полной инфой по заявкам
+     * @return список с полной информацией по заявкам
      */
     List<ClaimShortInfoDto> getAllClaims();
 
     /**
      * создает новую заявку
      * @param claimDto информация по новой заявке
-     * @return заявку с полной инфой
+     * @return заявку с полной информацией
      */
     ClaimDto createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра
      * @param id ид заявки
-     * @return заявка с полной инфой
+     * @return заявка с полной информацией
      */
     ClaimDto getClaim(Integer id);
     /**
-     * возвращает обновлённую записку
+     * возвращает обновлённую заявку
      */
     ClaimDto updateClaim(ClaimDto claimDto);
+
+    /**
+     * изменяет статус заявки на - исполнен, отменен
+     * @param claimId ид заявки
+     * @param status значение нового статуса для заявки
+     * @return заявку с измененным статусом
+     */
+    ClaimDto changeStatus (Integer claimId, StatusE status);
 }

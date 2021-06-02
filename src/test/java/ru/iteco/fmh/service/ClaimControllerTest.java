@@ -14,6 +14,8 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.dto.user.UserDto;
 
+import ru.iteco.fmh.model.StatusE;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -79,7 +81,7 @@ public class ClaimControllerTest {
     @Test
     public void getAllActiveNotesSort() {
         List<ClaimShortInfoDto> claimShortInfoDtoList = sut.getAllClaims();
-        assertEquals(5, claimShortInfoDtoList.size());
+        assertEquals(4, claimShortInfoDtoList.size());
         assertTrue(claimShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
                 (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
         }
@@ -106,4 +108,19 @@ public class ClaimControllerTest {
                 ()-> assertEquals(expected.getComment(), result.getComment())
         );
     }
+
+    @Test
+    public void changeStatusShouldPassSuccess() {
+        int claimId = 4;
+        ClaimDto resultCancelled = sut.changeStatus(claimId, StatusE.executed);
+        assertEquals(StatusE.executed, resultCancelled.getStatus());
+        assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
+    }
+    @Test
+    public void changeStatusNotShouldPassSuccessWrongId() {
+        int claimId = 12;
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, StatusE.executed));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.active));
+    }
+
 }

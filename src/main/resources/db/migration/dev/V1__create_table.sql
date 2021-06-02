@@ -160,9 +160,9 @@ create table claim
     description       varchar not null,
     creator_id        int     not null,
     executor_id       int,
-    create_date       date,
-    plan_execute_date date,
-    fact_execute_date date,
+    create_date       timestamp,
+    plan_execute_date timestamp,
+    fact_execute_date timestamp,
     status            varchar not null,
     comment           varchar,
     deleted           boolean
