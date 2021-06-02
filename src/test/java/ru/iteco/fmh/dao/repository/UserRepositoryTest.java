@@ -12,10 +12,8 @@ import ru.iteco.fmh.model.user.User;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserRepositoryTest {
-
     @Autowired
     UserRepository repository;
-
     @Test
     public void testWriteSuccess() {
         User entity = User.builder()
@@ -23,11 +21,8 @@ public class UserRepositoryTest {
                 .lastName(TestUtils.getAlphabeticStringR())
                 .middleName(TestUtils.getAlphabeticStringR())
                 .build();
-
         entity = repository.save(entity);
-
         Assertions.assertNotNull(entity.getId());
-
         repository.delete(entity);
     }
 }

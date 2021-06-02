@@ -35,36 +35,27 @@ public class ClaimServiceTest {
     @Test
     public void createClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
-
         // given
         Claim claim = getClaim();
-
         when(claimRepository.save(any())).thenReturn(claim);
-
         ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
         ClaimDto result = sut.createClaim(expected);
-
         assertEquals(expected, result);
     }
 
     @Test
     public void getClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
-
         // given
         Claim claim = getClaim();
         int claimId = 1;
-
         when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
-
         ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
         ClaimDto result = sut.getClaim(claimId);
-
         assertEquals(expected, result);
     }
 
     private static Claim getClaim() {
-
         return Claim.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .creator(getUser())

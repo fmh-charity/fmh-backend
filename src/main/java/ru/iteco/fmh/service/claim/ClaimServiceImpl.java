@@ -7,12 +7,9 @@ import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

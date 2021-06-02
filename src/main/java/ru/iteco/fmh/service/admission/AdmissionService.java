@@ -1,7 +1,6 @@
 package ru.iteco.fmh.service.admission;
 
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
 
 import java.util.List;
 

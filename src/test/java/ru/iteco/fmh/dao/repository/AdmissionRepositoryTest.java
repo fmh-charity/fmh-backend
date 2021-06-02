@@ -20,10 +20,8 @@ public class AdmissionRepositoryTest {
 
     @Autowired
     AdmissionRepository repository;
-
     @Autowired
     PatientRepository patientRepository;
-
     Patient patient;
     Admission entity;
 
@@ -37,21 +35,15 @@ public class AdmissionRepositoryTest {
                 .build();
 
         patient = patientRepository.save(patient);
-
         entity = Admission.builder()
-
                 .planDateIn(LocalDate.now())
-
                 .factDateIn(LocalDate.now())
                 .patient(patient)
                 .build();
 
         entity = repository.save(entity);
-
         Assertions.assertNotNull(entity.getId());
-
         repository.delete(entity);
-
         patientRepository.delete(patient);
     }
 }

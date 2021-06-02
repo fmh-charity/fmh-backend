@@ -5,9 +5,6 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Пользователь

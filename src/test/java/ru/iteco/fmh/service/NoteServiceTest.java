@@ -41,12 +41,9 @@ public class NoteServiceTest {
         String newComment = "test comment";
         String expected = "first comment".concat(", ").concat(newComment);
         resultNote.setComment(expected);
-
         when(noteRepository.findById(any())).thenReturn(Optional.of(note));
         when(noteRepository.save(any())).thenReturn(resultNote);
-
         NoteDto result = sut.addComment(any(), newComment);
-
         assertEquals(expected, result.getComment());
     }
 
@@ -55,12 +52,9 @@ public class NoteServiceTest {
         // given
         Note activeNote = getNote(StatusE.active);
         Note cancelledNote = getNote(StatusE.canceled);
-
         when(noteRepository.findById(any())).thenReturn(Optional.of(activeNote));
         when(noteRepository.save(any())).thenReturn(cancelledNote);
-
         NoteDto result = sut.changeStatus(any(), StatusE.canceled);
-
         assertEquals(StatusE.canceled, result.getStatus());
     }
 
@@ -68,9 +62,7 @@ public class NoteServiceTest {
     public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
         Note executedNote = getNote(StatusE.executed);
-
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
-
         assertThrows(IllegalArgumentException.class,
                 () -> sut.changeStatus(any(), StatusE.canceled));
     }
@@ -81,13 +73,10 @@ public class NoteServiceTest {
 
         // given
         Note note = getNote(StatusE.active);
-
         when(noteRepository.save(any())).thenReturn(note);
-
         // result
         NoteDto expected = conversionService.convert(note, NoteDto.class);
         NoteDto result = sut.createOrUpdateNote(expected);
-
         assertEquals(expected, result);
     }
 

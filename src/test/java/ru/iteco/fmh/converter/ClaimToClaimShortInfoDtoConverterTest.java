@@ -3,15 +3,12 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimShortInfoDtoConverter;
-import ru.iteco.fmh.converter.note.fromNote.NoteToShortDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.Note;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getClaim;
-import static ru.iteco.fmh.TestUtils.getNote;
+
 
 public class ClaimToClaimShortInfoDtoConverterTest {
 

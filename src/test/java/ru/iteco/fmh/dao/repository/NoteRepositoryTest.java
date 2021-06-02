@@ -56,7 +56,6 @@ public class NoteRepositoryTest {
                 .build();
 
         entity = repository.save(entity);
-
         entity2 = Note.builder()
                 .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)

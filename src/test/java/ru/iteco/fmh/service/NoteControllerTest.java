@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getNoteDto;
-import static ru.iteco.fmh.TestUtils.getPatientDto;
+
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -43,9 +43,7 @@ public class NoteControllerTest {
         int noteId = 1;
         String givenComment = "test comment";
         String expected = "note1-comment, test comment";
-
         NoteDto result = sut.addComment(noteId, givenComment);
-
         assertEquals(expected, result.getComment());
     }
 
@@ -53,11 +51,8 @@ public class NoteControllerTest {
     public void changeStatusShouldPassSuccess() {
         // given
         int noteId1 = 1;
-
         NoteDto resultCancelled = sut.changeStatus(noteId1, StatusE.canceled);
-
         assertEquals(StatusE.canceled, resultCancelled.getStatus());
-
         // after
         Note note = noteRepository.findById(1).get();
         note.setStatus(StatusE.active);
@@ -66,7 +61,6 @@ public class NoteControllerTest {
 
     @Test
     public void getAllActiveNotesSort() {
-
         List<NoteShortInfoDto> noteShortInfoDtoList = sut.getAllNotes();
         assertEquals(5, noteShortInfoDtoList.size());
         assertTrue(noteShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
@@ -77,15 +71,12 @@ public class NoteControllerTest {
     public void creatNoteShouldPassSuccess() {
         //given
         NoteDto given = getNoteDto();
-
         UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
         given.setCreator(userToUserDtoConverter.convert(userRepository.findUserById(2)));
         given.setExecutor(userToUserDtoConverter.convert(userRepository.findUserById(3)));
         given.getPatient().setId(2);
-
         NoteDto result = sut.createNote(given);
         given.setId(result.getId());
-
         assertAll(
                 () -> assertEquals(given.getStatus(), result.getStatus()),
                 () -> assertEquals(given.getComment(), result.getComment()),
@@ -97,7 +88,6 @@ public class NoteControllerTest {
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
                 () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
         );
-
         // deleting result entity
         noteRepository.deleteById(result.getId());
     }

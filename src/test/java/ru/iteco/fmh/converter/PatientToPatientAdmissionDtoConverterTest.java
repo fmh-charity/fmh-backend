@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientAdmissionDtoConverter;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getPatient;
