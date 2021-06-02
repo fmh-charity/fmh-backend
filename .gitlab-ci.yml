@@ -2,8 +2,6 @@ image: maven:3-jdk-11
 
 services:
     - name: docker:dind
-      entrypoint: ["env", "-u", "DOCKER_HOST"]
-      command: ["dockerd-entrypoint.sh"]
 variables:
   # Instruct Docker not to start over TLS.
     DOCKER_TLS_CERTDIR: ""
