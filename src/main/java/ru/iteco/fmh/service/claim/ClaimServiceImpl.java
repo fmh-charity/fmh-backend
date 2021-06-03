@@ -94,7 +94,7 @@ public class ClaimServiceImpl implements ClaimService{
             Claim claim = optionalClaim.get();
             return conversionService.convert(claim, ClaimDto.class);
         } else {
-            return null;
+            throw new IllegalArgumentException("Заявки с таким ID не существует");
         }
     }
 }
