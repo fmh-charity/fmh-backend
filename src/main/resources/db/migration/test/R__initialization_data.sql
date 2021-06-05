@@ -63,17 +63,17 @@ values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lastname', 'u
 
 insert into note (patient_id, description, creator_id, executor_id, create_date, plan_execute_date,
                   fact_execute_date, status, comment, deleted)
-values (1, 'note1-description', 1, 1, now(), now(), now(), 'active', 'note1-comment', false),
-       (2, 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', now(), 'active', 'note2-comment', false),
-       (3, 'note3-description', 3, 3, now(), now(), now(), 'active', 'note3-comment', false),
-       (4, 'note4-description', 4, 4, now(), now(), now(), 'executed', 'note4-comment', false),
-       (5, 'note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', now(), 'active', 'note5-comment', true),
-       (1, 'note6-description', 5, 5, now(), now(), now(), 'active', 'note6-comment', false);
+values (1, 'note1-description', 1, 1, now(), now(), null, 'ACTIVE', 'note1-comment', false),
+       (2, 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', null, 'ACTIVE', 'note2-comment', false),
+       (3, 'note3-description', 3, 3, now(), now(), null, 'ACTIVE', 'note3-comment', false),
+       (4, 'note4-description', 4, 4, now(), now(), now(), 'EXECUTED', 'note4-comment', false),
+       (5, 'note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', null, 'ACTIVE', 'note5-comment', true),
+       (1, 'note6-description', 5, 5, now(), now(), null, 'ACTIVE', 'note6-comment', false);
 
 insert into claim (description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
                    status, comment, deleted)
-values ('claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', null, 'active', 'claim1-comment', false),
-       ('claim2-description', 2, 2, now(), now() + INTERVAL '1 DAY', null, 'active', 'claim2-comment', false),
-       ('claim3-description', 3, 3, now(), now(),null, 'active', 'claim3-comment', false),
-       ('claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'active', 'claim4-comment', false),
-       ('claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'active', 'claim5-comment', false);
+values ('claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', null, 'ACTIVE', 'claim1-comment', false),
+       ('claim2-description', 2, 2, now(), now() + INTERVAL '1 DAY', null, 'ACTIVE', 'claim2-comment', false),
+       ('claim3-description', 3, 3, now(), now(),null, 'ACTIVE', 'claim3-comment', false),
+       ('claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'ACTIVE', 'claim4-comment', false),
+       ('claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'ACTIVE', 'claim5-comment', false);

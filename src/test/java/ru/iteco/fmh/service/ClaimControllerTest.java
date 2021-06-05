@@ -14,6 +14,8 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.dto.user.UserDto;
 
+import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.StatusE.*;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -112,15 +115,22 @@ public class ClaimControllerTest {
     @Test
     public void changeStatusShouldPassSuccess() {
         int claimId = 4;
-        ClaimDto resultCancelled = sut.changeStatus(claimId, StatusE.executed);
-        assertEquals(StatusE.executed, resultCancelled.getStatus());
+        int claimId2 = 5;
+        ClaimDto resultCancelled = sut.changeStatus(claimId, EXECUTED);
+        ClaimDto resultCancelled2 = sut.changeStatus(claimId2, CANCELED);
+        assertEquals(EXECUTED, resultCancelled.getStatus());
         assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
+        assertEquals(CANCELED, resultCancelled2.getStatus());
+        assertNull(resultCancelled2.getFactExecuteDate());
+        Claim claim = claimRepository.findById(4).get();
+        claim.setStatus(ACTIVE);
+        claimRepository.save(claim);
     }
     @Test
     public void changeStatusNotShouldPassSuccessWrongId() {
         int claimId = 12;
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, StatusE.executed));
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.active));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(5, ACTIVE));
     }
 
 }

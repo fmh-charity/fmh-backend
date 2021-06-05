@@ -12,14 +12,13 @@ import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.Note;
-import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getNoteDto;
-
+import static ru.iteco.fmh.model.StatusE.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -51,13 +50,15 @@ public class NoteControllerTest {
     public void changeStatusShouldPassSuccess() {
         // given
         int noteId1 = 1;
-        NoteDto resultCancelled = sut.changeStatus(noteId1, StatusE.canceled);
-        assertEquals(StatusE.canceled, resultCancelled.getStatus());
-        // after
+        NoteDto resultCancelled = sut.changeStatus(noteId1, EXECUTED);
+        assertEquals(EXECUTED, resultCancelled.getStatus());
+//        // after
         Note note = noteRepository.findById(1).get();
-        note.setStatus(StatusE.active);
+        note.setStatus(ACTIVE);
         noteRepository.save(note);
     }
+
+
 
     @Test
     public void getAllActiveNotesSort() {

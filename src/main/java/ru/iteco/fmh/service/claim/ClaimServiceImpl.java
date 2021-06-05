@@ -11,15 +11,19 @@ import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.model.Claim;
 import ru.iteco.fmh.model.StatusE;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ru.iteco.fmh.model.StatusE.ACTIVE;
 
 @Service
 public class ClaimServiceImpl implements ClaimService{
     private ClaimRepository claimRepository;
     private ConversionServiceFactoryBean factoryBean;
+
+
 
     @Autowired
     public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean) {
@@ -30,7 +34,7 @@ public class ClaimServiceImpl implements ClaimService{
 
     @Override
     public List<ClaimShortInfoDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(StatusE.active);
+        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(ACTIVE);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimShortInfoDto.class))
@@ -49,13 +53,14 @@ public class ClaimServiceImpl implements ClaimService{
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
         Claim claim = conversionService.convert(claimDto, Claim.class);
-        if (StatusE.active.equals(claim.getStatus())){
+        if (ACTIVE.equals(claim.getStatus())){
             claim = claimRepository.save(claim);
             return conversionService.convert(claim, ClaimDto.class);
         }else {
             throw new IllegalArgumentException("невозможно изменить заявку с данным статусом");
         }
     }
+
 
     @Transactional
     @Override
@@ -64,20 +69,8 @@ public class ClaimServiceImpl implements ClaimService{
         if (optionalClaim.isPresent()) {
             ConversionService conversionService = factoryBean.getObject();
             Claim claim = optionalClaim.get();
-            if (claim.getStatus().equals(StatusE.active)) {
-                switch (status) {
-                    case canceled:
-                        claim.setStatus(StatusE.canceled);
-                        claim.setFactExecuteDate(null);
-                        break;
-                    case executed:
-                        claim.setStatus(StatusE.executed);
-                        claim.setFactExecuteDate(LocalDateTime.now().withNano(0));
-                        break;
-                    default:
-                        throw new IllegalArgumentException("невозможно изменить статус, т.к. " +
-                                "устанавливаемого статуса не существует");
-                }
+            if (ACTIVE.equals(claim.getStatus())) {
+                status.doActionDependsOfStatus(claim);
                 claim = claimRepository.save(claim);
                 return conversionService.convert(claim, ClaimDto.class);
             }

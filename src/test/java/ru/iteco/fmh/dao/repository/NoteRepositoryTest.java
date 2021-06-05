@@ -51,7 +51,7 @@ public class NoteRepositoryTest {
                 .createDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .planExecuteDate(LocalDateTime.now().plusDays(2))
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(TestUtils.getAlphabeticStringR())
                 .build();
 
@@ -64,7 +64,7 @@ public class NoteRepositoryTest {
                 .createDate(LocalDateTime.now().minusDays(1))
                 .factExecuteDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now().plusDays(2))
-                .status(StatusE.executed)
+                .status(StatusE.EXECUTED)
                 .comment(TestUtils.getAlphabeticStringR())
                 .build();
 

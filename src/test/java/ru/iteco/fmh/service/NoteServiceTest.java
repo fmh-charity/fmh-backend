@@ -36,8 +36,8 @@ public class NoteServiceTest {
     @Test
     public void addCommentShouldPassSuccess() {
         // given
-        Note note = getNote(StatusE.active);
-        Note resultNote = getNote(StatusE.active);
+        Note note = getNote(StatusE.ACTIVE);
+        Note resultNote = getNote(StatusE.ACTIVE);
         String newComment = "test comment";
         String expected = "first comment".concat(", ").concat(newComment);
         resultNote.setComment(expected);
@@ -50,21 +50,21 @@ public class NoteServiceTest {
     @Test
     public void changeStatusShouldPassSuccess() {
         // given
-        Note activeNote = getNote(StatusE.active);
-        Note cancelledNote = getNote(StatusE.canceled);
+        Note activeNote = getNote(StatusE.ACTIVE);
+        Note cancelledNote = getNote(StatusE.CANCELED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(activeNote));
         when(noteRepository.save(any())).thenReturn(cancelledNote);
-        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
-        assertEquals(StatusE.canceled, result.getStatus());
+        NoteDto result = sut.changeStatus(any(), StatusE.CANCELED);
+        assertEquals(StatusE.CANCELED, result.getStatus());
     }
 
     @Test
     public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
-        Note executedNote = getNote(StatusE.executed);
+        Note executedNote = getNote(StatusE.EXECUTED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
         assertThrows(IllegalArgumentException.class,
-                () -> sut.changeStatus(any(), StatusE.canceled));
+                () -> sut.changeStatus(any(), StatusE.CANCELED));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class NoteServiceTest {
         ConversionService conversionService = factoryBean.getObject();
 
         // given
-        Note note = getNote(StatusE.active);
+        Note note = getNote(StatusE.ACTIVE);
         when(noteRepository.save(any())).thenReturn(note);
         // result
         NoteDto expected = conversionService.convert(note, NoteDto.class);

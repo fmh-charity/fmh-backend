@@ -64,7 +64,7 @@ public class ClaimServiceTest {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }

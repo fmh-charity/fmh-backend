@@ -55,7 +55,7 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }
@@ -125,7 +125,7 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .executor(getUserDto())
                 .creator(getUserDto())
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }
@@ -166,7 +166,7 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }
@@ -180,7 +180,7 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .executor(getUserDto())
                 .creator(getUserDto())
-                .status(StatusE.active)
+                .status(StatusE.ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }

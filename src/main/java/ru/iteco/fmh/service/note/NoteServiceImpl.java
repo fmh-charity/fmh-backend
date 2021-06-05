@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.model.StatusE.ACTIVE;
+
 @Service
 public class NoteServiceImpl implements NoteService {
 
@@ -29,7 +31,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<NoteShortInfoDto> getAllNotes() {
-        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDate(StatusE.active);
+        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDate(ACTIVE);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
@@ -59,7 +61,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteDto> getPatientNotes(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
-        return noteRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, StatusE.active).stream()
+        return noteRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, ACTIVE).stream()
                 .map(note -> conversionService.convert(note, NoteDto.class))
                 .collect(Collectors.toList());
     }
@@ -92,9 +94,8 @@ public class NoteServiceImpl implements NoteService {
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
             ConversionService conversionService = factoryBean.getObject();
-
-            if (StatusE.active.equals(note.getStatus())) {
-                note.setStatus(status);
+            if (ACTIVE.equals(note.getStatus())) {
+                status.doActionDependsOfStatus(note);
                 note = noteRepository.save(note);
                 return conversionService.convert(note, NoteDto.class);
             } else {
