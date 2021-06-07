@@ -32,7 +32,7 @@ public class ClaimController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public ClaimDto createClaim(@RequestBody ClaimDto claimDto) {
+    public Integer createClaim(@RequestBody ClaimDto claimDto) {
         return claimService.createClaim(claimDto);
     }
 
@@ -44,7 +44,7 @@ public class ClaimController {
 
     @ApiOperation(value = "изменение информации по заявке")
     @PatchMapping
-    public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
+    public Integer updateClaim(@RequestBody ClaimDto claimDtoDto) {
         return claimService.updateClaim(claimDtoDto);
     }
 

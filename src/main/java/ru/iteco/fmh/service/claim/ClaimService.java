@@ -19,9 +19,9 @@ public interface ClaimService {
     /**
      * создает новую заявку
      * @param claimDto информация по новой заявке
-     * @return заявку с полной информацией
+     * @return id заявки
      */
-    ClaimDto createClaim(ClaimDto claimDto);
+    Integer createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра
@@ -30,9 +30,11 @@ public interface ClaimService {
      */
     ClaimDto getClaim(Integer id);
     /**
-     * возвращает обновлённую заявку
+     * обновляет заявку
+     * @param claimDto информация по заявке для обновления
+     * @return id обновленной заявки
      */
-    ClaimDto updateClaim(ClaimDto claimDto);
+    Integer updateClaim(ClaimDto claimDto);
 
     /**
      * изменяет статус заявки на - исполнен, отменен

@@ -19,7 +19,7 @@ public interface NoteService {
     /**
      * возвращает новую записку
      */
-    NoteDto createOrUpdateNote(NoteDto noteDto);
+    Integer createOrUpdateNote(NoteDto noteDto);
 
     /**
      * возвращает список всех неисполненных записок по пациенту

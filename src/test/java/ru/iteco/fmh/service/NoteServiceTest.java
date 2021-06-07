@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
@@ -20,6 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.StatusE.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,8 +36,8 @@ public class NoteServiceTest {
     @Test
     public void addCommentShouldPassSuccess() {
         // given
-        Note note = getNote(StatusE.ACTIVE);
-        Note resultNote = getNote(StatusE.ACTIVE);
+        Note note = getNote(ACTIVE);
+        Note resultNote = getNote(ACTIVE);
         String newComment = "test comment";
         String expected = "first comment".concat(", ").concat(newComment);
         resultNote.setComment(expected);
@@ -50,34 +50,35 @@ public class NoteServiceTest {
     @Test
     public void changeStatusShouldPassSuccess() {
         // given
-        Note activeNote = getNote(StatusE.ACTIVE);
-        Note cancelledNote = getNote(StatusE.CANCELED);
+        Note activeNote = getNote(ACTIVE);
+        Note cancelledNote = getNote(CANCELED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(activeNote));
         when(noteRepository.save(any())).thenReturn(cancelledNote);
-        NoteDto result = sut.changeStatus(any(), StatusE.CANCELED);
-        assertEquals(StatusE.CANCELED, result.getStatus());
+        NoteDto result = sut.changeStatus(any(), CANCELED);
+        assertEquals(CANCELED, result.getStatus());
     }
 
     @Test
     public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
-        Note executedNote = getNote(StatusE.EXECUTED);
+        Note executedNote = getNote(EXECUTED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
         assertThrows(IllegalArgumentException.class,
-                () -> sut.changeStatus(any(), StatusE.CANCELED));
+                () -> sut.changeStatus(any(), CANCELED));
     }
 
     @Test
     public void createNoteShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
-        Note note = getNote(StatusE.ACTIVE);
+        Note note = getNote(ACTIVE);
+        note.setId(7);
+        NoteDto dto = factoryBean.getObject().convert(note, NoteDto.class);
+
         when(noteRepository.save(any())).thenReturn(note);
-        // result
-        NoteDto expected = conversionService.convert(note, NoteDto.class);
-        NoteDto result = sut.createOrUpdateNote(expected);
-        assertEquals(expected, result);
+
+        Integer resultId = sut.createOrUpdateNote(dto);
+
+        assertEquals(7, resultId);
     }
 
 

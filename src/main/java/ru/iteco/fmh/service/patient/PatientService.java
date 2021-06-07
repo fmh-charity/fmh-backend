@@ -9,7 +9,7 @@ public interface PatientService {
     // просмотр списка пациентов
     List<PatientAdmissionDto> getAllPatientsByStatus(List<String> patientStatusList);
 
-    PatientDto createOrUpdatePatient(PatientDto patientDto);
+    Integer createOrUpdatePatient(PatientDto patientDto);
 
     PatientDto getPatient(Integer id);
 

@@ -38,8 +38,8 @@ public class PatientController {
     }
 
     @ApiOperation(value = "создание пациента")
-    @PostMapping("/create")
-    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
+    @PostMapping
+    public Integer createPatient(@RequestBody PatientDto patientDto) {
         return patientService.createOrUpdatePatient(patientDto);
     }
 
@@ -67,8 +67,8 @@ public class PatientController {
     }
 
     @ApiOperation(value = "изменение пациента")
-    @PatchMapping("/update")
-    public PatientDto updatePatient(
+    @PatchMapping
+    public Integer updatePatient(
             @RequestBody PatientDto patientDto
     ) {
        return patientService.createOrUpdatePatient(patientDto);

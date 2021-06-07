@@ -8,6 +8,7 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,12 +38,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDto createOrUpdatePatient(PatientDto dto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Patient entity = conversionService.convert(dto, Patient.class);
-        entity = patientRepository.save(entity);
-        return conversionService.convert(entity, PatientDto.class);
+    public Integer createOrUpdatePatient(PatientDto dto) {
+        Patient entity = factoryBean.getObject().convert(dto, Patient.class);
+        return patientRepository.save(entity).getId();
     }
+
 
     @Override
     public PatientDto getPatient(Integer id) {

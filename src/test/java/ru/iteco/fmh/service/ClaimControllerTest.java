@@ -12,10 +12,12 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
 
 import ru.iteco.fmh.model.Claim;
 import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.StatusE;
 
 import java.time.LocalDateTime;
@@ -37,20 +39,27 @@ public class ClaimControllerTest {
     ConversionServiceFactoryBean factoryBean;
     @Autowired
     UserRepository userRepository;
+
     @Test
     public void createClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
+
         // given
         ClaimDto given = getClaimDto();
         given.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
         given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        given.setId(6);
-        ClaimDto result = sut.createClaim(given);
+
+        Integer id = sut.createClaim(given);
+
+        assertNotNull(id);
+
+        Claim result = claimRepository.findById(id).get();
+
+
         assertAll(
-                ()-> assertEquals(given.getId(), result.getId()),
                 ()-> assertEquals(given.getDescription(), result.getDescription()),
-                ()-> assertEquals(given.getCreator(), result.getCreator()),
-                ()-> assertEquals(given.getExecutor(), result.getExecutor()),
+                ()-> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
+                ()-> assertEquals(given.getExecutor(),conversionService.convert(result.getExecutor(), UserDto.class)),
                 ()-> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 ()-> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
                 ()-> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -59,7 +68,7 @@ public class ClaimControllerTest {
         );
 
         // deleting result entity
-        claimRepository.deleteById(result.getId());
+        claimRepository.deleteById(id);
     }
 
     @Test
@@ -92,22 +101,23 @@ public class ClaimControllerTest {
     @Test
     public void updateClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
+
+        // given
         int claimId = 3;
-        String comment = "change comment";
-        LocalDateTime date = LocalDateTime.now().plusDays(2);
         ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        expected.setComment(comment);
-        expected.setPlanExecuteDate(date);
-        ClaimDto result = sut.updateClaim(expected);
+        String newComment = "change comment";
+        LocalDateTime newDate = LocalDateTime.now().plusDays(2);
+        expected.setComment(newComment);
+        expected.setPlanExecuteDate(newDate);
+
+        Integer id = sut.updateClaim(expected);
+
+        assertNotNull(id);
+
+        Claim result = claimRepository.findById(id).get();
+
         assertAll(
-                ()-> assertEquals(expected.getId(), result.getId()),
-                ()-> assertEquals(expected.getDescription(), result.getDescription()),
-                ()-> assertEquals(expected.getCreator(), result.getCreator()),
-                ()-> assertEquals(expected.getExecutor(), result.getExecutor()),
-                ()-> assertEquals(expected.getCreateDate(), result.getCreateDate()),
                 ()-> assertEquals(expected.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                ()-> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
-                ()-> assertEquals(expected.getStatus(), result.getStatus()),
                 ()-> assertEquals(expected.getComment(), result.getComment())
         );
     }

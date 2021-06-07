@@ -39,12 +39,11 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto createOrUpdateNote(NoteDto noteDto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Note note = conversionService.convert(noteDto, Note.class);
-        note = noteRepository.save(note);
-        return conversionService.convert(note, NoteDto.class);
+    public Integer createOrUpdateNote(NoteDto noteDto) {
+        Note note = factoryBean.getObject().convert(noteDto, Note.class);
+        return noteRepository.save(note).getId();
     }
+
     @Override
     public NoteDto getNote(Integer id) {
         Optional<Note> optionalNote = noteRepository.findById(id);
@@ -53,7 +52,7 @@ public class NoteServiceImpl implements NoteService {
             Note note = optionalNote.get();
             return conversionService.convert(note, NoteDto.class);
         } else {
-            return null;
+            throw new IllegalArgumentException("записка не найдена!");
         }
     }
 
@@ -95,7 +94,7 @@ public class NoteServiceImpl implements NoteService {
             Note note = optionalNote.get();
             ConversionService conversionService = factoryBean.getObject();
             if (ACTIVE.equals(note.getStatus())) {
-                status.doActionDependsOfStatus(note);
+                status.changeStatus(note);
                 note = noteRepository.save(note);
                 return conversionService.convert(note, NoteDto.class);
             } else {

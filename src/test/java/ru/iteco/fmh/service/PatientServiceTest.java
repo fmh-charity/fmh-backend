@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,12 +42,12 @@ public class PatientServiceTest {
         when(patientRepository.findAll()).thenReturn(getPatientList());
 
         // given
-        List<String> statusListAll = List.of(AdmissionsStatus.EXPECTED.name(),
-                AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name());
-        List<String> statusListDISCHARGED = List.of(AdmissionsStatus.DISCHARGED.name());
-        List<String> statusListACTIVE = List.of(AdmissionsStatus.ACTIVE.name());
-        List<String> statusListEXPECTED = List.of(AdmissionsStatus.EXPECTED.name());
-        List<String> statusListMIXED = List.of(AdmissionsStatus.EXPECTED.name(), AdmissionsStatus.DISCHARGED.name());
+        List<String> statusListAll = List.of(EXPECTED.name(),
+                ACTIVE.name(), DISCHARGED.name());
+        List<String> statusListDISCHARGED = List.of(DISCHARGED.name());
+        List<String> statusListACTIVE = List.of(ACTIVE.name());
+        List<String> statusListEXPECTED = List.of(EXPECTED.name());
+        List<String> statusListMIXED = List.of(EXPECTED.name(), DISCHARGED.name());
         List<String> statusListEmpty = List.of();
 
         // result
@@ -69,18 +70,16 @@ public class PatientServiceTest {
 
     @Test
     public void createOrUpdatePatientShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         Patient patient = getPatient();
+        patient.setId(7);
+        PatientDto dto = factoryBean.getObject().convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
 
-        // result
-        PatientDto expected = conversionService.convert(patient, PatientDto.class);
-        PatientDto result = sut.createOrUpdatePatient(expected);
+        Integer resultId = sut.createOrUpdatePatient(dto);
 
-        assertEquals(expected, result);
+        assertEquals(7, resultId);
     }
 
     @Test
@@ -100,9 +99,9 @@ public class PatientServiceTest {
 
     private List<Patient> getPatientList() {
         List<Patient> patientList = new ArrayList<>();
-        patientList.add(getAdmissionPatient(AdmissionsStatus.DISCHARGED));
-        patientList.add(getAdmissionPatient(AdmissionsStatus.ACTIVE));
-        patientList.add(getAdmissionPatient(AdmissionsStatus.EXPECTED));
+        patientList.add(getAdmissionPatient(DISCHARGED));
+        patientList.add(getAdmissionPatient(ACTIVE));
+        patientList.add(getAdmissionPatient(EXPECTED));
         patientList.add(getEmptyAdmissionPatient());
         return patientList;
     }

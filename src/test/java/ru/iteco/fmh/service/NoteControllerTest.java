@@ -5,12 +5,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NoteController;
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
 
@@ -52,7 +53,8 @@ public class NoteControllerTest {
         int noteId1 = 1;
         NoteDto resultCancelled = sut.changeStatus(noteId1, EXECUTED);
         assertEquals(EXECUTED, resultCancelled.getStatus());
-//        // after
+
+        // after
         Note note = noteRepository.findById(1).get();
         note.setStatus(ACTIVE);
         noteRepository.save(note);
@@ -70,26 +72,31 @@ public class NoteControllerTest {
 
     @Test
     public void creatNoteShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
         //given
         NoteDto given = getNoteDto();
-        UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
-        given.setCreator(userToUserDtoConverter.convert(userRepository.findUserById(2)));
-        given.setExecutor(userToUserDtoConverter.convert(userRepository.findUserById(3)));
+        given.setCreator(conversionService.convert(userRepository.findUserById(2), UserDto.class));
+        given.setExecutor(conversionService.convert(userRepository.findUserById(3), UserDto.class));
         given.getPatient().setId(2);
-        NoteDto result = sut.createNote(given);
-        given.setId(result.getId());
+
+        Integer id = sut.createNote(given);
+
+        assertNotNull(id);
+
+        Note result = noteRepository.findById(id).get();
+
         assertAll(
                 () -> assertEquals(given.getStatus(), result.getStatus()),
                 () -> assertEquals(given.getComment(), result.getComment()),
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getCreator(), result.getCreator()),
-                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
+                () -> assertEquals(given.getExecutor(), conversionService.convert(result.getExecutor(), UserDto.class)),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(given.getDescription(), result.getDescription()),
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
                 () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
         );
         // deleting result entity
-        noteRepository.deleteById(result.getId());
+        noteRepository.deleteById(id);
     }
 }

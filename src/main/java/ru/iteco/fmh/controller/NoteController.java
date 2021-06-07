@@ -32,7 +32,7 @@ public class NoteController {
 
     @ApiOperation(value = "Создание новой записки")
     @PostMapping
-    public NoteDto createNote(@RequestBody NoteDto noteDto) {
+    public Integer createNote(@RequestBody NoteDto noteDto) {
         return noteService.createOrUpdateNote(noteDto);
     }
 
@@ -45,7 +45,7 @@ public class NoteController {
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping
-    public NoteDto updateNote(
+    public Integer updateNote(
             @RequestBody NoteDto noteDto) {
         return noteService.createOrUpdateNote(noteDto);
     }

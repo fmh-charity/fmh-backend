@@ -10,7 +10,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.service.claim.ClaimService;
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.util.Optional;
 import static ru.iteco.fmh.TestUtils.*;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.model.StatusE.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,13 +37,16 @@ public class ClaimServiceTest {
 
     @Test
     public void createClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         // given
         Claim claim = getClaim();
+        claim.setId(6);
+        ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
+
         when(claimRepository.save(any())).thenReturn(claim);
-        ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
-        ClaimDto result = sut.createClaim(expected);
-        assertEquals(expected, result);
+
+        Integer resultId = sut.createClaim(dto);
+
+        assertEquals(6, resultId);
     }
 
     @Test
@@ -64,7 +70,7 @@ public class ClaimServiceTest {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.ACTIVE)
+                .status(ACTIVE)
                 .comment(getAlphabeticStringR())
                 .build();
     }

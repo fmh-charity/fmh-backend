@@ -42,20 +42,16 @@ public class ClaimServiceImpl implements ClaimService{
     }
 
     @Override
-    public ClaimDto createClaim(ClaimDto claimDto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Claim claim = conversionService.convert(claimDto, Claim.class);
-        claim = claimRepository.save(claim);
-        return conversionService.convert(claim, ClaimDto.class);
+    public Integer createClaim(ClaimDto claimDto) {
+        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
+        return claimRepository.save(claim).getId();
     }
 
     @Override
-    public ClaimDto updateClaim(ClaimDto claimDto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Claim claim = conversionService.convert(claimDto, Claim.class);
+    public Integer updateClaim(ClaimDto claimDto) {
+        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
         if (ACTIVE.equals(claim.getStatus())){
-            claim = claimRepository.save(claim);
-            return conversionService.convert(claim, ClaimDto.class);
+            return claimRepository.save(claim).getId();
         }else {
             throw new IllegalArgumentException("невозможно изменить заявку с данным статусом");
         }
@@ -70,7 +66,7 @@ public class ClaimServiceImpl implements ClaimService{
             ConversionService conversionService = factoryBean.getObject();
             Claim claim = optionalClaim.get();
             if (ACTIVE.equals(claim.getStatus())) {
-                status.doActionDependsOfStatus(claim);
+                status.changeStatus(claim);
                 claim = claimRepository.save(claim);
                 return conversionService.convert(claim, ClaimDto.class);
             }

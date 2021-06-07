@@ -12,12 +12,13 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import ru.iteco.fmh.model.Patient;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -40,11 +41,11 @@ public class PatientControllerTest {
         int countDischarged = 1;
         int countAll = 6;
 
-        List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name()));
-        List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.ACTIVE.name()));
-        List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.DISCHARGED.name()));
-        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(AdmissionsStatus.EXPECTED.name(),
-                AdmissionsStatus.ACTIVE.name(), AdmissionsStatus.DISCHARGED.name()));
+        List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
+        List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
+        List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
+        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
+                ACTIVE.name(), DISCHARGED.name()));
 
         assertAll(
                 () -> assertEquals(countExpected, resultExpected.size()),
@@ -59,18 +60,21 @@ public class PatientControllerTest {
         //given
         PatientDto given = getPatientDto();
 
-        PatientDto result = sut.createPatient(given);
-        given.setId(result.getId());
+        Integer id = sut.createPatient(given);
+
+        assertNotNull(id);
+
+        Patient result = patientRepository.findById(id).get();
+
         assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
                 () -> assertEquals(given.getFirstName(), result.getFirstName()),
-                () -> assertEquals(given.getLastName(), result.getLastName()),
                 () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
                 () -> assertEquals(given.getBirthDate(), result.getBirthDate())
         );
 
         // deleting result entity
-        patientRepository.deleteById(result.getId());
+        patientRepository.deleteById(id);
     }
 
     @Test
