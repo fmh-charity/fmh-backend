@@ -74,7 +74,7 @@ public class AdmissionServiceTest {
 
         when(admissionRepository.save(any())).thenReturn(admission);
 
-        int result = sut.createOrUpdateAdmission(admissionDto);
+        int result = sut.createAdmission(admissionDto);
 
         assertEquals(admission.getId(), result);
     }

@@ -76,7 +76,7 @@ public class NoteServiceTest {
 
         when(noteRepository.save(any())).thenReturn(note);
 
-        Integer resultId = sut.createOrUpdateNote(dto);
+        Integer resultId = sut.createNote(dto);
 
         assertEquals(7, resultId);
     }

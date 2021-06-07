@@ -42,7 +42,13 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public Integer createOrUpdateAdmission(AdmissionDto admissionDto) {
+    public Integer createAdmission(AdmissionDto admissionDto) {
+        Admission admission = factoryBean.getObject().convert(admissionDto, Admission.class);
+        return admissionRepository.save(admission).getId();
+    }
+
+    @Override
+    public Integer updateAdmission(AdmissionDto admissionDto) {
         Admission admission = factoryBean.getObject().convert(admissionDto, Admission.class);
         return admissionRepository.save(admission).getId();
     }

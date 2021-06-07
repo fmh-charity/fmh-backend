@@ -106,7 +106,7 @@ public class ClaimControllerTest {
         int claimId = 3;
         ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
         String newComment = "change comment";
-        LocalDateTime newDate = LocalDateTime.now().plusDays(2);
+        LocalDateTime newDate = LocalDateTime.now().plusDays(2).withNano(0);
         expected.setComment(newComment);
         expected.setPlanExecuteDate(newDate);
 

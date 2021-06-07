@@ -6,8 +6,10 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
+import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.model.Claim;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
@@ -39,10 +41,22 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public Integer createOrUpdateNote(NoteDto noteDto) {
+    public Integer createNote(NoteDto noteDto) {
         Note note = factoryBean.getObject().convert(noteDto, Note.class);
         return noteRepository.save(note).getId();
     }
+
+
+    @Override
+    public Integer updateNote(NoteDto noteDto) {
+        Note note = factoryBean.getObject().convert(noteDto, Note.class);
+        if (ACTIVE.equals(note.getStatus())){
+            return noteRepository.save(note).getId();
+        }else {
+            throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
+        }
+    }
+
 
     @Override
     public NoteDto getNote(Integer id) {

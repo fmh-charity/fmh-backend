@@ -33,7 +33,7 @@ public class AdmissionController {
     public Integer createAdmission(
             @RequestBody AdmissionDto admissionDto
     ) {
-        return admissionService.createOrUpdateAdmission(admissionDto);
+        return admissionService.createAdmission(admissionDto);
     }
 
     @ApiOperation(value = "обновляет информацию по госпитализации")
@@ -41,6 +41,6 @@ public class AdmissionController {
     public Integer updateAdmission(
             @RequestBody AdmissionDto admissionDto
     ) {
-      return admissionService.createOrUpdateAdmission(admissionDto);
+      return admissionService.updateAdmission(admissionDto);
     }
 }
