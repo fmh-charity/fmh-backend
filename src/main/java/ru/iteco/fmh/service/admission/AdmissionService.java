@@ -21,7 +21,7 @@ public interface AdmissionService {
      * @return идентификатор новой сущности
      */
     Integer createAdmission(AdmissionDto admissionDto);
-    Integer updateAdmission(AdmissionDto admissionDto);
+    AdmissionDto updateAdmission(AdmissionDto admissionDto);
 
     /**
      * возвращает список всех госпитализаций пациента

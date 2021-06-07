@@ -48,10 +48,12 @@ public class ClaimServiceImpl implements ClaimService{
     }
 
     @Override
-    public Integer updateClaim(ClaimDto claimDto) {
-        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
+    public ClaimDto updateClaim(ClaimDto claimDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Claim claim = conversionService.convert(claimDto, Claim.class);
         if (ACTIVE.equals(claim.getStatus())){
-            return claimRepository.save(claim).getId();
+            claim = claimRepository.save(claim);
+            return conversionService.convert(claim,ClaimDto.class);
         }else {
             throw new IllegalArgumentException("невозможно изменить заявку с данным статусом");
         }

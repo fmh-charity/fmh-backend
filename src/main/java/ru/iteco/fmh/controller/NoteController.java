@@ -45,7 +45,7 @@ public class NoteController {
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping
-    public Integer updateNote(
+    public NoteDto updateNote(
             @RequestBody NoteDto noteDto) {
         return noteService.updateNote(noteDto);
     }

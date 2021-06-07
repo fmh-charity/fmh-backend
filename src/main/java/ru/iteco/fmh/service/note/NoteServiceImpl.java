@@ -48,10 +48,12 @@ public class NoteServiceImpl implements NoteService {
 
 
     @Override
-    public Integer updateNote(NoteDto noteDto) {
-        Note note = factoryBean.getObject().convert(noteDto, Note.class);
+    public NoteDto updateNote(NoteDto noteDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Note note = conversionService.convert(noteDto, Note.class);
         if (ACTIVE.equals(note.getStatus())){
-            return noteRepository.save(note).getId();
+            note = noteRepository.save(note);
+            return  conversionService.convert(note, NoteDto.class);
         }else {
             throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
         }

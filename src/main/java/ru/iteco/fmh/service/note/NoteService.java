@@ -22,7 +22,7 @@ public interface NoteService {
     Integer createNote(NoteDto noteDto);
 
 
-    Integer updateNote(NoteDto noteDto);
+    NoteDto updateNote(NoteDto noteDto);
 
     /**
      * возвращает список всех неисполненных записок по пациенту

@@ -44,7 +44,7 @@ public class ClaimController {
 
     @ApiOperation(value = "изменение информации по заявке")
     @PatchMapping
-    public Integer updateClaim(@RequestBody ClaimDto claimDtoDto) {
+    public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
         return claimService.updateClaim(claimDtoDto);
     }
 

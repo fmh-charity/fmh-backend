@@ -34,7 +34,7 @@ public interface ClaimService {
      * @param claimDto информация по заявке для обновления
      * @return id обновленной заявки
      */
-    Integer updateClaim(ClaimDto claimDto);
+    ClaimDto updateClaim(ClaimDto claimDto);
 
     /**
      * изменяет статус заявки на - исполнен, отменен
