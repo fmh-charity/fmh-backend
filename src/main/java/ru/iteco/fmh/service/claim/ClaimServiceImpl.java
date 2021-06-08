@@ -47,6 +47,7 @@ public class ClaimServiceImpl implements ClaimService{
         return claimRepository.save(claim).getId();
     }
 
+    @Transactional
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();

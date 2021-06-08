@@ -8,7 +8,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.model.Room;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 @ApiModel(description = "информация по госпитализации")
@@ -34,6 +40,10 @@ public class AdmissionDto {
     @ApiModelProperty(value = "фактическая дата выписки")
     private LocalDate factDateOut;
 
+    @ApiModelProperty(value = "статус госпитализации")
+    AdmissionsStatus status;
+    @ApiModelProperty(value = "палата")
+    Room room;
     @ApiModelProperty(value = "комментарий")
     private String comment;
 }

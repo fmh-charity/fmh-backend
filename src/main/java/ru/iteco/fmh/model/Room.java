@@ -18,7 +18,6 @@ import javax.persistence.*;
 @Table(name = "room")
 @ToString
 public class Room {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

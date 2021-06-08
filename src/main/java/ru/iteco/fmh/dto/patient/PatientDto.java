@@ -19,7 +19,7 @@ public class PatientDto {
     private Integer id;
     @ApiModelProperty("имя пациента")
     private String firstName;
-    @ApiModelProperty("фамилие пациента")
+    @ApiModelProperty("фамилия пациента")
     private String lastName;
     @ApiModelProperty("отчество пациента")
     private String middleName;

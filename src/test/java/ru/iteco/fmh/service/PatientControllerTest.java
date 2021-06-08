@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -56,7 +57,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void createOrUpdatePatientShouldPassSuccess() {
+    public void createPatientShouldPassSuccess() {
         //given
         PatientDto given = getPatientDto();
 
@@ -75,6 +76,28 @@ public class PatientControllerTest {
 
         // deleting result entity
         patientRepository.deleteById(id);
+    }
+
+    @Test
+    public void updatePatientShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        int patientId = 1;
+        PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
+        String newLastName = "new lastName";
+
+        assertNotEquals(given.getLastName(), newLastName);
+
+        given.setLastName(newLastName);
+
+        PatientDto result = sut.updatePatient(given);
+
+        assertEquals(given.getLastName(), result.getLastName());
+
+        //after
+        result.setLastName("Patient1-lastname");
+        patientRepository.save(conversionService.convert(result,Patient.class));
     }
 
     @Test

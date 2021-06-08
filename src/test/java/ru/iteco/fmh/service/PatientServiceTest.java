@@ -15,6 +15,7 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.patient.PatientService;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void createOrUpdatePatientShouldPassSuccess() {
+    public void createPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
         patient.setId(7);
@@ -77,10 +78,33 @@ public class PatientServiceTest {
 
         when(patientRepository.save(any())).thenReturn(patient);
 
-        Integer resultId = sut.createOrUpdatePatient(dto);
+        Integer resultId = sut.createPatient(dto);
 
         assertEquals(7, resultId);
     }
+
+
+    @Test
+    public void updatePatientShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        Patient patient = getPatient();
+        PatientDto given = conversionService.convert(patient, PatientDto.class);
+
+        when(patientRepository.save(any())).thenReturn(patient);
+
+        PatientDto result = sut.updatePatient(given);
+
+        assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName())
+        );
+    }
+
 
     @Test
     public void getPatientShouldPassSuccess() {

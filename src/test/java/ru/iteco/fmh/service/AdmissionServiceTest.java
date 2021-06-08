@@ -10,6 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
@@ -67,7 +68,7 @@ public class AdmissionServiceTest {
     }
 
     @Test
-    public void createOrUpdateAdmissionShouldPassSuccess() {
+    public void createAdmissionShouldPassSuccess() {
         // given
         Admission admission = getAdmission();
         AdmissionDto admissionDto = admissionToDto(admission);
@@ -77,6 +78,29 @@ public class AdmissionServiceTest {
         int result = sut.createAdmission(admissionDto);
 
         assertEquals(admission.getId(), result);
+    }
+
+    @Test
+    public void updateAdmissionShouldPassSuccess() {
+        // given
+        Admission expected = getAdmission();
+        AdmissionDto admissionDto = admissionToDto(expected);
+
+        when(admissionRepository.save(any())).thenReturn(expected);
+
+        AdmissionDto result = sut.updateAdmission(admissionDto);
+
+        assertAll(
+                ()-> assertEquals(expected.getId(), result.getId()),
+                ()-> assertEquals(patientToDto(expected.getPatient()), result.getPatient()),
+                ()-> assertEquals(expected.getComment(), result.getComment()),
+                ()-> assertEquals(expected.getStatus(), result.getStatus()),
+                ()-> assertEquals(expected.getRoom(), result.getRoom()),
+                ()-> assertEquals(expected.getFactDateIn(), result.getFactDateIn()),
+                ()-> assertEquals(expected.getFactDateOut(), result.getFactDateOut()),
+                ()-> assertEquals(expected.getPlanDateIn(), result.getPlanDateIn()),
+                ()-> assertEquals(expected.getPlanDateOut(), result.getPlanDateOut())
+        );
     }
 
     private Admission getAdmission() {
@@ -95,5 +119,10 @@ public class AdmissionServiceTest {
     private AdmissionDto admissionToDto(Admission admission) {
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(admission, AdmissionDto.class);
+    }
+
+    private PatientDto patientToDto(Patient patient) {
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(patient, PatientDto.class);
     }
 }

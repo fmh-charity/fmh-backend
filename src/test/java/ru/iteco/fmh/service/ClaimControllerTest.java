@@ -12,14 +12,8 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-
 import ru.iteco.fmh.model.Claim;
-import ru.iteco.fmh.model.Note;
-import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.StatusE;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,7 +48,6 @@ public class ClaimControllerTest {
         assertNotNull(id);
 
         Claim result = claimRepository.findById(id).get();
-
 
         assertAll(
                 ()-> assertEquals(given.getDescription(), result.getDescription()),
@@ -104,22 +97,16 @@ public class ClaimControllerTest {
 
         // given
         int claimId = 3;
-        ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        String newComment = "change comment";
-        LocalDateTime newDate = LocalDateTime.now().plusDays(2).withNano(0);
-        expected.setComment(newComment);
-        expected.setPlanExecuteDate(newDate);
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
+        String newComment = "new comment";
 
-        Integer id = sut.updateClaim(expected);
+        assertNotEquals(given.getComment(), newComment);
 
-        assertNotNull(id);
+        given.setComment(newComment);
 
-        Claim result = claimRepository.findById(id).get();
+        ClaimDto result = sut.updateClaim(given);
 
-        assertAll(
-                ()-> assertEquals(expected.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                ()-> assertEquals(expected.getComment(), result.getComment())
-        );
+        assertEquals(given.getComment(), result.getComment());
     }
 
     @Test

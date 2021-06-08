@@ -29,10 +29,11 @@ public interface ClaimService {
      * @return заявка с полной информацией
      */
     ClaimDto getClaim(Integer id);
+
     /**
      * обновляет заявку
      * @param claimDto информация по заявке для обновления
-     * @return id обновленной заявки
+     * @return обновленная сущность
      */
     ClaimDto updateClaim(ClaimDto claimDto);
 

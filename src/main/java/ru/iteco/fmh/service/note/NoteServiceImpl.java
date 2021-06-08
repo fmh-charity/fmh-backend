@@ -47,6 +47,7 @@ public class NoteServiceImpl implements NoteService {
     }
 
 
+    @Transactional
     @Override
     public NoteDto updateNote(NoteDto noteDto) {
         ConversionService conversionService = factoryBean.getObject();

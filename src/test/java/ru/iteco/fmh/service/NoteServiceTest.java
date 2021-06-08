@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NoteRepository;
 import ru.iteco.fmh.dto.note.NoteDto;
@@ -81,6 +82,31 @@ public class NoteServiceTest {
         assertEquals(7, resultId);
     }
 
+    @Test
+    public void updateNoteShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        Note note = getNote(ACTIVE);
+        NoteDto given = conversionService.convert(note, NoteDto.class);
+
+        when(noteRepository.save(any())).thenReturn(note);
+
+        NoteDto result = sut.updateNote(given);
+
+        assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
+                () -> assertEquals(given.getPatient(), result.getPatient()),
+                () -> assertEquals(given.getComment(), result.getComment()),
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreator(), result.getCreator())
+        );
+    }
 
     private static Note getNote(StatusE status) {
         return Note.builder()

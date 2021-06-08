@@ -60,8 +60,6 @@ public class NoteControllerTest {
         noteRepository.save(note);
     }
 
-
-
     @Test
     public void getAllActiveNotesSort() {
         List<NoteShortInfoDto> noteShortInfoDtoList = sut.getAllNotes();
@@ -98,5 +96,23 @@ public class NoteControllerTest {
         );
         // deleting result entity
         noteRepository.deleteById(id);
+    }
+
+    @Test
+    public void updateNoteShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        int claimId = 3;
+        NoteDto given = conversionService.convert(noteRepository.findById(claimId).get(), NoteDto.class);
+        String newComment = "new comment";
+
+        assertNotEquals(given.getComment(), newComment);
+
+        given.setComment(newComment);
+
+        NoteDto result = sut.updateNote(given);
+
+        assertEquals(given.getComment(), result.getComment());
     }
 }
