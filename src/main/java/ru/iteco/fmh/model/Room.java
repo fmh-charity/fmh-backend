@@ -4,8 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Палата
@@ -20,7 +18,6 @@ import java.util.List;
 @Table(name = "room")
 @ToString
 public class Room {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

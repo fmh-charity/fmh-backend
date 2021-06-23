@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.StatusE.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,61 +37,76 @@ public class NoteServiceTest {
     @Test
     public void addCommentShouldPassSuccess() {
         // given
-        Note note = getNote(StatusE.active);
-        Note resultNote = getNote(StatusE.active);
+        Note note = getNote(ACTIVE);
+        Note resultNote = getNote(ACTIVE);
         String newComment = "test comment";
         String expected = "first comment".concat(", ").concat(newComment);
         resultNote.setComment(expected);
-
         when(noteRepository.findById(any())).thenReturn(Optional.of(note));
         when(noteRepository.save(any())).thenReturn(resultNote);
-
         NoteDto result = sut.addComment(any(), newComment);
-
         assertEquals(expected, result.getComment());
     }
 
     @Test
     public void changeStatusShouldPassSuccess() {
         // given
-        Note activeNote = getNote(StatusE.active);
-        Note cancelledNote = getNote(StatusE.canceled);
-
+        Note activeNote = getNote(ACTIVE);
+        Note cancelledNote = getNote(CANCELED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(activeNote));
         when(noteRepository.save(any())).thenReturn(cancelledNote);
-
-        NoteDto result = sut.changeStatus(any(), StatusE.canceled);
-
-        assertEquals(StatusE.canceled, result.getStatus());
+        NoteDto result = sut.changeStatus(any(), CANCELED);
+        assertEquals(CANCELED, result.getStatus());
     }
 
     @Test
     public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
-        Note executedNote = getNote(StatusE.executed);
-
+        Note executedNote = getNote(EXECUTED);
         when(noteRepository.findById(any())).thenReturn(Optional.of(executedNote));
-
         assertThrows(IllegalArgumentException.class,
-                () -> sut.changeStatus(any(), StatusE.canceled));
+                () -> sut.changeStatus(any(), CANCELED));
     }
 
     @Test
     public void createNoteShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
-        Note note = getNote(StatusE.active);
+        Note note = getNote(ACTIVE);
+        note.setId(7);
+        NoteDto dto = factoryBean.getObject().convert(note, NoteDto.class);
 
         when(noteRepository.save(any())).thenReturn(note);
 
-        // result
-        NoteDto expected = conversionService.convert(note, NoteDto.class);
-        NoteDto result = sut.createOrUpdateNote(expected);
+        Integer resultId = sut.createNote(dto);
 
-        assertEquals(expected, result);
+        assertEquals(7, resultId);
     }
 
+    @Test
+    public void updateNoteShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        Note note = getNote(ACTIVE);
+        NoteDto given = conversionService.convert(note, NoteDto.class);
+
+        when(noteRepository.save(any())).thenReturn(note);
+
+        NoteDto result = sut.updateNote(given);
+
+        assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
+                () -> assertEquals(given.getPatient(), result.getPatient()),
+                () -> assertEquals(given.getComment(), result.getComment()),
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreator(), result.getCreator())
+        );
+    }
 
     private static Note getNote(StatusE status) {
         return Note.builder()

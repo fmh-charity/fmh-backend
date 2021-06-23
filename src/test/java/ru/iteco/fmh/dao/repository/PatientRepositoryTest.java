@@ -17,7 +17,6 @@ public class PatientRepositoryTest {
 
     @Autowired
     PatientRepository repository;
-
     Patient entity;
 
     @Test
@@ -28,11 +27,8 @@ public class PatientRepositoryTest {
                 .middleName(TestUtils.getAlphabeticStringR())
                 .birthDate(LocalDate.now())
                 .build();
-
         entity = repository.save(entity);
-
         Assertions.assertNotNull(entity.getId());
-
         repository.delete(entity);
     }
 }

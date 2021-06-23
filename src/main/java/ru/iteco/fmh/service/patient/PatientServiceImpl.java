@@ -4,14 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.iteco.fmh.model.StatusE.ACTIVE;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -37,18 +44,25 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDto createOrUpdatePatient(PatientDto dto) {
+    public Integer createPatient(PatientDto dto) {
+        Patient entity = factoryBean.getObject().convert(dto, Patient.class);
+        return patientRepository.save(entity).getId();
+    }
+
+    @Transactional
+    @Override
+    public PatientDto updatePatient(PatientDto patientDto) {
         ConversionService conversionService = factoryBean.getObject();
-        Patient entity = conversionService.convert(dto, Patient.class);
-        entity = patientRepository.save(entity);
-        return conversionService.convert(entity, PatientDto.class);
+        Patient patient = conversionService.convert(patientDto, Patient.class);
+        patient = patientRepository.save(patient);
+        return conversionService.convert(patient, PatientDto.class);
     }
 
     @Override
     public PatientDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null) {
-            return null;
+            throw new IllegalArgumentException("Пациента с таким ID не существует");
         }
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(patient, PatientDto.class);

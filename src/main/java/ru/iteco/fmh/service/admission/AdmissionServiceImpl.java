@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.admission;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.admission.AdmissionShortInfoDto;
@@ -42,8 +43,17 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public Integer createOrUpdateAdmission(AdmissionDto admissionDto) {
+    public Integer createAdmission(AdmissionDto admissionDto) {
         Admission admission = factoryBean.getObject().convert(admissionDto, Admission.class);
         return admissionRepository.save(admission).getId();
+    }
+
+    @Transactional
+    @Override
+    public AdmissionDto updateAdmission(AdmissionDto admissionDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Admission admission = conversionService.convert(admissionDto, Admission.class);
+        admission = admissionRepository.save(admission);
+        return conversionService.convert(admission,AdmissionDto.class);
     }
 }

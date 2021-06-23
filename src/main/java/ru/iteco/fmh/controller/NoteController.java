@@ -32,8 +32,8 @@ public class NoteController {
 
     @ApiOperation(value = "Создание новой записки")
     @PostMapping
-    public NoteDto createNote(@RequestBody NoteDto noteDto) {
-        return noteService.createOrUpdateNote(noteDto);
+    public Integer createNote(@RequestBody NoteDto noteDto) {
+        return noteService.createNote(noteDto);
     }
 
     @ApiOperation(value = "возвращает полную информацию по записке")
@@ -47,7 +47,7 @@ public class NoteController {
     @PatchMapping
     public NoteDto updateNote(
             @RequestBody NoteDto noteDto) {
-        return noteService.createOrUpdateNote(noteDto);
+        return noteService.updateNote(noteDto);
     }
 
     @ApiOperation(value = "формирование комментария по запискам")
@@ -59,7 +59,7 @@ public class NoteController {
     }
 
     @ApiOperation(value = "обработка записок по статусной модели")
-    @PostMapping("/status/{noteId}")
+    @PatchMapping("/status/{noteId}")
     public NoteDto changeStatus(
             @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
             @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status

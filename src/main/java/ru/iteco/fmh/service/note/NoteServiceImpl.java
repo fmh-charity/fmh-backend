@@ -6,14 +6,18 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.NoteRepository;
+import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.model.Claim;
 import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.StatusE;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ru.iteco.fmh.model.StatusE.ACTIVE;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -29,7 +33,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<NoteShortInfoDto> getAllNotes() {
-        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDate(StatusE.active);
+        List<Note> list = noteRepository.findAllByStatusOrderByPlanExecuteDate(ACTIVE);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, NoteShortInfoDto.class))
@@ -37,13 +41,27 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public NoteDto createOrUpdateNote(NoteDto noteDto) {
-        ConversionService conversionService = factoryBean.getObject();
-        Note note = conversionService.convert(noteDto, Note.class);
-        note = noteRepository.save(note);
-        return conversionService.convert(note, NoteDto.class);
+    public Integer createNote(NoteDto noteDto) {
+        Note note = factoryBean.getObject().convert(noteDto, Note.class);
+        return noteRepository.save(note).getId();
     }
 
+
+    @Transactional
+    @Override
+    public NoteDto updateNote(NoteDto noteDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        Note note = conversionService.convert(noteDto, Note.class);
+        if (ACTIVE.equals(note.getStatus())){
+            note = noteRepository.save(note);
+            return  conversionService.convert(note, NoteDto.class);
+        }else {
+            throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
+        }
+    }
+
+
+    @Override
     public NoteDto getNote(Integer id) {
         Optional<Note> optionalNote = noteRepository.findById(id);
         if (optionalNote.isPresent()) {
@@ -51,7 +69,7 @@ public class NoteServiceImpl implements NoteService {
             Note note = optionalNote.get();
             return conversionService.convert(note, NoteDto.class);
         } else {
-            return null;
+            throw new IllegalArgumentException("записка не найдена!");
         }
     }
 
@@ -59,7 +77,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public List<NoteDto> getPatientNotes(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
-        return noteRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, StatusE.active).stream()
+        return noteRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, ACTIVE).stream()
                 .map(note -> conversionService.convert(note, NoteDto.class))
                 .collect(Collectors.toList());
     }
@@ -92,9 +110,8 @@ public class NoteServiceImpl implements NoteService {
         if (optionalNote.isPresent()) {
             Note note = optionalNote.get();
             ConversionService conversionService = factoryBean.getObject();
-
-            if (StatusE.active.equals(note.getStatus())) {
-                note.setStatus(status);
+            if (ACTIVE.equals(note.getStatus())) {
+                status.changeStatus(note);
                 note = noteRepository.save(note);
                 return conversionService.convert(note, NoteDto.class);
             } else {

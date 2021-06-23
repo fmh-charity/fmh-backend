@@ -3,12 +3,8 @@ package ru.iteco.fmh.converter.admission;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.converter.patient.fromPatient.IPatientToPatientDtoConverter;
-import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.admission.Admission;
 
 /**
