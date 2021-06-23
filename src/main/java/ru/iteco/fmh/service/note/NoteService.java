@@ -15,11 +15,26 @@ public interface NoteService {
      */
     List<NoteShortInfoDto> getAllNotes();
 
-    NoteDto getNote(Integer id);
     /**
-     * возвращает новую записку
+     * возвращает записку для просмотра
+     * @param id ид записки
+     * @return записка с полной информацией
      */
-    NoteDto createOrUpdateNote(NoteDto noteDto);
+    NoteDto getNote(Integer id);
+
+    /**
+     * создает новую записку
+     * @param noteDto информация по новой записке
+     * @return id записки
+     */
+    Integer createNote(NoteDto noteDto);
+
+    /**
+     * обновляет записку
+     * @param noteDto информация по записке для обновления
+     * @return обновленная сущность
+     */
+    NoteDto updateNote(NoteDto noteDto);
 
     /**
      * возвращает список всех неисполненных записок по пациенту

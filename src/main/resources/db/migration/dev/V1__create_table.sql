@@ -160,10 +160,10 @@ create table claim
     description       varchar not null,
     creator_id        int     not null,
     executor_id       int,
-    create_data       date,
-    plan_execute_date date,
-    fact_execute_date date,
-    status            int     not null,
+    create_date       timestamp,
+    plan_execute_date timestamp,
+    fact_execute_date timestamp,
+    status            varchar not null,
     comment           varchar,
     deleted           boolean
 );
@@ -172,7 +172,7 @@ comment on column claim.id is 'id в системе';
 comment on column claim.description is 'описание';
 comment on column claim.creator_id is 'id автора';
 comment on column claim.executor_id is 'id исполнителя';
-comment on column claim.create_data is 'дата создания';
+comment on column claim.create_date is 'дата создания';
 comment on column claim.plan_execute_date is 'плановое время исполнителя';
 comment on column claim.fact_execute_date is 'фактическое время исполнения';
 comment on column claim.status is 'статус';
@@ -199,17 +199,28 @@ comment on column advertisement.create_data is 'дата создания';
 comment on column claim.deleted is 'флаг удаления';
 
 
-alter table admission add foreign key (patient_id) references patient;
-alter table admission add foreign key (room_id) references room;
-alter table advertisement add foreign key (creator_id) references users;
-alter table claim add foreign key (creator_id) references users;
-alter table claim add foreign key (executor_id) references users;
-alter table note add foreign key (creator_id) references users;
-alter table note add foreign key (executor_id) references users;
-alter table note add foreign key (patient_id) references patient;
-alter table patient add foreign key (current_admission_id) references admission;
-alter table room add foreign key (block_id) references block;
-alter table room add foreign key (nurse_station_id) references nurse_station;
+alter table admission
+    add foreign key (patient_id) references patient;
+alter table admission
+    add foreign key (room_id) references room;
+alter table advertisement
+    add foreign key (creator_id) references users;
+alter table claim
+    add foreign key (creator_id) references users;
+alter table claim
+    add foreign key (executor_id) references users;
+alter table note
+    add foreign key (creator_id) references users;
+alter table note
+    add foreign key (executor_id) references users;
+alter table note
+    add foreign key (patient_id) references patient;
+alter table patient
+    add foreign key (current_admission_id) references admission;
+alter table room
+    add foreign key (block_id) references block;
+alter table room
+    add foreign key (nurse_station_id) references nurse_station;
 
 
 -- ДАЛЬШЕ НЕ ПОКА НЕ ТРОГАЛ !

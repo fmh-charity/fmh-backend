@@ -8,7 +8,6 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientNoteDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.note.NoteService;
 import ru.iteco.fmh.service.patient.PatientService;
@@ -39,9 +38,9 @@ public class PatientController {
     }
 
     @ApiOperation(value = "создание пациента")
-    @PostMapping("/create")
-    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
-        return patientService.createOrUpdatePatient(patientDto);
+    @PostMapping
+    public Integer createPatient(@RequestBody PatientDto patientDto) {
+        return patientService.createPatient(patientDto);
     }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
@@ -68,10 +67,10 @@ public class PatientController {
     }
 
     @ApiOperation(value = "изменение пациента")
-    @PatchMapping("/update")
+    @PatchMapping
     public PatientDto updatePatient(
             @RequestBody PatientDto patientDto
     ) {
-       return patientService.createOrUpdatePatient(patientDto);
+       return patientService.updatePatient(patientDto);
     }
 }

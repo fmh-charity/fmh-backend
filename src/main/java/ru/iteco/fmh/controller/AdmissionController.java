@@ -33,14 +33,14 @@ public class AdmissionController {
     public Integer createAdmission(
             @RequestBody AdmissionDto admissionDto
     ) {
-        return admissionService.createOrUpdateAdmission(admissionDto);
+        return admissionService.createAdmission(admissionDto);
     }
 
     @ApiOperation(value = "обновляет информацию по госпитализации")
     @PatchMapping
-    public void updateAdmission(
+    public AdmissionDto updateAdmission(
             @RequestBody AdmissionDto admissionDto
     ) {
-        admissionService.createOrUpdateAdmission(admissionDto);
+      return admissionService.updateAdmission(admissionDto);
     }
 }
