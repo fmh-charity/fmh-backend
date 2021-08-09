@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
@@ -136,7 +136,7 @@ public class PatientControllerTest {
         String noteDescription0 = "note1-description";
         String noteDescription1 = "note6-description";
 
-        List<NoteDto> notes = sut.getNotes(patientId);
+        List<WishDto> notes = sut.getNotes(patientId);
         List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
 
         assertAll(

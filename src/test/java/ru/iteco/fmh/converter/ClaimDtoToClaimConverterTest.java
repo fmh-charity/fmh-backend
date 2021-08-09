@@ -8,7 +8,7 @@ import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +32,6 @@ public class ClaimDtoToClaimConverterTest {
         Assertions.assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getComment(), claim.getComment()),
                 () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
                 () -> assertEquals(dto.getStatus(), claim.getStatus()),
                 () -> assertEquals(dto.getCreator(), userToUserDtoConverter.convert(claim.getCreator())),

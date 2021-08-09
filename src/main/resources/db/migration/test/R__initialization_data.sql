@@ -61,19 +61,19 @@ values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lastname', 'u
        ('user5-login', 'user5-password', 'user5-firstname', 'user5-lastname', 'user5-middlename', 'user5-phonenumber',
         'user5-email', false);
 
-insert into note (patient_id, description, creator_id, executor_id, create_date, plan_execute_date,
+insert into wish (patient_id, title, description, creator_id, executor_id, create_date, plan_execute_date,
                   fact_execute_date, status, comment, deleted)
-values (1, 'note1-description', 1, 1, now(), now(), null, 'ACTIVE', 'note1-comment', false),
-       (2, 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', null, 'ACTIVE', 'note2-comment', false),
-       (3, 'note3-description', 3, 3, now(), now(), null, 'ACTIVE', 'note3-comment', false),
-       (4, 'note4-description', 4, 4, now(), now(), now(), 'EXECUTED', 'note4-comment', false),
-       (5, 'note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', null, 'ACTIVE', 'note5-comment', true),
-       (1, 'note6-description', 5, 5, now(), now(), null, 'ACTIVE', 'note6-comment', false);
+values (1, 'title1','note1-description', 1, 1, now(), now(), null, 'OPEN', 'note1-comment', false),
+       (2,'title1', 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', null, 'OPEN', 'note2-comment', false),
+       (3, 'title1','note3-description', 3, 3, now(), now(), null, 'OPEN', 'note3-comment', false),
+       (4, 'title1','note4-description', 4, 4, now(), now(), now(), 'EXECUTED', 'note4-comment', false),
+       (5, 'title1','note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', null, 'OPEN', 'note5-comment', true),
+       (1, 'title1','note6-description', 5, 5, now(), now(), null, 'OPEN', 'note6-comment', false);
 
-insert into claim (description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
-                   status, comment, deleted)
-values ('claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', null, 'ACTIVE', 'claim1-comment', false),
-       ('claim2-description', 2, 2, now(), now() + INTERVAL '1 DAY', null, 'ACTIVE', 'claim2-comment', false),
-       ('claim3-description', 3, 3, now(), now(),null, 'ACTIVE', 'claim3-comment', false),
-       ('claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'ACTIVE', 'claim4-comment', false),
-       ('claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'ACTIVE', 'claim5-comment', false);
+insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
+                   status, deleted)
+values ('title1','claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', null, 'OPEN',  false),
+       ('title2','claim2-description', 2, 2, now(), now() + INTERVAL '1 DAY', null, 'OPEN',  false),
+       ('title3','claim3-description', 3, 3, now(), now(),null, 'OPEN', false),
+       ('title4','claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'OPEN',  false),
+       ('title5','claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'OPEN',  false);

@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.note;
+package ru.iteco.fmh.dto.wish;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,12 +10,12 @@ import ru.iteco.fmh.model.StatusE;
 
 import java.time.LocalDateTime;
 
-@ApiModel(description = "краткая информация по записке")
+@ApiModel(description = "краткая информация по просьбе")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class NoteShortInfoDto {
+public class WishShortInfoDto {
     @ApiModelProperty("идентификатор записки")
     private Integer id;
     @ApiModelProperty("плановая дата исполнения")

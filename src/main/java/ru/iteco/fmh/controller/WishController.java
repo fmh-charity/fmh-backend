@@ -7,64 +7,64 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.note.NoteDto;
-import ru.iteco.fmh.dto.note.NoteShortInfoDto;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import ru.iteco.fmh.model.StatusE;
-import ru.iteco.fmh.service.note.NoteService;
+import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
 
 @Api(description = "Работа с записками")
 @RestController
 @RequestMapping("/note")
-public class NoteController {
-    private final NoteService noteService;
+public class WishController {
+    private final WishService wishService;
     @Autowired
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
+    public WishController(WishService wishService) {
+        this.wishService = wishService;
     }
 
     @ApiOperation(value = "реестр всех записок со статусом active")
     @GetMapping
-    public List<NoteShortInfoDto> getAllNotes() {
-        return noteService.getAllNotes();
+    public List<WishShortInfoDto> getAllNotes() {
+        return wishService.getAllNotes();
     }
 
     @ApiOperation(value = "Создание новой записки")
     @PostMapping
-    public Integer createNote(@RequestBody NoteDto noteDto) {
-        return noteService.createNote(noteDto);
+    public Integer createNote(@RequestBody WishDto wishDto) {
+        return wishService.createNote(wishDto);
     }
 
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
-    public NoteDto getNote(
+    public WishDto getNote(
             @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id){
-        return noteService.getNote(id);
+        return wishService.getNote(id);
     }
 
     @ApiOperation(value = "обновляет информацию по записке")
     @PatchMapping
-    public NoteDto updateNote(
-            @RequestBody NoteDto noteDto) {
-        return noteService.updateNote(noteDto);
+    public WishDto updateNote(
+            @RequestBody WishDto wishDto) {
+        return wishService.updateNote(wishDto);
     }
 
-    @ApiOperation(value = "формирование комментария по запискам")
-    @PostMapping("/comment/{noteId}")
-    public NoteDto addComment(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
-            @RequestBody String comment)  {
-        return noteService.addComment(noteId, comment);
-    }
+//    @ApiOperation(value = "формирование комментария по запискам")
+//    @PostMapping("/comment/{noteId}")
+//    public WishDto addComment(
+//            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
+//            @RequestBody String comment)  {
+//        return wishService.addComment(noteId, comment);
+//    }
 
     @ApiOperation(value = "обработка записок по статусной модели")
     @PatchMapping("/status/{noteId}")
-    public NoteDto changeStatus(
+    public WishDto changeStatus(
             @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
             @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status
             )  {
-        return noteService.changeStatus(noteId, status);
+        return wishService.changeStatus(noteId, status);
     }
 
     // все ошибки

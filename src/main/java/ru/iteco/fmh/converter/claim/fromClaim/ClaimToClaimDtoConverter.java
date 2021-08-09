@@ -7,7 +7,7 @@ import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 
 
 public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {

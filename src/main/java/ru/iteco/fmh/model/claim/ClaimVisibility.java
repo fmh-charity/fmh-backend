@@ -1,13 +1,12 @@
-package ru.iteco.fmh.model.user;
+package ru.iteco.fmh.model.claim;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.user.Role;
+
 
 import javax.persistence.*;
 
-/**
- * Роли
- */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,12 +15,18 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "role")
-public class Role {
+@Table(name = "claimVisibility")
+public class ClaimVisibility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    RoleE name;
-    boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "claim_id")
+    Claim claim;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Role role;
+    Boolean deleted;
 }

@@ -5,11 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
-import ru.iteco.fmh.service.note.NoteService;
+import ru.iteco.fmh.service.wish.WishService;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.util.List;
@@ -21,12 +21,12 @@ import java.util.List;
 public class PatientController {
     private final PatientService patientService;
     private final AdmissionService admissionService;
-    private final NoteService noteService;
+    private final WishService wishService;
 
-    public PatientController(PatientService patientService, AdmissionService admissionService, NoteService noteService) {
+    public PatientController(PatientService patientService, AdmissionService admissionService, WishService wishService) {
         this.patientService = patientService;
         this.admissionService = admissionService;
-        this.noteService = noteService;
+        this.wishService = wishService;
     }
 
     @ApiOperation(value = "реестр всех пациентов")
@@ -60,10 +60,10 @@ public class PatientController {
 
     @ApiOperation(value = "возвращает информацию по запискам пациента")
     @GetMapping("/{patientId}/notes")
-    public List<NoteDto> getNotes(
+    public List<WishDto> getNotes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
-        return noteService.getPatientNotes(patientId);
+        return wishService.getPatientNotes(patientId);
     }
 
     @ApiOperation(value = "изменение пациента")

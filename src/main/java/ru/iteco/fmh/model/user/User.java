@@ -35,15 +35,4 @@ public class User {
     @Formula("CONCAT_WS(' ', last_name ," + "CONCAT_WS('.', SUBSTRING(UPPER(first_name),1,1), " + "SUBSTRING(UPPER(middle_name),1,1) )" + ")")
     String shortUserName;
 
-
-//    @OneToMany(mappedBy = "author")
-//    List<Advertisement> advertisementCollections = new ArrayList<>();
-//    @OneToMany(mappedBy = "creator")
-//    List<Note> myNotes = new ArrayList<>();
-//    @OneToMany(mappedBy = "executor")
-//    List<Note> myTasks = new ArrayList<>();
-//    @OneToMany(mappedBy = "creator")
-//    List<Claim> myClaims = new ArrayList<>();
-//    @OneToMany(mappedBy = "executor")
-//    List<Claim> doClaims = new ArrayList<>();
 }

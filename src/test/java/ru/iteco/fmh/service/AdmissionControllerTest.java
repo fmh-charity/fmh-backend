@@ -17,6 +17,7 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -123,10 +124,10 @@ public class AdmissionControllerTest {
 
     public static AdmissionDto getAdmissionDto() {
         return AdmissionDto.builder()
-                .planDateIn(LocalDate.now())
-                .planDateOut(LocalDate.now())
-                .factDateIn(LocalDate.now())
-                .factDateOut(LocalDate.now())
+                .planDateIn(LocalDateTime.now().withNano(0))
+                .planDateOut(LocalDateTime.now().withNano(0))
+                .factDateIn(LocalDateTime.now().withNano(0))
+                .factDateOut(LocalDateTime.now().withNano(0))
                 .status(AdmissionsStatus.ACTIVE)
                 .comment("comment")
                 .build();

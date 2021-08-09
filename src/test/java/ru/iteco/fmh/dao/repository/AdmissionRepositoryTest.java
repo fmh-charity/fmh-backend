@@ -12,6 +12,7 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @RunWith(SpringRunner.class)
@@ -36,8 +37,8 @@ public class AdmissionRepositoryTest {
 
         patient = patientRepository.save(patient);
         entity = Admission.builder()
-                .planDateIn(LocalDate.now())
-                .factDateIn(LocalDate.now())
+                .planDateIn(LocalDateTime.now().withNano(0))
+                .factDateIn(LocalDateTime.now().withNano(0))
                 .patient(patient)
                 .build();
 
