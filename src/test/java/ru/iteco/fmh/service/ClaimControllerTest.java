@@ -81,13 +81,13 @@ public class ClaimControllerTest {
         );
     }
 
-    @Test
-    public void getAllActiveNotesSort() {
-        List<ClaimShortInfoDto> claimShortInfoDtoList = sut.getAllClaims();
-        assertEquals(4, claimShortInfoDtoList.size());
-        assertTrue(claimShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
-                (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
-        }
+//    @Test
+//    public void getAllActiveNotesSort() {
+//        List<ClaimShortInfoDto> claimShortInfoDtoList = sut.getAllClaims();
+//        assertEquals(4, claimShortInfoDtoList.size());
+//        assertTrue(claimShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
+//                (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
+//        }
 
 //    @Test
 //    public void updateClaimShouldPassSuccess() {
@@ -107,25 +107,25 @@ public class ClaimControllerTest {
 //        assertEquals(given.getComment(), result.getComment());
 //    }
 
-    @Test
-    public void changeStatusShouldPassSuccess() {
-        int claimId = 4;
-        int claimId2 = 5;
-        ClaimDto resultCancelled = sut.changeStatus(claimId, EXECUTED);
-        ClaimDto resultCancelled2 = sut.changeStatus(claimId2, CANCELED);
-        assertEquals(EXECUTED, resultCancelled.getStatus());
-        assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
-        assertEquals(CANCELED, resultCancelled2.getStatus());
-        assertNull(resultCancelled2.getFactExecuteDate());
-        Claim claim = claimRepository.findById(4).get();
-        claim.setStatus(OPEN);
-        claimRepository.save(claim);
-    }
-    @Test
-    public void changeStatusNotShouldPassSuccessWrongId() {
-        int claimId = 12;
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(5, OPEN));
-    }
+//    @Test
+//    public void changeStatusShouldPassSuccess() {
+//        int claimId = 4;
+//        int claimId2 = 5;
+//        ClaimDto resultCancelled = sut.changeStatus(claimId, EXECUTED);
+//        ClaimDto resultCancelled2 = sut.changeStatus(claimId2, CANCELED);
+//        assertEquals(EXECUTED, resultCancelled.getStatus());
+//        assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
+//        assertEquals(CANCELED, resultCancelled2.getStatus());
+//        assertNull(resultCancelled2.getFactExecuteDate());
+//        Claim claim = claimRepository.findById(4).get();
+//        claim.setStatus(OPEN);
+//        claimRepository.save(claim);
+//    }
+//    @Test
+//    public void changeStatusNotShouldPassSuccessWrongId() {
+//        int claimId = 12;
+//        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
+//        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(5, OPEN));
+//    }
 
 }

@@ -62,13 +62,13 @@ values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lastname', 'u
         'user5-email', false);
 
 insert into wish (patient_id, title, description, creator_id, executor_id, create_date, plan_execute_date,
-                  fact_execute_date, status, comment, deleted)
-values (1, 'title1','note1-description', 1, 1, now(), now(), null, 'OPEN', 'note1-comment', false),
-       (2,'title1', 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', null, 'OPEN', 'note2-comment', false),
-       (3, 'title1','note3-description', 3, 3, now(), now(), null, 'OPEN', 'note3-comment', false),
-       (4, 'title1','note4-description', 4, 4, now(), now(), now(), 'EXECUTED', 'note4-comment', false),
-       (5, 'title1','note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', null, 'OPEN', 'note5-comment', true),
-       (1, 'title1','note6-description', 5, 5, now(), now(), null, 'OPEN', 'note6-comment', false);
+                  fact_execute_date, status, deleted)
+values (1, 'title1','note1-description', 1, 1, now(), now(), null, 'OPEN', false),
+       (2,'title1', 'note2-description', 2, 2, now(), now() - INTERVAL '1 DAY', null, 'OPEN', false),
+       (3, 'title1','note3-description', 3, 3, now(), now(), null, 'OPEN',  false),
+       (4, 'title1','note4-description', 4, 4, now(), now(), now(), 'EXECUTED', false),
+       (5, 'title1','note5-description', 5, 5, now(), now() - INTERVAL '2 DAYS', null, 'OPEN', true),
+       (1, 'title1','note6-description', 5, 5, now(), now(), null, 'OPEN',  false);
 
 insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
                    status, deleted)
