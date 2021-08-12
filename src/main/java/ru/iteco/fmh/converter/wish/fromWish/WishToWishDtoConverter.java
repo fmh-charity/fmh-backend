@@ -7,7 +7,7 @@ import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 
 
 public class WishToWishDtoConverter implements Converter<Wish, WishDto> {

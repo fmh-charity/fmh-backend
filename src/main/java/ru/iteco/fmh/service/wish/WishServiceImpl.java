@@ -8,14 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
-import ru.iteco.fmh.model.wish.Wish;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @Service
 public class WishServiceImpl implements WishService {
@@ -50,10 +50,10 @@ public class WishServiceImpl implements WishService {
     public WishDto updateNote(WishDto wishDto) {
         ConversionService conversionService = factoryBean.getObject();
         Wish wish = conversionService.convert(wishDto, Wish.class);
-        if (OPEN.equals(wish.getStatus())){
+        if (OPEN.equals(wish.getStatus())) {
             wish = wishRepository.save(wish);
-            return  conversionService.convert(wish, WishDto.class);
-        }else {
+            return conversionService.convert(wish, WishDto.class);
+        } else {
             throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
         }
     }
@@ -104,21 +104,13 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto changeStatus(Integer noteId, StatusE status) {
         Optional<Wish> optionalNote = wishRepository.findById(noteId);
-
         if (optionalNote.isPresent()) {
-            Wish wish = optionalNote.get();
             ConversionService conversionService = factoryBean.getObject();
-            if (OPEN.equals(wish.getStatus())) {
-                status.changeStatus(wish);
-                wish = wishRepository.save(wish);
-                return conversionService.convert(wish, WishDto.class);
-            } else {
-                throw new IllegalArgumentException("невозможно изменить статус неактивной записки!");
-            }
-
-        } else {
-           throw new IllegalArgumentException("записка не найдена!");
+            Wish wish = optionalNote.get();
+            wish.changeStatus(status);
+            wish = wishRepository.save(wish);
+            return conversionService.convert(wish, WishDto.class);
         }
-
+        throw new IllegalArgumentException("Просьбы с таким ID не существует");
     }
 }

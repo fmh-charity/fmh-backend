@@ -8,7 +8,7 @@ import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
-import ru.iteco.fmh.model.claim.Claim;
+import ru.iteco.fmh.model.task.claim.Claim;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

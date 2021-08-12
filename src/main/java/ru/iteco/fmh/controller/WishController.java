@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;

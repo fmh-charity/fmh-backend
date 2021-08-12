@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter.wish.fromWish;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 
 public class WishToWishShortDtoConverter implements Converter<Wish, WishShortInfoDto>{
 

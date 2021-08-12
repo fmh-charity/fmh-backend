@@ -10,7 +10,7 @@ import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

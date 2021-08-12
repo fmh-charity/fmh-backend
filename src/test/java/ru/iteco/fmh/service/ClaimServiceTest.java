@@ -10,7 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.claim.Claim;
+import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import static ru.iteco.fmh.TestUtils.*;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.model.StatusE.*;
+import static ru.iteco.fmh.model.task.StatusE.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

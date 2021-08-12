@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.StatusE;
 
 import java.time.LocalDateTime;
 

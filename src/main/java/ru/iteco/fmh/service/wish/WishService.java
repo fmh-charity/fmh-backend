@@ -2,7 +2,7 @@ package ru.iteco.fmh.service.wish;
 
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
 

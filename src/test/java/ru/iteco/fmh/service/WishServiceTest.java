@@ -10,8 +10,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.wish.Wish;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.StatusE.*;
+import static ru.iteco.fmh.model.task.StatusE.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -51,27 +51,27 @@ public class WishServiceTest {
     @Test
     public void changeStatusShouldPassSuccess() {
         // given
-        Wish activeWish = getNote(OPEN);
-        Wish cancelledWish = getNote(CANCELED);
+        Wish activeWish = getWish(OPEN);
+        Wish cancelledWish = getWish(CANCELLED);
         when(wishRepository.findById(any())).thenReturn(Optional.of(activeWish));
         when(wishRepository.save(any())).thenReturn(cancelledWish);
-        WishDto result = sut.changeStatus(any(), CANCELED);
-        assertEquals(CANCELED, result.getStatus());
+        WishDto result = sut.changeStatus(any(), CANCELLED);
+        assertEquals(CANCELLED, result.getStatus());
     }
 
     @Test
     public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
         // given
-        Wish executedWish = getNote(EXECUTED);
+        Wish executedWish = getWish(EXECUTED);
         when(wishRepository.findById(any())).thenReturn(Optional.of(executedWish));
         assertThrows(IllegalArgumentException.class,
-                () -> sut.changeStatus(any(), CANCELED));
+                () -> sut.changeStatus(any(), CANCELLED));
     }
 
     @Test
     public void createNoteShouldPassSuccess() {
         // given
-        Wish wish = getNote(OPEN);
+        Wish wish = getWish(OPEN);
         wish.setId(7);
         WishDto dto = factoryBean.getObject().convert(wish, WishDto.class);
 
@@ -87,7 +87,7 @@ public class WishServiceTest {
         ConversionService conversionService = factoryBean.getObject();
 
         // given
-        Wish wish = getNote(OPEN);
+        Wish wish = getWish(OPEN);
         WishDto given = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
@@ -107,7 +107,7 @@ public class WishServiceTest {
         );
     }
 
-    private static Wish getNote(StatusE status) {
+    private static Wish getWish(StatusE status) {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
