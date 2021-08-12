@@ -1,32 +1,32 @@
-package ru.iteco.fmh.converter.note.fromNote;
+package ru.iteco.fmh.converter.wish.fromWish;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.converter.patient.fromPatient.IPatientToPatientDtoConverter;
 import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
-import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.wish.Wish;
 
 
-public class NoteToNoteDtoConverter implements Converter<Note, NoteDto> {
+public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     private final IPatientToPatientDtoConverter patientToDtoConverter;
     private final IUserToUserDtoConverter userToUserDtoConverter;
 
-    public NoteToNoteDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,
+    public WishToWishDtoConverter(IPatientToPatientDtoConverter patientToDtoConverter,
                                   IUserToUserDtoConverter userToUserDtoConverter) {
         this.patientToDtoConverter = patientToDtoConverter;
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
 
     @Override
-    public NoteDto convert(Note note) {
-        NoteDto dto = new NoteDto();
-        BeanUtils.copyProperties(note, dto);
-        PatientDto patientDto = patientToDtoConverter.convert(note.getPatient());
-        UserDto executor = userToUserDtoConverter.convert(note.getExecutor());
-        UserDto creator = userToUserDtoConverter.convert(note.getCreator());
+    public WishDto convert(Wish wish) {
+        WishDto dto = new WishDto();
+        BeanUtils.copyProperties(wish, dto);
+        PatientDto patientDto = patientToDtoConverter.convert(wish.getPatient());
+        UserDto executor = userToUserDtoConverter.convert(wish.getExecutor());
+        UserDto creator = userToUserDtoConverter.convert(wish.getCreator());
         dto.setPatient(patientDto);
         dto.setExecutor(executor);
         dto.setCreator(creator);

@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.note;
+package ru.iteco.fmh.dto.wish;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,16 +12,19 @@ import ru.iteco.fmh.model.StatusE;
 
 import java.time.LocalDateTime;
 
-@ApiModel(description = "записка")
+@ApiModel(description = "просьба")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class NoteDto {
+public class WishDto {
     @ApiModelProperty("идентификатор записки")
     private Integer id;
     @ApiModelProperty("идентификатор пациента")
     private PatientDto patient;
+    @ApiModelProperty("тема просьбы")
+    private String title;
+
     @ApiModelProperty("описание записки")
     private String description;
     @ApiModelProperty("идентификатор создателя")
@@ -36,6 +39,4 @@ public class NoteDto {
     private LocalDateTime factExecuteDate;
     @ApiModelProperty("статус записки")
     private StatusE status;
-    @ApiModelProperty("комментарий к записке")
-    private String comment;
 }

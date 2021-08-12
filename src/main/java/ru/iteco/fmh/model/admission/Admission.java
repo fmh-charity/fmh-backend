@@ -6,7 +6,7 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 /**
@@ -31,13 +31,13 @@ public class Admission {
     Patient patient;
 
     //Планируемая дата поступления
-    LocalDate planDateIn;
+    LocalDateTime planDateIn;
     //Планируемая дата выписки
-    LocalDate planDateOut;
-    //Фактическая  дата поступления
-    LocalDate factDateIn;
+    LocalDateTime planDateOut;
+    //Фактическая дата поступления
+    LocalDateTime factDateIn;
     //Фактическая дата выписки
-    LocalDate factDateOut;
+    LocalDateTime factDateOut;
 
     // Статус госпитализации
     @Enumerated(EnumType.STRING)

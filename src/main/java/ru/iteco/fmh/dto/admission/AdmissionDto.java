@@ -11,11 +11,7 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(description = "информация по госпитализации")
 @Builder
@@ -30,15 +26,15 @@ public class AdmissionDto {
 
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
-    private LocalDate planDateIn;
+    private LocalDateTime planDateIn;
     @ApiModelProperty("плановая дата выписки")
-    private LocalDate planDateOut;
+    private LocalDateTime planDateOut;
 
     //для сценария "Госпитализация пациента"
     @ApiModelProperty(value = "фактическая дата поступления")
-    private LocalDate factDateIn;
+    private LocalDateTime factDateIn;
     @ApiModelProperty(value = "фактическая дата выписки")
-    private LocalDate factDateOut;
+    private LocalDateTime factDateOut;
 
     @ApiModelProperty(value = "статус госпитализации")
     AdmissionsStatus status;

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
-import ru.iteco.fmh.model.Note;
+import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.StatusE;
 import ru.iteco.fmh.model.user.User;
@@ -19,10 +19,10 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class NoteRepositoryTest {
+public class WishRepositoryTest {
 
     @Autowired
-    NoteRepository repository;
+    WishRepository repository;
     @Autowired
     PatientRepository patientRepository;
     @Autowired
@@ -31,8 +31,8 @@ public class NoteRepositoryTest {
     static Patient patient;
     static User author;
     static User doer;
-    static Note entity;
-    static Note entity2;
+    static Wish entity;
+    static Wish entity2;
 
 
     @Test
@@ -43,7 +43,7 @@ public class NoteRepositoryTest {
         userRepository.save(author);
         doer = getUser();
         userRepository.save(doer);
-        entity = Note.builder()
+        entity = Wish.builder()
                 .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)
                 .creator(author)
@@ -51,12 +51,12 @@ public class NoteRepositoryTest {
                 .createDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .planExecuteDate(LocalDateTime.now().plusDays(2))
-                .status(StatusE.ACTIVE)
-                .comment(TestUtils.getAlphabeticStringR())
+                .status(StatusE.OPEN)
+
                 .build();
 
         entity = repository.save(entity);
-        entity2 = Note.builder()
+        entity2 = Wish.builder()
                 .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)
                 .creator(author)
@@ -65,7 +65,7 @@ public class NoteRepositoryTest {
                 .factExecuteDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now().plusDays(2))
                 .status(StatusE.EXECUTED)
-                .comment(TestUtils.getAlphabeticStringR())
+
                 .build();
 
         entity2 = repository.save(entity2);

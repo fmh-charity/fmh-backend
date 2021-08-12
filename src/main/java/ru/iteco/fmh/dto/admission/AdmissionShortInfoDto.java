@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ApiModel(description = "краткая информация по госпитализации")
 @Builder
@@ -16,15 +16,15 @@ public class AdmissionShortInfoDto {
 
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
-    private LocalDate planDateIn;
+    private LocalDateTime planDateIn;
     @ApiModelProperty("плановая дата выписки")
-    private LocalDate planDateOut;
+    private LocalDateTime planDateOut;
 
     //для сценария "Госпитализация пациента"
     @ApiModelProperty(value = "фактическая дата поступления")
-    private LocalDate factDateIn;
+    private LocalDateTime factDateIn;
     @ApiModelProperty(value = "фактическая дата выписки")
-    private LocalDate factDateOut;
+    private LocalDateTime factDateOut;
 //    @ApiModelProperty(value = "фактическое поступление, признак того, что пациент находится в хосписе")
 //    private Boolean factIn;
 }

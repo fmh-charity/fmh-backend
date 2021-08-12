@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 public class ClaimDto {
     @ApiModelProperty("идентификатор заявки")
     private Integer id;
+    @ApiModelProperty("тема заявки")
+    private String title;
     @ApiModelProperty("описание заявки")
     private String description;
     @ApiModelProperty("идентификатор создателя")
@@ -33,8 +35,7 @@ public class ClaimDto {
     private LocalDateTime factExecuteDate;
     @ApiModelProperty("статус заявки")
     private StatusE status;
-    @ApiModelProperty("комментарий к заявке")
-    private String comment;
+
 }
 
 

@@ -1,13 +1,15 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.note.NoteDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.*;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import ru.iteco.fmh.model.claim.Claim;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.Wish;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,9 +46,9 @@ public class TestUtils {
                 .toString();
     }
 
-    public static Note getNote() {
+    public static Wish getNote() {
 
-        return Note.builder()
+        return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
                 .creator(getUser())
@@ -55,8 +57,7 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.ACTIVE)
-                .comment(getAlphabeticStringR())
+                .status(StatusE.OPEN)
                 .build();
     }
 
@@ -115,9 +116,9 @@ public class TestUtils {
     }
 
 
-    public static NoteDto getNoteDto() {
+    public static WishDto getNoteDto() {
 
-        return NoteDto.builder()
+        return WishDto.builder()
                 .patient(getPatientDto())
                 .description(getAlphabeticStringR())
                 .planExecuteDate(LocalDateTime.now().withNano(0))
@@ -125,8 +126,8 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .executor(getUserDto())
                 .creator(getUserDto())
-                .status(StatusE.ACTIVE)
-                .comment(getAlphabeticStringR())
+                .status(StatusE.OPEN)
+
                 .build();
     }
 
@@ -149,7 +150,7 @@ public class TestUtils {
                 .patient(getPatient())
                 .planDateIn(null)
                 .planDateOut(null)
-                .factDateIn(LocalDate.now())
+                .factDateIn(LocalDateTime.now())
                 .factDateOut(null)
                 .status(AdmissionsStatus.ACTIVE)
                 .room(new Room())
@@ -166,8 +167,7 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.ACTIVE)
-                .comment(getAlphabeticStringR())
+                .status(StatusE.OPEN)
                 .build();
     }
 
@@ -180,8 +180,7 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .executor(getUserDto())
                 .creator(getUserDto())
-                .status(StatusE.ACTIVE)
-                .comment(getAlphabeticStringR())
+                .status(StatusE.OPEN)
                 .build();
     }
 

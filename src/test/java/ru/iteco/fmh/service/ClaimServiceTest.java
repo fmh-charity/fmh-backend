@@ -10,7 +10,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.time.LocalDateTime;
@@ -61,7 +61,6 @@ public class ClaimServiceTest {
 
         assertAll(
                 () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getComment(), result.getComment()),
                 () -> assertEquals(given.getDescription(), result.getDescription()),
                 () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -87,14 +86,14 @@ public class ClaimServiceTest {
     private static Claim getClaim() {
         return Claim.builder()
                 .id(Integer.valueOf(getNumeric(2)))
+                .title("Title")
                 .creator(getUser())
                 .executor(getUser())
                 .description(getAlphabeticStringR())
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(ACTIVE)
-                .comment(getAlphabeticStringR())
+                .status(OPEN)
                 .build();
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.core.convert.converter.Converter;
 
 import ru.iteco.fmh.converter.user.fromUserDto.IUserDtoToUserConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 
 import ru.iteco.fmh.model.user.User;
 

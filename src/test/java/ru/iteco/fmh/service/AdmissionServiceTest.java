@@ -17,6 +17,7 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,10 +109,10 @@ public class AdmissionServiceTest {
                 .patient(Patient.builder().build())
                 .comment(getAlphabeticStringR())
                 .id(Integer.valueOf(getNumeric(2)))
-                .factDateIn(LocalDate.now())
-                .factDateOut(LocalDate.now())
-                .planDateIn(LocalDate.now())
-                .planDateOut(LocalDate.now())
+                .factDateIn(LocalDateTime.now().withNano(0))
+                .factDateOut(LocalDateTime.now().withNano(0))
+                .planDateIn(LocalDateTime.now().withNano(0))
+                .planDateOut(LocalDateTime.now().withNano(0))
                 .status(AdmissionsStatus.ACTIVE)
                 .build();
     }

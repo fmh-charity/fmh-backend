@@ -1,7 +1,7 @@
 package ru.iteco.fmh.dao.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 import ru.iteco.fmh.model.StatusE;
 
 import java.util.List;

@@ -6,19 +6,14 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Note;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static ru.iteco.fmh.model.StatusE.ACTIVE;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -70,10 +65,10 @@ public class PatientServiceImpl implements PatientService {
 
     // ставит верные dateIn, dateOut и флаги для отправки на фронт
     private PatientAdmissionDto setAdmissionDates(PatientAdmissionDto patientAdmissionDto) {
-        LocalDate factDateIn = patientAdmissionDto.getFactDateIn();
-        LocalDate factDateOut = patientAdmissionDto.getFactDateOut();
-        LocalDate planDateIn = patientAdmissionDto.getPlanDateIn();
-        LocalDate planDateOut = patientAdmissionDto.getPlanDateOut();
+        LocalDateTime factDateIn = patientAdmissionDto.getFactDateIn();
+        LocalDateTime factDateOut = patientAdmissionDto.getFactDateOut();
+        LocalDateTime planDateIn = patientAdmissionDto.getPlanDateIn();
+        LocalDateTime planDateOut = patientAdmissionDto.getPlanDateOut();
 
         // ставим dateIn
         if (factDateIn != null) {

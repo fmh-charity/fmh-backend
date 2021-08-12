@@ -1,7 +1,6 @@
 package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.dto.note.NoteDto;
 import ru.iteco.fmh.model.StatusE;
 
 import java.util.List;

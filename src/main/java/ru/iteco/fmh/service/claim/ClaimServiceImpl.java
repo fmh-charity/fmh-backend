@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.model.Claim;
+import ru.iteco.fmh.model.claim.Claim;
 import ru.iteco.fmh.model.StatusE;
 
 
@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.StatusE.ACTIVE;
+import static ru.iteco.fmh.model.StatusE.IN_PROGRESS;
+import static ru.iteco.fmh.model.StatusE.OPEN;
 
 @Service
 public class ClaimServiceImpl implements ClaimService{
@@ -34,7 +35,7 @@ public class ClaimServiceImpl implements ClaimService{
 
     @Override
     public List<ClaimShortInfoDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(ACTIVE);
+        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(OPEN);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimShortInfoDto.class))
@@ -52,7 +53,7 @@ public class ClaimServiceImpl implements ClaimService{
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
         Claim claim = conversionService.convert(claimDto, Claim.class);
-        if (ACTIVE.equals(claim.getStatus())){
+        if (OPEN.equals(claim.getStatus())){
             claim = claimRepository.save(claim);
             return conversionService.convert(claim,ClaimDto.class);
         }else {
@@ -68,12 +69,12 @@ public class ClaimServiceImpl implements ClaimService{
         if (optionalClaim.isPresent()) {
             ConversionService conversionService = factoryBean.getObject();
             Claim claim = optionalClaim.get();
-            if (ACTIVE.equals(claim.getStatus())) {
+            if (OPEN.equals(claim.getStatus()) || IN_PROGRESS.equals(claim.getStatus())) {
                 status.changeStatus(claim);
                 claim = claimRepository.save(claim);
                 return conversionService.convert(claim, ClaimDto.class);
             }
-            throw new IllegalArgumentException("Невозможно изменить статус неактивной заявки");
+            throw new IllegalArgumentException("Невозможно изменить статус заявки");
         }
         throw new IllegalArgumentException("Заявки с таким ID не существует");
     }

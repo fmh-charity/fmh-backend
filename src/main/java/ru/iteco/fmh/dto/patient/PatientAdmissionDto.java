@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")
@@ -32,9 +33,9 @@ public class PatientAdmissionDto {
     @ApiModelProperty(value = "статус госпитализации")
     private AdmissionsStatus admissionsStatus;
     @ApiModelProperty("фактическая/плановая дата поступления")
-    private LocalDate dateIn;
+    private LocalDateTime dateIn;
     @ApiModelProperty("фактическая/плановая дата выписки")
-    private LocalDate dateOut;
+    private LocalDateTime dateOut;
     @ApiModelProperty("признак для даты поступления")
     private boolean dateInBoolean;
     @ApiModelProperty("признак для даты выписки")
@@ -42,11 +43,11 @@ public class PatientAdmissionDto {
 
     // данные для формирования dateIn, dateOut
     @JsonIgnore
-    private LocalDate planDateIn;
+    private LocalDateTime planDateIn;
     @JsonIgnore
-    private LocalDate planDateOut;
+    private LocalDateTime planDateOut;
     @JsonIgnore
-    private LocalDate factDateIn;
+    private LocalDateTime factDateIn;
     @JsonIgnore
-    private LocalDate factDateOut;
+    private LocalDateTime factDateOut;
 }

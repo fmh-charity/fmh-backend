@@ -1,16 +1,12 @@
-package ru.iteco.fmh.model;
+package ru.iteco.fmh.model.wish;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Заявка
- */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,28 +15,21 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "claim")
-public class Claim {
+@Table(name = "wishComment")
+public class WishComment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+    @ManyToOne
+    @JoinColumn(name = " wish_id")
+    Wish wish;
 
     String description;
-
     @ManyToOne
     @JoinColumn(name = "creator_id")
     User creator;
-    @ManyToOne
-    @JoinColumn(name = "executor_id")
-    User executor;
-
     LocalDateTime createDate;
-    LocalDateTime planExecuteDate;
-    LocalDateTime factExecuteDate;
 
-    @Enumerated(EnumType.STRING)
-    StatusE status;
 
-    String comment;
-    boolean deleted;
 }
