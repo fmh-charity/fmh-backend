@@ -6,43 +6,48 @@ import java.time.LocalDateTime;
  * Enum для статуса заявки и записки
  */
 public enum StatusE {
-    IN_PROGRESS {
+    IN_PROGRESS("В РАБОТЕ") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            switch (newStatus) {
-                case CANCELLED:
-                    throw new IllegalArgumentException("нельзя перевести из статуса \"В работе\" в статус \"Отменено\"");
-                case EXECUTED:
-                    task.setFactExecuteDate(LocalDateTime.now().withNano(0));
-            }
+            if (CANCELLED==newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + IN_PROGRESS.getName()
+                    +  "в статус " + CANCELLED.getName());
+            if (EXECUTED==newStatus) task.setFactExecuteDate(LocalDateTime.now().withNano(0));
             task.setStatus(newStatus);
         }
     },
 
-    CANCELLED {
+    CANCELLED("ОТМЕНЕНО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            throw new IllegalArgumentException("нельзя перевести из статуса \"Отменено\" в иной статус");
+            throw new IllegalArgumentException("нельзя перевести из статуса " + CANCELLED.getName() +  " в иной статус");
         }
     },
 
-    OPEN {
+    OPEN("ОТКРЫТО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            if (EXECUTED == newStatus) throw new IllegalArgumentException("нельзя перевести из статуса \"Открыто\" в статус \"Исполнено\"");
+            if (EXECUTED == newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + OPEN.getName()
+                    +  "в статус " + EXECUTED.getName());
             task.setStatus(newStatus);
         }
     },
 
-    EXECUTED {
+    EXECUTED("ИСПОЛНЕНО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            throw new IllegalArgumentException("нельзя перевести из статуса \"Исполнено\" в иной статус");
+            throw new IllegalArgumentException("нельзя перевести из статуса " + EXECUTED.getName() +  " в иной статус");
         }
     };
 
-    StatusE() {
+    private final String name;
+
+    StatusE(String name) {
+        this.name = name;
     }
 
     public abstract void changeStatus(Task task, StatusE newStatus);
+
+    public String getName() {
+        return name;
+    }
 }

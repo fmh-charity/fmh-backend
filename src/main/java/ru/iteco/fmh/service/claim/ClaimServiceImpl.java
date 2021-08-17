@@ -10,11 +10,9 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.StatusE;
-
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @Service
@@ -61,27 +59,18 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     @Override
     public ClaimDto changeStatus(Integer claimId, StatusE status) {
-        Optional<Claim> optionalClaim = claimRepository.findById(claimId);
-        if (optionalClaim.isPresent()) {
-            ConversionService conversionService = factoryBean.getObject();
-            Claim claim = optionalClaim.get();
-            claim.changeStatus(status);
-            claim = claimRepository.save(claim);
-            return conversionService.convert(claim, ClaimDto.class);
-        }
-        throw new IllegalArgumentException("Заявки с таким ID не существует");
+        Claim claim = claimRepository.findById(claimId).orElseThrow(() -> new IllegalArgumentException("Заявки с таким ID не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        claim.changeStatus(status);
+        claim = claimRepository.save(claim);
+        return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Override
     public ClaimDto getClaim(Integer id) {
-        Optional<Claim> optionalClaim = claimRepository.findById(id);
-        if (optionalClaim.isPresent()) {
-            ConversionService conversionService = factoryBean.getObject();
-            Claim claim = optionalClaim.get();
-            return conversionService.convert(claim, ClaimDto.class);
-        } else {
-            throw new IllegalArgumentException("Заявки с таким ID не существует");
-        }
+        Claim claim = claimRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Заявки с таким ID не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(claim, ClaimDto.class);
     }
 }
 
