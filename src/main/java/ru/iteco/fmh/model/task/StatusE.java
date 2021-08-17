@@ -9,8 +9,8 @@ public enum StatusE {
     IN_PROGRESS("В РАБОТЕ") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            if (CANCELLED==newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + IN_PROGRESS.getName()
-                    +  "в статус " + CANCELLED.getName());
+            if (CANCELLED==newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName()
+                    +  "в статус " + newStatus.getName());
             if (EXECUTED==newStatus) task.setFactExecuteDate(LocalDateTime.now().withNano(0));
             task.setStatus(newStatus);
         }
@@ -19,15 +19,15 @@ public enum StatusE {
     CANCELLED("ОТМЕНЕНО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            throw new IllegalArgumentException("нельзя перевести из статуса " + CANCELLED.getName() +  " в иной статус");
+            throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() +  " в иной статус");
         }
     },
 
     OPEN("ОТКРЫТО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            if (EXECUTED == newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + OPEN.getName()
-                    +  "в статус " + EXECUTED.getName());
+            if (EXECUTED == newStatus) throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName()
+                    +  "в статус " + newStatus.getName());
             task.setStatus(newStatus);
         }
     },
@@ -35,7 +35,7 @@ public enum StatusE {
     EXECUTED("ИСПОЛНЕНО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            throw new IllegalArgumentException("нельзя перевести из статуса " + EXECUTED.getName() +  " в иной статус");
+            throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() +  " в иной статус");
         }
     };
 
