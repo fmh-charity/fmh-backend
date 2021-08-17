@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter.claim.fromClaim;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
-import ru.iteco.fmh.model.claim.Claim;
+import ru.iteco.fmh.model.task.claim.Claim;
 
 public class ClaimToClaimShortInfoDtoConverter implements Converter<Claim, ClaimShortInfoDto> {
     @Override

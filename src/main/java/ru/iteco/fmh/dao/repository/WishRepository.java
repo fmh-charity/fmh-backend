@@ -3,8 +3,8 @@ package ru.iteco.fmh.dao.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;
-import ru.iteco.fmh.model.wish.Wish;
-import ru.iteco.fmh.model.StatusE;
+import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
 

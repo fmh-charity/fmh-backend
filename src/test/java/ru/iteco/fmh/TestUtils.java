@@ -7,9 +7,10 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.*;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
-import ru.iteco.fmh.model.claim.Claim;
+import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

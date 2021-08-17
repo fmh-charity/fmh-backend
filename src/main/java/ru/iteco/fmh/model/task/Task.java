@@ -1,30 +1,26 @@
-package ru.iteco.fmh.model.claim;
+package ru.iteco.fmh.model.task;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.StatusE;
+import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Заявка
- */
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
 @ToString
-@Table(name = "claim")
-public class Claim {
+@MappedSuperclass
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     String title;
     String description;
 
@@ -43,4 +39,8 @@ public class Claim {
     StatusE status;
 
     boolean deleted;
+
+    public void changeStatus(StatusE newStatus) {
+        status.changeStatus(this, newStatus);
+    }
 }

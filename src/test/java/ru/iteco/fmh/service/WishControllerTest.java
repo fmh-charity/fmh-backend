@@ -12,14 +12,14 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getNoteDto;
-import static ru.iteco.fmh.model.StatusE.*;
+import static ru.iteco.fmh.model.task.StatusE.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -51,8 +51,8 @@ public class WishControllerTest {
     public void changeStatusShouldPassSuccess() {
         // given
         int noteId1 = 1;
-        WishDto resultCancelled = sut.changeStatus(noteId1, EXECUTED);
-        assertEquals(EXECUTED, resultCancelled.getStatus());
+        WishDto resultCancelled = sut.changeStatus(noteId1, CANCELLED);
+        assertEquals(CANCELLED, resultCancelled.getStatus());
 
         // after
         Wish wish = wishRepository.findById(1).get();

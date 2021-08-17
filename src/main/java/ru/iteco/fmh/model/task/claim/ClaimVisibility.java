@@ -1,11 +1,11 @@
-package ru.iteco.fmh.model.claim;
+package ru.iteco.fmh.model.task.claim;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.user.Role;
+
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Builder
 @NoArgsConstructor
@@ -15,19 +15,18 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "claimComment")
-public class ClaimComment {
+@Table(name = "claimVisibility")
+public class ClaimVisibility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
     @ManyToOne
     @JoinColumn(name = "claim_id")
     Claim claim;
-
-    String description;
     @ManyToOne
-    @JoinColumn(name = "creator_id")
-    User creator;
-    LocalDateTime createDate;
+    @JoinColumn(name = "role_id")
+    Role role;
+    Boolean deleted;
 }

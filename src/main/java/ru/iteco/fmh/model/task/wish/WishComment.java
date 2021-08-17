@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model.wish;
+package ru.iteco.fmh.model.task.wish;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

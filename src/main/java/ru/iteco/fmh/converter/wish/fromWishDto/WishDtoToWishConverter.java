@@ -5,7 +5,7 @@ import org.springframework.core.convert.converter.Converter;
 import ru.iteco.fmh.converter.patient.fromPatientDto.IPatientDtoToPatientConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.IUserDtoToUserConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.user.User;
 

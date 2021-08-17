@@ -11,15 +11,11 @@ import ru.iteco.fmh.controller.ClaimController;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.claim.Claim;
-import java.time.LocalDateTime;
-import java.util.List;
+import ru.iteco.fmh.model.task.claim.Claim;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.StatusE.*;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
