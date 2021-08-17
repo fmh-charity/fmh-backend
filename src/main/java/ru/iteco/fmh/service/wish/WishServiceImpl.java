@@ -30,7 +30,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishShortInfoDto> getAllNotes() {
+    public List<WishShortInfoDto> getAllWishes() {
         List<Wish> list = wishRepository.findAllByStatusOrderByPlanExecuteDate(OPEN);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
@@ -39,7 +39,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public Integer createNote(WishDto wishDto) {
+    public Integer createWish(WishDto wishDto) {
         Wish wish = factoryBean.getObject().convert(wishDto, Wish.class);
         return wishRepository.save(wish).getId();
     }
@@ -47,7 +47,7 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto updateNote(WishDto wishDto) {
+    public WishDto updateWish(WishDto wishDto) {
         ConversionService conversionService = factoryBean.getObject();
         Wish wish = conversionService.convert(wishDto, Wish.class);
         if (OPEN.equals(wish.getStatus())) {
@@ -60,7 +60,7 @@ public class WishServiceImpl implements WishService {
 
 
     @Override
-    public WishDto getNote(Integer id) {
+    public WishDto getWish(Integer id) {
         Optional<Wish> optionalNote = wishRepository.findById(id);
         if (optionalNote.isPresent()) {
             ConversionService conversionService = factoryBean.getObject();
@@ -73,7 +73,7 @@ public class WishServiceImpl implements WishService {
 
 
     @Override
-    public List<WishDto> getPatientNotes(Integer patientId) {
+    public List<WishDto> getPatientWishes(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
         return wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, OPEN).stream()
                 .map(note -> conversionService.convert(note, WishDto.class))
@@ -102,8 +102,8 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(Integer noteId, StatusE status) {
-        Optional<Wish> optionalNote = wishRepository.findById(noteId);
+    public WishDto changeStatus(Integer wishId, StatusE status) {
+        Optional<Wish> optionalNote = wishRepository.findById(wishId);
         if (optionalNote.isPresent()) {
             ConversionService conversionService = factoryBean.getObject();
             Wish wish = optionalNote.get();

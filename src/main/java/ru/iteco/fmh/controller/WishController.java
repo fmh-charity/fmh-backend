@@ -14,40 +14,41 @@ import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
 
-@Api(description = "Работа с записками")
+@Api(description = "Работа с просьбами")
 @RestController
-@RequestMapping("/note")
+@RequestMapping("/wish")
 public class WishController {
     private final WishService wishService;
+
     @Autowired
     public WishController(WishService wishService) {
         this.wishService = wishService;
     }
 
-    @ApiOperation(value = "реестр всех записок со статусом active")
+    @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
     @GetMapping
-    public List<WishShortInfoDto> getAllNotes() {
-        return wishService.getAllNotes();
+    public List<WishShortInfoDto> getAllWishes() {
+        return wishService.getAllWishes();
     }
 
-    @ApiOperation(value = "Создание новой записки")
+    @ApiOperation(value = "Создание новой просьбы")
     @PostMapping
-    public Integer createNote(@RequestBody WishDto wishDto) {
-        return wishService.createNote(wishDto);
+    public Integer createWish(@RequestBody WishDto wishDto) {
+        return wishService.createWish(wishDto);
     }
 
-    @ApiOperation(value = "возвращает полную информацию по записке")
+    @ApiOperation(value = "возвращает полную информацию по просьбе")
     @GetMapping("/{id}")
-    public WishDto getNote(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id){
-        return wishService.getNote(id);
+    public WishDto getWish(
+            @ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
+        return wishService.getWish(id);
     }
 
-    @ApiOperation(value = "обновляет информацию по записке")
+    @ApiOperation(value = "обновляет информацию по просьбе")
     @PatchMapping
-    public WishDto updateNote(
+    public WishDto updateWish(
             @RequestBody WishDto wishDto) {
-        return wishService.updateNote(wishDto);
+        return wishService.updateWish(wishDto);
     }
 
 //    @ApiOperation(value = "формирование комментария по запискам")
@@ -58,13 +59,13 @@ public class WishController {
 //        return wishService.addComment(noteId, comment);
 //    }
 
-    @ApiOperation(value = "обработка записок по статусной модели")
-    @PatchMapping("/status/{noteId}")
+    @ApiOperation(value = "обработка просьб по статусной модели")
+    @PatchMapping("/status/{wishId}")
     public WishDto changeStatus(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
-            @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("wishId") int wishId,
+            @ApiParam(value = "новое значение статуса для просьбы", required = true) @RequestParam("status") StatusE status
             )  {
-        return wishService.changeStatus(noteId, status);
+        return wishService.changeStatus(wishId, status);
     }
 
     // все ошибки

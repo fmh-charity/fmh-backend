@@ -63,7 +63,7 @@ public class PatientController {
     public List<WishDto> getNotes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
-        return wishService.getPatientNotes(patientId);
+        return wishService.getPatientWishes(patientId);
     }
 
     @ApiOperation(value = "изменение пациента")

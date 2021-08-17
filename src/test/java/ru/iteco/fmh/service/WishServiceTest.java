@@ -77,7 +77,7 @@ public class WishServiceTest {
 
         when(wishRepository.save(any())).thenReturn(wish);
 
-        Integer resultId = sut.createNote(dto);
+        Integer resultId = sut.createWish(dto);
 
         assertEquals(7, resultId);
     }
@@ -92,7 +92,7 @@ public class WishServiceTest {
 
         when(wishRepository.save(any())).thenReturn(wish);
 
-        WishDto result = sut.updateNote(given);
+        WishDto result = sut.updateWish(given);
 
         assertAll(
                 () -> assertEquals(given.getId(), result.getId()),

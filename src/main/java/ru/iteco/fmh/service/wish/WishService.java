@@ -7,55 +7,55 @@ import ru.iteco.fmh.model.task.StatusE;
 import java.util.List;
 
 /**
- * сервис для работы с записками
+ * сервис для работы с просьбами
  */
 public interface WishService {
     /**
-     * возвращает список всех записок co статусом active
+     * возвращает список всех просьб co статусом open/in_progress
      */
-    List<WishShortInfoDto> getAllNotes();
+    List<WishShortInfoDto> getAllWishes();
 
     /**
-     * возвращает записку для просмотра
-     * @param id ид записки
-     * @return записка с полной информацией
+     * возвращает просьбу для просмотра
+     * @param id ид просьбы
+     * @return просьба с полной информацией
      */
-    WishDto getNote(Integer id);
+    WishDto getWish(Integer id);
 
     /**
-     * создает новую записку
-     * @param wishDto информация по новой записке
-     * @return id записки
+     * создает новую просьбу
+     * @param wishDto информация по новой просьбе
+     * @return id просьбы
      */
-    Integer createNote(WishDto wishDto);
+    Integer createWish(WishDto wishDto);
 
     /**
-     * обновляет записку
-     * @param wishDto информация по записке для обновления
-     * @return обновленная сущность
+     * обновляет просьбу
+     * @param wishDto информация по просьбе для обновления
+     * @return обновленная сущность просьбы
      */
-    WishDto updateNote(WishDto wishDto);
+    WishDto updateWish(WishDto wishDto);
 
     /**
-     * возвращает список всех неисполненных записок по пациенту
+     * возвращает список всех неисполненных просьб по пациенту
      * @param patientId ид пациента
-     * @return список всех активных записок с полной инфой по пациенту
+     * @return список всех активных просьб с полной инфой по пациенту
      */
-    List<WishDto> getPatientNotes(Integer patientId);
+    List<WishDto> getPatientWishes(Integer patientId);
 
-    /**
-     * добавляет комментарий в записку и возвращает записку
-     * @param noteId ид записки
-     * @param comment комментарий для записки
-     * @return записку с добавленным комментарием
-     */
+//    /**
+//     * добавляет комментарий в записку и возвращает записку
+//     * @param noteId ид записки
+//     * @param comment комментарий для записки
+//     * @return записку с добавленным комментарием
+//     */
 //    WishDto addComment(Integer noteId, String comment);
 
     /**
-     * изменяет статус записки на - исполнен, отменен
-     * @param noteId ид записки
-     * @param status значение нового статуса для записки
-     * @return записку с измененным статусом
+     * изменяет статус просьбы на - исполнен, отменен
+     * @param wishId ид просьбы
+     * @param status значение нового статуса для просьбы
+     * @return просьбу с измененным статусом
      */
-    WishDto changeStatus(Integer noteId, StatusE status);
+    WishDto changeStatus(Integer wishId, StatusE status);
 }

@@ -62,7 +62,7 @@ public class WishControllerTest {
 
     @Test
     public void getAllActiveNotesSort() {
-        List<WishShortInfoDto> wishShortInfoDtoList = sut.getAllNotes();
+        List<WishShortInfoDto> wishShortInfoDtoList = sut.getAllWishes();
         assertEquals(5, wishShortInfoDtoList.size());
         assertTrue(wishShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
                 (wishShortInfoDtoList.get(2).getPlanExecuteDate()));
@@ -78,7 +78,7 @@ public class WishControllerTest {
         given.setExecutor(conversionService.convert(userRepository.findUserById(3), UserDto.class));
         given.getPatient().setId(2);
 
-        Integer id = sut.createNote(given);
+        Integer id = sut.createWish(given);
 
         assertNotNull(id);
 
