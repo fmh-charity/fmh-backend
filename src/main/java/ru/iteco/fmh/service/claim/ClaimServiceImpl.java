@@ -39,6 +39,11 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Integer createClaim(ClaimDto claimDto) {
+        if (claimDto.getExecutor() == null){
+            claimDto.setStatus(OPEN);
+        }else {
+            claimDto.setStatus(IN_PROGRESS);
+        }
         Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
         return claimRepository.save(claim).getId();
     }

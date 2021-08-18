@@ -23,7 +23,7 @@ public class ClaimController {
         this.claimService = claimService;
     }
 
-    @ApiOperation(value = "реестр всех заявок со статусом active")
+    @ApiOperation(value = "реестр всех заявок со статусом open and in progress")
     @GetMapping
     public List<ClaimDto> getAllClaims() {
         return claimService.getAllClaims();

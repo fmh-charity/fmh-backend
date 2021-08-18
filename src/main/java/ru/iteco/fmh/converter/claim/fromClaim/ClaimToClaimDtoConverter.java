@@ -40,19 +40,8 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
     }
 
     public static User getUser() {
-        User user = User.builder()
-                .id(Integer.valueOf(2))
-                .login("login")
-                .password("login")
-                .firstName("login")
-                .lastName("login")
-                .middleName("login")
-                .phoneNumber("login")
-                .email("login")
+        return User.builder()
                 .build();
-        user.setShortUserName(null);
-        return user;
-
     }
 
 }

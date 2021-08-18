@@ -158,19 +158,7 @@ public class TestUtils {
                 .comment(getAlphabeticStringR())
                 .build();
     }
-    public static Claim getClaim() {
 
-        return Claim.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .creator(getUser())
-                .executor(getUser())
-                .description(getAlphabeticStringR())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.OPEN)
-                .build();
-    }
 
     public static ClaimDto getClaimDto() {
 
