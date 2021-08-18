@@ -187,7 +187,7 @@ create table claim
 (
     id                int     not null primary key default nextval('claim_seq'),
     title             varchar,
-    description       varchar not null,
+    description       varchar,
     creator_id        int     not null,
     executor_id       int,
     create_date       timestamp,

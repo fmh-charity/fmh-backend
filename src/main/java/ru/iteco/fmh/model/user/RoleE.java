@@ -5,10 +5,10 @@ package ru.iteco.fmh.model.user;
  */
 public enum RoleE {
 
-    Administrator,
-    MedicalWorker,
-    Volunteer,
-    EmployeeAHC;
+    ADMINISTRATOR,
+    MEDICAL_WORKER,
+    VOLUNTEER,
+    EMPLOYEE_AHC;
 
     RoleE() {
     }

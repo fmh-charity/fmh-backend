@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
+
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface ClaimService {
      * возвращает полный перечень всех заявок
      * @return список с полной информацией по заявкам
      */
-    List<ClaimShortInfoDto> getAllClaims();
+    List<ClaimDto> getAllClaims();
 
     /**
      * создает новую заявку

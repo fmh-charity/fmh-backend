@@ -117,7 +117,7 @@ public class TestUtils {
     }
 
 
-    public static WishDto getNoteDto() {
+    public static WishDto getWishDto() {
 
         return WishDto.builder()
                 .patient(getPatientDto())

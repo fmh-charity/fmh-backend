@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimShortInfoDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.StatusE;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @Service
@@ -29,11 +29,11 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Override
-    public List<ClaimShortInfoDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAllByStatusOrderByPlanExecuteDate(OPEN);
+    public List<ClaimDto> getAllClaims() {
+        List<Claim> list = claimRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
-                .map(i -> conversionService.convert(i, ClaimShortInfoDto.class))
+                .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
     }
 

@@ -8,6 +8,9 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.user.User;
+
+import java.util.List;
 
 
 public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
@@ -18,12 +21,36 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
     @Override
     public ClaimDto convert(Claim claim) {
         ClaimDto dto = new ClaimDto();
-        BeanUtils.copyProperties(claim, dto);
-        UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
-        UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
-        dto.setExecutor(executor);
-        dto.setCreator(creator);
+        if (claim.getExecutor() == null ){
+            claim.setExecutor(getUser());
+            BeanUtils.copyProperties(claim,dto);
+            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+            dto.setExecutor(null);
+            dto.setCreator(creator);
+        }else{
+            BeanUtils.copyProperties(claim,dto);
+            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+            UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
+            dto.setExecutor(executor);
+            dto.setCreator(creator);
+        }
         return dto;
+    }
+
+    public static User getUser() {
+        User user = User.builder()
+                .id(Integer.valueOf(2))
+                .login("login")
+                .password("login")
+                .firstName("login")
+                .lastName("login")
+                .middleName("login")
+                .phoneNumber("login")
+                .email("login")
+                .build();
+        user.setShortUserName(null);
+        return user;
+
     }
 
 }
