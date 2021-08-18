@@ -10,25 +10,27 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
 
-import java.util.List;
-
 
 public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
     private final IUserToUserDtoConverter userToUserDtoConverter;
+
     public ClaimToClaimDtoConverter(IUserToUserDtoConverter userToUserDtoConverter) {
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
+
     @Override
     public ClaimDto convert(Claim claim) {
         ClaimDto dto = new ClaimDto();
-        if (claim.getExecutor() == null ){
+        if (claim.getExecutor() == null) {
+            //делаем Mock и ставим вместо executor = null
             claim.setExecutor(getUser());
-            BeanUtils.copyProperties(claim,dto);
+            BeanUtils.copyProperties(claim, dto);
             UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+            //убираем mock и ставим null обратно
             dto.setExecutor(null);
             dto.setCreator(creator);
-        }else{
-            BeanUtils.copyProperties(claim,dto);
+        } else {
+            BeanUtils.copyProperties(claim, dto);
             UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
             UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
             dto.setExecutor(executor);
