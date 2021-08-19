@@ -8,8 +8,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.converter.ClaimToClaimDtoConverterTest;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -36,14 +38,29 @@ public class ClaimServiceTest {
     @Test
     public void createClaimShouldPassSuccess() {
         // given
-        Claim claim = getClaim();
+        Claim claim = ClaimToClaimDtoConverterTest.getClaim();
         claim.setId(6);
         ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);
 
         Integer resultId = sut.createClaim(dto);
+        assertEquals(claim.getStatus(), OPEN);
+        assertEquals(6, resultId);
+    }
 
+
+    @Test
+    public void createClaimShouldPassSuccess2() {
+        // given
+        Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
+        claim.setId(6);
+        ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
+
+        when(claimRepository.save(any())).thenReturn(claim);
+
+        Integer resultId = sut.createClaim(dto);
+        assertEquals(claim.getStatus(), IN_PROGRESS);
         assertEquals(6, resultId);
     }
 
@@ -82,7 +99,7 @@ public class ClaimServiceTest {
         ClaimDto result = sut.getClaim(claimId);
         assertEquals(expected, result);
     }
-
+//delete в конце потому что содаю в claimDtoconverter..test
     private static Claim getClaim() {
         return Claim.builder()
                 .id(Integer.valueOf(getNumeric(2)))

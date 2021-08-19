@@ -13,12 +13,14 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
+import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -46,34 +48,36 @@ public class ClaimControllerTest {
                 (claimDtoList.get(2).getPlanExecuteDate()));
     }
 
-//    @Test
-//    public void createClaimShouldPassSuccess() {
-//        ConversionService conversionService = factoryBean.getObject();
-//
-//        // given
-//        ClaimDto given = getClaimDto();
-//        given.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
+    @Test
+    public void createClaimShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        ClaimDto given = getClaimDto();
+        given.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
 //        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-//
-//        Integer id = sut.createClaim(given);
-//
-//        assertNotNull(id);
-//
-//        Claim result = claimRepository.findById(id).get();
-//
-//        assertAll(
-//                ()-> assertEquals(given.getDescription(), result.getDescription()),
-//                ()-> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
-//                ()-> assertEquals(given.getExecutor(),conversionService.convert(result.getExecutor(), UserDto.class)),
-//                ()-> assertEquals(given.getCreateDate(), result.getCreateDate()),
-//                ()-> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-//                ()-> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-//                ()-> assertEquals(given.getStatus(), result.getStatus())
-//        );
-//
-//        // deleting result entity
-//        claimRepository.deleteById(id);
-//    }
+
+        Integer id = sut.createClaim(given);
+
+        assertNotNull(id);
+
+
+        Claim result = claimRepository.findById(id).get();
+        assertEquals(result.getStatus(), StatusE.OPEN);
+
+        assertAll(
+                ()-> assertEquals(given.getDescription(), result.getDescription()),
+                ()-> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
+                ()-> assertEquals(given.getExecutor(),conversionService.convert(result.getExecutor(), UserDto.class)),
+                ()-> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                ()-> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                ()-> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                ()-> assertEquals(given.getStatus(), result.getStatus())
+        );
+
+        // deleting result entity
+        claimRepository.deleteById(id);
+    }
 //
 //    @Test
 //    public void getClaimShouldPassSuccess() {

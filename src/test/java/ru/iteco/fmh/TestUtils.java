@@ -160,17 +160,6 @@ public class TestUtils {
     }
 
 
-    public static ClaimDto getClaimDto() {
 
-        return ClaimDto.builder()
-                .description(getAlphabeticStringR())
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
-                .factExecuteDate(null)
-                .executor(getUserDto())
-                .creator(getUserDto())
-                .status(StatusE.OPEN)
-                .build();
-    }
 
 }
