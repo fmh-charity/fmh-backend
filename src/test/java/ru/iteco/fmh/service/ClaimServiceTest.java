@@ -36,7 +36,7 @@ public class ClaimServiceTest {
     ConversionServiceFactoryBean factoryBean;
 
     @Test
-    public void createClaimShouldPassSuccess() {
+    public void createClaimShouldPassSuccessExecutorNull() {
         // given
         Claim claim = ClaimToClaimDtoConverterTest.getClaim();
         claim.setId(6);
@@ -51,7 +51,7 @@ public class ClaimServiceTest {
 
 
     @Test
-    public void createClaimShouldPassSuccess2() {
+    public void createClaimShouldPassSuccessExecutorNotNull() {
         // given
         Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
         claim.setId(6);
@@ -64,41 +64,41 @@ public class ClaimServiceTest {
         assertEquals(6, resultId);
     }
 
-    @Test
-    public void updateClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
-        // claim
-        Claim claim = getClaim();
-        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
-
-        when(claimRepository.save(any())).thenReturn(claim);
-
-        ClaimDto result = sut.updateClaim(given);
-
-        assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getExecutor(), result.getExecutor()),
-                () -> assertEquals(given.getCreator(), result.getCreator())
-        );
-    }
-
-    @Test
-    public void getClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-        // given
-        Claim claim = getClaim();
-        int claimId = 1;
-        when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
-        ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
-        ClaimDto result = sut.getClaim(claimId);
-        assertEquals(expected, result);
-    }
+//    @Test
+//    public void updateClaimShouldPassSuccess() {
+//        ConversionService conversionService = factoryBean.getObject();
+//
+//        // claim
+//        Claim claim = getClaim();
+//        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
+//
+//        when(claimRepository.save(any())).thenReturn(claim);
+//
+//        ClaimDto result = sut.updateClaim(given);
+//
+//        assertAll(
+//                () -> assertEquals(given.getId(), result.getId()),
+//                () -> assertEquals(given.getDescription(), result.getDescription()),
+//                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+//                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+//                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+//                () -> assertEquals(given.getStatus(), result.getStatus()),
+//                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+//                () -> assertEquals(given.getCreator(), result.getCreator())
+//        );
+//    }
+//
+//    @Test
+//    public void getClaimShouldPassSuccess() {
+//        ConversionService conversionService = factoryBean.getObject();
+//        // given
+//        Claim claim = getClaim();
+//        int claimId = 1;
+//        when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
+//        ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
+//        ClaimDto result = sut.getClaim(claimId);
+//        assertEquals(expected, result);
+//    }
 //delete в конце потому что содаю в claimDtoconverter..test
     private static Claim getClaim() {
         return Claim.builder()

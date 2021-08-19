@@ -30,11 +30,11 @@ public class ClaimDtoToClaimConverterTest {
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
 
     @Test
-    void convert() {
+    void convertExecutorNull() {
         ClaimDto dto = getClaimDto();
 
         Claim claim = convert.convert(dto);
-
+        System.out.println(claim.getId());
         Assertions.assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
@@ -51,7 +51,7 @@ public class ClaimDtoToClaimConverterTest {
     public static ClaimDto getClaimDto() {
 
         return ClaimDto.builder()
-                .id(2)
+                .id(26)
                 .title("Title")
                 .description("description")
                 .creator(getUserDto())
@@ -65,7 +65,7 @@ public class ClaimDtoToClaimConverterTest {
 
 
     @Test
-    void convert2() {
+    void convert() {
         ClaimDto dto = getClaimDto2();
 
         Claim claim = convert.convert(dto);
@@ -86,7 +86,7 @@ public class ClaimDtoToClaimConverterTest {
     public static ClaimDto getClaimDto2() {
 
         return ClaimDto.builder()
-                .id(2)
+                .id(27)
                 .title("Title")
                 .description("description")
                 .creator(getUserDto())

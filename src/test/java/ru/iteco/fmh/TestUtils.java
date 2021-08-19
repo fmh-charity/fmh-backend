@@ -134,7 +134,6 @@ public class TestUtils {
 
     public static PatientDto getPatientDto() {
         PatientDto patientDto = PatientDto.builder()
-                .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticStringR())
                 .lastName(getAlphabeticStringR())
                 .middleName(getAlphabeticStringR())

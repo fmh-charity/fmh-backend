@@ -21,7 +21,7 @@ public class ClaimToClaimDtoConverterTest {
     ClaimToClaimDtoConverter convertor = new ClaimToClaimDtoConverter(userToUserDtoConverter);
 
     @Test
-    void convert() {
+    void convertExecutorNull() {
         Claim claim = getClaim();
         ClaimDto dto = convertor.convert(claim);
         Assertions.assertAll(
@@ -41,7 +41,7 @@ public class ClaimToClaimDtoConverterTest {
     public static Claim getClaim() {
 
         return Claim.builder()
-                .id(2)
+                .id(26)
                 .title("title")
                 .description("description")
                 .creator(TestUtils.getUser())
@@ -54,7 +54,7 @@ public class ClaimToClaimDtoConverterTest {
     }
 
     @Test
-    void convert2() {
+    void convert() {
         Claim claim = getClaim2();
         ClaimDto dto = convertor.convert(claim);
         Assertions.assertAll(
@@ -74,7 +74,7 @@ public class ClaimToClaimDtoConverterTest {
     public static Claim getClaim2() {
 
         return Claim.builder()
-                .id(2)
+                .id(27)
                 .title("title")
                 .description("description")
                 .creator(TestUtils.getUser())
