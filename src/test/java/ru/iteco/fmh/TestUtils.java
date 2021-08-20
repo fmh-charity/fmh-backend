@@ -47,8 +47,7 @@ public class TestUtils {
                 .toString();
     }
 
-    public static Wish getNote() {
-
+    public static Wish getWish(StatusE statusE) {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
@@ -58,7 +57,7 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.OPEN)
+                .status(statusE)
                 .build();
     }
 
@@ -117,7 +116,7 @@ public class TestUtils {
     }
 
 
-    public static WishDto getNoteDto() {
+    public static WishDto getWishDto() {
 
         return WishDto.builder()
                 .patient(getPatientDto())
@@ -128,7 +127,6 @@ public class TestUtils {
                 .executor(getUserDto())
                 .creator(getUserDto())
                 .status(StatusE.OPEN)
-
                 .build();
     }
 
@@ -184,5 +182,4 @@ public class TestUtils {
                 .status(StatusE.OPEN)
                 .build();
     }
-
 }

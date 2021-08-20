@@ -128,21 +128,22 @@ public class PatientControllerTest {
         );
     }
 
-    @Test
-    public void getNotesShouldPassSuccess() {
-        // given
-        int patientId = 1;
-        int notesCount = 2;
-        String noteDescription0 = "note1-description";
-        String noteDescription1 = "note6-description";
-
-        List<WishDto> notes = sut.getNotes(patientId);
-        List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
-
-        assertAll(
-                () -> assertEquals(notesCount, notes.size()),
-                () -> assertTrue(result.contains(noteDescription0)),
-                () -> assertTrue(result.contains(noteDescription1))
-        );
-    }
+    // TODO: отрефакторить тест 17.08
+//    @Test
+//    public void getNotesShouldPassSuccess() {
+//        // given
+//        int patientId = 1;
+//        int notesCount = 2;
+//        String noteDescription0 = "note1-description";
+//        String noteDescription1 = "note6-description";
+//
+//        List<WishDto> notes = sut.getNotes(patientId);
+//        List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
+//
+//        assertAll(
+//                () -> assertEquals(notesCount, notes.size()),
+//                () -> assertTrue(result.contains(noteDescription0)),
+//                () -> assertTrue(result.contains(noteDescription1))
+//        );
+//    }
 }

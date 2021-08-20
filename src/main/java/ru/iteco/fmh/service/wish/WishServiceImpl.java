@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.StatusE;
 
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.StatusE.*;
 
 @Service
 public class WishServiceImpl implements WishService {
@@ -30,20 +29,27 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishShortInfoDto> getAllWishes() {
-        List<Wish> list = wishRepository.findAllByStatusOrderByPlanExecuteDate(OPEN);
+    public List<WishDto> getAllWishes() {
+        List<Wish> list = wishRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
-                .map(i -> conversionService.convert(i, WishShortInfoDto.class))
+                .map(i -> conversionService.convert(i, WishDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Integer createWish(WishDto wishDto) {
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = factoryBean.getObject().convert(wishDto, Wish.class);
         return wishRepository.save(wish).getId();
     }
 
+    @Override
+    public WishDto getWish(Integer id) {
+        Wish wish = wishRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(wish, WishDto.class);
+    }
 
     @Transactional
     @Override
@@ -57,20 +63,6 @@ public class WishServiceImpl implements WishService {
             throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
         }
     }
-
-
-    @Override
-    public WishDto getWish(Integer id) {
-        Optional<Wish> optionalNote = wishRepository.findById(id);
-        if (optionalNote.isPresent()) {
-            ConversionService conversionService = factoryBean.getObject();
-            Wish wish = optionalNote.get();
-            return conversionService.convert(wish, WishDto.class);
-        } else {
-            throw new IllegalArgumentException("записка не найдена!");
-        }
-    }
-
 
     @Override
     public List<WishDto> getPatientWishes(Integer patientId) {

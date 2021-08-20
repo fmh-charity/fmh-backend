@@ -13,7 +13,7 @@ public interface WishService {
     /**
      * возвращает список всех просьб co статусом open/in_progress
      */
-    List<WishShortInfoDto> getAllWishes();
+    List<WishDto> getAllWishes();
 
     /**
      * возвращает просьбу для просмотра

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class WishRepositoryTest {
 
     @Autowired
-    WishRepository repository;
+    WishRepository wishRepository;
     @Autowired
     PatientRepository patientRepository;
     @Autowired
@@ -33,7 +33,6 @@ public class WishRepositoryTest {
     static User doer;
     static Wish entity;
     static Wish entity2;
-
 
     @Test
     public void testWriteSuccess() {
@@ -55,7 +54,7 @@ public class WishRepositoryTest {
 
                 .build();
 
-        entity = repository.save(entity);
+        entity = wishRepository.save(entity);
         entity2 = Wish.builder()
                 .description(TestUtils.getAlphabeticStringR())
                 .patient(patient)
@@ -68,15 +67,15 @@ public class WishRepositoryTest {
 
                 .build();
 
-        entity2 = repository.save(entity2);
+        entity2 = wishRepository.save(entity2);
 
         Assertions.assertAll(
                 () -> assertNotNull(entity.getId()),
                 () -> assertNotNull(entity2.getId())
         );
 
-        repository.delete(entity);
-        repository.delete(entity2);
+        wishRepository.delete(entity);
+        wishRepository.delete(entity2);
         userRepository.delete(author);
         userRepository.delete(doer);
         patientRepository.delete(patient);

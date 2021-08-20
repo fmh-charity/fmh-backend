@@ -27,7 +27,7 @@ public class WishController {
 
     @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
     @GetMapping
-    public List<WishShortInfoDto> getAllWishes() {
+    public List<WishDto> getAllWishes() {
         return wishService.getAllWishes();
     }
 
@@ -39,8 +39,7 @@ public class WishController {
 
     @ApiOperation(value = "возвращает полную информацию по просьбе")
     @GetMapping("/{id}")
-    public WishDto getWish(
-            @ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
+    public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
         return wishService.getWish(id);
     }
 

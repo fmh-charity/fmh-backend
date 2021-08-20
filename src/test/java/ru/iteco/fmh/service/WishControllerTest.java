@@ -1,11 +1,13 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishController;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -13,12 +15,13 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.dto.wish.WishShortInfoDto;
+import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.getNoteDto;
+import static ru.iteco.fmh.TestUtils.getWishDto;
 import static ru.iteco.fmh.model.task.StatusE.*;
 
 
@@ -36,6 +39,38 @@ public class WishControllerTest {
     UserRepository userRepository;
     @Autowired
     ConversionServiceFactoryBean factoryBean;
+
+    //    1
+    @Test
+    public void getAllWishesShouldPassSuccess() {
+        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6", "wish-title5", "wish-title2");
+
+        List<String> result = sut.getAllWishes().stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
+
+        assertEquals(expected, result);
+    }
+
+    //    2
+    @Test
+    public void creatWishShouldPassSuccess() {
+        //given
+        WishDto givenWishDto = getWishDto();
+        givenWishDto.getPatient().setId(1);
+        givenWishDto.getExecutor().setId(1);
+        givenWishDto.getCreator().setId(1);
+
+        Integer resultId = sut.createWish(givenWishDto);
+        assertNotNull(resultId);
+
+        Wish result = wishRepository.findById(resultId).get();
+
+        assertEquals(IN_PROGRESS, result.getStatus());
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(resultId);
+    }
+
 
 //    @Test
 //    public void addCommentShouldPassSuccess() {
@@ -60,42 +95,14 @@ public class WishControllerTest {
         wishRepository.save(wish);
     }
 
-    @Test
-    public void getAllActiveNotesSort() {
-        List<WishShortInfoDto> wishShortInfoDtoList = sut.getAllWishes();
-        assertEquals(5, wishShortInfoDtoList.size());
-        assertTrue(wishShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
-                (wishShortInfoDtoList.get(2).getPlanExecuteDate()));
-    }
+//    @Test
+//    public void getAllActiveNotesSort() {
+//        List<WishShortInfoDto> wishShortInfoDtoList = sut.getAllWishes();
+//        assertEquals(5, wishShortInfoDtoList.size());
+//        assertTrue(wishShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
+//                (wishShortInfoDtoList.get(2).getPlanExecuteDate()));
+//    }
 
-    @Test
-    public void creatNoteShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
-        //given
-        WishDto given = getNoteDto();
-        given.setCreator(conversionService.convert(userRepository.findUserById(2), UserDto.class));
-        given.setExecutor(conversionService.convert(userRepository.findUserById(3), UserDto.class));
-        given.getPatient().setId(2);
-
-        Integer id = sut.createWish(given);
-
-        assertNotNull(id);
-
-        Wish result = wishRepository.findById(id).get();
-
-        assertAll(
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
-                () -> assertEquals(given.getExecutor(), conversionService.convert(result.getExecutor(), UserDto.class)),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-        );
-        // deleting result entity
-        wishRepository.deleteById(id);
-    }
 
 //    @Test
 //    public void updateNoteShouldPassSuccess() {

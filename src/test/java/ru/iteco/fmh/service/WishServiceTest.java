@@ -15,7 +15,9 @@ import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,6 +36,45 @@ public class WishServiceTest {
     @Autowired
     ConversionServiceFactoryBean factoryBean;
 
+
+    // 1
+    @Test
+    public void getAllWishesShouldPassSuccess() {
+        // given
+        ConversionService conversionService = factoryBean.getObject();
+        List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
+        List<WishDto> expected = wishList.stream().map(wish->conversionService.convert(wish,WishDto.class))
+                .collect(Collectors.toList());
+
+        when(wishRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(any()))
+                .thenReturn(wishList);
+        List<WishDto> result = sut.getAllWishes();
+
+        assertEquals(expected, result);
+    }
+
+    // 2
+    @Test
+    public void createWishShouldPassSuccess() {
+        // given
+        Wish wish = getWish(null);
+        wish.setId(1);
+        WishDto dto = factoryBean.getObject().convert(wish, WishDto.class);
+
+        when(wishRepository.save(any())).thenReturn(wish);
+        Integer resultId = sut.createWish(dto);
+
+        assertEquals(1, resultId);
+        assertEquals(IN_PROGRESS, dto.getStatus());
+    }
+
+//3
+    @Test
+    public void getWishShouldPassSuccess() {
+    }
+
+
+
 //    @Test
 //    public void addCommentShouldPassSuccess() {
 //        // given
@@ -48,6 +89,8 @@ public class WishServiceTest {
 //        assertEquals(expected, result.getComment());
 //    }
 
+
+
     @Test
     public void changeStatusShouldPassSuccess() {
         // given
@@ -59,65 +102,39 @@ public class WishServiceTest {
         assertEquals(CANCELLED, result.getStatus());
     }
 
-    @Test
-    public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
-        // given
-        Wish executedWish = getWish(EXECUTED);
-        when(wishRepository.findById(any())).thenReturn(Optional.of(executedWish));
-        assertThrows(IllegalArgumentException.class,
-                () -> sut.changeStatus(any(), CANCELLED));
-    }
+//    @Test
+//    public void changeStatusWhenNonActiveNoteShouldThrowNoteException() {
+//        // given
+//        Wish executedWish = getWish(EXECUTED);
+//        when(wishRepository.findById(any())).thenReturn(Optional.of(executedWish));
+//        assertThrows(IllegalArgumentException.class,
+//                () -> sut.changeStatus(any(), CANCELLED));
+//    }
+//
 
-    @Test
-    public void createNoteShouldPassSuccess() {
-        // given
-        Wish wish = getWish(OPEN);
-        wish.setId(7);
-        WishDto dto = factoryBean.getObject().convert(wish, WishDto.class);
-
-        when(wishRepository.save(any())).thenReturn(wish);
-
-        Integer resultId = sut.createWish(dto);
-
-        assertEquals(7, resultId);
-    }
-
-    @Test
-    public void updateNoteShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
-        // given
-        Wish wish = getWish(OPEN);
-        WishDto given = conversionService.convert(wish, WishDto.class);
-
-        when(wishRepository.save(any())).thenReturn(wish);
-
-        WishDto result = sut.updateWish(given);
-
-        assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getPatient(), result.getPatient()),
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getExecutor(), result.getExecutor()),
-                () -> assertEquals(given.getCreator(), result.getCreator())
-        );
-    }
-
-    private static Wish getWish(StatusE status) {
-        return Wish.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .patient(getPatient())
-                .creator(getUser())
-                .executor(getUser())
-                .description(getAlphabeticStringR())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(LocalDateTime.now())
-                .status(status)
-                .build();
-    }
+//
+//    @Test
+//    public void updateNoteShouldPassSuccess() {
+//        ConversionService conversionService = factoryBean.getObject();
+//
+//        // given
+//        Wish wish = getWish(OPEN);
+//        WishDto given = conversionService.convert(wish, WishDto.class);
+//
+//        when(wishRepository.save(any())).thenReturn(wish);
+//
+//        WishDto result = sut.updateWish(given);
+//
+//        assertAll(
+//                () -> assertEquals(given.getId(), result.getId()),
+//                () -> assertEquals(given.getPatient(), result.getPatient()),
+//                () -> assertEquals(given.getDescription(), result.getDescription()),
+//                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+//                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+//                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+//                () -> assertEquals(given.getStatus(), result.getStatus()),
+//                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+//                () -> assertEquals(given.getCreator(), result.getCreator())
+//        );
+//    }
 }
