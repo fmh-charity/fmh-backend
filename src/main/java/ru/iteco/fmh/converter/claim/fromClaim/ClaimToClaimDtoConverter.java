@@ -18,26 +18,39 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
 
+
     @Override
     public ClaimDto convert(Claim claim) {
         ClaimDto dto = new ClaimDto();
-        if (claim.getExecutor() == null) {
-            //делаем Mock и ставим вместо executor = null
-            claim.setExecutor(getUser());
-            BeanUtils.copyProperties(claim, dto);
-            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
-            //убираем mock и ставим null обратно
-            dto.setExecutor(null);
-            dto.setCreator(creator);
-        } else {
-            BeanUtils.copyProperties(claim, dto);
-            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
-            UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
-            dto.setExecutor(executor);
-            dto.setCreator(creator);
-        }
+        BeanUtils.copyProperties(claim, dto);
+        UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
+        UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+        dto.setExecutor(executor);
+        dto.setCreator(creator);
         return dto;
     }
+
+
+//    @Override
+//    public ClaimDto convert(Claim claim) {
+//        ClaimDto dto = new ClaimDto();
+//        if (claim.getExecutor() == null) {
+//            //делаем Mock и ставим вместо executor = null
+//            claim.setExecutor(getUser());
+//            BeanUtils.copyProperties(claim, dto);
+//            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+//            //убираем mock и ставим null обратно
+//            dto.setExecutor(null);
+//            dto.setCreator(creator);
+//        } else {
+//            BeanUtils.copyProperties(claim, dto);
+//            UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+//            UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
+//            dto.setExecutor(executor);
+//            dto.setCreator(creator);
+//        }
+//        return dto;
+//    }
 
     public static User getUser() {
         return User.builder()

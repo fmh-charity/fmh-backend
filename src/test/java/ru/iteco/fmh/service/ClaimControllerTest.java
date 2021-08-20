@@ -23,7 +23,7 @@ import java.util.List;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto;
+import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto2;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -55,57 +55,52 @@ public class ClaimControllerTest {
         ConversionService conversionService = factoryBean.getObject();
 
         // given
-        ClaimDto given = getClaimDto();
-        //executor null
+        ClaimDto given = getClaimDto2();
+        System.out.println("1" + given.getStatus());
+        //executor notNull
         given.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        Integer id = sut.createClaim(given);
-        assertNotNull(id);
+        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
 
-
-        Claim result = claimRepository.findById(id).get();
-        assertEquals(result.getStatus(), StatusE.OPEN);
+        Integer idNotNullExecutor = sut.createClaim(given);
+        System.out.println("2" + claimRepository.findById(idNotNullExecutor).get().getStatus());
+        assertNotNull(idNotNullExecutor);
+        Claim  result = claimRepository.findById(idNotNullExecutor).get();
+        System.out.println("3" + result.getStatus());
+        assertEquals(result.getStatus(), StatusE.IN_PROGRESS);
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
                 () -> assertEquals(given.getTitle(), result.getTitle()),
                 () -> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
-                () -> assertNull(result.getExecutor()),
+                () -> assertEquals(given.getExecutor(), conversionService.convert(result.getExecutor(), UserDto.class)),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getStatus(), result.getStatus())
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate())
         );
-        //executor notNull
-        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        Integer idNotNullExecutor = sut.createClaim(given);
-        assertNotNull(idNotNullExecutor);
-        Claim resultNotNullExecutor = claimRepository.findById(idNotNullExecutor).get();
-        assertEquals(resultNotNullExecutor.getStatus(), StatusE.IN_PROGRESS);
 
         // deleting result entity
-        claimRepository.deleteById(id);
         claimRepository.deleteById(idNotNullExecutor);
     }
 
 
-//
-//    @Test
-//    public void getClaimShouldPassSuccess() {
-//        ConversionService conversionService = factoryBean.getObject();
-//        int claimId=1;
-//        ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-//        ClaimDto result = sut.getClaim(claimId);
-//        assertAll(
-//                ()-> assertEquals(expected.getDescription(), result.getDescription()),
-//                ()-> assertEquals(expected.getCreator(), result.getCreator()),
-//                ()-> assertEquals(expected.getExecutor(), result.getExecutor()),
-//                ()-> assertEquals(expected.getStatus(), result.getStatus()),
-//                ()-> assertEquals(expected.getCreateDate(), result.getCreateDate()),
-//                ()-> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
-//                ()-> assertEquals(expected.getPlanExecuteDate(), result.getPlanExecuteDate()),
-//                ()-> assertEquals(expected.getId(), result.getId())
-//        );
-//    }
+
+    @Test
+    public void getClaimShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+        int claimId=1;
+        ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
+        ClaimDto result = sut.getClaim(claimId);
+        assertAll(
+                ()-> assertEquals(expected.getDescription(), result.getDescription()),
+                ()-> assertEquals(expected.getCreator(), result.getCreator()),
+                ()-> assertEquals(expected.getExecutor(), result.getExecutor()),
+                ()-> assertEquals(expected.getStatus(), result.getStatus()),
+                ()-> assertEquals(expected.getCreateDate(), result.getCreateDate()),
+                ()-> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
+                ()-> assertEquals(expected.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                ()-> assertEquals(expected.getId(), result.getId())
+        );
+    }
 
 //    @Test
 //    public void getAllActiveNotesSort() {

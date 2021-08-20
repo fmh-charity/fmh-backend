@@ -30,41 +30,6 @@ public class ClaimDtoToClaimConverterTest {
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
 
     @Test
-    void convertExecutorNull() {
-        ClaimDto dto = getClaimDto();
-
-        Claim claim = convert.convert(dto);
-        System.out.println(claim.getId());
-        Assertions.assertAll(
-                () -> assertEquals(dto.getId(), claim.getId()),
-                () -> assertEquals(dto.getTitle(), claim.getTitle()),
-                () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
-                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
-                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
-                () -> assertEquals(dto.getStatus(), claim.getStatus()),
-                () -> assertEquals(dto.getCreator(), userToUserDtoConverter.convert(claim.getCreator())),
-                () -> assertNull(claim.getExecutor())
-        );
-    }
-
-    public static ClaimDto getClaimDto() {
-
-        return ClaimDto.builder()
-                .id(26)
-                .title("Title")
-                .description("description")
-                .creator(getUserDto())
-                .executor(null)
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
-                .factExecuteDate(null)
-                .status(StatusE.OPEN)
-                .build();
-    }
-
-
-    @Test
     void convert() {
         ClaimDto dto = getClaimDto2();
 
@@ -97,6 +62,41 @@ public class ClaimDtoToClaimConverterTest {
                 .status(StatusE.IN_PROGRESS)
                 .build();
     }
+
+    //проверка конвертора если executor = null
+//    @Test
+//    void convertExecutorNull() {
+//        ClaimDto dto = getClaimDto();
+//
+//        Claim claim = convert.convert(dto);
+//        System.out.println(claim.getId());
+//        Assertions.assertAll(
+//                () -> assertEquals(dto.getId(), claim.getId()),
+//                () -> assertEquals(dto.getTitle(), claim.getTitle()),
+//                () -> assertEquals(dto.getDescription(), claim.getDescription()),
+//                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
+//                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
+//                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
+//                () -> assertEquals(dto.getStatus(), claim.getStatus()),
+//                () -> assertEquals(dto.getCreator(), userToUserDtoConverter.convert(claim.getCreator())),
+//                () -> assertNull(claim.getExecutor())
+//        );
+//    }
+//
+//    public static ClaimDto getClaimDto() {
+//
+//        return ClaimDto.builder()
+//                .id(26)
+//                .title("Title")
+//                .description("description")
+//                .creator(getUserDto())
+//                .executor(null)
+//                .planExecuteDate(LocalDateTime.now().withNano(0))
+//                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+//                .factExecuteDate(null)
+//                .status(StatusE.OPEN)
+//                .build();
+//    }
 }
 
 

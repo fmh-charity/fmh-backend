@@ -39,13 +39,19 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public Integer createClaim(ClaimDto claimDto) {
-        if (claimDto.getExecutor() == null){
-            claimDto.setStatus(OPEN);
-        }else {
-            claimDto.setStatus(IN_PROGRESS);
-        }
+        //это фейковый статус. Нельзя что был null
+        claimDto.setStatus(OPEN);
         Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
+        claim.changeStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         return claimRepository.save(claim).getId();
+    }
+
+    @Override
+    public ClaimDto getClaim(Integer id) {
+        Claim claim = claimRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Заявки с таким ID не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Transactional
@@ -71,12 +77,18 @@ public class ClaimServiceImpl implements ClaimService {
         return conversionService.convert(claim, ClaimDto.class);
     }
 
-    @Override
-    public ClaimDto getClaim(Integer id) {
-        Claim claim = claimRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Заявки с таким ID не существует"));
-        ConversionService conversionService = factoryBean.getObject();
-        return conversionService.convert(claim, ClaimDto.class);
-    }
+
 }
+//метод создания claim 2021/08/20 (разговор с Маратом)
+//    @Override
+//    public Integer createClaim(ClaimDto claimDto) {
+//        if (claimDto.getExecutor() == null){
+//            claimDto.setStatus(OPEN);
+//        }else {
+//            claimDto.setStatus(IN_PROGRESS);
+//        }
+//        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
+//        return claimRepository.save(claim).getId();
+//    }
 
 

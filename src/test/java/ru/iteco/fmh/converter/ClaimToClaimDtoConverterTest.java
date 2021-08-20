@@ -21,39 +21,6 @@ public class ClaimToClaimDtoConverterTest {
     ClaimToClaimDtoConverter convertor = new ClaimToClaimDtoConverter(userToUserDtoConverter);
 
     @Test
-    void convertExecutorNull() {
-        Claim claim = getClaim();
-        ClaimDto dto = convertor.convert(claim);
-        Assertions.assertAll(
-                () -> assertEquals(claim.getId(), dto.getId()),
-                () -> assertEquals(claim.getTitle(), dto.getTitle()),
-                () -> assertEquals(claim.getDescription(), dto.getDescription()),
-                () -> assertEquals(userToUserDtoConverter.convert(claim.getCreator()), dto.getCreator()),
-                () -> assertEquals(claim.getCreateDate(), dto.getCreateDate()),
-                () -> assertEquals(claim.getFactExecuteDate(), dto.getFactExecuteDate()),
-                () -> assertEquals(claim.getPlanExecuteDate(), dto.getPlanExecuteDate()),
-                () -> assertEquals(claim.getStatus(), dto.getStatus()),
-                () -> assertNull(dto.getExecutor())
-
-        );
-
-    }
-    public static Claim getClaim() {
-
-        return Claim.builder()
-                .id(26)
-                .title("title")
-                .description("description")
-                .creator(TestUtils.getUser())
-                .executor(null)
-                .createDate(java.time.LocalDateTime.now())
-                .planExecuteDate(java.time.LocalDateTime.now())
-                .factExecuteDate(null)
-                .status(ru.iteco.fmh.model.task.StatusE.OPEN)
-                .build();
-    }
-
-    @Test
     void convert() {
         Claim claim = getClaim2();
         ClaimDto dto = convertor.convert(claim);
@@ -69,7 +36,6 @@ public class ClaimToClaimDtoConverterTest {
                 () -> assertEquals(claim.getStatus(), dto.getStatus())
 
         );
-
     }
     public static Claim getClaim2() {
 
@@ -85,5 +51,38 @@ public class ClaimToClaimDtoConverterTest {
                 .status(StatusE.IN_PROGRESS)
                 .build();
     }
+//проверка конвертора если executor = null
+    //    @Test
+//    void convertExecutorNull() {
+//        Claim claim = getClaim();
+//        ClaimDto dto = convertor.convert(claim);
+//        Assertions.assertAll(
+//                () -> assertEquals(claim.getId(), dto.getId()),
+//                () -> assertEquals(claim.getTitle(), dto.getTitle()),
+//                () -> assertEquals(claim.getDescription(), dto.getDescription()),
+//                () -> assertEquals(userToUserDtoConverter.convert(claim.getCreator()), dto.getCreator()),
+//                () -> assertEquals(claim.getCreateDate(), dto.getCreateDate()),
+//                () -> assertEquals(claim.getFactExecuteDate(), dto.getFactExecuteDate()),
+//                () -> assertEquals(claim.getPlanExecuteDate(), dto.getPlanExecuteDate()),
+//                () -> assertEquals(claim.getStatus(), dto.getStatus()),
+//                () -> assertNull(dto.getExecutor())
+//
+//        );
+//
+//    }
+//    public static Claim getClaim() {
+//
+//        return Claim.builder()
+//                .id(26)
+//                .title("title")
+//                .description("description")
+//                .creator(TestUtils.getUser())
+//                .executor(null)
+//                .createDate(java.time.LocalDateTime.now())
+//                .planExecuteDate(java.time.LocalDateTime.now())
+//                .factExecuteDate(null)
+//                .status(ru.iteco.fmh.model.task.StatusE.OPEN)
+//                .build();
+//    }
 
 }

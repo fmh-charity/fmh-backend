@@ -23,24 +23,36 @@ public class ClaimDtoToClaimConverter implements Converter<ClaimDto, Claim> {
     @Override
     public Claim convert(ClaimDto dto) {
         Claim claim = new Claim();
-        if (dto.getExecutor() == null) {
-            //делаем Mock и ставим вместо executor = null
-            dto.setExecutor(getUserDto());
-            BeanUtils.copyProperties(dto, claim);
-            User creator = userDtoToUserConverter.convert(dto.getCreator());
-            //убираем mock и ставим null обратно
-            claim.setExecutor(null);
-            claim.setCreator(creator);
-        } else {
-            BeanUtils.copyProperties(dto, claim);
-            User executor = userDtoToUserConverter.convert(dto.getExecutor());
-            User creator = userDtoToUserConverter.convert(dto.getCreator());
-            claim.setExecutor(executor);
-            claim.setCreator(creator);
-
-        }
+        BeanUtils.copyProperties(dto, claim);
+        User executor = userDtoToUserConverter.convert(dto.getExecutor());
+        User creator = userDtoToUserConverter.convert(dto.getCreator());
+        claim.setExecutor(executor);
+        claim.setCreator(creator);
         return claim;
     }
+
+
+//    @Override
+//    public Claim convert(ClaimDto dto) {
+//        Claim claim = new Claim();
+//        if (dto.getExecutor() == null) {
+//            //делаем Mock и ставим вместо executor = null
+//            dto.setExecutor(getUserDto());
+//            BeanUtils.copyProperties(dto, claim);
+//            User creator = userDtoToUserConverter.convert(dto.getCreator());
+//            //убираем mock и ставим null обратно
+//            claim.setExecutor(null);
+//            claim.setCreator(creator);
+//        } else {
+//            BeanUtils.copyProperties(dto, claim);
+//            User executor = userDtoToUserConverter.convert(dto.getExecutor());
+//            User creator = userDtoToUserConverter.convert(dto.getCreator());
+//            claim.setExecutor(executor);
+//            claim.setCreator(creator);
+//
+//        }
+//        return claim;
+//    }
 
 
     public static UserDto getUserDto() {
