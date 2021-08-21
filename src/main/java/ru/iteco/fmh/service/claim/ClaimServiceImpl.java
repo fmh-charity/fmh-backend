@@ -9,6 +9,7 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.StatusE;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +38,11 @@ public class ClaimServiceImpl implements ClaimService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public Integer createClaim(ClaimDto claimDto) {
-        //это фейковый статус. Нельзя что был null
-        claimDto.setStatus(OPEN);
+        claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
-        claim.changeStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         return claimRepository.save(claim).getId();
     }
 
@@ -58,21 +58,24 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
-        Claim claim = conversionService.convert(claimDto, Claim.class);
-        if (OPEN.equals(claim.getStatus())) {
-            claim = claimRepository.save(claim);
-            return conversionService.convert(claim, ClaimDto.class);
-        } else {
-            throw new IllegalArgumentException("невозможно изменить заявку с данным статусом");
+        if (claimDto.getStatus()==StatusE.EXECUTED || claimDto.getStatus()==StatusE.CANCELLED){
+            throw new IllegalArgumentException("Нельзя редактировать заявку с данным статусом");
         }
+        claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+        Claim claim = conversionService.convert(claimDto, Claim.class);
+        claim = claimRepository.save(claim);
+        return conversionService.convert(claim, ClaimDto.class);
     }
+
 
     @Transactional
     @Override
     public ClaimDto changeStatus(Integer claimId, StatusE status) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() -> new IllegalArgumentException("Заявки с таким ID не существует"));
-        ConversionService conversionService = factoryBean.getObject();
         claim.changeStatus(status);
+        claim = claimRepository.save(claim);
+        ConversionService conversionService = factoryBean.getObject();
+
         claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }

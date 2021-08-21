@@ -63,29 +63,29 @@ public class ClaimServiceTest {
         assertEquals(expected, result);
     }
 
-//    @Test
-//    public void updateClaimShouldPassSuccess() {
-//        ConversionService conversionService = factoryBean.getObject();
-//
-//        // claim
-//        Claim claim = getClaim();
-//        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
-//
-//        when(claimRepository.save(any())).thenReturn(claim);
-//
-//        ClaimDto result = sut.updateClaim(given);
-//
-//        assertAll(
-//                () -> assertEquals(given.getId(), result.getId()),
-//                () -> assertEquals(given.getDescription(), result.getDescription()),
-//                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-//                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-//                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-//                () -> assertEquals(given.getStatus(), result.getStatus()),
-//                () -> assertEquals(given.getExecutor(), result.getExecutor()),
-//                () -> assertEquals(given.getCreator(), result.getCreator())
-//        );
-//    }
-//
+    @Test
+    public void updateClaimShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // claim
+        Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
+        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
+
+        when(claimRepository.save(any())).thenReturn(claim);
+
+        ClaimDto result = sut.updateClaim(given);
+
+        assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreator(), result.getCreator())
+        );
+    }
+
 
 }

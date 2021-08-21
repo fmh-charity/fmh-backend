@@ -110,23 +110,43 @@ public class ClaimControllerTest {
 //                (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
 //        }
 
-//    @Test
-//    public void updateClaimShouldPassSuccess() {
-//        ConversionService conversionService = factoryBean.getObject();
-//
-//        // given
-//        int claimId = 3;
-//        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-//        String newComment = "new comment";
-//
-//        assertNotEquals(given.getComment(), newComment);
-//
-//        given.setComment(newComment);
-//
-//        ClaimDto result = sut.updateClaim(given);
-//
-//        assertEquals(given.getComment(), result.getComment());
-//    }
+    @Test
+    public void updateClaimShoulNotdPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        int claimId = 3;
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
+        String newTitle = "new title";
+        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
+        given.setTitle(newTitle);
+        assertThrows(IllegalArgumentException.class, () -> sut.updateClaim(given));
+    }
+
+    @Test
+    public void updateClaimShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        int claimId = 4;
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
+        String newTitle = "new title";
+        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
+        given.setTitle(newTitle);
+
+        ClaimDto result = sut.updateClaim(given);
+
+        assertAll(
+                ()-> assertEquals(given.getDescription(), result.getDescription()),
+                ()-> assertEquals(given.getTitle(), result.getTitle()),
+                ()-> assertEquals(given.getCreator(), result.getCreator()),
+                ()-> assertEquals(given.getExecutor(), result.getExecutor()),
+                ()-> assertEquals(given.getStatus(), result.getStatus()),
+                ()-> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                ()-> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                ()-> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
+        );
+    }
 
 //    @Test
 //    public void changeStatusShouldPassSuccess() {

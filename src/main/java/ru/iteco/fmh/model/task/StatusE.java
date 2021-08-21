@@ -9,10 +9,15 @@ public enum StatusE {
     IN_PROGRESS("В РАБОТЕ") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            if (CANCELLED == newStatus)
-                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName()
-                        + "в статус " + newStatus.getName());
-            if (EXECUTED == newStatus) task.setFactExecuteDate(LocalDateTime.now().withNano(0));
+            if (CANCELLED == newStatus) {
+                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в статус " + newStatus.getName());
+            }
+            if (EXECUTED == newStatus) {
+                task.setFactExecuteDate(LocalDateTime.now().withNano(0));
+            }
+            if (OPEN == newStatus) {
+                task.setExecutor(null);
+            }
             task.setStatus(newStatus);
         }
     },
@@ -27,9 +32,12 @@ public enum StatusE {
     OPEN("ОТКРЫТО") {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
-            if (EXECUTED == newStatus)
-                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName()
-                        + "в статус " + newStatus.getName());
+            if (EXECUTED == newStatus) {
+                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в статус " + newStatus.getName());
+            }
+            if (IN_PROGRESS == newStatus) {
+                //  TODO: task.setExecutor(); - взять значение user'а из spring security context
+            }
             task.setStatus(newStatus);
         }
     },
