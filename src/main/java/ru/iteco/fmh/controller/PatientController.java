@@ -58,12 +58,20 @@ public class PatientController {
         return admissionService.getPatientAdmissions(patientId);
     }
 
-    @ApiOperation(value = "возвращает информацию по запискам пациента")
-    @GetMapping("/{patientId}/notes")
-    public List<WishDto> getNotes(
+    @ApiOperation(value = "возвращает информацию по всем просьбам пациента")
+    @GetMapping("/{patientId}/all-wishes")
+    public List<WishDto> getAllWishes(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
     ) {
-        return wishService.getPatientWishes(patientId);
+        return wishService.getPatientAllWishes(patientId);
+    }
+
+    @ApiOperation(value = "возвращает информацию по всем просьбам пациента со статусом open/in progress")
+    @GetMapping("/{patientId}/open-in-progress-wishes")
+    public List<WishDto> getOpenInProgressWishes(
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable Integer patientId
+    ) {
+        return wishService.getPatientOpenInProgressWishes(patientId);
     }
 
     @ApiOperation(value = "изменение пациента")

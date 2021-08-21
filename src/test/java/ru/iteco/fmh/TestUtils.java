@@ -115,6 +115,11 @@ public class TestUtils {
 
     }
 
+    public static WishDto getWishDto(StatusE statusE) {
+        WishDto wishDto = getWishDto();
+        wishDto.setStatus(statusE);
+        return wishDto;
+    }
 
     public static WishDto getWishDto() {
 

@@ -16,6 +16,7 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -128,22 +129,28 @@ public class PatientControllerTest {
         );
     }
 
-    // TODO: отрефакторить тест 17.08
-//    @Test
-//    public void getNotesShouldPassSuccess() {
-//        // given
-//        int patientId = 1;
-//        int notesCount = 2;
-//        String noteDescription0 = "note1-description";
-//        String noteDescription1 = "note6-description";
-//
-//        List<WishDto> notes = sut.getNotes(patientId);
-//        List<String> result = List.of(notes.get(0).getDescription(), notes.get(1).getDescription());
-//
-//        assertAll(
-//                () -> assertEquals(notesCount, notes.size()),
-//                () -> assertTrue(result.contains(noteDescription0)),
-//                () -> assertTrue(result.contains(noteDescription1))
-//        );
-//    }
+    @Test
+    public void getPatientAllWishesShouldPassSuccess() {
+        //given
+        int patientId = 1;
+        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6",
+                "wish-title4");
+
+        List<String> result = sut.getAllWishes(patientId).stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getPatientOpenInProgressWishes() {
+        //given
+        int patientId = 1;
+        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6");
+
+        List<String> result = sut.getOpenInProgressWishes(patientId).stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
+
+        assertEquals(expected, result);
+    }
 }

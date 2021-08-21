@@ -11,9 +11,14 @@ import java.util.List;
  */
 public interface WishService {
     /**
-     * возвращает список всех просьб co статусом open/in_progress
+     * возвращает список всех просьб
      */
     List<WishDto> getAllWishes();
+
+    /**
+     * возвращает список всех просьб co статусом open/in_progress
+     */
+    List<WishDto> getOpenInProgressWishes();
 
     /**
      * возвращает просьбу для просмотра
@@ -37,11 +42,19 @@ public interface WishService {
     WishDto updateWish(WishDto wishDto);
 
     /**
-     * возвращает список всех неисполненных просьб по пациенту
+     * возвращает список всех просьб по пациенту
      * @param patientId ид пациента
-     * @return список всех активных просьб с полной инфой по пациенту
+     * @return список всех просьб по пациенту
      */
-    List<WishDto> getPatientWishes(Integer patientId);
+    List<WishDto> getPatientAllWishes(Integer patientId);
+
+    /**
+     * возвращает список всех просьб по пациенту co статусом open/in_progress
+     * @param patientId ид пациента
+     * @return список всех просьб по пациенту co статусом open/in_progress
+     */
+    List<WishDto> getPatientOpenInProgressWishes(Integer patientId);
+
 
 //    /**
 //     * добавляет комментарий в записку и возвращает записку
@@ -52,7 +65,7 @@ public interface WishService {
 //    WishDto addComment(Integer noteId, String comment);
 
     /**
-     * изменяет статус просьбы на - исполнен, отменен
+     * изменяет статус просьбы - обработка документа “Просьба” по статусной модели
      * @param wishId ид просьбы
      * @param status значение нового статуса для просьбы
      * @return просьбу с измененным статусом

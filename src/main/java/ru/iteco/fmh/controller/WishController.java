@@ -25,10 +25,16 @@ public class WishController {
         this.wishService = wishService;
     }
 
-    @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
-    @GetMapping
+    @ApiOperation(value = "реестр всех просьб")
+    @GetMapping("/all")
     public List<WishDto> getAllWishes() {
         return wishService.getAllWishes();
+    }
+
+    @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
+    @GetMapping("/open-in-progress")
+    public List<WishDto> getAllOpenInProgressWishes() {
+        return wishService.getOpenInProgressWishes();
     }
 
     @ApiOperation(value = "Создание новой просьбы")
@@ -42,7 +48,6 @@ public class WishController {
     public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
         return wishService.getWish(id);
     }
-
     @ApiOperation(value = "обновляет информацию по просьбе")
     @PatchMapping
     public WishDto updateWish(

@@ -11,7 +11,6 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.iteco.fmh.model.task.StatusE.*;
@@ -30,7 +29,16 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishDto> getAllWishes() {
-        List<Wish> list = wishRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
+        List<Wish> list = wishRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
+        ConversionService conversionService = factoryBean.getObject();
+        return list.stream()
+                .map(i -> conversionService.convert(i, WishDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WishDto> getOpenInProgressWishes() {
+        List<Wish> list = wishRepository.findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, WishDto.class))
@@ -45,8 +53,8 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishDto getWish(Integer id) {
-        Wish wish = wishRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
+    public WishDto getWish(Integer wishId) {
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(wish, WishDto.class);
     }
@@ -55,22 +63,29 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto updateWish(WishDto wishDto) {
         ConversionService conversionService = factoryBean.getObject();
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
-        if (OPEN.equals(wish.getStatus())) {
-            wish = wishRepository.save(wish);
-            return conversionService.convert(wish, WishDto.class);
-        } else {
-            throw new IllegalArgumentException("невозможно изменить записку с данным статусом");
-        }
+        wish = wishRepository.save(wish);
+        return conversionService.convert(wish, WishDto.class);
     }
 
     @Override
-    public List<WishDto> getPatientWishes(Integer patientId) {
+    public List<WishDto> getPatientAllWishes(Integer patientId) {
         ConversionService conversionService = factoryBean.getObject();
-        return wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatus(patientId, OPEN).stream()
-                .map(note -> conversionService.convert(note, WishDto.class))
+        return wishRepository.findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(patientId).stream()
+                .map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<WishDto> getPatientOpenInProgressWishes(Integer patientId) {
+        ConversionService conversionService = factoryBean.getObject();
+        return wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(patientId, List.of(OPEN, IN_PROGRESS)).stream()
+                .map(wish -> conversionService.convert(wish, WishDto.class))
+                .collect(Collectors.toList());
+    }
+
+
 //нет больше комента
 //    @Transactional
 //    @Override
@@ -95,14 +110,10 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto changeStatus(Integer wishId, StatusE status) {
-        Optional<Wish> optionalNote = wishRepository.findById(wishId);
-        if (optionalNote.isPresent()) {
-            ConversionService conversionService = factoryBean.getObject();
-            Wish wish = optionalNote.get();
-            wish.changeStatus(status);
-            wish = wishRepository.save(wish);
-            return conversionService.convert(wish, WishDto.class);
-        }
-        throw new IllegalArgumentException("Просьбы с таким ID не существует");
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
+        wish.changeStatus(status);
+        wish = wishRepository.save(wish);
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(wish, WishDto.class);
     }
 }
