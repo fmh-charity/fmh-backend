@@ -82,12 +82,11 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     @Override
     public ClaimDto changeStatus(Integer claimId, StatusE status) {
-        Claim claim = claimRepository.findById(claimId).orElseThrow(() -> new IllegalArgumentException("Заявки с таким ID не существует"));
+        Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
+                new IllegalArgumentException("Заявки с таким ID не существует"));
         claim.changeStatus(status);
         claim = claimRepository.save(claim);
         ConversionService conversionService = factoryBean.getObject();
-
-        claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }
 

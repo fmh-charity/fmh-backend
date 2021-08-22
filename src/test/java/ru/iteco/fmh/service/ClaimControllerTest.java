@@ -15,11 +15,14 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto2;
+import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -147,25 +150,26 @@ public class ClaimControllerTest {
         );
     }
 
-//    @Test
-//    public void changeStatusShouldPassSuccess() {
-//        int claimId = 4;
-//        int claimId2 = 5;
-//        ClaimDto resultCancelled = sut.changeStatus(claimId, EXECUTED);
-//        ClaimDto resultCancelled2 = sut.changeStatus(claimId2, CANCELED);
-//        assertEquals(EXECUTED, resultCancelled.getStatus());
-//        assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
-//        assertEquals(CANCELED, resultCancelled2.getStatus());
+    @Test
+    public void changeStatusShouldPassSuccess() {
+        int claimId = 4;
+        int claimId2 = 5;
+        ClaimDto resultCancelled = sut.changeStatus(claimId, EXECUTED);
+        ClaimDto resultCancelled2 = sut.changeStatus(claimId2,StatusE.OPEN);
+        assertEquals(EXECUTED, resultCancelled.getStatus());
+        assertEquals(LocalDateTime.now().withNano(0),resultCancelled.getFactExecuteDate());
+        assertEquals(StatusE.OPEN, resultCancelled2.getStatus());
 //        assertNull(resultCancelled2.getFactExecuteDate());
-//        Claim claim = claimRepository.findById(4).get();
-//        claim.setStatus(OPEN);
-//        claimRepository.save(claim);
-//    }
-//    @Test
-//    public void changeStatusNotShouldPassSuccessWrongId() {
-//        int claimId = 12;
-//        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
-//        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(5, OPEN));
-//    }
+        Claim claim = claimRepository.findById(4).get();
+        claim.setStatus(IN_PROGRESS);
+        claimRepository.save(claim);
+    }
+    @Test
+    public void changeStatusNotShouldPassSuccessWrongId() {
+        int claimId = 12;
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(3, StatusE.OPEN));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.CANCELLED));
+    }
 
 }
