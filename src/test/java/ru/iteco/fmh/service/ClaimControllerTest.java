@@ -17,7 +17,7 @@ import ru.iteco.fmh.model.task.claim.Claim;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto2;
 
@@ -42,8 +42,7 @@ public class ClaimControllerTest {
             System.out.println(claimDto);
         }
         assertEquals(5, claimDtoList.size());
-        assertTrue(claimDtoList.get(1).getPlanExecuteDate().isBefore
-                (claimDtoList.get(2).getPlanExecuteDate()));
+
     }
 
     @Test
@@ -109,13 +108,6 @@ public class ClaimControllerTest {
         );
     }
 
-//    @Test
-//    public void getAllActiveNotesSort() {
-//        List<ClaimShortInfoDto> claimShortInfoDtoList = sut.getAllClaims();
-//        assertEquals(4, claimShortInfoDtoList.size());
-//        assertTrue(claimShortInfoDtoList.get(1).getPlanExecuteDate().isBefore
-//                (claimShortInfoDtoList.get(2).getPlanExecuteDate()));
-//        }
 
     @Test
     public void updateClaimShoulNotdPassSuccess() {

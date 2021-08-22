@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.claim;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
@@ -30,16 +31,18 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public List<ClaimDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAll();
+        List<Claim> list = claimRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
     public List<ClaimDto> getOpenInProgressClaims() {
-        List<Claim> list = claimRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
+        List<Claim> list = claimRepository.findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))

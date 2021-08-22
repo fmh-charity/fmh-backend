@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
-    List<Claim> findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(Collection<StatusE> status);
+    List<Claim> findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Collection<StatusE> status);
+    List<Claim> findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
 
 
 

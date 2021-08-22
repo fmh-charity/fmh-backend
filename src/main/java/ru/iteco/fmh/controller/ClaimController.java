@@ -24,14 +24,14 @@ public class ClaimController {
     }
 
     @ApiOperation(value = "реестр всех заявок")
-    @GetMapping
+    @GetMapping("/all")
     public List<ClaimDto> getAllClaims() {
         return claimService.getAllClaims();
     }
 
 
     @ApiOperation(value = "реестр всех заявок со статусом open and in progress")
-    @GetMapping
+    @GetMapping("/open-in-progress")
     public List<ClaimDto> getOpenInProgressClaims() {
         return claimService.getOpenInProgressClaims();
     }
