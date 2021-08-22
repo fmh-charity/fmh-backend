@@ -1,4 +1,5 @@
 package ru.iteco.fmh.service.claim;
+import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
 import ru.iteco.fmh.model.task.StatusE;
@@ -48,4 +49,31 @@ public interface ClaimService {
      * @return заявку с измененным статусом
      */
     ClaimDto changeStatus (Integer claimId, StatusE status);
+
+    /**
+     * добавляет комент к заявке
+     *  @param claimId ид заявки
+     *  @return заявку с добпвленным коментом
+     */
+    Integer addComment (Integer claimId, ClaimCommentDto claimCommentDto);
+
+    /**
+     * возвращает комментарий заявки для просмотра
+     * @param claimCommentId ид комментария заявки
+     * @return  комментарий заявки
+     */
+    ClaimCommentDto getClaimComment (Integer claimCommentId);
+
+    /**
+     возвращает список всех комментов к заявке
+     */
+    List<ClaimCommentDto> getAllClaimsComment(Integer claimId);
+
+    /**
+     * обновляет комментарий заявки
+     * @return обновленная сущность коммента
+     */
+    ClaimCommentDto updateClaimComment ( ClaimCommentDto commentDto);
+
+
 }

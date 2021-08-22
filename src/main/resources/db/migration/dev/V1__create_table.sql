@@ -213,7 +213,7 @@ create table claimComment
 (
     id          int not null primary key default nextval('claimComment_seq'),
     claim_id    int,
-    description varchar,
+    description varchar not null,
     creator_id  int not null,
     create_date timestamp
 

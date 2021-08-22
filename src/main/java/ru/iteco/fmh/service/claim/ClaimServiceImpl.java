@@ -6,10 +6,13 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
+import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +23,7 @@ import static ru.iteco.fmh.model.task.StatusE.OPEN;
 @Service
 public class ClaimServiceImpl implements ClaimService {
     private ClaimRepository claimRepository;
+    private ClaimCommentRepository claimCommentRepository;
     private ConversionServiceFactoryBean factoryBean;
 
 
@@ -37,7 +41,6 @@ public class ClaimServiceImpl implements ClaimService {
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
     }
-
 
 
     @Override
@@ -69,7 +72,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
-        if (claimDto.getStatus()==StatusE.EXECUTED || claimDto.getStatus()==StatusE.CANCELLED){
+        if (claimDto.getStatus() == StatusE.EXECUTED || claimDto.getStatus() == StatusE.CANCELLED) {
             throw new IllegalArgumentException("Нельзя редактировать заявку с данным статусом");
         }
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
@@ -90,6 +93,42 @@ public class ClaimServiceImpl implements ClaimService {
         return conversionService.convert(claim, ClaimDto.class);
     }
 
+    @Override
+    public ClaimCommentDto getClaimComment(Integer claimCommentId) {
+        ClaimComment claimComment = claimCommentRepository.findById(claimCommentId).orElseThrow(() ->
+                new IllegalArgumentException("Такого комментария не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(claimComment, ClaimCommentDto.class);
+    }
+
+
+    @Override
+    public List<ClaimCommentDto> getAllClaimsComment(Integer claimId) {
+        List<ClaimComment> list = claimCommentRepository.findAllByClaim_Id(claimId);
+        ConversionService conversionService = factoryBean.getObject();
+        return list.stream()
+                .map(i -> conversionService.convert(i, ClaimCommentDto.class))
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public Integer addComment(Integer claimId, ClaimCommentDto claimCommentDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
+        claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->
+                new IllegalArgumentException("Заявки с таким ID не существует")));
+        return claimCommentRepository.save(claimComment).getId();
+    }
+
+    @Transactional
+    @Override
+    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        ClaimComment claimComment = conversionService.convert(commentDto,ClaimComment.class);
+        claimComment = claimCommentRepository.save(claimComment);
+        return conversionService.convert(claimComment,ClaimCommentDto.class);
+    }
 
 }
 //метод создания claim 2021/08/20 (разговор с Маратом)
