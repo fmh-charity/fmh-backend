@@ -1,5 +1,7 @@
 package ru.iteco.fmh.model.task;
 
+import com.sun.xml.bind.v2.TODO;
+
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +18,8 @@ public enum StatusE {
                 task.setFactExecuteDate(LocalDateTime.now().withNano(0));
             }
             if (OPEN == newStatus) {
-                task.setExecutor(null);
+              //  TODO: раскоментировать после правки конверторов (работающими с null полями)
+//                task.setExecutor(null);
             }
             task.setStatus(newStatus);
         }

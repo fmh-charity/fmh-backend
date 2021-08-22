@@ -12,17 +12,13 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
-import ru.iteco.fmh.model.user.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto2;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -40,8 +36,19 @@ public class ClaimControllerTest {
 
 
     @Test
-    public void getAllOpenAndInProgressClaims() {
+    public void getAllClaims() {
         List<ClaimDto> claimDtoList = sut.getAllClaims();
+        for (ClaimDto claimDto : claimDtoList) {
+            System.out.println(claimDto);
+        }
+        assertEquals(5, claimDtoList.size());
+        assertTrue(claimDtoList.get(1).getPlanExecuteDate().isBefore
+                (claimDtoList.get(2).getPlanExecuteDate()));
+    }
+
+    @Test
+    public void getAllOpenAndInProgressClaims() {
+        List<ClaimDto> claimDtoList = sut.getOpenInProgressClaims();
         for (ClaimDto claimDto : claimDtoList) {
             System.out.println(claimDto);
         }

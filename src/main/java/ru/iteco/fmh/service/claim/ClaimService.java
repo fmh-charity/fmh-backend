@@ -9,11 +9,16 @@ import java.util.List;
 * сервис для работы с заявками
 */
 public interface ClaimService {
+
+    /**
+     возвращает список всех просьб
+     */
+    List<ClaimDto> getAllClaims();
     /**
      * возвращает полный перечень всех заявок
      * @return список с полной информацией по заявкам
      */
-    List<ClaimDto> getAllClaims();
+    List<ClaimDto> getOpenInProgressClaims();
 
     /**
      * создает новую заявку

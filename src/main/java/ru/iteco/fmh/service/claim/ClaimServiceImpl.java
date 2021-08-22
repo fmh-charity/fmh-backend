@@ -28,9 +28,17 @@ public class ClaimServiceImpl implements ClaimService {
         this.factoryBean = factoryBean;
     }
 
-
     @Override
     public List<ClaimDto> getAllClaims() {
+        List<Claim> list = claimRepository.findAll();
+        ConversionService conversionService = factoryBean.getObject();
+        return list.stream()
+                .map(i -> conversionService.convert(i, ClaimDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ClaimDto> getOpenInProgressClaims() {
         List<Claim> list = claimRepository.findAllByStatusInOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
