@@ -78,3 +78,10 @@ values ('title1', 'claim1-description', 1, 1, now(), now() + INTERVAL '4 DAYS', 
        ('title3', 'claim3-description', 3, 3, now(), now(), now(), 'EXECUTED', false),
        ('title4', 'claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'IN_PROGRESS', false),
        ('title5', 'claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'IN_PROGRESS', false);
+
+insert into claimcomment (claim_id, description, creator_id, create_date)
+values (1, 'claim1-description', 1, now() - INTERVAL '4 DAYS'),
+       (1, 'claim2-description', 2, now() - INTERVAL '1 DAY'),
+       (2, 'claim3-description', 3, now()),
+       (3, 'claim4-description', 5, now() - INTERVAL '2 DAYS'),
+       (3, 'claim5-description', 5, now());

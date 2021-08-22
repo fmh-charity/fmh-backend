@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.iteco.fmh.TestUtils.getUserDto;
+import static ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter.getUserDto;
 
 
 public class ClaimDtoToClaimConverterTest {

@@ -11,7 +11,7 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
 
 
-public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
+public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto>,IClaimToClaimDtoConverter {
     private final IUserToUserDtoConverter userToUserDtoConverter;
 
     public ClaimToClaimDtoConverter(IUserToUserDtoConverter userToUserDtoConverter) {

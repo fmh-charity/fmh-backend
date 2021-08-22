@@ -12,7 +12,7 @@ import ru.iteco.fmh.model.user.User;
 
 
 
-public class ClaimDtoToClaimConverter implements Converter<ClaimDto, Claim> {
+public class ClaimDtoToClaimConverter implements Converter<ClaimDto, Claim>,IClaimDtoToClaimConverter {
 
     private final IUserDtoToUserConverter userDtoToUserConverter;
 
