@@ -47,7 +47,6 @@ public class ClaimController {
     public ClaimDto getClaim(@ApiParam(value = "идентификатор заявки", required = true) @PathVariable int id) {
         return claimService.getClaim(id);
     }
-
     @ApiOperation(value = "изменение информации по заявке")
     @PatchMapping
     public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
