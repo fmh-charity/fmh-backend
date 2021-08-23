@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString
 @Entity
-@Table(name = "claimComment")
+@Table(name = "claim_comment")
 public class ClaimComment {
 
     @Id
@@ -25,7 +25,6 @@ public class ClaimComment {
     @ManyToOne
     @JoinColumn(name = "claim_id")
     Claim claim;
-
     String description;
     @ManyToOne
     @JoinColumn(name = "creator_id")

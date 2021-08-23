@@ -209,21 +209,21 @@ comment on column claim.status is 'статус заявки';
 comment on column claim.deleted is 'флаг удаления';
 
 create sequence claimComment_seq;
-create table claimComment
+create table claim_comment
 (
     id          int not null primary key default nextval('claimComment_seq'),
     claim_id    int,
     description varchar not null,
-    creator_id  int not null,
+    creator_id  int ,
     create_date timestamp
 
 );
-comment on table claimComment is 'Комментарии к заявкам';
-comment on column claimComment.id is 'id в системе';
-comment on column claimComment.claim_id is 'id заявки';
-comment on column claimComment.description is 'описание комментария к заявке';
-comment on column claimComment.creator_id is 'id автора комментария к заявке';
-comment on column claimComment.create_date is 'дата создания комментария к заявке';
+comment on table claim_comment is 'Комментарии к заявкам';
+comment on column claim_comment.id is 'id в системе';
+comment on column claim_comment.claim_id is 'id заявки';
+comment on column claim_comment.description is 'описание комментария к заявке';
+comment on column claim_comment.creator_id is 'id автора комментария к заявке';
+comment on column claim_comment.create_date is 'дата создания комментария к заявке';
 
 create sequence claimVisibility_seq;
 create table claimVisibility

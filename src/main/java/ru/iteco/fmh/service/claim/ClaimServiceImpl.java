@@ -28,9 +28,10 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Autowired
-    public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean) {
+    public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean,ClaimCommentRepository claimCommentRepository) {
         this.claimRepository = claimRepository;
         this.factoryBean = factoryBean;
+        this.claimCommentRepository = claimCommentRepository;
     }
 
     @Override
