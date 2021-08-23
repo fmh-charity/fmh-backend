@@ -22,7 +22,7 @@ public class WishComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     @ManyToOne
-    @JoinColumn(name = " wish_id")
+    @JoinColumn(name = "wish_id")
     Wish wish;
 
     String description;

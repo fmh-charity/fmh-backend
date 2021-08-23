@@ -79,3 +79,16 @@ values ('title1','claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', 
        ('title3','claim3-description', 3, 3, now(), now(),null, 'OPEN', false),
        ('title4','claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'OPEN',  false),
        ('title5','claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'OPEN',  false);
+
+insert into wish_comment (wish_id, description, creator_id, create_date)
+values (1, 'wishComment1-description', 1, now()),
+       (1, 'wishComment2-description', 1, now()),
+       (1, 'wishComment3-description', 1, now()),
+       (2, 'wishComment4-description',2, now()),
+       (2, 'wishComment5-description', 2, now()),
+       (2, 'wishComment6-description', 2, now()),
+       (3, 'wishComment7-description',3, now()),
+       (3, 'wishComment8-description', 3, now()),
+       (3, 'wishComment9-description', 3, now()),
+       (4, 'wishComment10-description', 4, now());
+

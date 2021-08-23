@@ -1,6 +1,7 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
@@ -9,9 +10,11 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.task.wish.Wish;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -185,6 +188,27 @@ public class TestUtils {
                 .executor(getUserDto())
                 .creator(getUserDto())
                 .status(StatusE.OPEN)
+                .build();
+    }
+
+
+    public static WishComment getWishComment(StatusE wishStatus) {
+        return WishComment.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .wish(getWish(wishStatus))
+                .description(getAlphabeticStringR())
+                .creator(getUser())
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
+    public static WishCommentDto getWishCommentDto(StatusE wishStatus) {
+        return WishCommentDto.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .wish(getWishDto(wishStatus))
+                .description(getAlphabeticStringR())
+                .creator(getUserDto())
+                .createDate(LocalDateTime.now())
                 .build();
     }
 }

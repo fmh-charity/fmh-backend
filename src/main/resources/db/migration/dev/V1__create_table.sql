@@ -125,37 +125,37 @@ comment on column wish.fact_execute_date is 'фактическое время �
 comment on column wish.status is 'статус';
 comment on column wish.deleted is 'флаг удаления';
 
-create sequence wishComment_seq;
-create table wishComment
+create sequence wish_comment_seq;
+create table wish_comment
 (
-    id          int not null primary key default nextval('wishComment_seq'),
+    id          int not null primary key default nextval('wish_comment_seq'),
     wish_id    int,
     description varchar,
     creator_id  int not null,
     create_date timestamp
 
 );
-comment on table wishComment is 'Комментарии к просьбам';
-comment on column wishComment.id is 'id в системе';
-comment on column wishComment.wish_id is 'id просьбы';
-comment on column wishComment.description is 'описание комментария к просьбе';
-comment on column wishComment.creator_id is 'id автора комментария к просьбе';
-comment on column wishComment.create_date is 'дата создания комментария к просьбе';
+comment on table wish_comment is 'Комментарии к просьбам';
+comment on column wish_comment.id is 'id в системе';
+comment on column wish_comment.wish_id is 'id просьбы';
+comment on column wish_comment.description is 'описание комментария к просьбе';
+comment on column wish_comment.creator_id is 'id автора комментария к просьбе';
+comment on column wish_comment.create_date is 'дата создания комментария к просьбе';
 
 
-create sequence wishVisibility_seq;
-create table wishVisibility
+create sequence wish_visibility_seq;
+create table wish_visibility
 (
-    id       int not null primary key default nextval('wishVisibility_seq'),
+    id       int not null primary key default nextval('wish_visibility_seq'),
     wish_id int,
     role_id  int,
     deleted  boolean
 );
-comment on table wishVisibility is 'видимости просьб';
-comment on column wishVisibility.id is 'id в системе';
-comment on column wishVisibility.wish_id is 'id просьбы';
-comment on column wishVisibility.role_id is 'id роли';
-comment on column wishVisibility.deleted is 'флаг удаления';
+comment on table wish_visibility is 'видимости просьб';
+comment on column wish_visibility.id is 'id в системе';
+comment on column wish_visibility.wish_id is 'id просьбы';
+comment on column wish_visibility.role_id is 'id роли';
+comment on column wish_visibility.deleted is 'флаг удаления';
 
 create sequence user_seq;
 create table users
@@ -308,6 +308,11 @@ alter table room
     add foreign key (block_id) references block;
 alter table room
     add foreign key (nurse_station_id) references nurse_station;
+alter table wish_comment
+    add foreign key (wish_id) references wish;
+alter table wish_comment
+    add foreign key (creator_id) references users;
+
 
 
 -- ДАЛЬШЕ НЕ ПОКА НЕ ТРОГАЛ !

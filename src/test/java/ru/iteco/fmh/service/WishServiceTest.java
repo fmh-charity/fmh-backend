@@ -8,9 +8,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -31,11 +34,12 @@ public class WishServiceTest {
     @MockBean
     WishRepository wishRepository;
 
+    @MockBean
+    WishCommentRepository wishCommentRepository;
+
     @Autowired
     ConversionServiceFactoryBean factoryBean;
 
-
-    // 1
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
         // given
@@ -66,7 +70,6 @@ public class WishServiceTest {
         assertEquals(expected, result);
     }
 
-    // 2
     @Test
     public void createWishShouldPassSuccess() {
         // given
@@ -81,7 +84,6 @@ public class WishServiceTest {
         assertEquals(IN_PROGRESS, dto.getStatus());
     }
 
-    // 3
     @Test
     public void getWishShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
@@ -97,7 +99,6 @@ public class WishServiceTest {
         assertEquals(expected, result);
     }
 
-    // 4
     @Test
     public void updateWishShouldPassSuccess() {
         // given
@@ -218,17 +219,63 @@ public class WishServiceTest {
     }
 
 
-//    @Test
-//    public void addCommentShouldPassSuccess() {
-//        // given
-//        Wish wish = getNote(OPEN);
-//        Wish resultWish = getNote(OPEN);
-//        String newComment = "test comment";
-//        String expected = "first comment".concat(", ").concat(newComment);
-//        resultWish.setComment(expected);
-//        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
-//        when(wishRepository.save(any())).thenReturn(resultWish);
-//        WishDto result = sut.addComment(any(), newComment);
-//        assertEquals(expected, result.getComment());
-//    }
+    @Test
+    public void getWishCommentShouldPassSuccess() {
+        ConversionService conversionService = factoryBean.getObject();
+
+        // given
+        WishComment wishComment = getWishComment(OPEN);
+        int wishCommentId = 1;
+
+        when(wishCommentRepository.findById(any())).thenReturn(Optional.of(wishComment));
+        WishCommentDto expected = conversionService.convert(wishComment, WishCommentDto.class);
+        WishCommentDto result = sut.getWishComment(wishCommentId);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getAllWishCommentsShouldPassSuccess() {
+        // given
+        List<WishComment> wishCommentList = List.of(getWishComment(OPEN), getWishComment(IN_PROGRESS));
+        List<WishCommentDto> expected = wishCommentList.stream()
+                .map(wishComment -> factoryBean.getObject().convert(wishComment, WishCommentDto.class))
+                .collect(Collectors.toList());
+        int wishId = 1;
+
+        when(wishCommentRepository.findAllByWish_Id(any())).thenReturn(wishCommentList);
+        List<WishCommentDto> result = sut.getAllWishComments(wishId);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void createWishCommentShouldPassSuccess() {
+        // given
+        Wish wish = getWish(OPEN);
+        int wishId = 1;
+        WishComment wishComment = getWishComment(OPEN);
+        int commentId = 1;
+        wishComment.setId(commentId);
+        WishCommentDto wishCommentDto = factoryBean.getObject().convert(wishComment, WishCommentDto.class);
+
+        when(wishCommentRepository.save(any())).thenReturn(wishComment);
+        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
+        Integer resultId = sut.createWishComment(wishId, wishCommentDto);
+
+        assertEquals(commentId, resultId);
+    }
+
+    @Test
+    public void updateWishCommentShouldPassSuccess() {
+        // given
+        WishComment wishComment = getWishComment(OPEN);
+        WishCommentDto givenDto = factoryBean.getObject().convert(wishComment, WishCommentDto.class);
+
+        when(wishCommentRepository.save(any())).thenReturn(wishComment);
+
+        WishCommentDto resultDto = sut.updateWishComment(givenDto);
+
+        assertEquals(givenDto, resultDto);
+    }
 }

@@ -5,10 +5,13 @@ import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.wish.WishComment;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +20,14 @@ import static ru.iteco.fmh.model.task.StatusE.*;
 
 @Service
 public class WishServiceImpl implements WishService {
-
     private final WishRepository wishRepository;
+    private final WishCommentRepository wishCommentRepository;
     private final ConversionServiceFactoryBean factoryBean;
 
     @Autowired
-    public WishServiceImpl(WishRepository wishRepository, ConversionServiceFactoryBean factoryBean) {
+    public WishServiceImpl(WishRepository wishRepository, WishCommentRepository wishCommentRepository, ConversionServiceFactoryBean factoryBean) {
         this.wishRepository = wishRepository;
+        this.wishCommentRepository = wishCommentRepository;
         this.factoryBean = factoryBean;
     }
 
@@ -85,28 +89,6 @@ public class WishServiceImpl implements WishService {
                 .collect(Collectors.toList());
     }
 
-
-//нет больше комента
-//    @Transactional
-//    @Override
-//    public WishDto addComment(Integer noteId, String comment) {
-//        Optional<Wish> optionalNote = wishRepository.findById(noteId);
-//
-//        if (optionalNote.isPresent()) {
-//            Wish wish = optionalNote.get();
-//            if (!wish.getComment().isEmpty()) {
-//                wish.setComment(wish.getComment().concat(", ").concat(comment));
-//            } else {
-//                wish.setComment(comment);
-//            }
-//            wish = wishRepository.save(wish);
-//            ConversionService conversionService = factoryBean.getObject();
-//            return conversionService.convert(wish, WishDto.class);
-//        } else {
-//            throw new IllegalArgumentException("записка не найдена!");
-//        }
-//    }
-
     @Transactional
     @Override
     public WishDto changeStatus(Integer wishId, StatusE status) {
@@ -116,4 +98,40 @@ public class WishServiceImpl implements WishService {
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(wish, WishDto.class);
     }
+
+    @Override
+    public WishCommentDto getWishComment(Integer commentId) {
+        WishComment wishComment = wishCommentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
+        ConversionService conversionService = factoryBean.getObject();
+        return conversionService.convert(wishComment, WishCommentDto.class);
+    }
+
+    @Override
+    public List<WishCommentDto> getAllWishComments(Integer wishId) {
+        List<WishComment> wishCommentList = wishCommentRepository.findAllByWish_Id(wishId);
+        ConversionService conversionService = factoryBean.getObject();
+        return wishCommentList.stream().map(i->conversionService.convert(i, WishCommentDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Integer createWishComment(Integer wishId, WishCommentDto wishCommentDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
+        wishComment.setWish(wishRepository.findById(wishId)
+                .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
+        return wishCommentRepository.save(wishComment).getId();
+    }
+
+    @Transactional
+    @Override
+    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto) {
+        ConversionService conversionService = factoryBean.getObject();
+        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
+        wishComment = wishCommentRepository.save(wishComment);
+        return conversionService.convert(wishComment,WishCommentDto.class);
+    }
+
+
 }
