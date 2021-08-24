@@ -18,7 +18,7 @@ public enum StatusE {
                 task.setFactExecuteDate(LocalDateTime.now().withNano(0));
             }
             if (OPEN == newStatus) {
-              //  TODO: раскоментировать после правки конверторов (работающими с null полями)
+                // TODO: раскоментировать после правки конверторов (работающими с null полями)
 //                task.setExecutor(null);
             }
             task.setStatus(newStatus);

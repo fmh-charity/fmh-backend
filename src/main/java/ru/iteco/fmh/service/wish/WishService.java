@@ -1,5 +1,9 @@
 package ru.iteco.fmh.service.wish;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.*;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import ru.iteco.fmh.model.task.StatusE;
@@ -7,55 +11,90 @@ import ru.iteco.fmh.model.task.StatusE;
 import java.util.List;
 
 /**
- * сервис для работы с записками
+ * сервис для работы с просьбами
  */
 public interface WishService {
     /**
-     * возвращает список всех записок co статусом active
+     * возвращает список всех просьб
      */
-    List<WishShortInfoDto> getAllNotes();
+    List<WishDto> getAllWishes();
 
     /**
-     * возвращает записку для просмотра
-     * @param id ид записки
-     * @return записка с полной информацией
+     * возвращает список всех просьб co статусом open/in_progress
      */
-    WishDto getNote(Integer id);
+    List<WishDto> getOpenInProgressWishes();
 
     /**
-     * создает новую записку
-     * @param wishDto информация по новой записке
-     * @return id записки
+     * возвращает просьбу для просмотра
+     * @param id ид просьбы
+     * @return просьба с полной информацией
      */
-    Integer createNote(WishDto wishDto);
+    WishDto getWish(Integer id);
 
     /**
-     * обновляет записку
-     * @param wishDto информация по записке для обновления
-     * @return обновленная сущность
+     * создает новую просьбу
+     * @param wishDto информация по новой просьбе
+     * @return id просьбы
      */
-    WishDto updateNote(WishDto wishDto);
+    Integer createWish(WishDto wishDto);
 
     /**
-     * возвращает список всех неисполненных записок по пациенту
+     * обновляет просьбу
+     * @param wishDto информация по просьбе для обновления
+     * @return обновленная сущность просьбы
+     */
+    WishDto updateWish(WishDto wishDto);
+
+    /**
+     * возвращает список всех просьб по пациенту
      * @param patientId ид пациента
-     * @return список всех активных записок с полной инфой по пациенту
+     * @return список всех просьб по пациенту
      */
-    List<WishDto> getPatientNotes(Integer patientId);
+    List<WishDto> getPatientAllWishes(Integer patientId);
 
     /**
-     * добавляет комментарий в записку и возвращает записку
-     * @param noteId ид записки
-     * @param comment комментарий для записки
-     * @return записку с добавленным комментарием
+     * возвращает список всех просьб по пациенту co статусом open/in_progress
+     * @param patientId ид пациента
+     * @return список всех просьб по пациенту co статусом open/in_progress
      */
-//    WishDto addComment(Integer noteId, String comment);
+    List<WishDto> getPatientOpenInProgressWishes(Integer patientId);
 
     /**
-     * изменяет статус записки на - исполнен, отменен
-     * @param noteId ид записки
-     * @param status значение нового статуса для записки
-     * @return записку с измененным статусом
+     * изменяет статус просьбы - обработка документа “Просьба” по статусной модели
+     * @param wishId ид просьбы
+     * @param status значение нового статуса для просьбы
+     * @return просьбу с измененным статусом
      */
-    WishDto changeStatus(Integer noteId, StatusE status);
+    WishDto changeStatus(Integer wishId, StatusE status);
+
+
+    /**
+     * возвращает комментарий для просмотра
+     * @param commentId ид комментария
+     * @return комментарий с полной информацией
+     */
+    WishCommentDto getWishComment (Integer commentId);
+
+    /**
+     * возвращает все комментарии просьбы для просмотра
+     * @param wishId ид просьбы
+     * @return список всех комментариев по просьбе
+     */
+    List<WishCommentDto> getAllWishComments(Integer wishId);
+
+    /**
+     * создает новый комментарий просьбы
+     * @param wishId ид просьбы
+     * @param wishCommentDto информация по комментарию
+     * @return id комментария
+     */
+    Integer createWishComment(Integer wishId, WishCommentDto wishCommentDto);
+
+
+    /**
+     * обновляет комментарий просьбы
+     * @param wishCommentDto информация по комментарию для обновления
+     * @return обновленная сущность комментария
+     */
+    WishCommentDto updateWishComment(WishCommentDto wishCommentDto);
 }
