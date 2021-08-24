@@ -213,20 +213,6 @@ public class TestUtils {
                 .description(getAlphabeticStringR())
                 .creator(getUserDto())
                 .createDate(LocalDateTime.now())
-    }
-
-    public static Claim getClaimInProgress() {
-
-        return Claim.builder()
-                .id(27)
-                .title("title")
-                .description("description")
-                .creator(TestUtils.getUser())
-                .executor(TestUtils.getUser())
-                .createDate(java.time.LocalDateTime.now())
-                .planExecuteDate(java.time.LocalDateTime.now())
-                .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
                 .build();
     }
 
@@ -243,7 +229,5 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
                 .build();
-
-
     }
 }
