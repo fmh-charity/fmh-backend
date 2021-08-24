@@ -19,6 +19,7 @@ import java.util.List;
 @RequestMapping("/note")
 public class WishController {
     private final WishService wishService;
+
     @Autowired
     public WishController(WishService wishService) {
         this.wishService = wishService;
@@ -39,7 +40,7 @@ public class WishController {
     @ApiOperation(value = "возвращает полную информацию по записке")
     @GetMapping("/{id}")
     public WishDto getNote(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("id") int id){
+            @ApiParam(value = "идентификатор записки", required = true) @PathVariable("id") int id) {
         return wishService.getNote(id);
     }
 
@@ -61,9 +62,9 @@ public class WishController {
     @ApiOperation(value = "обработка записок по статусной модели")
     @PatchMapping("/status/{noteId}")
     public WishDto changeStatus(
-            @ApiParam(value = "идентификатор записки", required = true)@PathVariable("noteId") int noteId,
+            @ApiParam(value = "идентификатор записки", required = true) @PathVariable("noteId") int noteId,
             @ApiParam(value = "новое значение статуса для записки", required = true) @RequestParam("status") StatusE status
-            )  {
+    ) {
         return wishService.changeStatus(noteId, status);
     }
 

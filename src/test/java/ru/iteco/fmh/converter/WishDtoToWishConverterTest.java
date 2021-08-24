@@ -14,7 +14,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static ru.iteco.fmh.TestUtils.getNoteDto;
+import static ru.iteco.fmh.TestUtils.getWishDto;
 
 class WishDtoToWishConverterTest {
     PatientDtoToPatientConverter dtoToPatientConverter = new PatientDtoToPatientConverter();
@@ -25,7 +25,7 @@ class WishDtoToWishConverterTest {
 
     @Test
     void convert() {
-        WishDto wishDto = getNoteDto();
+        WishDto wishDto = getWishDto();
         Wish wish = convert.convert(wishDto);
         Assertions.assertAll(
                 () -> assertEquals(wishDto.getId(), wish.getId()),

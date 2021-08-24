@@ -18,7 +18,7 @@ import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.getNoteDto;
+import static ru.iteco.fmh.TestUtils.getWishDto;
 import static ru.iteco.fmh.model.task.StatusE.*;
 
 
@@ -73,7 +73,7 @@ public class WishControllerTest {
         ConversionService conversionService = factoryBean.getObject();
 
         //given
-        WishDto given = getNoteDto();
+        WishDto given = getWishDto();
         given.setCreator(conversionService.convert(userRepository.findUserById(2), UserDto.class));
         given.setExecutor(conversionService.convert(userRepository.findUserById(3), UserDto.class));
         given.getPatient().setId(2);

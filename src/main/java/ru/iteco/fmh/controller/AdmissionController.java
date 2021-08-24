@@ -41,6 +41,6 @@ public class AdmissionController {
     public AdmissionDto updateAdmission(
             @RequestBody AdmissionDto admissionDto
     ) {
-      return admissionService.updateAdmission(admissionDto);
+        return admissionService.updateAdmission(admissionDto);
     }
 }
