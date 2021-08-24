@@ -15,7 +15,8 @@ import ru.iteco.fmh.model.task.claim.ClaimComment;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.iteco.fmh.converter.ClaimDtoToClaimConverterTest.getClaimDto2;
+import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 import static ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter.getUser;
 import static ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter.getUserDto;
 
@@ -36,7 +37,7 @@ public class ClaimCommentConverterTest {
     void convertClaimCommentToClaimCommentDto() {
         ClaimComment claimComment = ClaimComment.builder()
                 .id(23)
-                .claim(ClaimToClaimDtoConverterTest.getClaim2())
+                .claim(getClaimInProgress())
                 .creator(getUser())
                 .description("description")
                 .createDate(LocalDateTime.now())
@@ -56,7 +57,7 @@ public class ClaimCommentConverterTest {
     void convertClaimCommentDtoToClaimComment() {
         ClaimCommentDto claimCommentDto = ClaimCommentDto.builder()
                 .id(24)
-                .claim(getClaimDto2())
+                .claim(getClaimDtoInProgress())
                 .creator(getUserDto())
                 .description("description")
                 .createDate(LocalDateTime.now())

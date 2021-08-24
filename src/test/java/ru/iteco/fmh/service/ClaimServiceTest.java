@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 import static ru.iteco.fmh.model.task.StatusE.*;
 
 @RunWith(SpringRunner.class)
@@ -37,12 +38,10 @@ public class ClaimServiceTest {
     @Test
     public void createClaimShouldPassSuccessExecutorNotNull() {
         // given
-        Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
+        Claim claim = getClaimInProgress();
         claim.setId(6);
         ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
-
         when(claimRepository.save(any())).thenReturn(claim);
-
         Integer resultId = sut.createClaim(dto);
         assertEquals(claim.getStatus(),IN_PROGRESS);
         assertEquals(6, resultId);
@@ -53,11 +52,10 @@ public class ClaimServiceTest {
     public void getClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
         // given
-        Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
+        Claim claim = getClaimInProgress();
         int claimId = 1;
         when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
         ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
-            System.out.println("Expected in test = " + expected );//executor = null
         ClaimDto result = sut.getClaim(expected.getId());
         assertEquals(expected, result);
     }
@@ -67,7 +65,7 @@ public class ClaimServiceTest {
         ConversionService conversionService = factoryBean.getObject();
 
         // claim
-        Claim claim = ClaimToClaimDtoConverterTest.getClaim2();
+        Claim claim = getClaimInProgress();
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);

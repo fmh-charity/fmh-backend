@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString
 @Entity
-@Table(name = "claim_comment")
+@Table(name = "claimComment")
 public class ClaimComment {
 
     @Id

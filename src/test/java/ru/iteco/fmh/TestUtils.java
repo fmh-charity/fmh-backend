@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+
+
 public class TestUtils {
     public static String getAlphabeticStringR() {
         return getAlphabeticString(10);
@@ -159,6 +161,50 @@ public class TestUtils {
     }
 
 
+    public static ClaimDto getClaimDtoInProgress() {
+
+        return ClaimDto.builder()
+                .id(27)
+                .title("Title")
+                .description("description")
+                .creator(getUserDto())
+                .executor(getUserDto())
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
+                .build();
+    }
+    public static ClaimDto getClaimDtoOpen() {
+
+        return ClaimDto.builder()
+                .id(27)
+                .title("Title")
+                .description("description")
+                .creator(getUserDto())
+                .executor(null)
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.OPEN)
+                .build();
+    }
+
+    public static Claim getClaimInProgress() {
+
+        return Claim.builder()
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(TestUtils.getUser())
+                .executor(TestUtils.getUser())
+                .createDate(java.time.LocalDateTime.now())
+                .planExecuteDate(java.time.LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
+                .build();
 
 
+
+    }
 }

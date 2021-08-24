@@ -67,7 +67,7 @@ public interface ClaimService {
     /**
      возвращает список всех комментов к заявке
      */
-    List<ClaimCommentDto> getAllClaimsComment(Integer claimId);
+    List<ClaimCommentDto> getAllClaimsComments(Integer claimId);
 
     /**
      * обновляет комментарий заявки

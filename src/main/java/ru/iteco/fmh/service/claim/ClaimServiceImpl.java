@@ -73,9 +73,9 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
-        if (claimDto.getStatus() == StatusE.EXECUTED || claimDto.getStatus() == StatusE.CANCELLED) {
-            throw new IllegalArgumentException("Нельзя редактировать заявку с данным статусом");
-        }
+//        if (claimDto.getStatus() == StatusE.EXECUTED || claimDto.getStatus() == StatusE.CANCELLED) {
+//            throw new IllegalArgumentException("Нельзя редактировать заявку с данным статусом");
+//        }
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
@@ -104,7 +104,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Override
-    public List<ClaimCommentDto> getAllClaimsComment(Integer claimId) {
+    public List<ClaimCommentDto> getAllClaimsComments(Integer claimId) {
         List<ClaimComment> list = claimCommentRepository.findAllByClaim_Id(claimId);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
@@ -132,16 +132,6 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
 }
-//метод создания claim 2021/08/20 (разговор с Маратом)
-//    @Override
-//    public Integer createClaim(ClaimDto claimDto) {
-//        if (claimDto.getExecutor() == null){
-//            claimDto.setStatus(OPEN);
-//        }else {
-//            claimDto.setStatus(IN_PROGRESS);
-//        }
-//        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
-//        return claimRepository.save(claim).getId();
-//    }
+
 
 

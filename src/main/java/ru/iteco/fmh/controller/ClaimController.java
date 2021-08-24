@@ -62,7 +62,7 @@ public class ClaimController {
         return claimService.changeStatus(claimId, status);
     }
 
-    @ApiOperation(value = "получение полной информации комментария к заявке по id заявки")
+    @ApiOperation(value = "получение полной информации комментария к заявке по id комментария")
     @GetMapping("/comment/{claimCommentId}")
     public ClaimCommentDto getClaimComment(@PathVariable("claimCommentId") int claimCommentId)  {
         return claimService.getClaimComment(claimCommentId);
@@ -72,7 +72,7 @@ public class ClaimController {
     @GetMapping ("/comment/all/{claimId}")
     public List<ClaimCommentDto> getAllClaimsComments(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("claimId") int claimId){
-        return claimService.getAllClaimsComment(claimId);
+        return claimService.getAllClaimsComments(claimId);
     }
 
     @ApiOperation (value = "Создание нового комментария к заявке")
