@@ -16,7 +16,7 @@ import java.util.List;
 
 @Api(description = "Работа с просьбами")
 @RestController
-@RequestMapping("/wish")
+@RequestMapping("/wishes")
 public class WishController {
     private final WishService wishService;
 
@@ -48,15 +48,15 @@ public class WishController {
     public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
         return wishService.getWish(id);
     }
+
     @ApiOperation(value = "обновляет информацию по просьбе")
-    @PatchMapping
-    public WishDto updateWish(
-            @RequestBody WishDto wishDto) {
+    @PutMapping
+    public WishDto updateWish(@RequestBody WishDto wishDto) {
         return wishService.updateWish(wishDto);
     }
 
     @ApiOperation(value = "обработка просьб по статусной модели")
-    @PatchMapping("{id}/status")
+    @PutMapping("{id}/status")
     public WishDto changeStatus(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int wishId,
             @ApiParam(value = "новое значение статуса для просьбы", required = true) @RequestParam("status") StatusE status
@@ -65,25 +65,25 @@ public class WishController {
     }
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
-    @GetMapping("/comment/{id}")
+    @GetMapping("/comments/{id}")
     public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true)@PathVariable("id") int commentId) {
         return wishService.getWishComment(commentId);
     }
 
     @ApiOperation(value = "реестр всех комментариев просьбы")
-    @GetMapping("{id}/comment")
+    @GetMapping("{id}/comments")
     public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int wishId) {
         return wishService.getAllWishComments(wishId);
     }
 
     @ApiOperation(value = "Создание нового комментария")
-    @PostMapping("{id}/comment")
+    @PostMapping("{id}/comments")
     public Integer createWishComment(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int wishId, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(wishId, wishCommentDto);
     }
 
     @ApiOperation(value = "обновляет информацию по комментарию")
-    @PatchMapping("/comment")
+    @PutMapping("/comments")
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto) {
         return wishService.updateWishComment(wishCommentDto);
     }
