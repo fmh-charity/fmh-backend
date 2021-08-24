@@ -15,10 +15,8 @@ import ru.iteco.fmh.model.task.claim.ClaimComment;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimInProgress;
-import static ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter.getUser;
-import static ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter.getUserDto;
+import static ru.iteco.fmh.TestUtils.*;
+
 
 public class ClaimCommentConverterTest {
 

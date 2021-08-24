@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 
-
 public class TestUtils {
     public static String getAlphabeticStringR() {
         return getAlphabeticString(10);
@@ -175,6 +174,7 @@ public class TestUtils {
                 .status(StatusE.IN_PROGRESS)
                 .build();
     }
+
     public static ClaimDto getClaimDtoOpen() {
 
         return ClaimDto.builder()
@@ -203,7 +203,6 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
                 .build();
-
 
 
     }

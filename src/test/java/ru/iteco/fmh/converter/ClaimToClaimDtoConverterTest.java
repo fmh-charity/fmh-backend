@@ -8,7 +8,6 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 

@@ -20,18 +20,18 @@ public class UserController {
     @ApiOperation(value = "реестр всех пользователей с учетом пагинации")
     @GetMapping
     public List<UserShortInfoDto> getAllUsers(
-            @ApiParam(value = "начальная позиция пагинации", required = true)@RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true)@RequestParam("limit") Integer limit,
-            @ApiParam(value = "показывать только активных")@RequestParam("show_active") Boolean showActive
-    ){
+            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
+            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
+            @ApiParam(value = "показывать только активных") @RequestParam("show_active") Boolean showActive
+    ) {
         return null;
     }
 
     @ApiOperation(value = "возвращает информацию по пользователю")
     @GetMapping("/{id}")
     public UserDto getUser(
-            @ApiParam(value = "идентификатор пользователя", required = true)@PathVariable Integer id
-    ){
+            @ApiParam(value = "идентификатор пользователя", required = true) @PathVariable Integer id
+    ) {
         return null;
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping
     public Integer createUser(
             @RequestBody UserDto userDto
-    ){
+    ) {
         return null;
     }
 
@@ -47,10 +47,8 @@ public class UserController {
     @PatchMapping
     public void updateUser(
             @RequestBody UserDto userDto
-    ){
+    ) {
 
     }
-
-
 
 }

@@ -28,7 +28,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Autowired
-    public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean,ClaimCommentRepository claimCommentRepository) {
+    public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean, ClaimCommentRepository claimCommentRepository) {
         this.claimRepository = claimRepository;
         this.factoryBean = factoryBean;
         this.claimCommentRepository = claimCommentRepository;
@@ -73,9 +73,6 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
         ConversionService conversionService = factoryBean.getObject();
-//        if (claimDto.getStatus() == StatusE.EXECUTED || claimDto.getStatus() == StatusE.CANCELLED) {
-//            throw new IllegalArgumentException("Нельзя редактировать заявку с данным статусом");
-//        }
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
@@ -126,9 +123,9 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
         ConversionService conversionService = factoryBean.getObject();
-        ClaimComment claimComment = conversionService.convert(commentDto,ClaimComment.class);
+        ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
-        return conversionService.convert(claimComment,ClaimCommentDto.class);
+        return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
 
 }

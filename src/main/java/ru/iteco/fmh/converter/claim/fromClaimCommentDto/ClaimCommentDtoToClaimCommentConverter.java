@@ -9,11 +9,12 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 import ru.iteco.fmh.model.user.User;
 
-public class ClaimCommentDtoToClaimCommentConverter implements Converter<ClaimCommentDto, ClaimComment > {
+public class ClaimCommentDtoToClaimCommentConverter implements Converter<ClaimCommentDto, ClaimComment> {
     private final IUserDtoToUserConverter userDtoToUserConverter;
     private final IClaimDtoToClaimConverter claimDtoToClaimConverter;
 
-    public ClaimCommentDtoToClaimCommentConverter(IUserDtoToUserConverter userDtoToUserConverter,IClaimDtoToClaimConverter claimDtoToClaimConverter) {
+    public ClaimCommentDtoToClaimCommentConverter(IUserDtoToUserConverter userDtoToUserConverter,
+                                                  IClaimDtoToClaimConverter claimDtoToClaimConverter) {
         this.userDtoToUserConverter = userDtoToUserConverter;
         this.claimDtoToClaimConverter = claimDtoToClaimConverter;
     }
@@ -26,6 +27,6 @@ public class ClaimCommentDtoToClaimCommentConverter implements Converter<ClaimCo
         User creator = userDtoToUserConverter.convert(claimCommentDto.getCreator());
         claimComment.setClaim(claim);
         claimComment.setCreator(creator);
-        return  claimComment;
+        return claimComment;
     }
 }

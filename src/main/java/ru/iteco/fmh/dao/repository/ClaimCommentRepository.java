@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ClaimCommentRepository extends JpaRepository<ClaimComment, Integer> {
-    List<ClaimComment> findAllByClaim_Id(Integer id);
-    ClaimComment findClaimCommentById (Integer id);
+    List<ClaimComment> findAllByClaim_Id(int id);
+    ClaimComment findClaimCommentById (int id);
 }

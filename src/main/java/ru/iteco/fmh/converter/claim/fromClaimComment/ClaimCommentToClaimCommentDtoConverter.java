@@ -15,7 +15,8 @@ public class ClaimCommentToClaimCommentDtoConverter implements Converter<ClaimCo
     private final IUserToUserDtoConverter userToUserDtoConverter;
     private final IClaimToClaimDtoConverter claimToClaimDtoConverter;
 
-    public ClaimCommentToClaimCommentDtoConverter(IUserToUserDtoConverter userToUserDtoConverter,IClaimToClaimDtoConverter claimToClaimDtoConverter) {
+    public ClaimCommentToClaimCommentDtoConverter(IUserToUserDtoConverter userToUserDtoConverter,
+                                                  IClaimToClaimDtoConverter claimToClaimDtoConverter) {
         this.userToUserDtoConverter = userToUserDtoConverter;
         this.claimToClaimDtoConverter = claimToClaimDtoConverter;
     }

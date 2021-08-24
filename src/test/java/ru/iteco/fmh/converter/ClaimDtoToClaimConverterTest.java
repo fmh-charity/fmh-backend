@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
 
 
-
 public class ClaimDtoToClaimConverterTest {
 
     UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
@@ -40,7 +39,6 @@ public class ClaimDtoToClaimConverterTest {
                 () -> assertEquals(dto.getExecutor(), userToUserDtoConverter.convert(claim.getExecutor()))
         );
     }
-
 
 
 }

@@ -8,7 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.converter.ClaimToClaimDtoConverterTest;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
@@ -43,12 +42,12 @@ public class ClaimServiceTest {
         ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
-        assertEquals(claim.getStatus(),IN_PROGRESS);
+        assertEquals(claim.getStatus(), IN_PROGRESS);
         assertEquals(6, resultId);
     }
 
 
-        @Test
+    @Test
     public void getClaimShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
         // given
@@ -83,9 +82,6 @@ public class ClaimServiceTest {
                 () -> assertEquals(given.getCreator(), result.getCreator())
         );
     }
-
-
-
 
 
 }
