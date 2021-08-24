@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
@@ -16,11 +18,11 @@ import java.util.List;
 @Api(description = "Заявки")
 @RestController
 @RequestMapping("/claims")
-public class ClaimController {
+public class ClaimsController {
     private ClaimService claimService;
 
     @Autowired
-    public ClaimController(ClaimService claimService) {
+    public ClaimsController(ClaimService claimService) {
         this.claimService = claimService;
     }
 
@@ -50,45 +52,49 @@ public class ClaimController {
     }
 
     @ApiOperation(value = "изменение информации по заявке")
-    @PatchMapping
+    @PutMapping
     public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
         return claimService.updateClaim(claimDtoDto);
     }
 
     @ApiOperation(value = "изменение заявки по статусной модели")
-    @PatchMapping("/status/{claimId}")
+    @PutMapping("{id}/status")
     public ClaimDto changeStatus(
-            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("claimId") int claimId,
+            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
             @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") StatusE status) {
         return claimService.changeStatus(claimId, status);
     }
 
     @ApiOperation(value = "получение полной информации комментария к заявке по id комментария")
-    @GetMapping("/comment/{claimCommentId}")
-    public ClaimCommentDto getClaimComment(@PathVariable("claimCommentId") int claimCommentId) {
+    @GetMapping("/comments/{id}")
+    public ClaimCommentDto getClaimComment(@PathVariable("id") int claimCommentId) {
         return claimService.getClaimComment(claimCommentId);
     }
 
     @ApiOperation(value = "получение всех комментариев к заявке")
-    @GetMapping("/comment/all/{claimId}")
+    @GetMapping("{id}/comments")
     public List<ClaimCommentDto> getAllClaimsComments(
-            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("claimId") int claimId) {
+            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId) {
         return claimService.getAllClaimsComments(claimId);
     }
 
     @ApiOperation(value = "Создание нового комментария к заявке")
-    @PostMapping("/comment/{claimId}")
+    @PostMapping("{id}/comments")
     public Integer createClaimComment(
-            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("claimId") int claimId,
+            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
             @RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.addComment(claimId, claimCommentDto);
     }
 
     @ApiOperation(value = "изменение информации по комментарии к заявке")
-    @PatchMapping("/comment")
+    @PutMapping("/comments")
     public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.updateClaimComment(claimCommentDto);
     }
 
-
+    // все ошибки
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleExceptions(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
 }

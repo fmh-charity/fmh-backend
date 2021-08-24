@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.controller.ClaimController;
+import ru.iteco.fmh.controller.ClaimsController;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -31,9 +31,9 @@ import static ru.iteco.fmh.model.task.StatusE.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class ClaimControllerTest {
+public class ClaimsControllerTest {
     @Autowired
-    ClaimController sut;
+    ClaimsController sut;
     @Autowired
     ClaimRepository claimRepository;
     @Autowired

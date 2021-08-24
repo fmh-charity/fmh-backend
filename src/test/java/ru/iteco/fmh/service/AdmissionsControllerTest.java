@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.controller.AdmissionController;
+import ru.iteco.fmh.controller.AdmissionsController;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.RoomRepository;
@@ -16,7 +16,6 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class AdmissionControllerTest {
+public class AdmissionsControllerTest {
     @Autowired
-    AdmissionController sut;
+    AdmissionsController sut;
 
     @Autowired
     AdmissionRepository admissionRepository;

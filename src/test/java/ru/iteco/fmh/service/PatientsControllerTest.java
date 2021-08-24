@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.controller.PatientController;
+import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.wish.WishDto;
@@ -26,9 +26,9 @@ import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class PatientControllerTest {
+public class PatientsControllerTest {
     @Autowired
-    PatientController sut;
+    PatientsController sut;
 
     @Autowired
     PatientRepository patientRepository;
