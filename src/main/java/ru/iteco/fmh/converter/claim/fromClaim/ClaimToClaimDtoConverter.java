@@ -10,11 +10,13 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 
 
-public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
+public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto>, IClaimToClaimDtoConverter {
     private final IUserToUserDtoConverter userToUserDtoConverter;
+
     public ClaimToClaimDtoConverter(IUserToUserDtoConverter userToUserDtoConverter) {
         this.userToUserDtoConverter = userToUserDtoConverter;
     }
+
     @Override
     public ClaimDto convert(Claim claim) {
         ClaimDto dto = new ClaimDto();

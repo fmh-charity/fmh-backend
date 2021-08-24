@@ -79,6 +79,6 @@ public class PatientController {
     public PatientDto updatePatient(
             @RequestBody PatientDto patientDto
     ) {
-       return patientService.updatePatient(patientDto);
+        return patientService.updatePatient(patientDto);
     }
 }
