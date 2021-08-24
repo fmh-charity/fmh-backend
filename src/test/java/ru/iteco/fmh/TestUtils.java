@@ -211,4 +211,21 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .build();
     }
+
+    public static Claim getClaimInProgress() {
+
+        return Claim.builder()
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(TestUtils.getUser())
+                .executor(TestUtils.getUser())
+                .createDate(java.time.LocalDateTime.now())
+                .planExecuteDate(java.time.LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
+                .build();
+
+
+    }
 }
