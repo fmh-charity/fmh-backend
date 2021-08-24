@@ -7,8 +7,16 @@ import ru.iteco.fmh.model.user.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString
 @Entity
-@Table(name = "claimComment")
+@Table(name = "claim_comment")
 public class ClaimComment {
 
     @Id
@@ -17,7 +25,6 @@ public class ClaimComment {
     @ManyToOne
     @JoinColumn(name = "claim_id")
     Claim claim;
-
     String description;
     @ManyToOne
     @JoinColumn(name = "creator_id")

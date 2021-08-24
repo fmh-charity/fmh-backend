@@ -8,7 +8,8 @@ import ru.iteco.fmh.converter.admission.AdmissionDtoToAdmissionConverter;
 import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
 
 import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimShortInfoDtoConverter;
+import ru.iteco.fmh.converter.claim.fromClaimComment.ClaimCommentToClaimCommentDtoConverter;
+import ru.iteco.fmh.converter.claim.fromClaimCommentDto.ClaimCommentDtoToClaimCommentConverter;
 import ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter;
 import ru.iteco.fmh.converter.user.fromUser.IUserToUserDtoConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.IUserDtoToUserConverter;
@@ -48,8 +49,11 @@ public class Config {
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
 
         converterSet.add(new ClaimToClaimDtoConverter(new UserToUserDtoConverter()));
-        converterSet.add(new ClaimToClaimShortInfoDtoConverter());
         converterSet.add(new ClaimDtoToClaimConverter(new UserDtoToUserConverter()));
+        converterSet.add(new ClaimCommentToClaimCommentDtoConverter(new UserToUserDtoConverter(),
+                new ClaimToClaimDtoConverter(new UserToUserDtoConverter())));
+        converterSet.add(new ClaimCommentDtoToClaimCommentConverter(new UserDtoToUserConverter(),
+                new ClaimDtoToClaimConverter(new UserDtoToUserConverter())));
 
 
         converterSet.add(new WishCommentToWishCommentDtoConverter(new UserToUserDtoConverter(),

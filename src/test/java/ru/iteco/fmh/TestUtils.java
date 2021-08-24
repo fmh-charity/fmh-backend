@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+
 public class TestUtils {
     public static String getAlphabeticStringR() {
         return getAlphabeticString(10);
@@ -140,7 +141,6 @@ public class TestUtils {
 
     public static PatientDto getPatientDto() {
         PatientDto patientDto = PatientDto.builder()
-                .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticStringR())
                 .lastName(getAlphabeticStringR())
                 .middleName(getAlphabeticStringR())
@@ -164,33 +164,37 @@ public class TestUtils {
                 .comment(getAlphabeticStringR())
                 .build();
     }
-    public static Claim getClaim() {
 
-        return Claim.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .creator(getUser())
-                .executor(getUser())
-                .description(getAlphabeticStringR())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(LocalDateTime.now())
-                .status(StatusE.OPEN)
-                .build();
-    }
 
-    public static ClaimDto getClaimDto() {
+    public static ClaimDto getClaimDtoInProgress() {
 
         return ClaimDto.builder()
-                .description(getAlphabeticStringR())
+                .id(27)
+                .title("Title")
+                .description("description")
+                .creator(getUserDto())
+                .executor(getUserDto())
                 .planExecuteDate(LocalDateTime.now().withNano(0))
                 .createDate(LocalDateTime.now().plusDays(2).withNano(0))
                 .factExecuteDate(null)
-                .executor(getUserDto())
-                .creator(getUserDto())
-                .status(StatusE.OPEN)
+                .status(StatusE.IN_PROGRESS)
                 .build();
     }
 
+    public static ClaimDto getClaimDtoOpen() {
+
+        return ClaimDto.builder()
+                .id(27)
+                .title("Title")
+                .description("description")
+                .creator(getUserDto())
+                .executor(null)
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.OPEN)
+                .build();
+    }
 
     public static WishComment getWishComment(StatusE wishStatus) {
         return WishComment.builder()
@@ -209,6 +213,20 @@ public class TestUtils {
                 .description(getAlphabeticStringR())
                 .creator(getUserDto())
                 .createDate(LocalDateTime.now())
+    }
+
+    public static Claim getClaimInProgress() {
+
+        return Claim.builder()
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(TestUtils.getUser())
+                .executor(TestUtils.getUser())
+                .createDate(java.time.LocalDateTime.now())
+                .planExecuteDate(java.time.LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
                 .build();
     }
 }
