@@ -7,8 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-import ru.iteco.fmh.controller.WishController;
+import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -19,7 +18,6 @@ import ru.iteco.fmh.model.task.wish.WishComment;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,9 +29,9 @@ import static ru.iteco.fmh.model.task.StatusE.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-public class WishControllerTest {
+public class WishesControllerTest {
     @Autowired
-    WishController sut;
+    WishesController sut;
 
     @Autowired
     WishRepository wishRepository;

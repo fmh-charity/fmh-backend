@@ -17,11 +17,11 @@ import java.util.List;
 @Api(description = "Работа с просьбами")
 @RestController
 @RequestMapping("/wishes")
-public class WishController {
+public class WishesController {
     private final WishService wishService;
 
     @Autowired
-    public WishController(WishService wishService) {
+    public WishesController(WishService wishService) {
         this.wishService = wishService;
     }
 

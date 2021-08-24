@@ -13,12 +13,12 @@ import ru.iteco.fmh.service.admission.AdmissionService;
 @Api(description = "Госпитализация")
 @RestController
 @RequestMapping("/admissions")
-public class AdmissionController {
+public class AdmissionsController {
 
     private AdmissionService admissionService;
 
     @Autowired
-    public AdmissionController(AdmissionService admissionService) {
+    public AdmissionsController(AdmissionService admissionService) {
         this.admissionService = admissionService;
     }
 

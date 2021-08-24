@@ -20,12 +20,12 @@ import java.util.List;
 @Api(description = "Информация по пациенту")
 @RestController
 @RequestMapping("/patients")
-public class PatientController {
+public class PatientsController {
     private final PatientService patientService;
     private final AdmissionService admissionService;
     private final WishService wishService;
 
-    public PatientController(PatientService patientService, AdmissionService admissionService, WishService wishService) {
+    public PatientsController(PatientService patientService, AdmissionService admissionService, WishService wishService) {
         this.patientService = patientService;
         this.admissionService = admissionService;
         this.wishService = wishService;

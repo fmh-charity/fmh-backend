@@ -18,11 +18,11 @@ import java.util.List;
 @Api(description = "Заявки")
 @RestController
 @RequestMapping("/claims")
-public class ClaimController {
+public class ClaimsController {
     private ClaimService claimService;
 
     @Autowired
-    public ClaimController(ClaimService claimService) {
+    public ClaimsController(ClaimService claimService) {
         this.claimService = claimService;
     }
 
