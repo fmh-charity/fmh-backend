@@ -72,14 +72,6 @@ values (1, 'wish-title1','wish1-description', 1, 1, now(), now(), null, 'OPEN', 
        (1, 'wish-title7','wish7-description', 5, 5, now() - INTERVAL '9 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false),
        (1, 'wish-title8','wish8-description', 5, 5, now() - INTERVAL '8 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false);
 
-insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
-                   status, deleted)
-values ('title1','claim1-description', 1, 1, now(), now()  + INTERVAL '4 DAYS', null, 'OPEN',  false),
-       ('title2','claim2-description', 2, 2, now(), now() + INTERVAL '1 DAY', null, 'OPEN',  false),
-       ('title3','claim3-description', 3, 3, now(), now(),null, 'OPEN', false),
-       ('title4','claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'OPEN',  false),
-       ('title5','claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'OPEN',  false);
-
 insert into wish_comment (wish_id, description, creator_id, create_date)
 values (1, 'wishComment1-description', 1, now()),
        (1, 'wishComment2-description', 1, now()),
@@ -92,3 +84,18 @@ values (1, 'wishComment1-description', 1, now()),
        (3, 'wishComment9-description', 3, now()),
        (4, 'wishComment10-description', 4, now());
 
+insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
+                   status, deleted)
+values ('title1', 'claim1-description', 1, 1, now(), now() + INTERVAL '4 DAYS', null, 'IN_PROGRESS', false),
+       ('title2', 'claim2-description', 2, 2, now() - INTERVAL '1 DAY', now() + INTERVAL '2 DAY', null, 'IN_PROGRESS',
+        false),
+       ('title3', 'claim3-description', 3, 3, now(), now(), now(), 'EXECUTED', false),
+       ('title4', 'claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'IN_PROGRESS', false),
+       ('title5', 'claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'IN_PROGRESS', false);
+
+insert into claim_comment (claim_id, description, creator_id, create_date)
+values (1, 'claim1-description', 1, now() - INTERVAL '4 DAYS'),
+       (1, 'claim2-description', 2, now() - INTERVAL '1 DAY'),
+       (2, 'claim3-description', 3, now()),
+       (3, 'claim4-description', 5, now() - INTERVAL '2 DAYS'),
+       (3, 'claim5-description', 5, now());
