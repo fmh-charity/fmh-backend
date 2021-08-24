@@ -33,33 +33,31 @@ public class Config {
     public ConversionServiceFactoryBean conversionServiceFactoryBean() {
         ConversionServiceFactoryBean factoryBean = new ConversionServiceFactoryBean();
         Set<Converter> converterSet = new HashSet<>();
+
         PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
         PatientDtoToPatientConverter patientDtoToPatientConverter = new PatientDtoToPatientConverter();
+        UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
+        UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
+        WishToWishDtoConverter wishToWishDtoConverter = new WishToWishDtoConverter(patientToPatientDtoConverter, userToUserDtoConverter);
+        WishDtoToWishConverter wishDtoToWishConverter = new WishDtoToWishConverter(patientDtoToPatientConverter, userDtoToUserConverter);
+        ClaimToClaimDtoConverter claimToClaimDtoConverter = new ClaimToClaimDtoConverter(userToUserDtoConverter);
+        ClaimDtoToClaimConverter claimDtoToClaimConverter = new ClaimDtoToClaimConverter(userDtoToUserConverter);
 
         converterSet.add(patientToPatientDtoConverter);
         converterSet.add(patientDtoToPatientConverter);
         converterSet.add(new PatientToPatientAdmissionDtoConverter());
-
-        converterSet.add(new UserToUserDtoConverter());
-        converterSet.add(new WishToWishDtoConverter(new PatientToPatientDtoConverter(), new UserToUserDtoConverter()));
-        converterSet.add(new WishDtoToWishConverter(patientDtoToPatientConverter, new UserDtoToUserConverter()));
+        converterSet.add(userToUserDtoConverter);
+        converterSet.add(wishToWishDtoConverter);
+        converterSet.add(wishDtoToWishConverter);
         converterSet.add(new WishToWishShortDtoConverter());
-
         converterSet.add(new AdmissionDtoToAdmissionConverter(patientDtoToPatientConverter));
         converterSet.add(new AdmissionToAdmissionDtoConverter(patientToPatientDtoConverter));
-
-        converterSet.add(new ClaimToClaimDtoConverter(new UserToUserDtoConverter()));
-        converterSet.add(new ClaimDtoToClaimConverter(new UserDtoToUserConverter()));
-        converterSet.add(new ClaimCommentToClaimCommentDtoConverter(new UserToUserDtoConverter(),
-                new ClaimToClaimDtoConverter(new UserToUserDtoConverter())));
-        converterSet.add(new ClaimCommentDtoToClaimCommentConverter(new UserDtoToUserConverter(),
-                new ClaimDtoToClaimConverter(new UserDtoToUserConverter())));
-
-
-        converterSet.add(new WishCommentToWishCommentDtoConverter(new UserToUserDtoConverter(),
-                new WishToWishDtoConverter(new PatientToPatientDtoConverter(), new UserToUserDtoConverter())));
-        converterSet.add(new WishCommentDtoToWishCommentConverter(new UserDtoToUserConverter(),
-                new WishDtoToWishConverter(patientDtoToPatientConverter, new UserDtoToUserConverter())));
+        converterSet.add(claimToClaimDtoConverter);
+        converterSet.add(claimDtoToClaimConverter);
+        converterSet.add(new ClaimCommentToClaimCommentDtoConverter(userToUserDtoConverter, claimToClaimDtoConverter));
+        converterSet.add(new ClaimCommentDtoToClaimCommentConverter(userDtoToUserConverter, claimDtoToClaimConverter));
+        converterSet.add(new WishCommentToWishCommentDtoConverter(userToUserDtoConverter, wishToWishDtoConverter));
+        converterSet.add(new WishCommentDtoToWishCommentConverter(userDtoToUserConverter, wishDtoToWishConverter));
 
         factoryBean.setConverters(converterSet);
         return factoryBean;
