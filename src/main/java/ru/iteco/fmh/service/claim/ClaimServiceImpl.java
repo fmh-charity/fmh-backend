@@ -55,14 +55,14 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Override
-    public Integer createClaim(ClaimDto claimDto) {
+    public int createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
         return claimRepository.save(claim).getId();
     }
 
     @Override
-    public ClaimDto getClaim(Integer id) {
+    public ClaimDto getClaim(int id) {
         Claim claim = claimRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         ConversionService conversionService = factoryBean.getObject();
@@ -82,7 +82,7 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto changeStatus(Integer claimId, StatusE status) {
+    public ClaimDto changeStatus(int claimId, StatusE status) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         claim.changeStatus(status);
@@ -92,7 +92,7 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public ClaimCommentDto getClaimComment(Integer claimCommentId) {
+    public ClaimCommentDto getClaimComment(int claimCommentId) {
         ClaimComment claimComment = claimCommentRepository.findById(claimCommentId).orElseThrow(() ->
                 new IllegalArgumentException("Такого комментария не существует"));
         ConversionService conversionService = factoryBean.getObject();
@@ -101,7 +101,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Override
-    public List<ClaimCommentDto> getAllClaimsComments(Integer claimId) {
+    public List<ClaimCommentDto> getAllClaimsComments(int claimId) {
         List<ClaimComment> list = claimCommentRepository.findAllByClaim_Id(claimId);
         ConversionService conversionService = factoryBean.getObject();
         return list.stream()
@@ -111,7 +111,7 @@ public class ClaimServiceImpl implements ClaimService {
 
 
     @Override
-    public Integer addComment(Integer claimId, ClaimCommentDto claimCommentDto) {
+    public int addComment(int claimId, ClaimCommentDto claimCommentDto) {
         ConversionService conversionService = factoryBean.getObject();
         ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
         claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->

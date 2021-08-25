@@ -30,7 +30,7 @@ public interface ClaimService {
      * @param claimDto информация по новой заявке
      * @return id заявки
      */
-    Integer createClaim(ClaimDto claimDto);
+    int createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра
@@ -38,7 +38,7 @@ public interface ClaimService {
      * @param id ид заявки
      * @return заявка с полной информацией
      */
-    ClaimDto getClaim(Integer id);
+    ClaimDto getClaim(int id);
 
     /**
      * обновляет заявку
@@ -55,7 +55,7 @@ public interface ClaimService {
      * @param status  значение нового статуса для заявки
      * @return заявку с измененным статусом
      */
-    ClaimDto changeStatus(Integer claimId, StatusE status);
+    ClaimDto changeStatus(int claimId, StatusE status);
 
     /**
      * добавляет комент к заявке
@@ -63,7 +63,7 @@ public interface ClaimService {
      * @param claimId ид заявки
      * @return заявку с добпвленным коментом
      */
-    Integer addComment(Integer claimId, ClaimCommentDto claimCommentDto);
+    int addComment(int claimId, ClaimCommentDto claimCommentDto);
 
     /**
      * возвращает комментарий заявки для просмотра
@@ -71,12 +71,12 @@ public interface ClaimService {
      * @param claimCommentId ид комментария заявки
      * @return комментарий заявки
      */
-    ClaimCommentDto getClaimComment(Integer claimCommentId);
+    ClaimCommentDto getClaimComment(int claimCommentId);
 
     /**
      * возвращает список всех комментов к заявке
      */
-    List<ClaimCommentDto> getAllClaimsComments(Integer claimId);
+    List<ClaimCommentDto> getAllClaimsComments(int claimId);
 
     /**
      * обновляет комментарий заявки

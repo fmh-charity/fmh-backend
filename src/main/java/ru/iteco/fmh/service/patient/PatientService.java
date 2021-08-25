@@ -18,7 +18,7 @@ public interface PatientService {
      * @param patientDto информация по новому пациенту
      * @return id карточки пациента
      */
-    Integer createPatient(PatientDto patientDto);
+    int createPatient(PatientDto patientDto);
 
     /**
      * обновляет информацию о пациенте
@@ -32,6 +32,6 @@ public interface PatientService {
      * @param id ид пациента
      * @return полная инфа по конкретному пациенту
      */
-    PatientDto getPatient(Integer id);
+    PatientDto getPatient(int id);
 
 }

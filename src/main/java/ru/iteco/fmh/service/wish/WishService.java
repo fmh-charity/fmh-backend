@@ -29,14 +29,14 @@ public interface WishService {
      * @param id ид просьбы
      * @return просьба с полной информацией
      */
-    WishDto getWish(Integer id);
+    WishDto getWish(int id);
 
     /**
      * создает новую просьбу
      * @param wishDto информация по новой просьбе
      * @return id просьбы
      */
-    Integer createWish(WishDto wishDto);
+    int createWish(WishDto wishDto);
 
     /**
      * обновляет просьбу
@@ -50,14 +50,14 @@ public interface WishService {
      * @param patientId ид пациента
      * @return список всех просьб по пациенту
      */
-    List<WishDto> getPatientAllWishes(Integer patientId);
+    List<WishDto> getPatientAllWishes(int patientId);
 
     /**
      * возвращает список всех просьб по пациенту co статусом open/in_progress
      * @param patientId ид пациента
      * @return список всех просьб по пациенту co статусом open/in_progress
      */
-    List<WishDto> getPatientOpenInProgressWishes(Integer patientId);
+    List<WishDto> getPatientOpenInProgressWishes(int patientId);
 
     /**
      * изменяет статус просьбы - обработка документа “Просьба” по статусной модели
@@ -65,7 +65,7 @@ public interface WishService {
      * @param status значение нового статуса для просьбы
      * @return просьбу с измененным статусом
      */
-    WishDto changeStatus(Integer wishId, StatusE status);
+    WishDto changeStatus(int wishId, StatusE status);
 
 
     /**
@@ -73,14 +73,14 @@ public interface WishService {
      * @param commentId ид комментария
      * @return комментарий с полной информацией
      */
-    WishCommentDto getWishComment (Integer commentId);
+    WishCommentDto getWishComment (int commentId);
 
     /**
      * возвращает все комментарии просьбы для просмотра
      * @param wishId ид просьбы
      * @return список всех комментариев по просьбе
      */
-    List<WishCommentDto> getAllWishComments(Integer wishId);
+    List<WishCommentDto> getAllWishComments(int wishId);
 
     /**
      * создает новый комментарий просьбы
@@ -88,7 +88,7 @@ public interface WishService {
      * @param wishCommentDto информация по комментарию
      * @return id комментария
      */
-    Integer createWishComment(Integer wishId, WishCommentDto wishCommentDto);
+    int createWishComment(int wishId, WishCommentDto wishCommentDto);
 
 
     /**

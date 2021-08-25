@@ -50,14 +50,14 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public Integer createWish(WishDto wishDto) {
+    public int createWish(WishDto wishDto) {
         wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = factoryBean.getObject().convert(wishDto, Wish.class);
         return wishRepository.save(wish).getId();
     }
 
     @Override
-    public WishDto getWish(Integer wishId) {
+    public WishDto getWish(int wishId) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
         ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(wish, WishDto.class);
@@ -74,7 +74,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishDto> getPatientAllWishes(Integer patientId) {
+    public List<WishDto> getPatientAllWishes(int patientId) {
         ConversionService conversionService = factoryBean.getObject();
         return wishRepository.findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(patientId).stream()
                 .map(wish -> conversionService.convert(wish, WishDto.class))
@@ -82,7 +82,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishDto> getPatientOpenInProgressWishes(Integer patientId) {
+    public List<WishDto> getPatientOpenInProgressWishes(int patientId) {
         ConversionService conversionService = factoryBean.getObject();
         return wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(patientId, List.of(OPEN, IN_PROGRESS)).stream()
                 .map(wish -> conversionService.convert(wish, WishDto.class))
@@ -91,7 +91,7 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(Integer wishId, StatusE status) {
+    public WishDto changeStatus(int wishId, StatusE status) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
         wish.changeStatus(status);
         wish = wishRepository.save(wish);
@@ -100,7 +100,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishCommentDto getWishComment(Integer commentId) {
+    public WishCommentDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
         ConversionService conversionService = factoryBean.getObject();
@@ -108,7 +108,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public List<WishCommentDto> getAllWishComments(Integer wishId) {
+    public List<WishCommentDto> getAllWishComments(int wishId) {
         List<WishComment> wishCommentList = wishCommentRepository.findAllByWish_Id(wishId);
         ConversionService conversionService = factoryBean.getObject();
         return wishCommentList.stream().map(i->conversionService.convert(i, WishCommentDto.class))
@@ -116,7 +116,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public Integer createWishComment(Integer wishId, WishCommentDto wishCommentDto) {
+    public int createWishComment(int wishId, WishCommentDto wishCommentDto) {
         ConversionService conversionService = factoryBean.getObject();
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment.setWish(wishRepository.findById(wishId)
