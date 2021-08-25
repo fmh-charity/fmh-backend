@@ -8,14 +8,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.service.wish.WishService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -124,15 +127,44 @@ public class WishServiceTest {
     }
 
     @Test
-    public void changeStatusShouldPassSuccess() {
+    public void changeStatusOpenToCancelledShouldPassSuccess() {
         // given
-        Wish activeWish = getWish(OPEN);
-        Wish cancelledWish = getWish(CANCELLED);
+        int wishId = 1;
+        Wish givenWish = getWish(OPEN);
 
-        when(wishRepository.findById(any())).thenReturn(Optional.of(activeWish));
-        when(wishRepository.save(any())).thenReturn(cancelledWish);
-        WishDto result = sut.changeStatus(any(), CANCELLED);
+        when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
+        when(wishRepository.save(any())).thenReturn(givenWish);
+
+        WishDto result = sut.changeStatus(wishId, CANCELLED);
         assertEquals(CANCELLED, result.getStatus());
+    }
+
+    @Test
+    public void changeStatusOpenToInProgressShouldPassSuccess() {
+        // given
+        int wishId = 1;
+        Wish givenWish = getWish(OPEN);
+
+        when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
+        when(wishRepository.save(any())).thenReturn(givenWish);
+
+        WishDto result = sut.changeStatus(wishId, IN_PROGRESS);
+        assertEquals(IN_PROGRESS, result.getStatus());
+    }
+
+    @Test
+    public void changeStatusInProgressToExecutedShouldPassSuccess() {
+        // given
+        int wishId = 1;
+        Wish givenWish = getWish(IN_PROGRESS);
+        givenWish.setFactExecuteDate(null);
+
+        when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
+        when(wishRepository.save(any())).thenReturn(givenWish);
+
+        WishDto result = sut.changeStatus(wishId, EXECUTED);
+        assertEquals(EXECUTED, result.getStatus());
+        assertEquals(LocalDateTime.now().withNano(0), result.getFactExecuteDate());
     }
 
     @Test

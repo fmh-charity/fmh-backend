@@ -39,7 +39,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Integer createPatient(PatientDto dto) {
+    public int createPatient(PatientDto dto) {
         Patient entity = factoryBean.getObject().convert(dto, Patient.class);
         return patientRepository.save(entity).getId();
     }
@@ -54,7 +54,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDto getPatient(Integer id) {
+    public PatientDto getPatient(int id) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null) {
             throw new IllegalArgumentException("Пациента с таким ID не существует");

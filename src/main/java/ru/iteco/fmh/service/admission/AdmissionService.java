@@ -13,14 +13,14 @@ public interface AdmissionService {
      * @param admissionId ид госпитализации
      * @return полная инфа по госпитализации
      */
-    AdmissionDto getAdmission(Integer admissionId);
+    AdmissionDto getAdmission(int admissionId);
 
     /**
      * создает запись о госпитализации
      * @param admissionDto информация по новой госпитализации
      * @return идентификатор новой сущности
      */
-    Integer createAdmission(AdmissionDto admissionDto);
+    int createAdmission(AdmissionDto admissionDto);
 
     /**
      * обновляет запись о госпитализации
@@ -34,5 +34,5 @@ public interface AdmissionService {
      * @param patientId ид пациента
      * @return список с полной инфой по всем госпитализациям пациента
      */
-    List<AdmissionDto> getPatientAdmissions(Integer patientId);
+    List<AdmissionDto> getPatientAdmissions(int patientId);
 }

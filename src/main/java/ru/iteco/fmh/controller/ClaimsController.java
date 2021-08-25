@@ -67,34 +67,28 @@ public class ClaimsController {
 
     @ApiOperation(value = "получение полной информации комментария к заявке по id комментария")
     @GetMapping("/comments/{id}")
-    public ClaimCommentDto getClaimComment(@PathVariable("id") int claimCommentId) {
-        return claimService.getClaimComment(claimCommentId);
+    public ClaimCommentDto getClaimComment(@PathVariable("id") int id) {
+        return claimService.getClaimComment(id);
     }
 
     @ApiOperation(value = "получение всех комментариев к заявке")
     @GetMapping("{id}/comments")
     public List<ClaimCommentDto> getAllClaimsComments(
-            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId) {
-        return claimService.getAllClaimsComments(claimId);
+            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id) {
+        return claimService.getAllClaimsComments(id);
     }
 
     @ApiOperation(value = "Создание нового комментария к заявке")
     @PostMapping("{id}/comments")
-    public Integer createClaimComment(
-            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
+    public int createClaimComment(
+            @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id,
             @RequestBody ClaimCommentDto claimCommentDto) {
-        return claimService.addComment(claimId, claimCommentDto);
+        return claimService.addComment(id, claimCommentDto);
     }
 
     @ApiOperation(value = "изменение информации по комментарии к заявке")
     @PutMapping("/comments")
     public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.updateClaimComment(claimCommentDto);
-    }
-
-    // все ошибки
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

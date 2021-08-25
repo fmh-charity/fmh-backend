@@ -27,7 +27,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public List<AdmissionDto> getPatientAdmissions(Integer patientId) {
+    public List<AdmissionDto> getPatientAdmissions(int patientId) {
         ConversionService conversionService = factoryBean.getObject();
         return admissionRepository.findAllByPatient_IdAndDeletedIsFalse(patientId).stream()
                 .map(admission -> conversionService.convert(admission, AdmissionDto.class))
@@ -35,7 +35,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public AdmissionDto getAdmission(Integer admissionId) {
+    public AdmissionDto getAdmission(int admissionId) {
         ConversionService conversionService = factoryBean.getObject();
         return admissionRepository.findById(admissionId)
                 .map(admission -> conversionService.convert(admission, AdmissionDto.class))
@@ -43,7 +43,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     @Override
-    public Integer createAdmission(AdmissionDto admissionDto) {
+    public int createAdmission(AdmissionDto admissionDto) {
         Admission admission = factoryBean.getObject().convert(admissionDto, Admission.class);
         return admissionRepository.save(admission).getId();
     }

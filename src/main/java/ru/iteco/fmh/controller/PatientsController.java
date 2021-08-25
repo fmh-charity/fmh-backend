@@ -34,57 +34,51 @@ public class PatientsController {
     @ApiOperation(value = "реестр всех пациентов")
     @GetMapping
     public List<PatientAdmissionDto> getAllPatientsByStatus(
-            @ApiParam(value = "список статусов для отображения") @RequestParam("status_list") List<String> statusList
+            @ApiParam(value = "список статусов для отображения") @RequestParam("statuses") List<String> statuses
     ) {
-        return patientService.getAllPatientsByStatus(statusList);
+        return patientService.getAllPatientsByStatus(statuses);
     }
 
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public Integer createPatient(@RequestBody PatientDto patientDto) {
+    public int createPatient(@RequestBody PatientDto patientDto) {
         return patientService.createPatient(patientDto);
     }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")
     public PatientDto getPatient(
-            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer patientId) {
-        return patientService.getPatient(patientId);
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id) {
+        return patientService.getPatient(id);
     }
 
     @ApiOperation(value = "возвращает информацию по всем госпитализациям пациента")
     @GetMapping("/{id}/admissions")
     public List<AdmissionDto> getAdmissions(
-            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer patientId
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id
     ) {
-        return admissionService.getPatientAdmissions(patientId);
+        return admissionService.getPatientAdmissions(id);
     }
 
     @ApiOperation(value = "возвращает информацию по всем просьбам пациента")
     @GetMapping("/{id}/wishes")
     public List<WishDto> getAllWishes(
-            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer patientId
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id
     ) {
-        return wishService.getPatientAllWishes(patientId);
+        return wishService.getPatientAllWishes(id);
     }
 
     @ApiOperation(value = "возвращает информацию по всем просьбам пациента со статусом open/in progress")
     @GetMapping("/{id}/wishes/open-in-progress")
     public List<WishDto> getOpenInProgressWishes(
-            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer patientId
+            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") int id
     ) {
-        return wishService.getPatientOpenInProgressWishes(patientId);
+        return wishService.getPatientOpenInProgressWishes(id);
     }
 
     @ApiOperation(value = "изменение пациента")
     @PutMapping
     public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
         return patientService.updatePatient(patientDto);
-    }
-
-    // все ошибки
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }
