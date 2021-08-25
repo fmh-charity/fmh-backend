@@ -39,7 +39,7 @@ public class WishesController {
 
     @ApiOperation(value = "Создание новой просьбы")
     @PostMapping
-    public Integer createWish(@RequestBody WishDto wishDto) {
+    public int createWish(@RequestBody WishDto wishDto) {
         return wishService.createWish(wishDto);
     }
 
@@ -58,28 +58,28 @@ public class WishesController {
     @ApiOperation(value = "обработка просьб по статусной модели")
     @PutMapping("{id}/status")
     public WishDto changeStatus(
-            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int wishId,
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @ApiParam(value = "новое значение статуса для просьбы", required = true) @RequestParam("status") StatusE status
             )  {
-        return wishService.changeStatus(wishId, status);
+        return wishService.changeStatus(id, status);
     }
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true)@PathVariable("id") int commentId) {
-        return wishService.getWishComment(commentId);
+    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true)@PathVariable("id") int id) {
+        return wishService.getWishComment(id);
     }
 
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int wishId) {
-        return wishService.getAllWishComments(wishId);
+    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id) {
+        return wishService.getAllWishComments(id);
     }
 
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public Integer createWishComment(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int wishId, @RequestBody WishCommentDto wishCommentDto) {
-        return wishService.createWishComment(wishId, wishCommentDto);
+    public int createWishComment(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+        return wishService.createWishComment(id, wishCommentDto);
     }
 
     @ApiOperation(value = "обновляет информацию по комментарию")

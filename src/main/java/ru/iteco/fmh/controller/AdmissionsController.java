@@ -25,14 +25,14 @@ public class AdmissionsController {
     @ApiOperation(value = "возвращает полную информацию по госпитализации")
     @GetMapping("/{id}")
     public AdmissionDto getAdmission(
-            @ApiParam(value = "идентификатор", required = true) @PathVariable("id") Integer admissionId
+            @ApiParam(value = "идентификатор", required = true) @PathVariable("id") int id
     ) {
-        return admissionService.getAdmission(admissionId);
+        return admissionService.getAdmission(id);
     }
 
     @ApiOperation(value = "создание госпитализации")
     @PostMapping
-    public Integer createAdmission(@RequestBody AdmissionDto admissionDto) {
+    public int createAdmission(@RequestBody AdmissionDto admissionDto) {
         return admissionService.createAdmission(admissionDto);
     }
 
