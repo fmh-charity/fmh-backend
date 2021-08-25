@@ -87,10 +87,4 @@ public class WishesController {
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto) {
         return wishService.updateWishComment(wishCommentDto);
     }
-
-    // все ошибки
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
 }

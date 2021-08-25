@@ -81,10 +81,4 @@ public class PatientsController {
     public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
         return patientService.updatePatient(patientDto);
     }
-
-    // все ошибки
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleExceptions(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    }
 }
