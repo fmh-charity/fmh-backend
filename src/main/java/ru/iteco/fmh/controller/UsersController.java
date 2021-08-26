@@ -14,14 +14,14 @@ import java.util.List;
  */
 @Api(description = "Информация по пользователю")
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/users")
+public class UsersController {
 
     @ApiOperation(value = "реестр всех пользователей с учетом пагинации")
     @GetMapping
     public List<UserShortInfoDto> getAllUsers(
-            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") Integer offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") Integer limit,
+            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") int offset,
+            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") int limit,
             @ApiParam(value = "показывать только активных") @RequestParam("show_active") Boolean showActive
     ) {
         return null;
@@ -30,7 +30,7 @@ public class UserController {
     @ApiOperation(value = "возвращает информацию по пользователю")
     @GetMapping("/{id}")
     public UserDto getUser(
-            @ApiParam(value = "идентификатор пользователя", required = true) @PathVariable Integer id
+            @ApiParam(value = "идентификатор пользователя", required = true) @PathVariable int id
     ) {
         return null;
     }
@@ -50,5 +50,4 @@ public class UserController {
     ) {
 
     }
-
 }

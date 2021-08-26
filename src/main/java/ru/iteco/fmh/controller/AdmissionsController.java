@@ -3,24 +3,18 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 
 @Api(description = "Госпитализация")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/admissions")
 public class AdmissionsController {
 
-    private AdmissionService admissionService;
-
-    @Autowired
-    public AdmissionsController(AdmissionService admissionService) {
-        this.admissionService = admissionService;
-    }
+    private final AdmissionService admissionService;
 
     @ApiOperation(value = "возвращает полную информацию по госпитализации")
     @GetMapping("/{id}")

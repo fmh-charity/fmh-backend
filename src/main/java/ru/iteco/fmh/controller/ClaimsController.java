@@ -3,35 +3,28 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
 
 @Api(description = "Заявки")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/claims")
 public class ClaimsController {
-    private ClaimService claimService;
 
-    @Autowired
-    public ClaimsController(ClaimService claimService) {
-        this.claimService = claimService;
-    }
+    private final ClaimService claimService;
 
     @ApiOperation(value = "реестр всех заявок")
     @GetMapping
     public List<ClaimDto> getAllClaims() {
         return claimService.getAllClaims();
     }
-
 
     @ApiOperation(value = "реестр всех заявок со статусом open and in progress")
     @GetMapping("/open-in-progress")

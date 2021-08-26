@@ -1,23 +1,22 @@
 package ru.iteco.fmh.converter.wish.fromWishDto;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
-import ru.iteco.fmh.converter.patient.fromPatientDto.IPatientDtoToPatientConverter;
-import ru.iteco.fmh.converter.user.fromUserDto.IUserDtoToUserConverter;
+import org.springframework.stereotype.Component;
+import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
+import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
+@Component
+@RequiredArgsConstructor
 public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
 
-    private final IPatientDtoToPatientConverter dtoToPatientConverter;
-    private final IUserDtoToUserConverter userDtoToUserConverter;
-
-    public WishDtoToWishConverter(IPatientDtoToPatientConverter dtoToPatientConverter, IUserDtoToUserConverter userDtoToUserConverter) {
-        this.dtoToPatientConverter = dtoToPatientConverter;
-        this.userDtoToUserConverter = userDtoToUserConverter;
-    }
+    private final PatientDtoToPatientConverter dtoToPatientConverter;
+    private final UserDtoToUserConverter userDtoToUserConverter;
 
     @Override
     public Wish convert(WishDto dto) {
