@@ -21,8 +21,10 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto>, ICl
     public ClaimDto convert(Claim claim) {
         ClaimDto dto = new ClaimDto();
         BeanUtils.copyProperties(claim, dto);
-        UserDto executor = userToUserDtoConverter.convert(claim.getExecutor());
+
         UserDto creator = userToUserDtoConverter.convert(claim.getCreator());
+        UserDto executor = claim.getExecutor()!=null? userToUserDtoConverter.convert(claim.getExecutor()) : null;
+
         dto.setExecutor(executor);
         dto.setCreator(creator);
         return dto;

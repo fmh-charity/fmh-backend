@@ -67,7 +67,7 @@ public class WishesControllerTest {
     }
 
     @Test
-    public void creatWishShouldPassSuccess() {
+    public void createInProgressWishShouldPassSuccess() {
         //given
         WishDto givenWishDto = getWishDto();
         givenWishDto.getPatient().setId(1);
@@ -86,21 +86,32 @@ public class WishesControllerTest {
     }
 
     @Test
+    public void createOpenWishShouldPassSuccess() {
+        //given
+        WishDto givenWishDto = getWishDto();
+        givenWishDto.getPatient().setId(1);
+        givenWishDto.getCreator().setId(1);
+        givenWishDto.setExecutor(null);
+
+        Integer resultId = sut.createWish(givenWishDto);
+        assertNotNull(resultId);
+
+        Wish result = wishRepository.findById(resultId).get();
+
+        assertEquals(OPEN, result.getStatus());
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(resultId);
+    }
+
+    @Test
     public void getWishShouldPassSuccess() {
         ConversionService conversionService = factoryBean.getObject();
         int wishId = 1;
         WishDto expected = conversionService.convert(wishRepository.findById(wishId).get(), WishDto.class);
         WishDto result = sut.getWish(wishId);
-        assertAll(
-                () -> assertEquals(expected.getDescription(), result.getDescription()),
-                () -> assertEquals(expected.getCreator(), result.getCreator()),
-                () -> assertEquals(expected.getExecutor(), result.getExecutor()),
-                () -> assertEquals(expected.getStatus(), result.getStatus()),
-                () -> assertEquals(expected.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(expected.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(expected.getId(), result.getId())
-        );
+
+        assertEquals(expected, result);
     }
 
 
@@ -114,12 +125,9 @@ public class WishesControllerTest {
         String initialDescription = given.getDescription();
         given.setDescription("new description");
 
-        assertEquals(OPEN, given.getStatus());
-
         WishDto result = sut.updateWish(given);
 
         assertEquals(given.getDescription(), result.getDescription());
-        assertEquals(IN_PROGRESS, result.getStatus());
 
         // after
         given.setDescription(initialDescription);
@@ -180,6 +188,7 @@ public class WishesControllerTest {
         WishDto result = sut.changeStatus(wishInProgressId, OPEN);
 
         assertEquals(OPEN, result.getStatus());
+        assertNull(result.getExecutor());
 
         // after
         Wish wish = wishRepository.findById(wishInProgressId).get();

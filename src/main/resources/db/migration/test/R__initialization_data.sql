@@ -63,14 +63,14 @@ values ('user1-login', 'user1-password', 'user1-firstname', 'user1-lastname', 'u
 
 insert into wish (patient_id, title, description, creator_id, executor_id, create_date, plan_execute_date,
                   fact_execute_date, status, deleted)
-values (1, 'wish-title1','wish1-description', 1, 1, now(), now(), null, 'OPEN', false),
+values (1, 'wish-title1','wish1-description', 1, null, now(), now(), null, 'OPEN', false),
        (2,'wish-title2', 'wish2-description', 2, 2, now() - INTERVAL '1 DAY', now() + INTERVAL '5 DAY', null, 'IN_PROGRESS', false),
        (3, 'wish-title3','wish3-description', 3, 3, now() - INTERVAL '2 DAY', now() + INTERVAL '4 DAY', null, 'CANCELLED',  false),
        (1, 'wish-title4','wish4-description', 4, 4, now() - INTERVAL '3 DAY', now() + INTERVAL '3 DAY', now(), 'EXECUTED', false),
-       (5, 'wish-title5','wish5-description', 5, 5, now() - INTERVAL '4 DAY', now() + INTERVAL '2 DAYS', null, 'OPEN', false),
-       (1, 'wish-title6','wish6-description', 5, 5, now() - INTERVAL '7 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false),
-       (1, 'wish-title7','wish7-description', 5, 5, now() - INTERVAL '9 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false),
-       (1, 'wish-title8','wish8-description', 5, 5, now() - INTERVAL '8 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false);
+       (5, 'wish-title5','wish5-description', 5, null, now() - INTERVAL '4 DAY', now() + INTERVAL '2 DAYS', null, 'OPEN', false),
+       (1, 'wish-title6','wish6-description', 5, null, now() - INTERVAL '7 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false),
+       (1, 'wish-title7','wish7-description', 5, null, now() - INTERVAL '9 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false),
+       (1, 'wish-title8','wish8-description', 5, null, now() - INTERVAL '8 DAY', now() + INTERVAL '1 DAY', null, 'OPEN',  false);
 
 insert into wish_comment (wish_id, description, creator_id, create_date)
 values (1, 'wishComment1-description', 1, now()),

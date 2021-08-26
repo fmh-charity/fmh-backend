@@ -9,6 +9,8 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 
+import java.util.Optional;
+
 
 public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     private final IPatientToPatientDtoConverter patientToDtoConverter;
@@ -24,9 +26,11 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     public WishDto convert(Wish wish) {
         WishDto dto = new WishDto();
         BeanUtils.copyProperties(wish, dto);
+
         PatientDto patientDto = patientToDtoConverter.convert(wish.getPatient());
-        UserDto executor = userToUserDtoConverter.convert(wish.getExecutor());
         UserDto creator = userToUserDtoConverter.convert(wish.getCreator());
+        UserDto executor = wish.getExecutor()!=null? userToUserDtoConverter.convert(wish.getExecutor()):null;
+
         dto.setPatient(patientDto);
         dto.setExecutor(executor);
         dto.setCreator(creator);
