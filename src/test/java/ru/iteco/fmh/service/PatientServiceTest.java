@@ -36,7 +36,7 @@ public class PatientServiceTest {
     PatientService sut;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @Test
     public void getAllPatientsByStatusShouldPassSuccess() {
@@ -74,7 +74,7 @@ public class PatientServiceTest {
         // given
         Patient patient = getPatient();
         patient.setId(7);
-        PatientDto dto = factoryBean.getObject().convert(patient, PatientDto.class);
+        PatientDto dto = conversionService.convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
 
@@ -86,8 +86,6 @@ public class PatientServiceTest {
 
     @Test
     public void updatePatientShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         Patient patient = getPatient();
         PatientDto given = conversionService.convert(patient, PatientDto.class);
@@ -108,8 +106,6 @@ public class PatientServiceTest {
 
     @Test
     public void getPatientShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         Patient patient = getPatient();
 

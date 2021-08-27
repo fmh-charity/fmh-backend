@@ -1,17 +1,15 @@
 package ru.iteco.fmh.service.claim;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ConversionServiceFactoryBean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.util.List;
@@ -21,43 +19,33 @@ import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @Service
+@RequiredArgsConstructor
 public class ClaimServiceImpl implements ClaimService {
-    private ClaimRepository claimRepository;
-    private ClaimCommentRepository claimCommentRepository;
-    private ConversionServiceFactoryBean factoryBean;
 
-
-    @Autowired
-    public ClaimServiceImpl(ClaimRepository claimRepository, ConversionServiceFactoryBean factoryBean, ClaimCommentRepository claimCommentRepository) {
-        this.claimRepository = claimRepository;
-        this.factoryBean = factoryBean;
-        this.claimCommentRepository = claimCommentRepository;
-    }
+    private final ClaimRepository claimRepository;
+    private final ClaimCommentRepository claimCommentRepository;
+    private final ConversionService conversionService;
 
     @Override
     public List<ClaimDto> getAllClaims() {
         List<Claim> list = claimRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
-        ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<ClaimDto> getOpenInProgressClaims() {
         List<Claim> list = claimRepository.findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
-        ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public int createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
-        Claim claim = factoryBean.getObject().convert(claimDto, Claim.class);
+        Claim claim = conversionService.convert(claimDto, Claim.class);
         return claimRepository.save(claim).getId();
     }
 
@@ -65,20 +53,17 @@ public class ClaimServiceImpl implements ClaimService {
     public ClaimDto getClaim(int id) {
         Claim claim = claimRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
-        ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Transactional
     @Override
     public ClaimDto updateClaim(ClaimDto claimDto) {
-        ConversionService conversionService = factoryBean.getObject();
         claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }
-
 
     @Transactional
     @Override
@@ -87,7 +72,6 @@ public class ClaimServiceImpl implements ClaimService {
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         claim.changeStatus(status);
         claim = claimRepository.save(claim);
-        ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(claim, ClaimDto.class);
     }
 
@@ -95,24 +79,19 @@ public class ClaimServiceImpl implements ClaimService {
     public ClaimCommentDto getClaimComment(int claimCommentId) {
         ClaimComment claimComment = claimCommentRepository.findById(claimCommentId).orElseThrow(() ->
                 new IllegalArgumentException("Такого комментария не существует"));
-        ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
-
 
     @Override
     public List<ClaimCommentDto> getAllClaimsComments(int claimId) {
         List<ClaimComment> list = claimCommentRepository.findAllByClaim_Id(claimId);
-        ConversionService conversionService = factoryBean.getObject();
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimCommentDto.class))
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public int addComment(int claimId, ClaimCommentDto claimCommentDto) {
-        ConversionService conversionService = factoryBean.getObject();
         ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
         claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует")));
@@ -122,13 +101,8 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     @Override
     public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
-        ConversionService conversionService = factoryBean.getObject();
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
-
 }
-
-
-

@@ -43,7 +43,7 @@ public class WishesControllerTest {
     UserRepository userRepository;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
@@ -106,7 +106,6 @@ public class WishesControllerTest {
 
     @Test
     public void getWishShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         int wishId = 1;
         WishDto expected = conversionService.convert(wishRepository.findById(wishId).get(), WishDto.class);
         WishDto result = sut.getWish(wishId);
@@ -117,8 +116,6 @@ public class WishesControllerTest {
 
     @Test
     public void updateWishShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int wishId = 1;
         WishDto given = conversionService.convert(wishRepository.findById(wishId).get(), WishDto.class);
@@ -203,8 +200,7 @@ public class WishesControllerTest {
         // given
         int commentId = 1;
 
-        WishCommentDto expected = factoryBean.getObject()
-                .convert(wishCommentRepository.findById(commentId).get(), WishCommentDto.class);
+        WishCommentDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentDto.class);
 
         WishCommentDto result = sut.getWishComment(commentId);
 
@@ -216,7 +212,7 @@ public class WishesControllerTest {
         // given
         int wishId = 1;
         List<WishCommentDto> expected = wishCommentRepository.findAllByWish_Id(wishId).stream()
-                .map(i -> factoryBean.getObject().convert(i, WishCommentDto.class))
+                .map(i -> conversionService.convert(i, WishCommentDto.class))
                 .collect(Collectors.toList());
 
         List<WishCommentDto> result = sut.getAllWishComments(wishId);
@@ -243,8 +239,6 @@ public class WishesControllerTest {
 
     @Test
     public void updateWishCommentShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int wishCommentId = 1;
         WishCommentDto givenWishCommentDto = conversionService

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AdmissionRepository extends JpaRepository<Admission, Integer> {
+
     List<Admission> findAllByPatient_IdAndDeletedIsFalse(Integer patientId);
 }

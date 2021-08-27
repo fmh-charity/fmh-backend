@@ -35,12 +35,10 @@ public class AdmissionsControllerTest {
     PatientRepository patientRepository;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;;
 
     @Test
     public void getAdmissionShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int admissionId = 1;
         AdmissionDto given = conversionService.convert(admissionRepository.findById(admissionId).get(), AdmissionDto.class);
@@ -66,8 +64,6 @@ public class AdmissionsControllerTest {
 
     @Test
     public void createAdmissionShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         AdmissionDto given = getAdmissionDto();
         given.setPatient(conversionService.convert(patientRepository.findById(1).get(), PatientDto.class));
@@ -105,8 +101,6 @@ public class AdmissionsControllerTest {
 
     @Test
     public void updateAdmissionShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int id = 3;
         AdmissionDto given = conversionService.convert(admissionRepository.findById(id).get(), AdmissionDto.class);

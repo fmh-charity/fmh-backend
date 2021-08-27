@@ -32,14 +32,14 @@ public class ClaimServiceTest {
     ClaimRepository claimRepository;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @Test
     public void createClaimShouldPassSuccessExecutorNotNull() {
         // given
         Claim claim = getClaimInProgress();
         claim.setId(6);
-        ClaimDto dto = factoryBean.getObject().convert(claim, ClaimDto.class);
+        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
         assertEquals(claim.getStatus(), IN_PROGRESS);
@@ -49,7 +49,6 @@ public class ClaimServiceTest {
 
     @Test
     public void getClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         // given
         Claim claim = getClaimInProgress();
         int claimId = 1;
@@ -61,8 +60,6 @@ public class ClaimServiceTest {
 
     @Test
     public void updateClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // claim
         Claim claim = getClaimInProgress();
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);

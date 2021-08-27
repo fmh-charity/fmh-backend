@@ -19,3 +19,5 @@ spring:
 server:
   servlet:
     context-path: "/fmh"
+
+logging.level.ru.iteco.fmh: debug
