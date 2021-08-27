@@ -253,23 +253,23 @@ comment on column role.deleted is 'флаг удаления';
 
 
 
-create sequence advertisement_seq;
-create table advertisement
-(
-    id          int not null primary key default nextval('advertisement_seq'),
-    creator_id  int,
-    title       varchar,
-    description varchar,
-    create_data timestamp,
-    deleted     boolean
-);
-comment on table advertisement is 'новости';
-comment on column advertisement.id is 'id в системе';
-comment on column advertisement.creator_id is 'id автора';
-comment on column advertisement.description is 'описание';
-comment on column advertisement.title is 'заголовок';
-comment on column advertisement.create_data is 'дата создания';
-comment on column claim.deleted is 'флаг удаления';
+-- create sequence advertisement_seq;
+-- create table advertisement
+-- (
+--     id          int not null primary key default nextval('advertisement_seq'),
+--     creator_id  int,
+--     title       varchar,
+--     description varchar,
+--     create_data timestamp,
+--     deleted     boolean
+-- );
+-- comment on table advertisement is 'новости';
+-- comment on column advertisement.id is 'id в системе';
+-- comment on column advertisement.creator_id is 'id автора';
+-- comment on column advertisement.description is 'описание';
+-- comment on column advertisement.title is 'заголовок';
+-- comment on column advertisement.create_data is 'дата создания';
+-- comment on column claim.deleted is 'флаг удаления';
 
 create sequence userRole_seq;
 create table user_role

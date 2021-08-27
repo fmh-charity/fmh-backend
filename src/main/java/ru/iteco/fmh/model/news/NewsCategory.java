@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model;
+package ru.iteco.fmh.model.news;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 
 /**
- * Блок
+ * категория новости
  */
 @Builder
 @NoArgsConstructor
@@ -15,14 +15,13 @@ import javax.persistence.*;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "block")
 @ToString
-public class Block {
+@Table(name = "newsCategory")
+public class NewsCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     String name;
-    String comment;
     boolean deleted;
 }

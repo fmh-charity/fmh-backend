@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model;
+package ru.iteco.fmh.model.news;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,18 +19,25 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "advertisement")
-public class Advertisement {
+@Table(name = "news")
+public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "creator_id")
-    User creator;
+    @JoinColumn(name = "news_category_id")
+    NewsCategory newsCategory;
 
     String title;
     String description;
-    LocalDateTime dateCreate;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    User creator;
+
+    LocalDateTime createDate;
+    LocalDateTime publishDate;
+    boolean publishEnabled;
     boolean deleted;
 }
