@@ -225,19 +225,19 @@ comment on column claim_comment.description is 'описание коммент�
 comment on column claim_comment.creator_id is 'id автора комментария к заявке';
 comment on column claim_comment.create_date is 'дата создания комментария к заявке';
 
-create sequence claimVisibility_seq;
-create table claimVisibility
+create sequence claim_visibility_seq;
+create table claim_visibility
 (
-    id       int not null primary key default nextval('claimVisibility_seq'),
+    id       int not null primary key default nextval('claim_visibility_seq'),
     claim_id int,
     role_id  int,
     deleted  boolean
 );
-comment on table claimVisibility is 'видимости заявок';
-comment on column claimVisibility.id is 'id в системе';
-comment on column claimVisibility.claim_id is 'id заявки';
-comment on column claimVisibility.role_id is 'id роли';
-comment on column claimVisibility.deleted is 'флаг удаления';
+comment on table claim_visibility is 'видимости заявок';
+comment on column claim_visibility.id is 'id в системе';
+comment on column claim_visibility.claim_id is 'id заявки';
+comment on column claim_visibility.role_id is 'id роли';
+comment on column claim_visibility.deleted is 'флаг удаления';
 
 create sequence role_seq;
 create table role
@@ -251,25 +251,40 @@ comment on column role.id is 'id в системе';
 comment on column role.name is 'название роли';
 comment on column role.deleted is 'флаг удаления';
 
-
-
-create sequence advertisement_seq;
-create table advertisement
+create sequence news_seq;
+create table news
 (
-    id          int not null primary key default nextval('advertisement_seq'),
-    creator_id  int,
+    id          int not null primary key default nextval('news_seq'),
+    news_category_id int,
     title       varchar,
     description varchar,
-    create_data timestamp,
+    creator_id  int,
+    create_date timestamp,
+    publish_date timestamp,
+    publish_enabled boolean,
     deleted     boolean
 );
-comment on table advertisement is 'новости';
-comment on column advertisement.id is 'id в системе';
-comment on column advertisement.creator_id is 'id автора';
-comment on column advertisement.description is 'описание';
-comment on column advertisement.title is 'заголовок';
-comment on column advertisement.create_data is 'дата создания';
-comment on column claim.deleted is 'флаг удаления';
+comment on table news is 'новости';
+comment on column news.id is 'id в системе';
+comment on column news.creator_id is 'id автора';
+comment on column news.description is 'описание';
+comment on column news.title is 'заголовок';
+comment on column news.create_date is 'дата создания';
+comment on column news.publish_date is 'дата публикации';
+comment on column news.publish_enabled is 'флаг публикации';
+comment on column news.deleted is 'флаг удаления';
+
+create sequence news_category_seq;
+create table news_category
+(
+    id int not null primary key default nextval('news_category_seq'),
+    name varchar,
+    deleted boolean
+);
+comment on table news_category is 'категории новостей';
+comment on column news_category.id is 'id в системе';
+comment on column news_category.name is 'наименование категории';
+comment on column news_category.name is 'флаг удаления';
 
 create sequence userRole_seq;
 create table user_role
@@ -290,8 +305,10 @@ alter table admission
     add foreign key (patient_id) references patient;
 alter table admission
     add foreign key (room_id) references room;
-alter table advertisement
+alter table news
     add foreign key (creator_id) references users;
+alter table news
+    add foreign key (news_category_id) references news_category;
 alter table claim
     add foreign key (creator_id) references users;
 alter table claim

@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -129,9 +129,9 @@ public class PatientServiceTest {
     private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
@@ -139,9 +139,9 @@ public class PatientServiceTest {
 
     private Patient getEmptyAdmissionPatient() {
         return Patient.builder()
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();

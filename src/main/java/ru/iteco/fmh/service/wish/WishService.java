@@ -1,11 +1,7 @@
 package ru.iteco.fmh.service.wish;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishShortInfoDto;
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;

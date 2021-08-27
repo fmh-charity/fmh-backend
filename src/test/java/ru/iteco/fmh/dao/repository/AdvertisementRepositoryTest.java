@@ -6,7 +6,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.junit4.SpringRunner;
-//import ru.iteco.fmh.model.Advertisement;
+//import ru.iteco.fmh.model.news.News;
 //import ru.iteco.fmh.model.user.User;
 //
 //import java.time.LocalDate;
@@ -27,14 +27,14 @@
 //    public void testWriteSuccess() {
 //        User employee = getUser();
 //        employee = userRepository.save(employee);
-//        Advertisement entity = Advertisement.builder()
+//        News entity = News.builder()
 ////                .author(employee)
 //                .title(getAlphabeticString())
 //                .description(getAlphabeticString())
 //                .dateCreate(LocalDate.now())
 //                .build();
 //
-//        Advertisement finalEntity = repository.save(entity);
+//        News finalEntity = repository.save(entity);
 //
 //        User finalEmployee = userRepository.findById(employee.getId()).orElse(null);
 //
