@@ -99,3 +99,23 @@ values (1, 'claim1-description', 1, now() - INTERVAL '4 DAYS'),
        (2, 'claim3-description', 3, now()),
        (3, 'claim4-description', 5, now() - INTERVAL '2 DAYS'),
        (3, 'claim5-description', 5, now());
+
+insert into news_category (name, deleted)
+values ('ОБЪЯВЛЕНИЕ', false),
+       ('ДЕНЬ РОЖДЕНИЯ', false),
+       ('ЗАРПЛАТА', false),
+       ('ПРОФСОЮЗ', false),
+       ('ПРАЗДНИК', false),
+       ('МАССАЖ', false),
+       ('БЛАГОДАРНОСТЬ', false),
+       ('НУЖНА ПОМОЩЬ', false);
+
+insert into news (news_category_id, title, description, creator_id, create_date, publish_date, publish_enabled, deleted)
+values (1, 'news-title1', 'news-description1', 1, now(), now(), true, false),
+       (2, 'news-title2', 'news-description2', 1, now(), now(), true, false),
+       (3, 'news-title3', 'news-description3', 1, now(), now(), true, false),
+       (4, 'news-title4', 'news-description4', 1, now(), now(), true, false),
+       (5, 'news-title5', 'news-description5', 1, now(), now(), true, false),
+       (6, 'news-title6', 'news-description6', 1, now(), now(), true, false),
+       (7, 'news-title7', 'news-description7', 1, now(), now(), true, false),
+       (8, 'news-title8', 'news-description8', 1, now(), now(), true, false);
