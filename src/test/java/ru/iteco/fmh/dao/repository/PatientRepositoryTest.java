@@ -22,9 +22,9 @@ public class PatientRepositoryTest {
     @Test
     public void testWriteSuccess() {
         entity = Patient.builder()
-                .firstName(TestUtils.getAlphabeticStringR())
-                .lastName(TestUtils.getAlphabeticStringR())
-                .middleName(TestUtils.getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .build();
         entity = repository.save(entity);

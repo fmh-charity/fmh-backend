@@ -7,7 +7,7 @@ import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.model.news.NewsCategory;
 
 @Component
-public class NewsCategoryDtoToNewCategoryConverter implements Converter<NewsCategoryDto, NewsCategory> {
+public class NewsCategoryDtoToNewsCategoryConverter implements Converter<NewsCategoryDto, NewsCategory> {
     @Override
     public NewsCategory convert(NewsCategoryDto newsCategoryDto) {
         NewsCategory newsCategory = new NewsCategory();

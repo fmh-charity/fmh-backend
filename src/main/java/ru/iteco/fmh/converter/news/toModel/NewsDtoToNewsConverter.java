@@ -15,7 +15,7 @@ import ru.iteco.fmh.model.user.User;
 @RequiredArgsConstructor
 public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
     private final UserDtoToUserConverter userDtoToUserConverter;
-    private final NewsCategoryDtoToNewCategoryConverter newsCategoryDtoToNewCategoryConverter;
+    private final NewsCategoryDtoToNewsCategoryConverter newsCategoryDtoToNewCategoryConverter;
 
     @Override
     public News convert(@NonNull NewsDto newsDto) {

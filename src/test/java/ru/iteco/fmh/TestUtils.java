@@ -1,6 +1,8 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.news.NewsCategoryDto;
+import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -8,20 +10,21 @@ import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.*;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import ru.iteco.fmh.model.news.News;
+import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.task.wish.Wish;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
 
 public class TestUtils {
-    public static String getAlphabeticStringR() {
+    public static String getAlphabeticString() {
         return getAlphabeticString(10);
     }
 
@@ -57,7 +60,7 @@ public class TestUtils {
                 .patient(getPatient())
                 .creator(getUser())
                 .executor(getUser())
-                .description(getAlphabeticStringR())
+                .description(getAlphabeticString())
                 .createDate(LocalDateTime.now())
                 .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(LocalDateTime.now())
@@ -69,9 +72,9 @@ public class TestUtils {
     public static Patient getPatient() {
         Patient patient = Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .currentAdmission(Admission.builder().build())
                 .build();
@@ -89,12 +92,12 @@ public class TestUtils {
     public static UserDto getUserDto() {
         UserDto userDto = UserDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
-                .login(getAlphabeticStringR())
-                .password(getAlphabeticStringR())
-                .phoneNumber(getAlphabeticStringR())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .login(getAlphabeticString())
+                .password(getAlphabeticString())
+                .phoneNumber(getAlphabeticString())
                 .build();
         String shortName = getShortName(userDto.getFirstName(), userDto.getLastName(), userDto.getMiddleName());
         userDto.setShortUserName(shortName);
@@ -105,13 +108,13 @@ public class TestUtils {
     public static User getUser() {
         User user = User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .login(getAlphabeticStringR())
-                .password(getAlphabeticStringR())
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
-                .phoneNumber(getAlphabeticStringR())
-                .email(getAlphabeticStringR())
+                .login(getAlphabeticString())
+                .password(getAlphabeticString())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .phoneNumber(getAlphabeticString())
+                .email(getAlphabeticString())
                 .build();
         String shortName = getShortName(user.getFirstName(), user.getLastName(), user.getMiddleName());
         user.setShortUserName(shortName);
@@ -129,7 +132,7 @@ public class TestUtils {
 
         return WishDto.builder()
                 .patient(getPatientDto())
-                .description(getAlphabeticStringR())
+                .description(getAlphabeticString())
                 .planExecuteDate(LocalDateTime.now().withNano(0))
                 .createDate(LocalDateTime.now().withNano(0))
                 .factExecuteDate(null)
@@ -141,9 +144,9 @@ public class TestUtils {
 
     public static PatientDto getPatientDto() {
         PatientDto patientDto = PatientDto.builder()
-                .firstName(getAlphabeticStringR())
-                .lastName(getAlphabeticStringR())
-                .middleName(getAlphabeticStringR())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .build();
         String shortName = getShortName(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getMiddleName());
@@ -161,7 +164,7 @@ public class TestUtils {
                 .factDateOut(null)
                 .status(AdmissionsStatus.ACTIVE)
                 .room(new Room())
-                .comment(getAlphabeticStringR())
+                .comment(getAlphabeticString())
                 .build();
     }
 
@@ -184,9 +187,11 @@ public class TestUtils {
     public static ClaimDto getClaimDtoOpen() {
 
         return ClaimDto.builder()
+                // TODO: убрать hardcode
                 .id(27)
                 .title("Title")
                 .description("description")
+
                 .creator(getUserDto())
                 .executor(null)
                 .planExecuteDate(LocalDateTime.now().withNano(0))
@@ -200,7 +205,7 @@ public class TestUtils {
         return WishComment.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .wish(getWish(wishStatus))
-                .description(getAlphabeticStringR())
+                .description(getAlphabeticString())
                 .creator(getUser())
                 .createDate(LocalDateTime.now())
                 .build();
@@ -210,7 +215,7 @@ public class TestUtils {
         return WishCommentDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .wish(getWishDto(wishStatus))
-                .description(getAlphabeticStringR())
+                .description(getAlphabeticString())
                 .creator(getUserDto())
                 .createDate(LocalDateTime.now())
                 .build();
@@ -219,15 +224,58 @@ public class TestUtils {
     public static Claim getClaimInProgress() {
 
         return Claim.builder()
+                // TODO: убрать hardcode
                 .id(27)
                 .title("title")
                 .description("description")
-                .creator(TestUtils.getUser())
-                .executor(TestUtils.getUser())
-                .createDate(java.time.LocalDateTime.now())
-                .planExecuteDate(java.time.LocalDateTime.now())
+
+                .creator(getUser())
+                .executor(getUser())
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
+                .build();
+    }
+
+    public static News getNews() {
+        return News.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .creator(getUser())
+                .newsCategory(getNewsCategory())
+                .createDate(LocalDateTime.now())
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .publishDate(LocalDateTime.now())
+                .publishEnabled(true)
+                .build();
+    }
+
+
+    public static NewsCategory getNewsCategory() {
+        return NewsCategory.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(getAlphabeticString())
+                .build();
+    }
+
+    public static NewsDto getNewsDto() {
+        return NewsDto.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .creator(getUserDto())
+                .newsCategory(getNewsCategoryDto())
+                .createDate(LocalDateTime.now())
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .publishDate(LocalDateTime.now())
+                .publishEnabled(true)
+                .build();
+    }
+
+    public static NewsCategoryDto getNewsCategoryDto() {
+        return NewsCategoryDto.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(getAlphabeticString())
                 .build();
     }
 }

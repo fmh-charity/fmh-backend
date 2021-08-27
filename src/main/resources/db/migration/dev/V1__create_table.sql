@@ -290,8 +290,8 @@ alter table admission
     add foreign key (patient_id) references patient;
 alter table admission
     add foreign key (room_id) references room;
-alter table advertisement
-    add foreign key (creator_id) references users;
+-- alter table advertisement
+--     add foreign key (creator_id) references users;
 alter table claim
     add foreign key (creator_id) references users;
 alter table claim

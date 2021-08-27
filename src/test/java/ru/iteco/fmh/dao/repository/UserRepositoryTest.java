@@ -17,9 +17,9 @@ public class UserRepositoryTest {
     @Test
     public void testWriteSuccess() {
         User entity = User.builder()
-                .firstName(TestUtils.getAlphabeticStringR())
-                .lastName(TestUtils.getAlphabeticStringR())
-                .middleName(TestUtils.getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .build();
         entity = repository.save(entity);
         Assertions.assertNotNull(entity.getId());

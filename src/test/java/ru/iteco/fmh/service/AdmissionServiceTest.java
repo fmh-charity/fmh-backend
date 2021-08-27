@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -16,7 +16,6 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -107,7 +106,7 @@ public class AdmissionServiceTest {
     private Admission getAdmission() {
         return Admission.builder()
                 .patient(Patient.builder().build())
-                .comment(getAlphabeticStringR())
+                .comment(TestUtils.getAlphabeticString())
                 .id(Integer.valueOf(getNumeric(2)))
                 .factDateIn(LocalDateTime.now().withNano(0))
                 .factDateOut(LocalDateTime.now().withNano(0))

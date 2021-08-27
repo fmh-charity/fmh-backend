@@ -43,7 +43,7 @@ public class WishRepositoryTest {
         doer = getUser();
         userRepository.save(doer);
         entity = Wish.builder()
-                .description(TestUtils.getAlphabeticStringR())
+                .description(TestUtils.getAlphabeticString())
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
@@ -56,7 +56,7 @@ public class WishRepositoryTest {
 
         entity = wishRepository.save(entity);
         entity2 = Wish.builder()
-                .description(TestUtils.getAlphabeticStringR())
+                .description(TestUtils.getAlphabeticString())
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
@@ -83,18 +83,18 @@ public class WishRepositoryTest {
 
     private Patient getPatient() {
         return Patient.builder()
-                .firstName(TestUtils.getAlphabeticStringR())
-                .lastName(TestUtils.getAlphabeticStringR())
-                .middleName(TestUtils.getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .build();
     }
 
     private User getUser() {
         return User.builder()
-                .firstName(TestUtils.getAlphabeticStringR())
-                .lastName(TestUtils.getAlphabeticStringR())
-                .middleName(TestUtils.getAlphabeticStringR())
+                .firstName(TestUtils.getAlphabeticString())
+                .lastName(TestUtils.getAlphabeticString())
+                .middleName(TestUtils.getAlphabeticString())
                 .build();
     }
 }
