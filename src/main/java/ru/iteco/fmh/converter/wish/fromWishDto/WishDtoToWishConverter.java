@@ -1,5 +1,6 @@
 package ru.iteco.fmh.converter.wish.fromWishDto;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
@@ -18,31 +19,14 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
     private final PatientDtoToPatientConverter dtoToPatientConverter;
     private final UserDtoToUserConverter userDtoToUserConverter;
 
-//    @Override
-//    public Wish convert(WishDto dto) {
-//        Wish entity = new Wish();
-//        BeanUtils.copyProperties(dto, entity);
-//        Patient patient = dtoToPatientConverter.convert(dto.getPatient());
-//        User creator = userDtoToUserConverter.convert(dto.getCreator());
-//        User executor = userDtoToUserConverter.convert(dto.getExecutor());
-//
-//        entity.setPatient(patient);
-//        entity.setCreator(creator);
-//        entity.setExecutor(executor);
-//
-//        return entity;
-//    }
-
     @Override
-    public Wish convert(WishDto dto) {
+    public Wish convert(@NonNull WishDto dto) {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
 
         Patient patient = dtoToPatientConverter.convert(dto.getPatient());
         User creator = userDtoToUserConverter.convert(dto.getCreator());
         User executor = dto.getExecutor()!=null? userDtoToUserConverter.convert(dto.getExecutor()) : null;
-
-//                userDtoToUserConverter.convert(dto.getExecutor());
 
         entity.setPatient(patient);
         entity.setCreator(creator);
