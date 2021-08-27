@@ -3,33 +3,28 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
-import ru.iteco.fmh.service.wish.WishService;
 import ru.iteco.fmh.service.patient.PatientService;
+import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
 
 
 @Api(description = "Информация по пациенту")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/patients")
 public class PatientsController {
+
     private final PatientService patientService;
     private final AdmissionService admissionService;
     private final WishService wishService;
-
-    public PatientsController(PatientService patientService, AdmissionService admissionService, WishService wishService) {
-        this.patientService = patientService;
-        this.admissionService = admissionService;
-        this.wishService = wishService;
-    }
 
     @ApiOperation(value = "реестр всех пациентов")
     @GetMapping

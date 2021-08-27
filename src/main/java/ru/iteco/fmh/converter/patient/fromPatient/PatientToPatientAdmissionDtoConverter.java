@@ -1,15 +1,16 @@
 package ru.iteco.fmh.converter.patient.fromPatient;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 /**
  * конвертер из {@link Patient} в {@link PatientAdmissionDto}//для «Пациенты» (Просмотр списка пациентов)
  */
-public class PatientToPatientAdmissionDtoConverter implements Converter<Patient, PatientAdmissionDto>,
-        IPatientToPatientAdmissionDtoConverter {
+@Component
+public class PatientToPatientAdmissionDtoConverter implements Converter<Patient, PatientAdmissionDto> {
 
     @Override
     public PatientAdmissionDto convert(Patient patient) {

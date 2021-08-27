@@ -1,18 +1,21 @@
 package ru.iteco.fmh.converter.user.fromUser;
 
 
+import lombok.NonNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
-import ru.iteco.fmh.model.user.User;
+import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.user.UserDto;
+import ru.iteco.fmh.model.user.User;
 
 /**
  * конвертер из {@link User} в {@link UserDto}//
  */
-public class UserToUserDtoConverter implements Converter<User, UserDto>, IUserToUserDtoConverter {
+@Component
+public class UserToUserDtoConverter implements Converter<User, UserDto> {
 
     @Override
-    public UserDto convert (User user){
+    public UserDto convert(@NonNull User user) {
         UserDto userDto = new UserDto();
         BeanUtils.copyProperties(user, userDto);
         return userDto;

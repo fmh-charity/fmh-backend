@@ -32,7 +32,7 @@ public class AdmissionServiceTest {
     AdmissionService sut;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @MockBean
     AdmissionRepository admissionRepository;
@@ -118,12 +118,10 @@ public class AdmissionServiceTest {
     }
 
     private AdmissionDto admissionToDto(Admission admission) {
-        ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(admission, AdmissionDto.class);
     }
 
     private PatientDto patientToDto(Patient patient) {
-        ConversionService conversionService = factoryBean.getObject();
         return conversionService.convert(patient, PatientDto.class);
     }
 }

@@ -3,9 +3,7 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
@@ -15,15 +13,12 @@ import ru.iteco.fmh.service.wish.WishService;
 import java.util.List;
 
 @Api(description = "Работа с просьбами")
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/wishes")
 public class WishesController {
-    private final WishService wishService;
 
-    @Autowired
-    public WishesController(WishService wishService) {
-        this.wishService = wishService;
-    }
+    private final WishService wishService;
 
     @ApiOperation(value = "реестр всех просьб")
     @GetMapping()
@@ -45,7 +40,7 @@ public class WishesController {
 
     @ApiOperation(value = "возвращает полную информацию по просьбе")
     @GetMapping("/{id}")
-    public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id){
+    public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getWish(id);
     }
 
@@ -60,25 +55,25 @@ public class WishesController {
     public WishDto changeStatus(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @ApiParam(value = "новое значение статуса для просьбы", required = true) @RequestParam("status") StatusE status
-            )  {
+    ) {
         return wishService.changeStatus(id, status);
     }
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true)@PathVariable("id") int id) {
+    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id) {
         return wishService.getWishComment(id);
     }
 
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id) {
+    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getAllWishComments(id);
     }
 
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public int createWishComment(@ApiParam(value = "идентификатор просьбы", required = true)@PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+    public int createWishComment(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 

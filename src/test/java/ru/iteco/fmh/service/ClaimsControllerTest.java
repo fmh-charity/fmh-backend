@@ -39,7 +39,7 @@ public class ClaimsControllerTest {
     @Autowired
     ClaimCommentRepository claimCommentRepository;
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
     @Autowired
     UserRepository userRepository;
 
@@ -68,7 +68,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void createClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         // given
         ClaimDto given = getClaimDtoOpen();
         //executor notNull
@@ -96,7 +95,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void getClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         int claimId = 1;
         ClaimDto expected = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
         ClaimDto result = sut.getClaim(claimId);
@@ -115,8 +113,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void updateClaimShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int claimId = 4;
         ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
@@ -167,7 +163,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void getClaimCommentShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
         int claimCommentId = 3;
         ClaimCommentDto expected = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
                 ClaimCommentDto.class);
@@ -191,8 +186,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void createClaimCommentShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         ClaimCommentDto claimCommentDto = ClaimCommentDto.builder()
                 .id(24)
@@ -225,8 +218,6 @@ public class ClaimsControllerTest {
 
     @Test
     public void updateClaimCommentShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int claimCommentId = 4;
         ClaimCommentDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),

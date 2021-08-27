@@ -33,7 +33,7 @@ public class PatientsControllerTest {
     @Autowired
     PatientRepository patientRepository;
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @Test
     public void getAllPatientsByStatusTestShouldPassSuccess() {
@@ -81,8 +81,6 @@ public class PatientsControllerTest {
 
     @Test
     public void updatePatientShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         int patientId = 1;
         PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);

@@ -41,12 +41,11 @@ public class WishServiceTest {
     WishCommentRepository wishCommentRepository;
 
     @Autowired
-    ConversionServiceFactoryBean factoryBean;
+    ConversionService conversionService;
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
         // given
-        ConversionService conversionService = factoryBean.getObject();
         List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
@@ -61,7 +60,6 @@ public class WishServiceTest {
     @Test
     public void getAllWishesShouldPassSuccess() {
         // given
-        ConversionService conversionService = factoryBean.getObject();
         List<Wish> wishList = List.of(getWish(OPEN), getWish(CANCELLED));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
@@ -78,7 +76,7 @@ public class WishServiceTest {
         // given
         Wish wish = getWish(null);
         wish.setId(1);
-        WishDto dto = factoryBean.getObject().convert(wish, WishDto.class);
+        WishDto dto = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
         Integer resultId = sut.createWish(dto);
@@ -89,8 +87,6 @@ public class WishServiceTest {
 
     @Test
     public void getWishShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         Wish wish = getWish(OPEN);
         int wishId = 1;
@@ -106,7 +102,7 @@ public class WishServiceTest {
     public void updateWishShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
-        WishDto givenDto = factoryBean.getObject().convert(wish, WishDto.class);
+        WishDto givenDto = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
 
@@ -220,7 +216,6 @@ public class WishServiceTest {
     @Test
     public void getPatientAllWishesShouldPassSuccess() {
         // given
-        ConversionService conversionService = factoryBean.getObject();
         Integer patientId = 1;
         List<Wish> allWishList = List.of(getWish(OPEN), getWish(EXECUTED), getWish(CANCELLED), getWish(IN_PROGRESS));
         List<WishDto> expected = allWishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
@@ -236,7 +231,6 @@ public class WishServiceTest {
     @Test
     public void getPatientOpenInProgressWishes() {
         // given
-        ConversionService conversionService = factoryBean.getObject();
         Integer patientId = 1;
 
         List<Wish> openInProgressWishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
@@ -253,8 +247,6 @@ public class WishServiceTest {
 
     @Test
     public void getWishCommentShouldPassSuccess() {
-        ConversionService conversionService = factoryBean.getObject();
-
         // given
         WishComment wishComment = getWishComment(OPEN);
         int wishCommentId = 1;
@@ -271,7 +263,7 @@ public class WishServiceTest {
         // given
         List<WishComment> wishCommentList = List.of(getWishComment(OPEN), getWishComment(IN_PROGRESS));
         List<WishCommentDto> expected = wishCommentList.stream()
-                .map(wishComment -> factoryBean.getObject().convert(wishComment, WishCommentDto.class))
+                .map(wishComment -> conversionService.convert(wishComment, WishCommentDto.class))
                 .collect(Collectors.toList());
         int wishId = 1;
 
@@ -289,7 +281,7 @@ public class WishServiceTest {
         WishComment wishComment = getWishComment(OPEN);
         int commentId = 1;
         wishComment.setId(commentId);
-        WishCommentDto wishCommentDto = factoryBean.getObject().convert(wishComment, WishCommentDto.class);
+        WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
@@ -302,7 +294,7 @@ public class WishServiceTest {
     public void updateWishCommentShouldPassSuccess() {
         // given
         WishComment wishComment = getWishComment(OPEN);
-        WishCommentDto givenDto = factoryBean.getObject().convert(wishComment, WishCommentDto.class);
+        WishCommentDto givenDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
 
