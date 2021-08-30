@@ -9,7 +9,9 @@ import ru.iteco.fmh.model.task.claim.Claim;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimOpen;
 
 
 public class ClaimToClaimDtoConverterTest {
@@ -28,6 +30,26 @@ public class ClaimToClaimDtoConverterTest {
                 () -> assertEquals(claim.getDescription(), dto.getDescription()),
                 () -> assertEquals(userToUserDtoConverter.convert(claim.getCreator()), dto.getCreator()),
                 () -> assertEquals(userToUserDtoConverter.convert(claim.getExecutor()), dto.getExecutor()),
+                () -> assertEquals(claim.getCreateDate(), dto.getCreateDate()),
+                () -> assertEquals(claim.getFactExecuteDate(), dto.getFactExecuteDate()),
+                () -> assertEquals(claim.getPlanExecuteDate(), dto.getPlanExecuteDate()),
+                () -> assertEquals(claim.getStatus(), dto.getStatus())
+
+        );
+    }
+
+    @Test
+    void convertOpen() {
+        Claim claim = getClaimOpen();
+        ClaimDto dto = convertor.convert(claim);
+        Assertions.assertAll(
+                () -> assertEquals(claim.getId(), dto.getId()),
+                () -> assertEquals(claim.getTitle(), dto.getTitle()),
+                () -> assertEquals(claim.getDescription(), dto.getDescription()),
+                () -> assertEquals(userToUserDtoConverter.convert(claim.getCreator()), dto.getCreator()),
+                () -> assertEquals(claim.getExecutor(), dto.getExecutor()),
+                () -> assertNull(claim.getExecutor()),
+                () -> assertNull(dto.getExecutor()),
                 () -> assertEquals(claim.getCreateDate(), dto.getCreateDate()),
                 () -> assertEquals(claim.getFactExecuteDate(), dto.getFactExecuteDate()),
                 () -> assertEquals(claim.getPlanExecuteDate(), dto.getPlanExecuteDate()),

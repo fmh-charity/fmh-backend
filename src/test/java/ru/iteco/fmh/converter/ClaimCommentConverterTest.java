@@ -71,4 +71,24 @@ public class ClaimCommentConverterTest {
         );
     }
 
+    @Test
+    void convertClaimCommentDtoToClaimCommentOpen() {
+        ClaimCommentDto claimCommentDto = ClaimCommentDto.builder()
+                .id(24)
+                .claim(getClaimDtoOpen())
+                .creator(getUserDto())
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+
+        ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(claimCommentDto);
+        Assertions.assertAll(
+                () -> assertEquals(claimCommentDto.getId(), claimComment.getId()),
+                () -> assertEquals(claimCommentDto.getClaim(),claimToClaimDtoConverter.convert(claimComment.getClaim())),
+                () -> assertEquals(claimCommentDto.getDescription(), claimComment.getDescription()),
+                () -> assertEquals(claimCommentDto.getCreator(), userToUserDtoConverter.convert(claimComment.getCreator())),
+                () -> assertEquals(claimCommentDto.getCreateDate(), claimComment.getCreateDate())
+        );
+    }
+
 }

@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimOpen;
 import static ru.iteco.fmh.model.task.StatusE.*;
 
 @RunWith(SpringRunner.class)
@@ -45,6 +46,18 @@ public class ClaimServiceTest {
         assertEquals(claim.getStatus(), IN_PROGRESS);
         assertEquals(6, resultId);
     }
+    @Test
+    public void createClaimShouldPassSuccessExecutorNull() {
+        // given
+        Claim claim = getClaimOpen();
+        claim.setId(7);
+        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+        when(claimRepository.save(any())).thenReturn(claim);
+        Integer resultId = sut.createClaim(dto);
+        assertNull(dto.getExecutor());
+        assertEquals(claim.getStatus(), dto.getStatus());
+        assertEquals(7, resultId);
+    }
 
 
     @Test
@@ -62,6 +75,29 @@ public class ClaimServiceTest {
     public void updateClaimShouldPassSuccess() {
         // claim
         Claim claim = getClaimInProgress();
+        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
+
+        when(claimRepository.save(any())).thenReturn(claim);
+
+        ClaimDto result = sut.updateClaim(given);
+
+        assertAll(
+                () -> assertEquals(given.getId(), result.getId()),
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreator(), result.getCreator())
+        );
+    }
+
+
+    @Test
+    public void updateClaimShouldPassSuccessNull() {
+        // claim
+        Claim claim = getClaimOpen();
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);

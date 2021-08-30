@@ -168,7 +168,37 @@ public class TestUtils {
                 .build();
     }
 
+    public static Claim getClaimInProgress() {
 
+        return Claim.builder()
+                // TODO: убрать hardcode
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(getUser())
+                .executor(getUser())
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
+                .build();
+    }
+
+    public static Claim getClaimOpen() {
+
+        return Claim.builder()
+                // TODO: убрать hardcode
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(getUser())
+                .executor(null)
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.OPEN)
+                .build();
+    }
     public static ClaimDto getClaimDtoInProgress() {
 
         return ClaimDto.builder()
@@ -191,7 +221,6 @@ public class TestUtils {
                 .id(27)
                 .title("Title")
                 .description("description")
-
                 .creator(getUserDto())
                 .executor(null)
                 .planExecuteDate(LocalDateTime.now().withNano(0))
@@ -221,22 +250,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static Claim getClaimInProgress() {
 
-        return Claim.builder()
-                // TODO: убрать hardcode
-                .id(27)
-                .title("title")
-                .description("description")
-
-                .creator(getUser())
-                .executor(getUser())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
-                .build();
-    }
 
     public static News getNews() {
         return News.builder()
