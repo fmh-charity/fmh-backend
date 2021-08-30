@@ -19,11 +19,13 @@ public class WishCommentDtoToWishCommentConverter implements Converter<WishComme
     private final WishDtoToWishConverter wishDtoToWishConverter;
 
     @Override
-    public WishComment convert(@NonNull WishCommentDto wishCommentDto) {
+    public WishComment convert(@NonNull WishCommentDto dto) {
         WishComment wishComment = new WishComment();
-        BeanUtils.copyProperties(wishCommentDto, wishComment);
-        Wish wish = wishDtoToWishConverter.convert(wishCommentDto.getWish());
-        User creator = userDtoToUserConverter.convert(wishCommentDto.getCreator());
+        BeanUtils.copyProperties(dto, wishComment);
+
+        Wish wish = dto.getWish()!=null? wishDtoToWishConverter.convert(dto.getWish()) : null;
+        User creator = dto.getCreator()!=null? userDtoToUserConverter.convert(dto.getCreator()) : null;
+
         wishComment.setWish(wish);
         wishComment.setCreator(creator);
         return wishComment;

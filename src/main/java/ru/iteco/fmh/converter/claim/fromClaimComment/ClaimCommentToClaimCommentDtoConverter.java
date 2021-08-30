@@ -23,8 +23,11 @@ public class ClaimCommentToClaimCommentDtoConverter implements Converter<ClaimCo
     public ClaimCommentDto convert(@NonNull ClaimComment claimComment) {
         ClaimCommentDto dto = new ClaimCommentDto();
         BeanUtils.copyProperties(claimComment, dto);
-        ClaimDto claim = claimToClaimDtoConverter.convert(claimComment.getClaim());
-        UserDto creator = userToUserDtoConverter.convert(claimComment.getCreator());
+
+        ClaimDto claim = claimComment.getClaim()!=null?
+                claimToClaimDtoConverter.convert(claimComment.getClaim()) : null;
+        UserDto creator = claimComment.getCreator()!=null?
+                userToUserDtoConverter.convert(claimComment.getCreator()) : null;
         dto.setClaim(claim);
         dto.setCreator(creator);
         return dto;
