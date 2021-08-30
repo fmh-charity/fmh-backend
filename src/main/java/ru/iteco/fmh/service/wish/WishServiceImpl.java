@@ -15,6 +15,7 @@ import ru.iteco.fmh.model.task.wish.WishComment;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.List.of;
 import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
@@ -36,7 +37,8 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishDto> getOpenInProgressWishes() {
-        List<Wish> list = wishRepository.findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
+        List<Wish> list = wishRepository
+                .findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(of(OPEN, IN_PROGRESS));
         return list.stream()
                 .map(i -> conversionService.convert(i, WishDto.class))
                 .collect(Collectors.toList());
@@ -51,7 +53,9 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishDto getWish(int wishId) {
-        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
+        Wish wish = wishRepository
+                .findById(wishId)
+                .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
         return conversionService.convert(wish, WishDto.class);
     }
 
@@ -66,7 +70,9 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public List<WishDto> getPatientAllWishes(int patientId) {
-        return wishRepository.findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(patientId).stream()
+        return wishRepository
+                .findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(patientId)
+                .stream()
                 .map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
     }
@@ -74,7 +80,9 @@ public class WishServiceImpl implements WishService {
     @Override
     public List<WishDto> getPatientOpenInProgressWishes(int patientId) {
         return wishRepository
-                .findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(patientId, List.of(OPEN, IN_PROGRESS))
+                .findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(
+                        patientId, of(OPEN, IN_PROGRESS)
+                )
                 .stream()
                 .map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
@@ -83,7 +91,9 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto changeStatus(int wishId, StatusE status) {
-        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
+        Wish wish = wishRepository
+                .findById(wishId)
+                .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
         wish.changeStatus(status);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);

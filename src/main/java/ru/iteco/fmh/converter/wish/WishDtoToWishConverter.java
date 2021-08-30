@@ -1,12 +1,12 @@
-package ru.iteco.fmh.converter.wish.fromWishDto;
+package ru.iteco.fmh.converter.wish;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.patient.fromPatientDto.PatientDtoToPatientConverter;
-import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.patient.PatientDtoToPatientConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -24,9 +24,9 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
 
-        Patient patient = dto.getPatient()!=null? dtoToPatientConverter.convert(dto.getPatient()) : null;
-        User creator = dto.getCreator()!=null? userDtoToUserConverter.convert(dto.getCreator()) : null;
-        User executor = dto.getExecutor()!=null? userDtoToUserConverter.convert(dto.getExecutor()) : null;
+        Patient patient = dto.getPatient() != null ? dtoToPatientConverter.convert(dto.getPatient()) : null;
+        User creator = dto.getCreator() != null ? userDtoToUserConverter.convert(dto.getCreator()) : null;
+        User executor = dto.getExecutor() != null ? userDtoToUserConverter.convert(dto.getExecutor()) : null;
 
         entity.setPatient(patient);
         entity.setCreator(creator);

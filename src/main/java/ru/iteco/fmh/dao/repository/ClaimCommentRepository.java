@@ -11,5 +11,5 @@ public interface ClaimCommentRepository extends JpaRepository<ClaimComment, Inte
 
     List<ClaimComment> findAllByClaim_Id(int id);
 
-    ClaimComment findClaimCommentById (int id);
+    ClaimComment findClaimCommentById(int id);
 }

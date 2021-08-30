@@ -61,19 +61,25 @@ public class WishesController {
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id) {
+    public WishCommentDto getWishComment(
+            @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
+    ) {
         return wishService.getWishComment(id);
     }
 
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
+    public List<WishCommentDto> getAllWishComments(
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
+    ) {
         return wishService.getAllWishComments(id);
     }
 
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public int createWishComment(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+    public int createWishComment(
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
+            @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 

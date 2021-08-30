@@ -66,10 +66,11 @@ public interface WishService {
 
     /**
      * возвращает комментарий для просмотра
+     *
      * @param commentId ид комментария
      * @return комментарий с полной информацией
      */
-    WishCommentDto getWishComment (int commentId);
+    WishCommentDto getWishComment(int commentId);
 
     /**
      * возвращает все комментарии просьбы для просмотра

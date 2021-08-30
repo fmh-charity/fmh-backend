@@ -2,7 +2,7 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.user.User;
 

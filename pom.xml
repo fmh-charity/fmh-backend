@@ -152,6 +152,9 @@
                 <version>3.1.2</version>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -162,6 +165,8 @@
                 </dependencies>
                 <executions>
                     <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>

@@ -1,17 +1,17 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.Test;
-import ru.iteco.fmh.converter.news.toDto.NewsCategoryToNewsCategoryDtoConverter;
-import ru.iteco.fmh.converter.news.toModel.NewsCategoryDtoToNewsCategoryConverter;
-import ru.iteco.fmh.converter.news.toModel.NewsDtoToNewsConverter;
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
-import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.news.NewsCategoryDtoToNewsCategoryConverter;
+import ru.iteco.fmh.converter.news.NewsCategoryToNewsCategoryDtoConverter;
+import ru.iteco.fmh.converter.news.NewsDtoToNewsConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 public class NewsDtoToNewsConverterTest {
     UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
