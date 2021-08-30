@@ -24,9 +24,9 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         WishDto dto = new WishDto();
         BeanUtils.copyProperties(wish, dto);
 
-        PatientDto patientDto = patientToDtoConverter.convert(wish.getPatient());
-        UserDto creator = userToUserDtoConverter.convert(wish.getCreator());
-        UserDto executor = wish.getExecutor()!=null? userToUserDtoConverter.convert(wish.getExecutor()):null;
+        PatientDto patientDto = wish.getPatient()!=null? patientToDtoConverter.convert(wish.getPatient()) : null;
+        UserDto creator = wish.getCreator()!=null? userToUserDtoConverter.convert(wish.getCreator()) : null;
+        UserDto executor = wish.getExecutor()!=null? userToUserDtoConverter.convert(wish.getExecutor()) :null;
 
         dto.setPatient(patientDto);
         dto.setExecutor(executor);

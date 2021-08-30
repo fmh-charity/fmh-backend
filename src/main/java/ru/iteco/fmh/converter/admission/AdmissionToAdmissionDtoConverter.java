@@ -23,7 +23,8 @@ public class AdmissionToAdmissionDtoConverter implements Converter<Admission, Ad
     public AdmissionDto convert(@NonNull Admission admission) {
         AdmissionDto admissionDto = new AdmissionDto();
         BeanUtils.copyProperties(admission, admissionDto);
-        PatientDto patientDto = patientConverter.convert(admission.getPatient());
+
+        PatientDto patientDto = admission.getPatient()!=null? patientConverter.convert(admission.getPatient()) : null;
         admissionDto.setPatient(patientDto);
         return admissionDto;
     }

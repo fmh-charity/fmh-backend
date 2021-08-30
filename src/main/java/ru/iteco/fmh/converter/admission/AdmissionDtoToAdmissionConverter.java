@@ -20,10 +20,10 @@ public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto,
     private final PatientDtoToPatientConverter patientConverter;
 
     @Override
-    public Admission convert(@NonNull AdmissionDto admissionDto) {
+    public Admission convert(@NonNull AdmissionDto dto) {
         Admission admission = new Admission();
-        BeanUtils.copyProperties(admissionDto, admission);
-        Patient patient = patientConverter.convert(admissionDto.getPatient());
+        BeanUtils.copyProperties(dto, admission);
+        Patient patient = dto.getPatient()!=null? patientConverter.convert(dto.getPatient()) : null;
         admission.setPatient(patient);
         return admission;
     }

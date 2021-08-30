@@ -18,12 +18,13 @@ public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
     private final NewsCategoryDtoToNewsCategoryConverter newsCategoryDtoToNewCategoryConverter;
 
     @Override
-    public News convert(@NonNull NewsDto newsDto) {
+    public News convert(@NonNull NewsDto dto) {
         News news = new News();
-        BeanUtils.copyProperties(newsDto, news);
+        BeanUtils.copyProperties(dto, news);
 
-        User creator = userDtoToUserConverter.convert(newsDto.getCreator());
-        NewsCategory newsCategory = newsCategoryDtoToNewCategoryConverter.convert(newsDto.getNewsCategory());
+        User creator = dto.getCreator()!=null? userDtoToUserConverter.convert(dto.getCreator()) : null;
+        NewsCategory newsCategory = dto.getNewsCategory()!=null?
+                newsCategoryDtoToNewCategoryConverter.convert(dto.getNewsCategory()) : null;
 
         news.setCreator(creator);
         news.setNewsCategory(newsCategory);
