@@ -86,7 +86,7 @@ values (1, 'wishComment1-description', 1, now()),
 
 insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
                    status, deleted)
-values ('title1', 'claim1-description', 1, 1, now(), now() + INTERVAL '4 DAYS', null, 'IN_PROGRESS', false),
+values ('title1', 'claim1-description', 1, null, now(), now() + INTERVAL '4 DAYS', null, 'OPEN', false),
        ('title2', 'claim2-description', 2, 2, now() - INTERVAL '1 DAY', now() + INTERVAL '2 DAY', null, 'IN_PROGRESS',
         false),
        ('title3', 'claim3-description', 3, 3, now(), now(), now(), 'EXECUTED', false),
