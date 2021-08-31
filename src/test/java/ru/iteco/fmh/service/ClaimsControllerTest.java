@@ -280,18 +280,18 @@ public class ClaimsControllerTest {
     public void updateClaimCommentShouldPassSuccess() {
         // given
         int claimCommentId = 4;
-        ClaimCommentDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
-                ClaimCommentDto.class);
+        ClaimCommentRequestDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
+                ClaimCommentRequestDto.class);
         String newDescription = "new title";
         given.setDescription(newDescription);
 
-        ClaimCommentDto result = sut.updateClaimComment(given);
+        ClaimCommentRequestDto result = sut.updateClaimComment(given);
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getCreator(), result.getCreator()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getClaim(), result.getClaim())
+                () -> assertEquals(given.getClaimId(), result.getClaimId())
         );
 
         given.setDescription("claim4-description");

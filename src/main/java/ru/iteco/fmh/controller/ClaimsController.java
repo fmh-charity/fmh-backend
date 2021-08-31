@@ -83,7 +83,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "изменение информации по комментарии к заявке")
     @PutMapping("/comments")
-    public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto claimCommentDto) {
+    public  ClaimCommentRequestDto updateClaimComment(@RequestBody  ClaimCommentRequestDto claimCommentDto) {
         return claimService.updateClaimComment(claimCommentDto);
     }
 }

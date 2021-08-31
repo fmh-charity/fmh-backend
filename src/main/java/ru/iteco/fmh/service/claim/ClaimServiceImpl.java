@@ -102,9 +102,9 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
+    public  ClaimCommentRequestDto updateClaimComment( ClaimCommentRequestDto commentDto) {
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
-        return conversionService.convert(claimComment, ClaimCommentDto.class);
+        return conversionService.convert(claimComment,  ClaimCommentRequestDto.class);
     }
 }

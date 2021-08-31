@@ -85,7 +85,7 @@ public interface ClaimService {
      *
      * @return обновленная сущность коммента
      */
-    ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto);
+    ClaimCommentRequestDto updateClaimComment( ClaimCommentRequestDto commentDto);
 
 
 }
