@@ -2,11 +2,10 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.claim.ClaimToClaimDtoConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;

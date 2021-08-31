@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.patient.fromPatientDto;
+package ru.iteco.fmh.converter.patient;
 
 import lombok.NonNull;
 import org.springframework.beans.BeanUtils;

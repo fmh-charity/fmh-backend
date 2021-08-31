@@ -2,14 +2,13 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.claim.fromClaimComment.ClaimCommentToClaimCommentDtoConverter;
-import ru.iteco.fmh.converter.claim.fromClaimCommentDto.ClaimCommentDtoToClaimCommentConverter;
-import ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter;
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
-import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.claim.ClaimCommentDtoToClaimCommentConverter;
+import ru.iteco.fmh.converter.claim.ClaimCommentToClaimCommentDtoConverter;
+import ru.iteco.fmh.converter.claim.ClaimDtoToClaimConverter;
+import ru.iteco.fmh.converter.claim.ClaimToClaimDtoConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.time.LocalDateTime;

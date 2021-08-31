@@ -3,12 +3,12 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
-import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.patient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.TestUtils.getAdmission;
 
 
 public class AdmissionToAdmissionDtoConverterTest {

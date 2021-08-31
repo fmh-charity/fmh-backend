@@ -15,5 +15,5 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     List<Claim> findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
 
-    Claim findClaimById (int id);
+    Claim findClaimById(int id);
 }
