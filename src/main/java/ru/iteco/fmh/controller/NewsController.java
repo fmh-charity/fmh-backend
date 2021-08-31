@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.news.NewsResponseDto;
+import ru.iteco.fmh.service.news.NewsService;
 
 import java.util.List;
 
@@ -21,33 +22,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/news")
 public class NewsController {
+    private final NewsService newsService;
 
-    @ApiOperation(value = "реестр всех просьб")
+    @ApiOperation(value = "реестр всех новостей")
     @GetMapping
     public List<NewsResponseDto> getAllNews() {
-        return null;
+        return newsService.getAllNews();
     }
 
     @ApiOperation(value = "возвращает полную информацию по новости")
     @GetMapping("/{id}")
-    public NewsResponseDto getNews(@ApiParam(value = "идентификатор новости", required = true)  @PathVariable("id") int id) {
-        return null;
+    public NewsResponseDto getNews(@ApiParam(value = "идентификатор новости", required = true) @PathVariable("id") int id) {
+        return newsService.getNews(id);
     }
 
     @ApiOperation(value = "Создание новой новости")
     @PostMapping
     public NewsResponseDto createNews(@RequestBody NewsResponseDto dto) {
-        return null;
+        return newsService.createNews(dto);
     }
 
     @ApiOperation(value = "обновляет информацию по новости")
     @PutMapping
     public NewsResponseDto updateNews(@RequestBody NewsResponseDto dto) {
-        return null;
+        return newsService.updateNews(dto);
     }
 
-    @ApiOperation(value = "обновляет информацию по новости")
+    @ApiOperation(value = "удаление новости")
     @DeleteMapping("/{id}")
-    public void deleteNews(@ApiParam(value = "идентификатор новости", required = true)  @PathVariable("id") int id) {
+    public void deleteNews(@ApiParam(value = "идентификатор новости", required = true) @PathVariable("id") int id) {
+        newsService.deleteNews(id);
     }
 }
