@@ -1,6 +1,7 @@
 package ru.iteco.fmh.service.claim;
 
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
+import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
@@ -64,7 +65,7 @@ public interface ClaimService {
      * @param claimId ид заявки
      * @return заявку с добпвленным коментом
      */
-    int addComment(int claimId, ClaimCommentDto claimCommentDto);
+    int addComment(int claimId, ClaimCommentRequestDto claimCommentDto);
 
     /**
      * возвращает комментарий заявки для просмотра

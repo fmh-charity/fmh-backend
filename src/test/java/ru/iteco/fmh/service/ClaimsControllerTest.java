@@ -12,6 +12,7 @@ import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
+import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.dto.user.UserDto;
@@ -245,27 +246,28 @@ public class ClaimsControllerTest {
     @Test
     public void createClaimCommentShouldPassSuccess() {
         // given
-        ClaimCommentDto claimCommentDto = ClaimCommentDto.builder()
+        ClaimCommentRequestDto claimCommentDto = ClaimCommentRequestDto.builder()
                 .id(24)
-                .claim(getClaimDtoInProgress())
-                .creator(getUserDto())
+                .claimId(2)
+                .creatorId(2)
                 .description("description")
                 .createDate(LocalDateTime.now())
                 .build();
 
-        //executor notNull
-        claimCommentDto.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        claimCommentDto.setClaim(conversionService.convert(claimRepository.findClaimById(1), ClaimDto.class));
 
-        Integer idNotNullExecutor = sut.createClaimComment(1, claimCommentDto);
+
+        claimCommentDto.setCreatorId(userRepository.findUserById(claimCommentDto.getCreatorId()).getId());
+        claimCommentDto.setClaimId(claimRepository.findClaimById(claimCommentDto.getClaimId()).getId());
+
+        Integer idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
         assertNotNull(idNotNullExecutor);
         ClaimComment result = claimCommentRepository.findById(idNotNullExecutor).get();
 
         assertAll(
                 () -> assertEquals(claimCommentDto.getDescription(), result.getDescription()),
-                () -> assertEquals(claimCommentDto.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
+                () -> assertEquals(claimCommentDto.getCreatorId(), result.getCreator().getId()),
                 () -> assertEquals(claimCommentDto.getCreateDate().withNano(0), result.getCreateDate().withNano(0)),
-                () -> assertEquals(claimCommentDto.getClaim(), conversionService.convert(result.getClaim(), ClaimDto.class))
+                () -> assertEquals(claimCommentDto.getClaimId(), result.getClaim().getId())
 
         );
 

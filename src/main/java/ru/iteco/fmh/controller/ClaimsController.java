@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
+import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
@@ -76,7 +77,7 @@ public class ClaimsController {
     @PostMapping("{id}/comments")
     public int createClaimComment(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id,
-            @RequestBody ClaimCommentDto claimCommentDto) {
+            @RequestBody ClaimCommentRequestDto claimCommentDto) {
         return claimService.addComment(id, claimCommentDto);
     }
 
