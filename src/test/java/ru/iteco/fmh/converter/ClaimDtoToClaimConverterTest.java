@@ -3,20 +3,15 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
-
 import ru.iteco.fmh.converter.claim.fromDto.ClaimDtoToClaimConverter;
-
 import ru.iteco.fmh.converter.claim.fromDto.ClaimRequestDtoToClaimConverter;
 import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
-
 import ru.iteco.fmh.model.task.claim.Claim;
-
 import ru.iteco.fmh.model.user.User;
 
 import static org.junit.Assert.assertNotNull;
@@ -24,8 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
-
+import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
+import static ru.iteco.fmh.TestUtils.getClaimRequestDtoInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimRequestDtoOpen;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 
 public class ClaimDtoToClaimConverterTest {
@@ -40,7 +38,7 @@ public class ClaimDtoToClaimConverterTest {
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
 
     @Test
-    void convert() {
+    void convertFromClaimDtoToClaimWithStatusInProgress() {
         ClaimDto dto = getClaimDtoInProgress();
 
         Claim claim = convert.convert(dto);
@@ -59,7 +57,7 @@ public class ClaimDtoToClaimConverterTest {
     }
 
     @Test
-    void convertForOpen() {
+    void convertFromClaimDtoToClaimWithStatusOpen() {
         ClaimDto dto = getClaimDtoOpen();
 
         Claim claim = convert.convert(dto);
@@ -81,7 +79,7 @@ public class ClaimDtoToClaimConverterTest {
 
 
     @Test
-    void convertClaimRequestDtoForOpen() {
+    void convertClaimRequestDtoWithStatusOpen() {
         ClaimRequestDto dto = getClaimRequestDtoOpen();
         User user = getUser();
         user.setId(dto.getCreatorId());
@@ -108,7 +106,7 @@ public class ClaimDtoToClaimConverterTest {
 
 
     @Test
-    void convertClaimRequestDtoForInProgress() {
+    void convertClaimRequestDtoWithStatusInProgress() {
         ClaimRequestDto dto = getClaimRequestDtoInProgress();
         User user = getUser();
         user.setId(dto.getCreatorId());
@@ -131,9 +129,6 @@ public class ClaimDtoToClaimConverterTest {
                 () -> assertNotNull(claim.getExecutor())
         );
     }
-
-
-
 
 
 }

@@ -1,23 +1,27 @@
 package ru.iteco.fmh;
 
+import ru.iteco.fmh.dto.claim.ClaimCommentDto;
+import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.*;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.model.task.wish.Wish;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -262,6 +266,38 @@ public class TestUtils {
                 .status(StatusE.IN_PROGRESS)
                 .build();
     }
+
+
+    public static ClaimCommentRequestDto getClaimCommentRequestDto() {
+        return ClaimCommentRequestDto.builder()
+                .id(24)
+                .claimId(2)
+                .creatorId(2)
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
+    public static ClaimComment getClaimComment(Claim claim) {
+        return ClaimComment.builder()
+                .id(23)
+                .claim(claim)
+                .creator(getUser())
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
+    public static ClaimCommentDto getClaimCommentDto(ClaimDto claimDto) {
+        return ClaimCommentDto.builder()
+                .id(24)
+                .claim(claimDto)
+                .creator(getUserDto())
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
 
     public static WishComment getWishComment(StatusE wishStatus) {
         return WishComment.builder()
