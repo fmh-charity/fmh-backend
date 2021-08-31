@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service.news;
 
-import ru.iteco.fmh.dto.news.NewsResponseDto;
+import ru.iteco.fmh.dto.news.NewsDto;
 
 import java.util.List;
 
@@ -11,15 +11,15 @@ public interface NewsService {
     /**
      * возвращает список всех новостей
      */
-    List<NewsResponseDto> getAllNews();
+    List<NewsDto> getAllNews();
 
     /**
      * создает новую новость
      *
-     * @param newsResponseDto информация по новой новости
-     * @return новость с полной информацией
+     * @param newsDto информация по новой новости
+     * @return id сохранненой новости
      */
-    NewsResponseDto createNews(NewsResponseDto newsResponseDto);
+    int createNews(NewsDto newsDto);
 
     /**
      * возвращает новость для просмотра
@@ -27,20 +27,21 @@ public interface NewsService {
      * @param id ид новости
      * @return новость с полной информацией
      */
-    NewsResponseDto getNews(int id);
+    NewsDto getNews(int id);
 
     /**
      * обновляет новость
      *
-     * @param newsResponseDto информация по новости для обновления
+     * @param newsDto информация по новости для обновления
      * @return обновленная сущность
      */
-    NewsResponseDto updateNews(NewsResponseDto newsResponseDto);
+    NewsDto updateNews(NewsDto newsDto);
 
     /**
      * удаление новости
      *
      * @param id ид новости
+     * @return id удаленной новости
      */
-     void deleteNews(int id);
+    int deleteNews(int id);
 }

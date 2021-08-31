@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.dto.user.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -16,15 +15,15 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewsDto {
     @ApiModelProperty("идентификатор новости")
-    Integer id;
+    int id;
     @ApiModelProperty("идентификатор категории новости")
-    NewsCategoryDto newsCategory;
+    int newsCategoryId;
     @ApiModelProperty("заголовок новости")
     String title;
     @ApiModelProperty("описание новости")
     String description;
     @ApiModelProperty("идентификатор создателя")
-    UserDto creator;
+    int creatorId;
     @ApiModelProperty("дата создания")
     LocalDateTime createDate;
     @ApiModelProperty("дата для публикации")
