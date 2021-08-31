@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter;
+import ru.iteco.fmh.converter.claim.fromDto.ClaimDtoToClaimConverter;
 
 import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;

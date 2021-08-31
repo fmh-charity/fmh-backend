@@ -1,11 +1,11 @@
-package ru.iteco.fmh.converter.claim.fromClaimCommentDto;
+package ru.iteco.fmh.converter.claim.fromDto;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.claim.fromClaimDto.ClaimDtoToClaimConverter;
+import ru.iteco.fmh.converter.claim.fromDto.ClaimDtoToClaimConverter;
 import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.model.task.claim.Claim;

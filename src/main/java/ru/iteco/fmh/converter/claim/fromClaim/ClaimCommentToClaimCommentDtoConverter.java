@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.claim.fromClaimComment;
+package ru.iteco.fmh.converter.claim.fromClaim;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
