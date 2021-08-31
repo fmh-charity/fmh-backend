@@ -141,31 +141,59 @@ public class ClaimsControllerTest {
     }
 
 
-//    @Test
-//    public void updateClaimShouldPassSuccess() {
-//        // given
-//        int claimId = 4;
-//        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-//        String newTitle = "new title";
-//        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-//        given.setTitle(newTitle);
-//
-//        ClaimDto result = sut.updateClaim(given);
-//
-//        assertAll(
-//                () -> assertEquals(given.getDescription(), result.getDescription()),
-//                () -> assertEquals(given.getTitle(), result.getTitle()),
-//                () -> assertEquals(given.getCreator(), result.getCreator()),
-//                () -> assertEquals(given.getExecutor(), result.getExecutor()),
-//                () -> assertEquals(given.getStatus(), result.getStatus()),
-//                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-//                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-//                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-//        );
-//
-//        given.setTitle("title4");
-//        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
-//    }
+    @Test
+    public void updateClaimShouldPassSuccessNotNull() {
+        // given
+        int claimId = 4;
+        ClaimRequestDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimRequestDto.class);
+        String newTitle = "new title";
+        given.setExecutorId(userRepository.findUserById(1).getId());
+        given.setTitle(newTitle);
+
+        ClaimRequestDto result = sut.updateClaim(given);
+
+        assertAll(
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getTitle(), result.getTitle()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
+        );
+
+        given.setTitle("title4");
+        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
+    }
+
+
+    @Test
+    public void updateClaimShouldPassSuccessNull() {
+        // given
+        int claimId = 1;
+        ClaimRequestDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimRequestDto.class);
+        String newTitle = "new title";
+        given.setTitle(newTitle);
+
+        ClaimRequestDto result = sut.updateClaim(given);
+
+        assertAll(
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getTitle(), result.getTitle()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
+                () -> assertNull (result.getExecutorId()),
+                () -> assertNull (given.getExecutorId()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
+        );
+
+        given.setTitle("title4");
+        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
+    }
 
     @Test
     public void changeStatusShouldPassSuccess() {

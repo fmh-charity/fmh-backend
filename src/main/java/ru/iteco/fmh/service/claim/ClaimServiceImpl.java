@@ -59,11 +59,11 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto updateClaim(ClaimDto claimDto) {
-        claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+    public ClaimRequestDto updateClaim(ClaimRequestDto claimDto) {
+        claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
-        return conversionService.convert(claim, ClaimDto.class);
+        return conversionService.convert(claim,ClaimRequestDto.class);
     }
 
     @Transactional

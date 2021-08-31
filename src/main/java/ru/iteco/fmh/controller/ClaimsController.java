@@ -47,8 +47,8 @@ public class ClaimsController {
 
     @ApiOperation(value = "изменение информации по заявке")
     @PutMapping
-    public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
-        return claimService.updateClaim(claimDtoDto);
+    public ClaimRequestDto updateClaim(@RequestBody ClaimRequestDto dto) {
+        return claimService.updateClaim(dto);
     }
 
     @ApiOperation(value = "изменение заявки по статусной модели")

@@ -47,7 +47,7 @@ public interface ClaimService {
      * @param claimDto информация по заявке для обновления
      * @return обновленная сущность
      */
-    ClaimDto updateClaim(ClaimDto claimDto);
+    ClaimRequestDto updateClaim(ClaimRequestDto claimDto);
 
     /**
      * изменяет статус заявки на - исполнен, отменен
