@@ -1,7 +1,5 @@
 package ru.iteco.fmh.model.task;
 
-import com.sun.xml.bind.v2.TODO;
-
 import java.time.LocalDateTime;
 
 /**
@@ -12,7 +10,10 @@ public enum StatusE {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
             if (CANCELLED == newStatus) {
-                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в статус " + newStatus.getName());
+                throw new IllegalArgumentException("нельзя перевести из статуса "
+                        + this.getName()
+                        + " в статус "
+                        + newStatus.getName());
             }
             if (EXECUTED == newStatus) {
                 task.setFactExecuteDate(LocalDateTime.now().withNano(0));
@@ -35,7 +36,10 @@ public enum StatusE {
         @Override
         public void changeStatus(Task task, StatusE newStatus) {
             if (EXECUTED == newStatus) {
-                throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в статус " + newStatus.getName());
+                throw new IllegalArgumentException("нельзя перевести из статуса "
+                        + this.getName()
+                        + " в статус "
+                        + newStatus.getName());
             }
             if (IN_PROGRESS == newStatus) {
                 //  TODO: task.setExecutor(); - взять значение user'а из spring security context

@@ -4,7 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.StatusE;
@@ -61,19 +68,25 @@ public class WishesController {
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(@ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id) {
+    public WishCommentDto getWishComment(
+            @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
+    ) {
         return wishService.getWishComment(id);
     }
 
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
+    public List<WishCommentDto> getAllWishComments(
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
+    ) {
         return wishService.getAllWishComments(id);
     }
 
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public int createWishComment(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+    public int createWishComment(
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
+            @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 

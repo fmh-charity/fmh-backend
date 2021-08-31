@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.news.toModel;
+package ru.iteco.fmh.converter.news;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;

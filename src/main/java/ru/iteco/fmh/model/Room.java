@@ -25,11 +25,11 @@ public class Room {
     String name;
 
     @ManyToOne
-    @JoinColumn(name="block_id")
+    @JoinColumn(name = "block_id")
     Block block;
 
     @ManyToOne
-    @JoinColumn(name="nurse_station_id")
+    @JoinColumn(name = "nurse_station_id")
     NurseStation nurseStation;
 
     int maxOccupancy;

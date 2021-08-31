@@ -7,5 +7,5 @@ import ru.iteco.fmh.model.user.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    User findUserById (Integer id);
+    User findUserById(Integer id);
 }
