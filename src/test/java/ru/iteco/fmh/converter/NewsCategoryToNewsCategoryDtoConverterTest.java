@@ -1,7 +1,7 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.Test;
-import ru.iteco.fmh.converter.news.NewsCategoryToNewsCategoryDtoConverter;
+import ru.iteco.fmh.converter.news.news.NewsCategoryToNewsCategoryDtoConverter;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.model.news.NewsCategory;
 

@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
-import ru.iteco.fmh.converter.patient.PatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.patient.patient.PatientToPatientDtoConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 
@@ -28,8 +28,8 @@ public class AdmissionToAdmissionDtoConverterTest {
                 () -> assertEquals(patientToDtoConverter.convert(admission.getPatient()), admissionDto.getPatient()),
                 () -> assertEquals(admission.getComment(), admissionDto.getComment()),
                 () -> assertEquals(admission.getPlanDateIn(), admissionDto.getPlanDateIn()),
-                () ->  assertEquals(admission.getFactDateIn(),admissionDto.getFactDateIn()),
-                () ->  assertEquals(admission.getFactDateOut(),admissionDto.getFactDateOut())
+                () -> assertEquals(admission.getFactDateIn(), admissionDto.getFactDateIn()),
+                () -> assertEquals(admission.getFactDateOut(), admissionDto.getFactDateOut())
         );
 
     }

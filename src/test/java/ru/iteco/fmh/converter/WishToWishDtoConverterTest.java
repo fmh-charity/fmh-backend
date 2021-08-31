@@ -2,9 +2,9 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.patient.PatientToPatientDtoConverter;
-import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
-import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
+import ru.iteco.fmh.converter.patient.patient.PatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.wish.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 
@@ -16,7 +16,8 @@ import static ru.iteco.fmh.model.task.StatusE.OPEN;
 class WishToWishDtoConverterTest {
     PatientToPatientDtoConverter patientToPatientDtoConverter = new PatientToPatientDtoConverter();
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
-    WishToWishDtoConverter convertor = new WishToWishDtoConverter(patientToPatientDtoConverter,userToUserDtoConverter);
+    WishToWishDtoConverter convertor = new WishToWishDtoConverter(patientToPatientDtoConverter, userToUserDtoConverter);
+
     @Test
     void convert() {
         Wish wish = getWish(OPEN);
@@ -26,8 +27,8 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(patientToPatientDtoConverter.convert(wish.getPatient()), dto.getPatient()),
                 () -> assertEquals(wish.getDescription(), dto.getDescription()),
                 () -> assertEquals(wish.getPlanExecuteDate(), dto.getPlanExecuteDate()),
-                () ->  assertEquals(wish.getStatus(),dto.getStatus()),
-                () ->  assertEquals(userToUserDtoConverter.convert(wish.getExecutor()),dto.getExecutor())
+                () -> assertEquals(wish.getStatus(), dto.getStatus()),
+                () -> assertEquals(userToUserDtoConverter.convert(wish.getExecutor()), dto.getExecutor())
         );
     }
 }

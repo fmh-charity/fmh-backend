@@ -3,7 +3,6 @@ package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 
@@ -85,7 +84,7 @@ public interface ClaimService {
      *
      * @return обновленная сущность коммента
      */
-    ClaimCommentRequestDto updateClaimComment( ClaimCommentRequestDto commentDto);
+    ClaimCommentRequestDto updateClaimComment(ClaimCommentRequestDto commentDto);
 
 
 }

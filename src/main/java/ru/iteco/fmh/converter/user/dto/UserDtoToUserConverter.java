@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.user;
+package ru.iteco.fmh.converter.user.dto;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;

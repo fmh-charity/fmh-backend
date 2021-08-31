@@ -2,22 +2,18 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimRequestDtoConverter;
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.claim.claim.ClaimToClaimDtoConverter;
+import ru.iteco.fmh.converter.claim.claim.ClaimToClaimRequestDtoConverter;
+import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.claim.Claim;
-import ru.iteco.fmh.model.user.User;
-
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.getClaimInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimOpen;
 
 
 public class ClaimToClaimDtoConverterTest {

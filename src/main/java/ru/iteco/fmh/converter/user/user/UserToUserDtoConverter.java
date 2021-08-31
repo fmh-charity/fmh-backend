@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.user;
+package ru.iteco.fmh.converter.user.user;
 
 
 import lombok.NonNull;

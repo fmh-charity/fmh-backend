@@ -2,7 +2,7 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.patient.PatientDtoToPatientConverter;
+import ru.iteco.fmh.converter.patient.dto.PatientDtoToPatientConverter;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
@@ -10,7 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getPatientDto;
 
 class PatientDtoToPatientConverterTest {
-    PatientDtoToPatientConverter dto = new  PatientDtoToPatientConverter();
+    PatientDtoToPatientConverter dto = new PatientDtoToPatientConverter();
+
     @Test
     void convert() {
         PatientDto patientDto = getPatientDto();

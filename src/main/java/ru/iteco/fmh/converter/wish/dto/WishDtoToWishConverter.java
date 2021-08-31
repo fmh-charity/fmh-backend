@@ -1,12 +1,12 @@
-package ru.iteco.fmh.converter.wish;
+package ru.iteco.fmh.converter.wish.dto;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.patient.PatientDtoToPatientConverter;
-import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.patient.dto.PatientDtoToPatientConverter;
+import ru.iteco.fmh.converter.user.dto.UserDtoToUserConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
