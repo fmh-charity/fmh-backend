@@ -1,6 +1,7 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
@@ -227,6 +228,38 @@ public class TestUtils {
                 .createDate(LocalDateTime.now().plusDays(2).withNano(0))
                 .factExecuteDate(null)
                 .status(StatusE.OPEN)
+                .build();
+    }
+
+    public static ClaimRequestDto getClaimRequestDtoOpen() {
+
+        return ClaimRequestDto.builder()
+                // TODO: убрать hardcode
+                .id(87)
+                .title("Title")
+                .description("description")
+                .creatorId(3)
+                .executorId(null)
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.OPEN)
+                .build();
+    }
+
+    public static ClaimRequestDto getClaimRequestDtoInProgress() {
+
+        return ClaimRequestDto.builder()
+                // TODO: убрать hardcode
+                .id(87)
+                .title("Title")
+                .description("description")
+                .creatorId(3)
+                .executorId(3)
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
                 .build();
     }
 
