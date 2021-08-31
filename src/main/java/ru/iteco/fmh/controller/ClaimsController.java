@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -34,7 +35,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public Integer createClaim(@RequestBody ClaimDto claimDto) {
+    public Integer createClaim(@RequestBody ClaimRequestDto claimDto) {
         return claimService.createClaim(claimDto);
     }
 

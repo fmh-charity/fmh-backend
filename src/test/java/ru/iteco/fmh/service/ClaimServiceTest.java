@@ -5,12 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -40,21 +40,23 @@ public class ClaimServiceTest {
         // given
         Claim claim = getClaimInProgress();
         claim.setId(6);
-        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+        ClaimRequestDto dto = conversionService.convert(claim, ClaimRequestDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
         assertEquals(claim.getStatus(), IN_PROGRESS);
         assertEquals(6, resultId);
+        assertNotNull(dto.getExecutorId());
+        assertNotNull( dto.getCreatorId());
     }
     @Test
     public void createClaimShouldPassSuccessExecutorNull() {
         // given
         Claim claim = getClaimOpen();
         claim.setId(7);
-        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+        ClaimRequestDto dto = conversionService.convert(claim, ClaimRequestDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
-        assertNull(dto.getExecutor());
+        assertNull(dto.getExecutorId());
         assertEquals(claim.getStatus(), dto.getStatus());
         assertEquals(7, resultId);
     }

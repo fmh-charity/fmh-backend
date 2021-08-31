@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public interface ClaimService {
      * @param claimDto информация по новой заявке
      * @return id заявки
      */
-    int createClaim(ClaimDto claimDto);
+    int createClaim(ClaimRequestDto claimDto);
 
     /**
      * возвращает заявку для просмотра

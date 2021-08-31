@@ -3,15 +3,21 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimDtoConverter;
+import ru.iteco.fmh.converter.claim.fromClaim.ClaimToClaimRequestDtoConverter;
 import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.user.User;
 
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.iteco.fmh.TestUtils.getClaimInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimOpen;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 
 public class ClaimToClaimDtoConverterTest {
@@ -19,6 +25,9 @@ public class ClaimToClaimDtoConverterTest {
 
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
     ClaimToClaimDtoConverter convertor = new ClaimToClaimDtoConverter(userToUserDtoConverter);
+
+
+    ClaimToClaimRequestDtoConverter converter = new ClaimToClaimRequestDtoConverter();
 
     @Test
     void convert() {
@@ -57,5 +66,50 @@ public class ClaimToClaimDtoConverterTest {
 
         );
     }
+
+
+    @Test
+    void convertClaimForOpen() {
+        Claim claim = getClaimOpen();
+
+        ClaimRequestDto dto= converter.convert(claim);
+
+        Assertions.assertAll(
+                () -> assertEquals(dto.getId(), claim.getId()),
+                () -> assertEquals(dto.getTitle(), claim.getTitle()),
+                () -> assertEquals(dto.getDescription(), claim.getDescription()),
+                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
+                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
+                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
+                () -> assertEquals(dto.getStatus(), claim.getStatus()),
+                () -> assertEquals(dto.getCreatorId(), claim.getCreator().getId()),
+                () -> assertEquals(dto.getExecutorId(), claim.getExecutor()),
+                () -> assertNull(dto.getExecutorId()),
+                () -> assertNull(claim.getExecutor())
+        );
+    }
+
+
+    @Test
+    void convertClaimForInProgress() {
+        Claim claim = getClaimInProgress();
+
+        ClaimRequestDto dto= converter.convert(claim);
+
+        Assertions.assertAll(
+                () -> assertEquals(dto.getId(), claim.getId()),
+                () -> assertEquals(dto.getTitle(), claim.getTitle()),
+                () -> assertEquals(dto.getDescription(), claim.getDescription()),
+                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
+                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
+                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
+                () -> assertEquals(dto.getStatus(), claim.getStatus()),
+                () -> assertEquals(dto.getCreatorId(), claim.getCreator().getId()),
+                () -> assertEquals(dto.getExecutorId(), claim.getExecutor().getId()),
+                () -> assertNotNull(dto.getExecutorId()),
+                () -> assertNotNull(claim.getExecutor())
+        );
+    }
+
 
 }

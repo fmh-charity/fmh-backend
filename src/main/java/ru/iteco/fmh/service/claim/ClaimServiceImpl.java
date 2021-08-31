@@ -8,6 +8,7 @@ import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -43,8 +44,8 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int createClaim(ClaimDto claimDto) {
-        claimDto.setStatus(claimDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+    public int createClaim(ClaimRequestDto claimDto) {
+        claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         return claimRepository.save(claim).getId();
     }

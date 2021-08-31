@@ -3,12 +3,9 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.iteco.fmh.converter.claim.fromDto.ClaimDtoToClaimConverter;
 
 import ru.iteco.fmh.converter.claim.fromDto.ClaimRequestDtoToClaimConverter;
@@ -17,9 +14,9 @@ import ru.iteco.fmh.converter.user.fromUserDto.UserDtoToUserConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
-import ru.iteco.fmh.dto.wish.WishDto;
+
 import ru.iteco.fmh.model.task.claim.Claim;
-import ru.iteco.fmh.model.task.wish.Wish;
+
 import ru.iteco.fmh.model.user.User;
 
 import static org.junit.Assert.assertNotNull;
@@ -28,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
+
 
 
 public class ClaimDtoToClaimConverterTest {
