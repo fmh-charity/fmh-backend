@@ -2,22 +2,15 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import ru.iteco.fmh.converter.wish.fromWish.WishToWishDtoConverter;
-
-import ru.iteco.fmh.converter.patient.fromPatient.PatientToPatientDtoConverter;
-
-import ru.iteco.fmh.converter.user.fromUser.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.patient.PatientToPatientDtoConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
-
-import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.wish.Wish;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
 import static ru.iteco.fmh.TestUtils.getWish;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 
 class WishToWishDtoConverterTest {

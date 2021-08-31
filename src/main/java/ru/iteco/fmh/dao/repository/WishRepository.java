@@ -15,7 +15,9 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
 
     List<Wish> findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Collection<StatusE> status);
 
-    List<Wish> findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(Integer patientId, Collection<StatusE> status);
+    List<Wish> findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(
+            Integer patientId, Collection<StatusE> status
+    );
 
     List<Wish> findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Integer patientId);
 }

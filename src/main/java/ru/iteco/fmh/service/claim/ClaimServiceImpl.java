@@ -38,7 +38,8 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public List<ClaimDto> getOpenInProgressClaims() {
-        List<Claim> list = claimRepository.findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
+        List<Claim> list = claimRepository
+                .findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(List.of(OPEN, IN_PROGRESS));
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
