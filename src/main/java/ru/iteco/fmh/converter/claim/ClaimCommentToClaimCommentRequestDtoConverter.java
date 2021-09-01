@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.claim.claim;
+package ru.iteco.fmh.converter.claim;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

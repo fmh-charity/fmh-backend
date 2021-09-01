@@ -1,11 +1,11 @@
-package ru.iteco.fmh.converter.news.news;
+package ru.iteco.fmh.converter.news;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.user.UserDto;

@@ -1,11 +1,11 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.Test;
-import ru.iteco.fmh.converter.news.dto.NewsCategoryDtoToNewsCategoryConverter;
-import ru.iteco.fmh.converter.news.dto.NewsDtoToNewsConverter;
-import ru.iteco.fmh.converter.news.news.NewsCategoryToNewsCategoryDtoConverter;
-import ru.iteco.fmh.converter.user.dto.UserDtoToUserConverter;
-import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.news.NewsCategoryDtoToNewsCategoryConverter;
+import ru.iteco.fmh.converter.news.NewsCategoryToNewsCategoryDtoConverter;
+import ru.iteco.fmh.converter.news.NewsDtoToNewsConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 

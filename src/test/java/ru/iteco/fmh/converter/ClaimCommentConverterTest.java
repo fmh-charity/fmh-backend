@@ -1,16 +1,16 @@
 package ru.iteco.fmh.converter;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.claim.claim.ClaimCommentToClaimCommentDtoConverter;
-import ru.iteco.fmh.converter.claim.claim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.claim.dto.ClaimCommentDtoToClaimCommentConverter;
-import ru.iteco.fmh.converter.claim.dto.ClaimDtoToClaimConverter;
-import ru.iteco.fmh.converter.user.dto.UserDtoToUserConverter;
-import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.claim.ClaimCommentDtoToClaimCommentConverter;
+import ru.iteco.fmh.converter.claim.ClaimCommentToClaimCommentDtoConverter;
+import ru.iteco.fmh.converter.claim.ClaimDtoToClaimConverter;
+import ru.iteco.fmh.converter.claim.ClaimToClaimDtoConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getClaimComment;
 import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
@@ -38,7 +38,7 @@ public class ClaimCommentConverterTest {
         ClaimComment claimComment = getClaimComment(getClaimInProgress());
 
         ClaimCommentDto dto = claimCommentToClaimCommentDtoConverter.convert(claimComment);
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(claimComment.getId(), dto.getId()),
                 () -> assertEquals(claimToClaimDtoConverter.convert(claimComment.getClaim()), dto.getClaim()),
                 () -> assertEquals(claimComment.getDescription(), dto.getDescription()),
@@ -52,7 +52,7 @@ public class ClaimCommentConverterTest {
         ClaimCommentDto claimCommentDto = getClaimCommentDto(getClaimDtoInProgress());
 
         ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(claimCommentDto);
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(claimCommentDto.getId(), claimComment.getId()),
                 () -> assertEquals(claimCommentDto.getClaim(), claimToClaimDtoConverter.convert(claimComment.getClaim())),
                 () -> assertEquals(claimCommentDto.getDescription(), claimComment.getDescription()),
@@ -66,7 +66,7 @@ public class ClaimCommentConverterTest {
         ClaimCommentDto claimCommentDto = getClaimCommentDto(getClaimDtoOpen());
 
         ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(claimCommentDto);
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(claimCommentDto.getId(), claimComment.getId()),
                 () -> assertEquals(claimCommentDto.getClaim(), claimToClaimDtoConverter.convert(claimComment.getClaim())),
                 () -> assertEquals(claimCommentDto.getDescription(), claimComment.getDescription()),

@@ -1,13 +1,11 @@
 package ru.iteco.fmh.converter;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import ru.iteco.fmh.converter.claim.dto.ClaimDtoToClaimConverter;
-import ru.iteco.fmh.converter.claim.dto.ClaimRequestDtoToClaimConverter;
-import ru.iteco.fmh.converter.user.dto.UserDtoToUserConverter;
-import ru.iteco.fmh.converter.user.user.UserToUserDtoConverter;
+import ru.iteco.fmh.converter.claim.ClaimDtoToClaimConverter;
+import ru.iteco.fmh.converter.claim.ClaimRequestDtoToClaimConverter;
+import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimRequestDto;
@@ -15,9 +13,11 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
@@ -32,7 +32,7 @@ public class ClaimDtoToClaimConverterTest {
     ClaimDtoToClaimConverter convert = new ClaimDtoToClaimConverter(userDtoToUserConverter);
 
 
-    UserRepository userRepository = Mockito.mock(UserRepository.class);
+    UserRepository userRepository = mock(UserRepository.class);
     ClaimRequestDtoToClaimConverter converter = new ClaimRequestDtoToClaimConverter(userRepository);
 
     UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
@@ -43,7 +43,7 @@ public class ClaimDtoToClaimConverterTest {
 
         Claim claim = convert.convert(dto);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
@@ -62,7 +62,7 @@ public class ClaimDtoToClaimConverterTest {
 
         Claim claim = convert.convert(dto);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
@@ -89,7 +89,7 @@ public class ClaimDtoToClaimConverterTest {
 
         Claim claim = converter.convert(dto);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
@@ -115,7 +115,7 @@ public class ClaimDtoToClaimConverterTest {
 
         Claim claim = converter.convert(dto);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),

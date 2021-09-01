@@ -79,7 +79,7 @@ public class ClaimsControllerTest {
         ClaimRequestDto given = getClaimRequestDtoOpen();
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
-        Integer idNullExecutor = sut.createClaim(given);
+        int idNullExecutor = sut.createClaim(given);
         assertNotNull(idNullExecutor);
         Claim result = claimRepository.findById(idNullExecutor).get();
         assertEquals(given.getStatus(), result.getStatus());
@@ -107,7 +107,7 @@ public class ClaimsControllerTest {
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
         given.setExecutorId(userRepository.findUserById(given.getExecutorId()).getId());
-        Integer idNotNullExecutor = sut.createClaim(given);
+        int idNotNullExecutor = sut.createClaim(given);
         assertNotNull(idNotNullExecutor);
         Claim result = claimRepository.findById(idNotNullExecutor).get();
         assertEquals(given.getStatus(), result.getStatus());

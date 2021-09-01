@@ -1,4 +1,4 @@
-package ru.iteco.fmh.converter.patient.patient;
+package ru.iteco.fmh.converter.patient;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
