@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.ClaimsController;
@@ -13,7 +12,6 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -22,10 +20,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
+import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
+import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -67,22 +73,51 @@ public class ClaimsControllerTest {
     }
 
     @Test
-    public void createClaimShouldPassSuccess() {
+    public void createClaimShouldPassSuccessNull() {
         // given
         ClaimDto given = getClaimDtoOpen();
         //executor notNull
-        given.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        Integer idNotNullExecutor = sut.createClaim(given);
-        assertNotNull(idNotNullExecutor);
-        Claim result = claimRepository.findById(idNotNullExecutor).get();
-        assertEquals(given.getStatus(), IN_PROGRESS);
+        given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
+        int idNullExecutor = sut.createClaim(given);
+        assertNotNull(idNullExecutor);
+        Claim result = claimRepository.findById(idNullExecutor).get();
+        assertEquals(given.getStatus(), result.getStatus());
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
                 () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
-                () -> assertEquals(given.getExecutor(), conversionService.convert(result.getExecutor(), UserDto.class)),
+                () -> assertEquals(given.getCreatorId(),result.getCreator().getId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutor()),
+                () -> assertNull(given.getExecutorId()),
+                () -> assertNull(result.getExecutor()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate())
+        );
+
+        // deleting result entity
+        claimRepository.deleteById(idNullExecutor);
+    }
+
+    @Test
+    public void createClaimShouldPassSuccessNotNull() {
+        // given
+        ClaimDto given = getClaimDtoInProgress();
+        //executor notNull
+        given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
+        given.setExecutorId(userRepository.findUserById(given.getExecutorId()).getId());
+        int idNotNullExecutor = sut.createClaim(given);
+        assertNotNull(idNotNullExecutor);
+        Claim result = claimRepository.findById(idNotNullExecutor).get();
+        assertEquals(given.getStatus(), result.getStatus());
+
+        assertAll(
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getTitle(), result.getTitle()),
+                () -> assertEquals(given.getCreatorId(),result.getCreator().getId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutor().getId()),
+                () -> assertNotNull(given.getExecutorId()),
+                () -> assertNotNull(result.getExecutor()),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate())
@@ -100,8 +135,8 @@ public class ClaimsControllerTest {
         ClaimDto result = sut.getClaim(claimId);
         assertAll(
                 () -> assertEquals(expected.getDescription(), result.getDescription()),
-                () -> assertEquals(expected.getCreator(), result.getCreator()),
-                () -> assertEquals(expected.getExecutor(), result.getExecutor()),
+                () -> assertEquals(expected.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(expected.getExecutorId(), result.getExecutorId()),
                 () -> assertEquals(expected.getStatus(), result.getStatus()),
                 () -> assertEquals(expected.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -112,12 +147,12 @@ public class ClaimsControllerTest {
 
 
     @Test
-    public void updateClaimShouldPassSuccess() {
+    public void updateClaimShouldPassSuccessNotNull() {
         // given
         int claimId = 4;
         ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
         String newTitle = "new title";
-        given.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDto.class));
+        given.setExecutorId(userRepository.findUserById(1).getId());
         given.setTitle(newTitle);
 
         ClaimDto result = sut.updateClaim(given);
@@ -125,8 +160,36 @@ public class ClaimsControllerTest {
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
                 () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreator(), result.getCreator()),
-                () -> assertEquals(given.getExecutor(), result.getExecutor()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(given.getStatus(), result.getStatus()),
+                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
+        );
+
+        given.setTitle("title4");
+        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
+    }
+
+
+    @Test
+    public void updateClaimShouldPassSuccessExecutorNull() {
+        // given
+        int claimId = 1;
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
+        String newTitle = "new title";
+        given.setTitle(newTitle);
+
+        ClaimDto result = sut.updateClaim(given);
+
+        assertAll(
+                () -> assertEquals(given.getDescription(), result.getDescription()),
+                () -> assertEquals(given.getTitle(), result.getTitle()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
+                () -> assertNull (result.getExecutorId()),
+                () -> assertNull (given.getExecutorId()),
                 () -> assertEquals(given.getStatus(), result.getStatus()),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -168,9 +231,9 @@ public class ClaimsControllerTest {
                 ClaimCommentDto.class);
         ClaimCommentDto result = sut.getClaimComment(claimCommentId);
         assertAll(
-                () -> assertEquals(expected.getClaim(), result.getClaim()),
+                () -> assertEquals(expected.getClaimId(), result.getClaimId()),
                 () -> assertEquals(expected.getDescription(), result.getDescription()),
-                () -> assertEquals(expected.getCreator(), result.getCreator()),
+                () -> assertEquals(expected.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(expected.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(expected.getId(), result.getId())
         );
@@ -187,27 +250,20 @@ public class ClaimsControllerTest {
     @Test
     public void createClaimCommentShouldPassSuccess() {
         // given
-        ClaimCommentDto claimCommentDto = ClaimCommentDto.builder()
-                .id(24)
-                .claim(getClaimDtoInProgress())
-                .creator(getUserDto())
-                .description("description")
-                .createDate(LocalDateTime.now())
-                .build();
+        ClaimCommentDto claimCommentDto = getClaimCommentDto();
 
-        //executor notNull
-        claimCommentDto.setCreator(conversionService.convert(userRepository.findUserById(1), UserDto.class));
-        claimCommentDto.setClaim(conversionService.convert(claimRepository.findClaimById(1), ClaimDto.class));
+        claimCommentDto.setCreatorId(userRepository.findUserById(claimCommentDto.getCreatorId()).getId());
+        claimCommentDto.setClaimId(claimRepository.findClaimById(claimCommentDto.getClaimId()).getId());
 
-        Integer idNotNullExecutor = sut.createClaimComment(1, claimCommentDto);
+        int idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
         assertNotNull(idNotNullExecutor);
         ClaimComment result = claimCommentRepository.findById(idNotNullExecutor).get();
 
         assertAll(
                 () -> assertEquals(claimCommentDto.getDescription(), result.getDescription()),
-                () -> assertEquals(claimCommentDto.getCreator(), conversionService.convert(result.getCreator(), UserDto.class)),
+                () -> assertEquals(claimCommentDto.getCreatorId(), result.getCreator().getId()),
                 () -> assertEquals(claimCommentDto.getCreateDate().withNano(0), result.getCreateDate().withNano(0)),
-                () -> assertEquals(claimCommentDto.getClaim(), conversionService.convert(result.getClaim(), ClaimDto.class))
+                () -> assertEquals(claimCommentDto.getClaimId(), result.getClaim().getId())
 
         );
 
@@ -229,9 +285,9 @@ public class ClaimsControllerTest {
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getCreator(), result.getCreator()),
+                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getClaim(), result.getClaim())
+                () -> assertEquals(given.getClaimId(), result.getClaimId())
         );
 
         given.setDescription("claim4-description");

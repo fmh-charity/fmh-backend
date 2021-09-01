@@ -25,14 +25,14 @@ public class NewsToNewsDtoConverterTest {
         NewsDto result = sut.convert(news);
 
         assertAll(
-                ()->assertEquals(news.getId(), result.getId()),
-                ()->assertEquals(news.getCreateDate(), result.getCreateDate()),
-                ()->assertEquals(userToUserDtoConverter.convert(news.getCreator()), result.getCreator()),
-                ()->assertEquals(news.getDescription(), result.getDescription()),
-                ()->assertEquals(newsCategoryToNewsCategoryDtoConverter.convert(news.getNewsCategory()), result.getNewsCategory()),
-                ()->assertEquals(news.getTitle(), result.getTitle()),
-                ()->assertEquals(news.getPublishDate(), result.getPublishDate()),
-                ()->assertEquals(news.isPublishEnabled(), result.isPublishEnabled())
+                () -> assertEquals(news.getId(), result.getId()),
+                () -> assertEquals(news.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(userToUserDtoConverter.convert(news.getCreator()), result.getCreator()),
+                () -> assertEquals(news.getDescription(), result.getDescription()),
+                () -> assertEquals(newsCategoryToNewsCategoryDtoConverter.convert(news.getNewsCategory()), result.getNewsCategory()),
+                () -> assertEquals(news.getTitle(), result.getTitle()),
+                () -> assertEquals(news.getPublishDate(), result.getPublishDate()),
+                () -> assertEquals(news.isPublishEnabled(), result.isPublishEnabled())
         );
     }
 }

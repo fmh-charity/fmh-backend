@@ -1,18 +1,17 @@
 package ru.iteco.fmh.dao.repository;
 
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.springframework.test.context.junit4.SpringRunner;
-
-import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @RunWith(SpringRunner.class)
@@ -43,7 +42,7 @@ public class AdmissionRepositoryTest {
                 .build();
 
         entity = repository.save(entity);
-        Assertions.assertNotNull(entity.getId());
+        assertNotNull(entity.getId());
         repository.delete(entity);
         patientRepository.delete(patient);
     }

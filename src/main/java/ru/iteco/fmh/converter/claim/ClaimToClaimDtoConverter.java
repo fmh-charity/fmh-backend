@@ -5,28 +5,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 
 @Component
 @RequiredArgsConstructor
 public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
 
-    private final UserToUserDtoConverter userToUserDtoConverter;
-
     @Override
     public ClaimDto convert(@NonNull Claim claim) {
-        ClaimDto dto = new ClaimDto();
-        BeanUtils.copyProperties(claim, dto);
+        ClaimDto claimDto = new ClaimDto();
+        BeanUtils.copyProperties(claim, claimDto);
 
-        UserDto creator = claim.getCreator() != null ? userToUserDtoConverter.convert(claim.getCreator()) : null;
-        UserDto executor = claim.getExecutor() != null ? userToUserDtoConverter.convert(claim.getExecutor()) : null;
+        Integer creatorId = claim.getCreator() != null ? claim.getCreator().getId() : null;
+        Integer executorId = claim.getExecutor() != null ? claim.getExecutor().getId() : null;
 
-        dto.setExecutor(executor);
-        dto.setCreator(creator);
-        return dto;
+        claimDto.setCreatorId(creatorId);
+        claimDto.setExecutorId(executorId);
+        return claimDto;
     }
 
 }
