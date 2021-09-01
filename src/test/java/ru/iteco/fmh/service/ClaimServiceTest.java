@@ -9,19 +9,20 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.Optional;
 
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimOpen;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,7 +41,7 @@ public class ClaimServiceTest {
         // given
         Claim claim = getClaimInProgress();
         claim.setId(6);
-        ClaimRequestDto dto = conversionService.convert(claim, ClaimRequestDto.class);
+        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
         assertEquals(claim.getStatus(), IN_PROGRESS);
@@ -53,7 +54,7 @@ public class ClaimServiceTest {
         // given
         Claim claim = getClaimOpen();
         claim.setId(7);
-        ClaimRequestDto dto = conversionService.convert(claim, ClaimRequestDto.class);
+        ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         Integer resultId = sut.createClaim(dto);
         assertNull(dto.getExecutorId());
@@ -77,11 +78,11 @@ public class ClaimServiceTest {
     public void updateClaimShouldPassSuccess() {
         // claim
         Claim claim = getClaimInProgress();
-        ClaimRequestDto given = conversionService.convert(claim, ClaimRequestDto.class);
+        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);
 
-        ClaimRequestDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given);
 
         assertAll(
                 () -> assertEquals(given.getId(), result.getId()),
@@ -100,11 +101,11 @@ public class ClaimServiceTest {
     public void updateClaimShouldPassSuccessNull() {
         // claim
         Claim claim = getClaimOpen();
-        ClaimRequestDto given = conversionService.convert(claim, ClaimRequestDto.class);
+        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);
 
-        ClaimRequestDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given);
 
         assertAll(
                 () -> assertEquals(given.getId(), result.getId()),

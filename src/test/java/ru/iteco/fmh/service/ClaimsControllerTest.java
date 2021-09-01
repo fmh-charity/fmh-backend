@@ -11,9 +11,7 @@ import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -28,8 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.iteco.fmh.TestUtils.getClaimRequestDtoInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimRequestDtoOpen;
+import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
+import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
+import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
 import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
 import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
@@ -76,7 +75,7 @@ public class ClaimsControllerTest {
     @Test
     public void createClaimShouldPassSuccessNull() {
         // given
-        ClaimRequestDto given = getClaimRequestDtoOpen();
+        ClaimDto given = getClaimDtoOpen();
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
         int idNullExecutor = sut.createClaim(given);
@@ -103,7 +102,7 @@ public class ClaimsControllerTest {
     @Test
     public void createClaimShouldPassSuccessNotNull() {
         // given
-        ClaimRequestDto given = getClaimRequestDtoInProgress();
+        ClaimDto given = getClaimDtoInProgress();
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
         given.setExecutorId(userRepository.findUserById(given.getExecutorId()).getId());
@@ -136,8 +135,8 @@ public class ClaimsControllerTest {
         ClaimDto result = sut.getClaim(claimId);
         assertAll(
                 () -> assertEquals(expected.getDescription(), result.getDescription()),
-                () -> assertEquals(expected.getCreator(), result.getCreator()),
-                () -> assertEquals(expected.getExecutor(), result.getExecutor()),
+                () -> assertEquals(expected.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(expected.getExecutorId(), result.getExecutorId()),
                 () -> assertEquals(expected.getStatus(), result.getStatus()),
                 () -> assertEquals(expected.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(expected.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -151,12 +150,12 @@ public class ClaimsControllerTest {
     public void updateClaimShouldPassSuccessNotNull() {
         // given
         int claimId = 4;
-        ClaimRequestDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimRequestDto.class);
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
         String newTitle = "new title";
         given.setExecutorId(userRepository.findUserById(1).getId());
         given.setTitle(newTitle);
 
-        ClaimRequestDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given);
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
@@ -178,11 +177,11 @@ public class ClaimsControllerTest {
     public void updateClaimShouldPassSuccessExecutorNull() {
         // given
         int claimId = 1;
-        ClaimRequestDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimRequestDto.class);
+        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
         String newTitle = "new title";
         given.setTitle(newTitle);
 
-        ClaimRequestDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given);
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
@@ -232,9 +231,9 @@ public class ClaimsControllerTest {
                 ClaimCommentDto.class);
         ClaimCommentDto result = sut.getClaimComment(claimCommentId);
         assertAll(
-                () -> assertEquals(expected.getClaim(), result.getClaim()),
+                () -> assertEquals(expected.getClaimId(), result.getClaimId()),
                 () -> assertEquals(expected.getDescription(), result.getDescription()),
-                () -> assertEquals(expected.getCreator(), result.getCreator()),
+                () -> assertEquals(expected.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(expected.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(expected.getId(), result.getId())
         );
@@ -251,20 +250,12 @@ public class ClaimsControllerTest {
     @Test
     public void createClaimCommentShouldPassSuccess() {
         // given
-        ClaimCommentRequestDto claimCommentDto = ClaimCommentRequestDto.builder()
-                .id(24)
-                .claimId(2)
-                .creatorId(2)
-                .description("description")
-                .createDate(LocalDateTime.now())
-                .build();
-
-
+        ClaimCommentDto claimCommentDto = getClaimCommentDto();
 
         claimCommentDto.setCreatorId(userRepository.findUserById(claimCommentDto.getCreatorId()).getId());
         claimCommentDto.setClaimId(claimRepository.findClaimById(claimCommentDto.getClaimId()).getId());
 
-        Integer idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
+        int idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
         assertNotNull(idNotNullExecutor);
         ClaimComment result = claimCommentRepository.findById(idNotNullExecutor).get();
 
@@ -285,12 +276,12 @@ public class ClaimsControllerTest {
     public void updateClaimCommentShouldPassSuccess() {
         // given
         int claimCommentId = 4;
-        ClaimCommentRequestDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
-                ClaimCommentRequestDto.class);
+        ClaimCommentDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
+                ClaimCommentDto.class);
         String newDescription = "new title";
         given.setDescription(newDescription);
 
-        ClaimCommentRequestDto result = sut.updateClaimComment(given);
+        ClaimCommentDto result = sut.updateClaimComment(given);
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),

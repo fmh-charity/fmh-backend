@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -46,7 +44,7 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int createClaim(ClaimRequestDto claimDto) {
+    public int createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         return claimRepository.save(claim).getId();
@@ -61,11 +59,11 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimRequestDto updateClaim(ClaimRequestDto claimDto) {
+    public ClaimDto updateClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
-        return conversionService.convert(claim, ClaimRequestDto.class);
+        return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Transactional
@@ -94,7 +92,7 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int addComment(int claimId, ClaimCommentRequestDto claimCommentDto) {
+    public int addComment(int claimId, ClaimCommentDto claimCommentDto) {
         ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
         claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует")));
@@ -103,9 +101,9 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimCommentRequestDto updateClaimComment(ClaimCommentRequestDto commentDto) {
+    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
-        return conversionService.convert(claimComment, ClaimCommentRequestDto.class);
+        return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
 }

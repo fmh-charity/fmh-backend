@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -43,7 +41,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public Integer createClaim(@RequestBody ClaimRequestDto claimDto) {
+    public Integer createClaim(@RequestBody ClaimDto claimDto) {
         return claimService.createClaim(claimDto);
     }
 
@@ -55,7 +53,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "изменение информации по заявке")
     @PutMapping
-    public ClaimRequestDto updateClaim(@RequestBody ClaimRequestDto dto) {
+    public ClaimDto updateClaim(@RequestBody ClaimDto dto) {
         return claimService.updateClaim(dto);
     }
 
@@ -84,13 +82,13 @@ public class ClaimsController {
     @PostMapping("{id}/comments")
     public int createClaimComment(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id,
-            @RequestBody ClaimCommentRequestDto claimCommentDto) {
+            @RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.addComment(id, claimCommentDto);
     }
 
     @ApiOperation(value = "изменение информации по комментарии к заявке")
     @PutMapping("/comments")
-    public ClaimCommentRequestDto updateClaimComment(@RequestBody ClaimCommentRequestDto claimCommentDto) {
+    public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.updateClaimComment(claimCommentDto);
     }
 }

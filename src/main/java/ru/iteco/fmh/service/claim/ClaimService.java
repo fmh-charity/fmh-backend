@@ -1,9 +1,7 @@
 package ru.iteco.fmh.service.claim;
 
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public interface ClaimService {
      * @param claimDto информация по новой заявке
      * @return id заявки
      */
-    int createClaim(ClaimRequestDto claimDto);
+    int createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра
@@ -47,7 +45,7 @@ public interface ClaimService {
      * @param claimDto информация по заявке для обновления
      * @return обновленная сущность
      */
-    ClaimRequestDto updateClaim(ClaimRequestDto claimDto);
+    ClaimDto updateClaim(ClaimDto claimDto);
 
     /**
      * изменяет статус заявки на - исполнен, отменен
@@ -64,7 +62,7 @@ public interface ClaimService {
      * @param claimId ид заявки
      * @return заявку с добпвленным коментом
      */
-    int addComment(int claimId, ClaimCommentRequestDto claimCommentDto);
+    int addComment(int claimId, ClaimCommentDto claimCommentDto);
 
     /**
      * возвращает комментарий заявки для просмотра
@@ -84,7 +82,7 @@ public interface ClaimService {
      *
      * @return обновленная сущность коммента
      */
-    ClaimCommentRequestDto updateClaimComment(ClaimCommentRequestDto commentDto);
+    ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto);
 
 
 }

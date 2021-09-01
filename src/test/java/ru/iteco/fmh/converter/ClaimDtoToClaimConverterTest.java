@@ -3,12 +3,8 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.claim.ClaimDtoToClaimConverter;
-import ru.iteco.fmh.converter.claim.ClaimRequestDtoToClaimConverter;
-import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
-import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
 
@@ -21,66 +17,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
-import static ru.iteco.fmh.TestUtils.getClaimRequestDtoInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimRequestDtoOpen;
 import static ru.iteco.fmh.TestUtils.getUser;
 
 
 public class ClaimDtoToClaimConverterTest {
 
-    UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
-    ClaimDtoToClaimConverter convert = new ClaimDtoToClaimConverter(userDtoToUserConverter);
-
 
     UserRepository userRepository = mock(UserRepository.class);
-    ClaimRequestDtoToClaimConverter converter = new ClaimRequestDtoToClaimConverter(userRepository);
-
-    UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
-
-    @Test
-    void convertFromClaimDtoToClaimWithStatusInProgress() {
-        ClaimDto dto = getClaimDtoInProgress();
-
-        Claim claim = convert.convert(dto);
-
-        assertAll(
-                () -> assertEquals(dto.getId(), claim.getId()),
-                () -> assertEquals(dto.getTitle(), claim.getTitle()),
-                () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
-                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
-                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
-                () -> assertEquals(dto.getStatus(), claim.getStatus()),
-                () -> assertEquals(dto.getCreator(), userToUserDtoConverter.convert(claim.getCreator())),
-                () -> assertEquals(dto.getExecutor(), userToUserDtoConverter.convert(claim.getExecutor()))
-        );
-    }
-
-    @Test
-    void convertFromClaimDtoToClaimWithStatusOpen() {
-        ClaimDto dto = getClaimDtoOpen();
-
-        Claim claim = convert.convert(dto);
-
-        assertAll(
-                () -> assertEquals(dto.getId(), claim.getId()),
-                () -> assertEquals(dto.getTitle(), claim.getTitle()),
-                () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
-                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
-                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
-                () -> assertEquals(dto.getStatus(), claim.getStatus()),
-                () -> assertEquals(dto.getCreator(), userToUserDtoConverter.convert(claim.getCreator())),
-                () -> assertEquals(dto.getExecutor(), claim.getExecutor()),
-                () -> assertNull(dto.getExecutor()),
-                () -> assertNull(claim.getExecutor())
-        );
-    }
+    ClaimDtoToClaimConverter converter = new ClaimDtoToClaimConverter(userRepository);
 
 
     @Test
     void convertClaimRequestDtoWithStatusOpen() {
-        ClaimRequestDto dto = getClaimRequestDtoOpen();
+        ClaimDto dto = getClaimDtoOpen();
         User user = getUser();
         user.setId(dto.getCreatorId());
 
@@ -107,7 +56,7 @@ public class ClaimDtoToClaimConverterTest {
 
     @Test
     void convertClaimRequestDtoWithStatusInProgress() {
-        ClaimRequestDto dto = getClaimRequestDtoInProgress();
+        ClaimDto dto = getClaimDtoInProgress();
         User user = getUser();
         user.setId(dto.getCreatorId());
 

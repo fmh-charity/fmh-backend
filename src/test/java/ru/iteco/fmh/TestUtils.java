@@ -1,9 +1,7 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentRequestDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimRequestDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -204,40 +202,10 @@ public class TestUtils {
                 .status(StatusE.OPEN)
                 .build();
     }
-    public static ClaimDto getClaimDtoInProgress() {
-
-        return ClaimDto.builder()
-                .id(27)
-                .title("Title")
-                .description("description")
-                .creator(getUserDto())
-                .executor(getUserDto())
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
-                .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
-                .build();
-    }
 
     public static ClaimDto getClaimDtoOpen() {
 
         return ClaimDto.builder()
-                // TODO: убрать hardcode
-                .id(27)
-                .title("Title")
-                .description("description")
-                .creator(getUserDto())
-                .executor(null)
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
-                .factExecuteDate(null)
-                .status(StatusE.OPEN)
-                .build();
-    }
-
-    public static ClaimRequestDto getClaimRequestDtoOpen() {
-
-        return ClaimRequestDto.builder()
                 // TODO: убрать hardcode
                 .id(87)
                 .title("Title")
@@ -251,9 +219,9 @@ public class TestUtils {
                 .build();
     }
 
-    public static ClaimRequestDto getClaimRequestDtoInProgress() {
+    public static ClaimDto getClaimDtoInProgress() {
 
-        return ClaimRequestDto.builder()
+        return ClaimDto.builder()
                 // TODO: убрать hardcode
                 .id(87)
                 .title("Title")
@@ -268,8 +236,8 @@ public class TestUtils {
     }
 
 
-    public static ClaimCommentRequestDto getClaimCommentRequestDto() {
-        return ClaimCommentRequestDto.builder()
+    public static ClaimCommentDto getClaimCommentDto() {
+        return ClaimCommentDto.builder()
                 .id(24)
                 .claimId(2)
                 .creatorId(2)
@@ -283,16 +251,6 @@ public class TestUtils {
                 .id(23)
                 .claim(claim)
                 .creator(getUser())
-                .description("description")
-                .createDate(LocalDateTime.now())
-                .build();
-    }
-
-    public static ClaimCommentDto getClaimCommentDto(ClaimDto claimDto) {
-        return ClaimCommentDto.builder()
-                .id(24)
-                .claim(claimDto)
-                .creator(getUserDto())
                 .description("description")
                 .createDate(LocalDateTime.now())
                 .build();
@@ -318,7 +276,6 @@ public class TestUtils {
                 .createDate(LocalDateTime.now())
                 .build();
     }
-
 
 
     public static News getNews() {

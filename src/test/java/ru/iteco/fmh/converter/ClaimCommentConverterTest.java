@@ -3,75 +3,66 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.claim.ClaimCommentDtoToClaimCommentConverter;
 import ru.iteco.fmh.converter.claim.ClaimCommentToClaimCommentDtoConverter;
-import ru.iteco.fmh.converter.claim.ClaimDtoToClaimConverter;
-import ru.iteco.fmh.converter.claim.ClaimToClaimDtoConverter;
-import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
-import ru.iteco.fmh.converter.user.UserToUserDtoConverter;
+import ru.iteco.fmh.dao.repository.ClaimRepository;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
+import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.model.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimComment;
 import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
-import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
-import static ru.iteco.fmh.TestUtils.getClaimInProgress;
-
+import static ru.iteco.fmh.TestUtils.getClaimOpen;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 public class ClaimCommentConverterTest {
 
-    UserToUserDtoConverter userToUserDtoConverter = new UserToUserDtoConverter();
-    ClaimToClaimDtoConverter claimToClaimDtoConverter = new ClaimToClaimDtoConverter(userToUserDtoConverter);
-    ClaimCommentToClaimCommentDtoConverter claimCommentToClaimCommentDtoConverter =
-            new ClaimCommentToClaimCommentDtoConverter(userToUserDtoConverter, claimToClaimDtoConverter);
+    ClaimCommentToClaimCommentDtoConverter claimCommentToClaimCommentDtoConverter = new ClaimCommentToClaimCommentDtoConverter();
 
-
-    UserDtoToUserConverter userDtoToUserConverter = new UserDtoToUserConverter();
-    ClaimDtoToClaimConverter claimDtoToClaimConverter = new ClaimDtoToClaimConverter(userDtoToUserConverter);
+    UserRepository userRepository = mock(UserRepository.class);
+    ClaimRepository claimRepository = mock(ClaimRepository.class);
     ClaimCommentDtoToClaimCommentConverter claimCommentDtoToClaimCommentConverter =
-            new ClaimCommentDtoToClaimCommentConverter(userDtoToUserConverter, claimDtoToClaimConverter);
-
+            new ClaimCommentDtoToClaimCommentConverter(userRepository, claimRepository);
 
     @Test
-    void convertClaimCommentToClaimCommentDto() {
-        ClaimComment claimComment = getClaimComment(getClaimInProgress());
+    void convertClaimCommentToClaimCommentRequestDto() {
+        ClaimComment claimComment = getClaimComment(getClaimOpen());
 
         ClaimCommentDto dto = claimCommentToClaimCommentDtoConverter.convert(claimComment);
         assertAll(
                 () -> assertEquals(claimComment.getId(), dto.getId()),
-                () -> assertEquals(claimToClaimDtoConverter.convert(claimComment.getClaim()), dto.getClaim()),
+                () -> assertEquals(claimComment.getClaim().getId(), dto.getClaimId()),
                 () -> assertEquals(claimComment.getDescription(), dto.getDescription()),
-                () -> assertEquals(userToUserDtoConverter.convert(claimComment.getCreator()), dto.getCreator()),
+                () -> assertEquals(claimComment.getCreator().getId(), dto.getCreatorId()),
                 () -> assertEquals(claimComment.getCreateDate(), dto.getCreateDate())
         );
     }
 
-    @Test
-    void convertClaimCommentDtoToClaimCommentWithClaimInProgress() {
-        ClaimCommentDto claimCommentDto = getClaimCommentDto(getClaimDtoInProgress());
-
-        ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(claimCommentDto);
-        assertAll(
-                () -> assertEquals(claimCommentDto.getId(), claimComment.getId()),
-                () -> assertEquals(claimCommentDto.getClaim(), claimToClaimDtoConverter.convert(claimComment.getClaim())),
-                () -> assertEquals(claimCommentDto.getDescription(), claimComment.getDescription()),
-                () -> assertEquals(claimCommentDto.getCreator(), userToUserDtoConverter.convert(claimComment.getCreator())),
-                () -> assertEquals(claimCommentDto.getCreateDate(), claimComment.getCreateDate())
-        );
-    }
 
     @Test
-    void convertClaimCommentDtoToClaimCommentWithClaimOpen() {
-        ClaimCommentDto claimCommentDto = getClaimCommentDto(getClaimDtoOpen());
+    void convertClaimCommentRequestDtoToClaimCommentWithClaimOpen() {
+        ClaimCommentDto dto = getClaimCommentDto();
 
-        ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(claimCommentDto);
+        User user = getUser();
+        Claim claim = getClaimOpen();
+        user.setId(dto.getCreatorId());
+        claim.setId(dto.getClaimId());
+
+        when(claimRepository.findClaimById(dto.getClaimId())).thenReturn(claim);
+        when(userRepository.findUserById(dto.getCreatorId())).thenReturn(user);
+
+
+        ClaimComment claimComment = claimCommentDtoToClaimCommentConverter.convert(dto);
         assertAll(
-                () -> assertEquals(claimCommentDto.getId(), claimComment.getId()),
-                () -> assertEquals(claimCommentDto.getClaim(), claimToClaimDtoConverter.convert(claimComment.getClaim())),
-                () -> assertEquals(claimCommentDto.getDescription(), claimComment.getDescription()),
-                () -> assertEquals(claimCommentDto.getCreator(), userToUserDtoConverter.convert(claimComment.getCreator())),
-                () -> assertEquals(claimCommentDto.getCreateDate(), claimComment.getCreateDate())
+                () -> assertEquals(dto.getId(), claimComment.getId()),
+                () -> assertEquals(dto.getClaimId(), claimComment.getClaim().getId()),
+                () -> assertEquals(dto.getDescription(), claimComment.getDescription()),
+                () -> assertEquals(dto.getCreatorId(), claimComment.getCreator().getId()),
+                () -> assertEquals(dto.getCreateDate(), claimComment.getCreateDate())
         );
     }
 
