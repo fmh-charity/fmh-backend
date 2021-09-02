@@ -1,7 +1,6 @@
 package ru.iteco.fmh.dao.repository;
 
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +13,10 @@ import ru.iteco.fmh.model.user.User;
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertNotNull;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.getWish;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -51,7 +52,7 @@ public class WishCommentRepositoryTest {
 
         testEntity2 = sut.save(testEntity2);
 
-        Assertions.assertAll(
+        assertAll(
                 () -> assertNotNull(testEntity1.getId()),
                 () -> assertNotNull(testEntity2.getId())
         );

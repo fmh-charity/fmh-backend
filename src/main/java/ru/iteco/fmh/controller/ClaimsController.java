@@ -41,8 +41,8 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public Integer createClaim(@RequestBody ClaimDto claimDto) {
-        return claimService.createClaim(claimDto);
+    public Integer createClaim(@RequestBody ClaimDto request) {
+        return claimService.createClaim(request);
     }
 
     @ApiOperation(value = "Получения полной информации заявки по id")
@@ -53,8 +53,8 @@ public class ClaimsController {
 
     @ApiOperation(value = "изменение информации по заявке")
     @PutMapping
-    public ClaimDto updateClaim(@RequestBody ClaimDto claimDtoDto) {
-        return claimService.updateClaim(claimDtoDto);
+    public ClaimDto updateClaim(@RequestBody ClaimDto request) {
+        return claimService.updateClaim(request);
     }
 
     @ApiOperation(value = "изменение заявки по статусной модели")
@@ -82,13 +82,13 @@ public class ClaimsController {
     @PostMapping("{id}/comments")
     public int createClaimComment(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id,
-            @RequestBody ClaimCommentDto claimCommentDto) {
-        return claimService.addComment(id, claimCommentDto);
+            @RequestBody ClaimCommentDto request) {
+        return claimService.addComment(id, request);
     }
 
     @ApiOperation(value = "изменение информации по комментарии к заявке")
     @PutMapping("/comments")
-    public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto claimCommentDto) {
-        return claimService.updateClaimComment(claimCommentDto);
+    public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto request) {
+        return claimService.updateClaimComment(request);
     }
 }

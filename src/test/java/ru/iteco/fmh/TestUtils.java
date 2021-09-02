@@ -1,22 +1,25 @@
 package ru.iteco.fmh;
 
+import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.*;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.model.task.wish.Wish;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -168,19 +171,35 @@ public class TestUtils {
                 .build();
     }
 
+    public static Claim getClaimInProgress() {
 
-    public static ClaimDto getClaimDtoInProgress() {
-
-        return ClaimDto.builder()
+        return Claim.builder()
+                // TODO: убрать hardcode
                 .id(27)
-                .title("Title")
+                .title("title")
                 .description("description")
-                .creator(getUserDto())
-                .executor(getUserDto())
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .creator(getUser())
+                .executor(getUser())
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
+                .build();
+    }
+
+    public static Claim getClaimOpen() {
+
+        return Claim.builder()
+                // TODO: убрать hardcode
+                .id(27)
+                .title("title")
+                .description("description")
+                .creator(getUser())
+                .executor(null)
+                .createDate(LocalDateTime.now())
+                .planExecuteDate(LocalDateTime.now())
+                .factExecuteDate(null)
+                .status(StatusE.OPEN)
                 .build();
     }
 
@@ -188,18 +207,55 @@ public class TestUtils {
 
         return ClaimDto.builder()
                 // TODO: убрать hardcode
-                .id(27)
+                .id(87)
                 .title("Title")
                 .description("description")
-
-                .creator(getUserDto())
-                .executor(null)
+                .creatorId(3)
+                .executorId(null)
                 .planExecuteDate(LocalDateTime.now().withNano(0))
                 .createDate(LocalDateTime.now().plusDays(2).withNano(0))
                 .factExecuteDate(null)
                 .status(StatusE.OPEN)
                 .build();
     }
+
+    public static ClaimDto getClaimDtoInProgress() {
+
+        return ClaimDto.builder()
+                // TODO: убрать hardcode
+                .id(87)
+                .title("Title")
+                .description("description")
+                .creatorId(3)
+                .executorId(3)
+                .planExecuteDate(LocalDateTime.now().withNano(0))
+                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .factExecuteDate(null)
+                .status(StatusE.IN_PROGRESS)
+                .build();
+    }
+
+
+    public static ClaimCommentDto getClaimCommentDto() {
+        return ClaimCommentDto.builder()
+                .id(24)
+                .claimId(2)
+                .creatorId(2)
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
+    public static ClaimComment getClaimComment(Claim claim) {
+        return ClaimComment.builder()
+                .id(23)
+                .claim(claim)
+                .creator(getUser())
+                .description("description")
+                .createDate(LocalDateTime.now())
+                .build();
+    }
+
 
     public static WishComment getWishComment(StatusE wishStatus) {
         return WishComment.builder()
@@ -221,22 +277,6 @@ public class TestUtils {
                 .build();
     }
 
-    public static Claim getClaimInProgress() {
-
-        return Claim.builder()
-                // TODO: убрать hardcode
-                .id(27)
-                .title("title")
-                .description("description")
-
-                .creator(getUser())
-                .executor(getUser())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
-                .build();
-    }
 
     public static News getNews() {
         return News.builder()
