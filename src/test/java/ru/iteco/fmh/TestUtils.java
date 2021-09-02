@@ -291,6 +291,11 @@ public class TestUtils {
                 .build();
     }
 
+    public static News getNews(LocalDateTime publishDate) {
+        News news = getNews();
+        news.setPublishDate(publishDate);
+        return news;
+    }
 
     public static NewsCategory getNewsCategory() {
         return NewsCategory.builder()
@@ -302,8 +307,8 @@ public class TestUtils {
     public static NewsDto getNewsDto() {
         return NewsDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .creator(getUserDto())
-                .newsCategory(getNewsCategoryDto())
+                .creatorId(Integer.valueOf(getNumeric(2)))
+                .newsCategoryId(Integer.valueOf(getNumeric(2)))
                 .createDate(LocalDateTime.now())
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
