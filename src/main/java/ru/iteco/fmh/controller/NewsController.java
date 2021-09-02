@@ -36,7 +36,7 @@ public class NewsController {
         return newsService.getNews(id);
     }
 
-    @ApiOperation(value = "Создание новой новости")
+    @ApiOperation(value = "cоздание новой новости")
     @PostMapping
     public int createNews(@RequestBody NewsDto dto) {
         return newsService.createNews(dto);

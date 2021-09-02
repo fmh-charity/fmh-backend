@@ -8,7 +8,6 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 
 @Component
-//@RequiredArgsConstructor
 public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
     @Override
     public NewsDto convert(@NonNull News news) {

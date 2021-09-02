@@ -22,8 +22,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> getAllNews() {
         List<News> news = newsRepository
-                .findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueOrderByPublishDateDesc(LocalDateTime.now().withNano(0));
-        return news.stream().map(v -> conversionService.convert(v, NewsDto.class))
+                .findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueOrderByPublishDateDesc(LocalDateTime.now());
+        return news.stream()
+                .map(v -> conversionService.convert(v, NewsDto.class))
                 .collect(Collectors.toList());
     }
 
