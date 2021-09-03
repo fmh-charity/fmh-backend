@@ -43,8 +43,8 @@ public class PatientsController {
 
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public int createPatient(@RequestBody PatientDto patientDto) {
-        return patientService.createPatient(patientDto);
+    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
+        return patientService.createOrUpdatePatient(patientDto);
     }
 
     @ApiOperation(value = "возвращает общую информацию по пациенту")
@@ -81,6 +81,6 @@ public class PatientsController {
     @ApiOperation(value = "изменение пациента")
     @PutMapping
     public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
-        return patientService.updatePatient(patientDto);
+        return patientService.createOrUpdatePatient(patientDto);
     }
 }
