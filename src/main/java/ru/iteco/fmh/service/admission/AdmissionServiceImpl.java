@@ -35,15 +35,9 @@ public class AdmissionServiceImpl implements AdmissionService {
                 .orElse(null);
     }
 
-    @Override
-    public int createAdmission(AdmissionDto admissionDto) {
-        Admission admission = conversionService.convert(admissionDto, Admission.class);
-        return admissionRepository.save(admission).getId();
-    }
-
     @Transactional
     @Override
-    public AdmissionDto updateAdmission(AdmissionDto admissionDto) {
+    public AdmissionDto createOrUpdateAdmission(AdmissionDto admissionDto) {
         Admission admission = conversionService.convert(admissionDto, Admission.class);
         admission = admissionRepository.save(admission);
         return conversionService.convert(admission, AdmissionDto.class);
