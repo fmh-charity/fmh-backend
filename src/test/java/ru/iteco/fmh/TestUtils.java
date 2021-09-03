@@ -86,8 +86,6 @@ public class TestUtils {
                 .birthDate(LocalDate.now())
                 .currentAdmission(Admission.builder().build())
                 .build();
-        String shortName = getShortName(patient.getFirstName(), patient.getLastName(), patient.getMiddleName());
-        patient.setShortPatientName(shortName);
         return patient;
     }
 
@@ -157,8 +155,6 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .build();
-        String shortName = getShortName(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getMiddleName());
-        patientDto.setShortPatientName(shortName);
         return patientDto;
     }
 
