@@ -69,38 +69,18 @@ public class PatientServiceTest {
         );
     }
 
-    @Test
-    public void createPatientShouldPassSuccess() {
-        // given
-        Patient patient = getPatient();
-        patient.setId(7);
-        PatientDto dto = conversionService.convert(patient, PatientDto.class);
-
-        when(patientRepository.save(any())).thenReturn(patient);
-
-        Integer resultId = sut.createPatient(dto);
-
-        assertEquals(7, resultId);
-    }
-
 
     @Test
-    public void updatePatientShouldPassSuccess() {
+    public void createOrUpdatePatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
 
-        PatientDto result = sut.updatePatient(given);
+        PatientDto result = sut.createOrUpdatePatient(given);
 
-        assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
-                () -> assertEquals(given.getFirstName(), result.getFirstName()),
-                () -> assertEquals(given.getLastName(), result.getLastName()),
-                () -> assertEquals(given.getMiddleName(), result.getMiddleName())
-        );
+        assertEquals(given, result);
     }
 
 
@@ -129,9 +109,9 @@ public class PatientServiceTest {
     private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(TestUtils.getAlphabeticString())
-                .lastName(TestUtils.getAlphabeticString())
-                .middleName(TestUtils.getAlphabeticString())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
@@ -139,9 +119,9 @@ public class PatientServiceTest {
 
     private Patient getEmptyAdmissionPatient() {
         return Patient.builder()
-                .firstName(TestUtils.getAlphabeticString())
-                .lastName(TestUtils.getAlphabeticString())
-                .middleName(TestUtils.getAlphabeticString())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();

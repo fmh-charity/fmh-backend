@@ -59,23 +59,20 @@ public class PatientsControllerTest {
     @Test
     public void createPatientShouldPassSuccess() {
         //given
-        PatientDto given = getPatientDto();
+        PatientDto givenDto = getPatientDto();
+        givenDto.setId(0);
 
-        Integer id = sut.createPatient(given);
+        PatientDto resultDto = sut.createPatient(givenDto);
 
-        assertNotNull(id);
+        Integer resultId = resultDto.getId();
 
-        Patient result = patientRepository.findById(id).get();
+        assertNotNull(resultId);
 
-        assertAll(
-                () -> assertEquals(given.getFirstName(), result.getFirstName()),
-                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
-                () -> assertEquals(given.getLastName(), result.getLastName()),
-                () -> assertEquals(given.getBirthDate(), result.getBirthDate())
-        );
+        givenDto.setId(resultId);
+        assertEquals(givenDto, resultDto);
 
-        // deleting result entity
-        patientRepository.deleteById(id);
+        // AFTER - deleting result entity
+        patientRepository.deleteById(resultId);
     }
 
     @Test
@@ -83,18 +80,15 @@ public class PatientsControllerTest {
         // given
         int patientId = 1;
         PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
-        String newLastName = "new lastName";
-
-        assertNotEquals(given.getLastName(), newLastName);
-
-        given.setLastName(newLastName);
+        String initialLastName = given.getLastName();
+        given.setLastName("newLastName");
 
         PatientDto result = sut.updatePatient(given);
 
-        assertEquals(given.getLastName(), result.getLastName());
+        assertEquals(given, result);
 
         //after
-        result.setLastName("Patient1-lastname");
+        result.setLastName(initialLastName);
         patientRepository.save(conversionService.convert(result,Patient.class));
     }
 

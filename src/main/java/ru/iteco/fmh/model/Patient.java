@@ -37,12 +37,6 @@ public class Patient {
 
     boolean deleted;
 
-    @Formula("CONCAT_WS(' ', last_name ,"
-            + "CONCAT_WS('.', SUBSTRING(UPPER(first_name),1,1), "
-            + "SUBSTRING(UPPER(middle_name),1,1) )"
-            + ")")
-    String shortPatientName;
-
     public AdmissionsStatus getStatus() {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
     }

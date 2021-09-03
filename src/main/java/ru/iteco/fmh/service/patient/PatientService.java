@@ -14,18 +14,11 @@ public interface PatientService {
     List<PatientAdmissionDto> getAllPatientsByStatus(List<String> patientStatusList);
 
     /**
-     * создает новую карточку пациента
-     * @param patientDto информация по новому пациенту
-     * @return id карточки пациента
-     */
-    int createPatient(PatientDto patientDto);
-
-    /**
-     * обновляет информацию о пациенте
+     * создает новую карточку пациента/обновляет информацию о пациенте
      * @param patientDto информация по карточке пациента для обновления
-     * @return обновленная сущность
+     * @return сущность
      */
-    PatientDto updatePatient(PatientDto patientDto);
+    PatientDto createOrUpdatePatient(PatientDto patientDto);
 
     /**
      * возвращает полную инфу по конкретному пациенту

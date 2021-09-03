@@ -86,8 +86,6 @@ public class TestUtils {
                 .birthDate(LocalDate.now())
                 .currentAdmission(Admission.builder().build())
                 .build();
-        String shortName = getShortName(patient.getFirstName(), patient.getLastName(), patient.getMiddleName());
-        patient.setShortPatientName(shortName);
         return patient;
     }
 
@@ -157,8 +155,6 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
                 .build();
-        String shortName = getShortName(patientDto.getFirstName(), patientDto.getLastName(), patientDto.getMiddleName());
-        patientDto.setShortPatientName(shortName);
         return patientDto;
     }
 
@@ -168,11 +164,11 @@ public class TestUtils {
 
     public static Admission getAdmission(AdmissionsStatus status) {
         return Admission.builder()
-                .id(Integer.valueOf(getNumeric(1)))
+                .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
-                .planDateIn(null)
+                .planDateIn(LocalDateTime.now())
                 .planDateOut(null)
-                .factDateIn(LocalDateTime.now())
+                .factDateIn(null)
                 .factDateOut(null)
                 .status(status)
                 .room(getRoom())
@@ -187,14 +183,14 @@ public class TestUtils {
 
     public static AdmissionDto getAdmissionDto(AdmissionsStatus status) {
         return AdmissionDto.builder()
-                .id(Integer.valueOf(getNumeric(1)))
-                .patientId(Integer.valueOf(getNumeric(1)))
-                .planDateIn(null)
+                .id(Integer.valueOf(getNumeric(2)))
+                .patientId(Integer.valueOf(getNumeric(2)))
+                .planDateIn(LocalDateTime.now())
                 .planDateOut(null)
-                .factDateIn(LocalDateTime.now())
+                .factDateIn(null)
                 .factDateOut(null)
                 .status(status)
-                .roomId(Integer.valueOf(getNumeric(1)))
+                .roomId(Integer.valueOf(getNumeric(2)))
                 .comment(getAlphabeticString())
                 .build();
     }

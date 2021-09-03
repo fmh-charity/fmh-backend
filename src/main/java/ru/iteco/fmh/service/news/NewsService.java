@@ -14,14 +14,6 @@ public interface NewsService {
     List<NewsDto> getAllNews();
 
     /**
-     * создает новую новость
-     *
-     * @param newsDto информация по новой новости
-     * @return id сохранненой новости
-     */
-    int createNews(NewsDto newsDto);
-
-    /**
      * возвращает новость для просмотра
      *
      * @param id ид новости
@@ -30,18 +22,17 @@ public interface NewsService {
     NewsDto getNews(int id);
 
     /**
-     * обновляет новость
+     * создает новую новость/обновляет новость
      *
      * @param newsDto информация по новости для обновления
-     * @return обновленная сущность
+     * @return сущность
      */
-    NewsDto updateNews(NewsDto newsDto);
+    NewsDto createOrUpdateNews(NewsDto newsDto);
 
     /**
      * удаление новости
      *
      * @param id ид новости
-     * @return id удаленной новости
      */
-    int deleteNews(int id);
+    void deleteNews(int id);
 }

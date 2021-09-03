@@ -9,8 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.AdmissionsController;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.model.admission.Admission;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.TestUtils.*;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -40,23 +42,38 @@ public class AdmissionsControllerTest {
     @Test
     public void createAdmissionShouldPassSuccess() {
         // given
-        int id = 1;
-        AdmissionDto given = conversionService.convert(admissionRepository.findById(id).get(), AdmissionDto.class);
+        AdmissionDto givenDto = getAdmissionDto();
+        givenDto.setId(0);
+        givenDto.setPatientId(1);
+        givenDto.setRoomId(1);
 
-        AdmissionDto result = sut.createAdmission(given);
+        AdmissionDto resultDto = sut.createAdmission(givenDto);
 
-        assertEquals(given, result);
+        Integer resultId = resultDto.getId();
+
+        assertNotNull(resultId);
+
+        givenDto.setId(resultId);
+        assertEquals(givenDto, resultDto);
+
+        // After
+        admissionRepository.deleteById(resultId);
     }
 
     @Test
-    public void createOrUpdateAdmissionShouldPassSuccess() {
+    public void updateAdmissionShouldPassSuccess() {
         // given
-        int id = 3;
-        AdmissionDto given = conversionService.convert(admissionRepository.findById(id).get(), AdmissionDto.class);
-        given.setComment("new comment");
+        int id = 1;
+        AdmissionDto givenDto = conversionService.convert(admissionRepository.findById(id).get(), AdmissionDto.class);
+        String initialComment = givenDto.getComment();
+        givenDto.setComment("new comment");
 
-        AdmissionDto result = sut.updateAdmission(given);
+        AdmissionDto result = sut.updateAdmission(givenDto);
 
-        assertEquals(given, result);
+        assertEquals(givenDto, result);
+
+        // After
+        result.setComment(initialComment);
+        admissionRepository.save(conversionService.convert(result, Admission.class));
     }
 }

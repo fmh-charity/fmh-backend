@@ -31,15 +31,9 @@ public class PatientServiceImpl implements PatientService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public int createPatient(PatientDto dto) {
-        Patient entity = conversionService.convert(dto, Patient.class);
-        return patientRepository.save(entity).getId();
-    }
-
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
+    public PatientDto createOrUpdatePatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
         patient = patientRepository.save(patient);
         return conversionService.convert(patient, PatientDto.class);
@@ -47,10 +41,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientDto getPatient(int id) {
-        Patient patient = patientRepository.findById(id).orElse(null);
-        if (patient == null) {
-            throw new IllegalArgumentException("Пациента с таким ID не существует");
-        }
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Пациента с таким ID не существует"));
+
         return conversionService.convert(patient, PatientDto.class);
     }
 

@@ -11,12 +11,12 @@ import java.time.LocalDate;
 
 @ApiModel(description = "основная информация по пациенту")
 @Builder
-@AllArgsConstructor//generates a constructor with 1 parameter for each field in your class
-@NoArgsConstructor//will generate a constructor with no parameters
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class PatientDto {
     @ApiModelProperty("id пациента")
-    private Integer id;
+    private int id;
     @ApiModelProperty("имя пациента")
     private String firstName;
     @ApiModelProperty("фамилия пациента")
@@ -25,14 +25,4 @@ public class PatientDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private LocalDate birthDate;
-    @ApiModelProperty("ФИО пациента, в формате \"Кузнецова Н.П.\"")
-    private String shortPatientName;
-
-
-    public PatientDto(String firstName, String lastName, String middleName, LocalDate birthDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.birthDate = birthDate;
-    }
 }
