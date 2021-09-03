@@ -164,7 +164,7 @@ public class TestUtils {
 
     public static Admission getAdmission(AdmissionsStatus status) {
         return Admission.builder()
-                .id(Integer.valueOf(getNumeric(1)))
+                .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
                 .planDateIn(LocalDateTime.now())
                 .planDateOut(null)
@@ -183,14 +183,14 @@ public class TestUtils {
 
     public static AdmissionDto getAdmissionDto(AdmissionsStatus status) {
         return AdmissionDto.builder()
-                .id(Integer.valueOf(getNumeric(1)))
-                .patientId(Integer.valueOf(getNumeric(1)))
+                .id(Integer.valueOf(getNumeric(2)))
+                .patientId(Integer.valueOf(getNumeric(2)))
                 .planDateIn(LocalDateTime.now())
                 .planDateOut(null)
                 .factDateIn(null)
                 .factDateOut(null)
                 .status(status)
-                .roomId(Integer.valueOf(getNumeric(1)))
+                .roomId(Integer.valueOf(getNumeric(2)))
                 .comment(getAlphabeticString())
                 .build();
     }

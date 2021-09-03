@@ -43,13 +43,19 @@ public class NewsControllerTest {
     @Test
     public void createNewsShouldPassSuccess() {
         // given
-        NewsDto newsDto = getNewsDto();
-        newsDto.setNewsCategoryId(1);
-        newsDto.setCreatorId(1);
+        NewsDto givenDto = getNewsDto();
+        givenDto.setId(0);
+        givenDto.setNewsCategoryId(1);
+        givenDto.setCreatorId(1);
 
-        int resultId = sut.createNews(newsDto);
+        NewsDto resultDto = sut.createNews(givenDto);
+
+        Integer resultId = resultDto.getId();
 
         assertNotNull(resultId);
+
+        givenDto.setId(resultId);
+        assertEquals(givenDto, resultDto);
 
         // AFTER - deleting result entity
         newsRepository.deleteById(resultId);
@@ -84,7 +90,7 @@ public class NewsControllerTest {
 
         NewsDto result = sut.updateNews(given);
 
-        assertEquals(given.getDescription(), result.getDescription());
+        assertEquals(given, result);
 
         // After
         given.setDescription(initialDescription);
@@ -96,9 +102,9 @@ public class NewsControllerTest {
         // given
         int newsId = 1;
 
-        int resultId = sut.deleteNews(newsId);
+        sut.deleteNews(newsId);
 
-        News result = newsRepository.findById(resultId).get();
+        News result = newsRepository.findById(newsId).get();
 
         assertTrue(result.isDeleted());
 

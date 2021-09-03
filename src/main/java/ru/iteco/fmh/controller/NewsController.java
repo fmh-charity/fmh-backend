@@ -38,19 +38,19 @@ public class NewsController {
 
     @ApiOperation(value = "cоздание новой новости")
     @PostMapping
-    public int createNews(@RequestBody NewsDto dto) {
-        return newsService.createNews(dto);
+    public NewsDto createNews(@RequestBody NewsDto dto) {
+        return newsService.createOrUpdateNews(dto);
     }
 
     @ApiOperation(value = "обновляет информацию по новости")
     @PutMapping
     public NewsDto updateNews(@RequestBody NewsDto dto) {
-        return newsService.updateNews(dto);
+        return newsService.createOrUpdateNews(dto);
     }
 
     @ApiOperation(value = "удаление новости")
     @DeleteMapping("/{id}")
-    public int deleteNews(@ApiParam(value = "идентификатор новости", required = true) @PathVariable("id") int id) {
-        return newsService.deleteNews(id);
+    public void deleteNews(@ApiParam(value = "идентификатор новости", required = true) @PathVariable("id") int id) {
+        newsService.deleteNews(id);
     }
 }

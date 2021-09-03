@@ -49,18 +49,6 @@ public class NewsServiceTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createNewsShouldPassSuccess() {
-        // given
-        News news = getNews();
-        NewsDto dto = conversionService.convert(news, NewsDto.class);
-
-        when(newsRepository.save(any())).thenReturn(news);
-
-        int resultId = sut.createNews(dto);
-
-        assertNotNull(resultId);
-    }
 
     @Test
     public void getNewsShouldPassSuccess() {
@@ -77,14 +65,14 @@ public class NewsServiceTest {
     }
 
     @Test
-    public void updateNewsShouldPassSuccess() {
+    public void createOrUpdateNewsShouldPassSuccess() {
         // given
         News news = getNews();
         NewsDto givenDto = conversionService.convert(news, NewsDto.class);
 
         when(newsRepository.save(any())).thenReturn(news);
 
-        NewsDto result = sut.updateNews(givenDto);
+        NewsDto result = sut.createOrUpdateNews(givenDto);
 
         assertEquals(givenDto, result);
     }

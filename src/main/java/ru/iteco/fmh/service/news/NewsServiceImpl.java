@@ -28,11 +28,6 @@ public class NewsServiceImpl implements NewsService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public int createNews(NewsDto newsDto) {
-        News news = conversionService.convert(newsDto, News.class);
-        return newsRepository.save(news).getId();
-    }
 
     @Override
     public NewsDto getNews(int id) {
@@ -44,19 +39,19 @@ public class NewsServiceImpl implements NewsService {
 
     @Transactional
     @Override
-    public NewsDto updateNews(NewsDto newsDto) {
+    public NewsDto createOrUpdateNews(NewsDto newsDto) {
         News news = conversionService.convert(newsDto, News.class);
         news = newsRepository.save(news);
         return conversionService.convert(news, NewsDto.class);
     }
 
     @Override
-    public int deleteNews(int id) {
+    public void deleteNews(int id) {
         News news = newsRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
         news.setDeleted(true);
 
-        return newsRepository.save(news).getId();
+        newsRepository.save(news);
     }
 }

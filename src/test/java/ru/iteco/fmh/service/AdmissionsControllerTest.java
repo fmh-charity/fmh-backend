@@ -44,6 +44,8 @@ public class AdmissionsControllerTest {
         // given
         AdmissionDto givenDto = getAdmissionDto();
         givenDto.setId(0);
+        givenDto.setPatientId(1);
+        givenDto.setRoomId(1);
 
         AdmissionDto resultDto = sut.createAdmission(givenDto);
 
