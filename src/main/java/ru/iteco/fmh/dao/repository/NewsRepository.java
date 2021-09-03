@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
-    List<News> findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueOrderByPublishDateDesc(LocalDateTime publishDate);
+    List<News> findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueAndDeletedIsFalseOrderByPublishDateDesc(LocalDateTime publishDate);
 }
