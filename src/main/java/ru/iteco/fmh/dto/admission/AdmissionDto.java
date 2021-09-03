@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 @ApiModel(description = "информация по госпитализации")
 @Builder
 @Data
-@AllArgsConstructor//generates a constructor with 1 parameter for each field in your class
-@NoArgsConstructor//will generate a constructor with no parameters
+@AllArgsConstructor
+@NoArgsConstructor
 public class AdmissionDto {
     @ApiModelProperty("идентификатор госпитализации")
-    private Integer id;
-    @ApiModelProperty("пациент")
-    private PatientDto patient;
+    private int id;
+    @ApiModelProperty("идентификатор пациента")
+    private int patientId;
 
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
@@ -38,8 +38,8 @@ public class AdmissionDto {
 
     @ApiModelProperty(value = "статус госпитализации")
     AdmissionsStatus status;
-    @ApiModelProperty(value = "палата")
-    Room room;
+    @ApiModelProperty(value = "идентификатор палаты")
+    int roomId;
     @ApiModelProperty(value = "комментарий")
     private String comment;
 }

@@ -32,13 +32,13 @@ public class AdmissionsController {
 
     @ApiOperation(value = "создание госпитализации")
     @PostMapping
-    public int createAdmission(@RequestBody AdmissionDto admissionDto) {
-        return admissionService.createAdmission(admissionDto);
+    public AdmissionDto createAdmission(@RequestBody AdmissionDto admissionDto) {
+        return admissionService.createOrUpdateAdmission(admissionDto);
     }
 
     @ApiOperation(value = "обновляет информацию по госпитализации")
     @PutMapping
     public AdmissionDto updateAdmission(@RequestBody AdmissionDto admissionDto) {
-        return admissionService.updateAdmission(admissionDto);
+        return admissionService.createOrUpdateAdmission(admissionDto);
     }
 }

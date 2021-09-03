@@ -1,5 +1,6 @@
 package ru.iteco.fmh;
 
+import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
@@ -8,6 +9,8 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.model.Block;
+import ru.iteco.fmh.model.NurseStation;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
@@ -24,6 +27,8 @@ import ru.iteco.fmh.model.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
+
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 
 
 public class TestUtils {
@@ -158,6 +163,10 @@ public class TestUtils {
     }
 
     public static Admission getAdmission() {
+        return getAdmission(ACTIVE);
+    }
+
+    public static Admission getAdmission(AdmissionsStatus status) {
         return Admission.builder()
                 .id(Integer.valueOf(getNumeric(1)))
                 .patient(getPatient())
@@ -165,8 +174,27 @@ public class TestUtils {
                 .planDateOut(null)
                 .factDateIn(LocalDateTime.now())
                 .factDateOut(null)
-                .status(AdmissionsStatus.ACTIVE)
-                .room(new Room())
+                .status(status)
+                .room(getRoom())
+                .comment(getAlphabeticString())
+                .deleted(false)
+                .build();
+    }
+
+    public static AdmissionDto getAdmissionDto() {
+        return getAdmissionDto(ACTIVE);
+    }
+
+    public static AdmissionDto getAdmissionDto(AdmissionsStatus status) {
+        return AdmissionDto.builder()
+                .id(Integer.valueOf(getNumeric(1)))
+                .patientId(Integer.valueOf(getNumeric(1)))
+                .planDateIn(null)
+                .planDateOut(null)
+                .factDateIn(LocalDateTime.now())
+                .factDateOut(null)
+                .status(status)
+                .roomId(Integer.valueOf(getNumeric(1)))
                 .comment(getAlphabeticString())
                 .build();
     }
@@ -321,6 +349,36 @@ public class TestUtils {
         return NewsCategoryDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .name(getAlphabeticString())
+                .build();
+    }
+
+    public static Room getRoom() {
+        return Room.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(getAlphabeticString())
+                .block(getBlock())
+                .nurseStation(getNurseStation())
+                .maxOccupancy(Integer.valueOf(getNumeric(2)))
+                .comment(getAlphabeticString())
+                .deleted(false)
+                .build();
+    }
+
+    public static Block getBlock() {
+        return Block.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(getAlphabeticString())
+                .comment(getAlphabeticString())
+                .deleted(false)
+                .build();
+    }
+
+    private static NurseStation getNurseStation() {
+        return NurseStation.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(getAlphabeticString())
+                .comment(getAlphabeticString())
+                .deleted(false)
                 .build();
     }
 }

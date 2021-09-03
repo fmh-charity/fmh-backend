@@ -7,16 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +35,8 @@ public class AdmissionServiceTest {
         // given
         Admission admission1 = getAdmission();
         Admission admission2 = getAdmission();
-        AdmissionDto admissionDto1 = admissionToDto(admission1);
-        AdmissionDto admissionDto2 = admissionToDto(admission2);
+        AdmissionDto admissionDto1 = conversionService.convert(admission1, AdmissionDto.class);
+        AdmissionDto admissionDto2 = conversionService.convert(admission2, AdmissionDto.class);
         int patientId = 1;
 
         when(admissionRepository.findAllByPatient_IdAndDeletedIsFalse(any()))
@@ -57,7 +51,7 @@ public class AdmissionServiceTest {
     public void getAdmissionShouldPassSuccess() {
         // given
         Admission admission = getAdmission();
-        AdmissionDto admissionDto = admissionToDto(admission);
+        AdmissionDto admissionDto = conversionService.convert(admission, AdmissionDto.class);
         int admissionId = 1;
 
         when(admissionRepository.findById(any())).thenReturn(Optional.of(admission));
@@ -67,60 +61,17 @@ public class AdmissionServiceTest {
         assertEquals(admissionDto, result);
     }
 
+
     @Test
-    public void createAdmissionShouldPassSuccess() {
+    public void createOrUpdateAdmissionShouldPassSuccess() {
         // given
         Admission admission = getAdmission();
-        AdmissionDto admissionDto = admissionToDto(admission);
+        AdmissionDto givenDto = conversionService.convert(admission, AdmissionDto.class);
 
         when(admissionRepository.save(any())).thenReturn(admission);
 
-        int result = sut.createAdmission(admissionDto);
+        AdmissionDto result = sut.createOrUpdateAdmission(givenDto);
 
-        assertEquals(admission.getId(), result);
-    }
-
-    @Test
-    public void updateAdmissionShouldPassSuccess() {
-        // given
-        Admission expected = getAdmission();
-        AdmissionDto admissionDto = admissionToDto(expected);
-
-        when(admissionRepository.save(any())).thenReturn(expected);
-
-        AdmissionDto result = sut.updateAdmission(admissionDto);
-
-        assertAll(
-                ()-> assertEquals(expected.getId(), result.getId()),
-                ()-> assertEquals(patientToDto(expected.getPatient()), result.getPatient()),
-                ()-> assertEquals(expected.getComment(), result.getComment()),
-                ()-> assertEquals(expected.getStatus(), result.getStatus()),
-                ()-> assertEquals(expected.getRoom(), result.getRoom()),
-                ()-> assertEquals(expected.getFactDateIn(), result.getFactDateIn()),
-                ()-> assertEquals(expected.getFactDateOut(), result.getFactDateOut()),
-                ()-> assertEquals(expected.getPlanDateIn(), result.getPlanDateIn()),
-                ()-> assertEquals(expected.getPlanDateOut(), result.getPlanDateOut())
-        );
-    }
-
-    private Admission getAdmission() {
-        return Admission.builder()
-                .patient(Patient.builder().build())
-                .comment(TestUtils.getAlphabeticString())
-                .id(Integer.valueOf(getNumeric(2)))
-                .factDateIn(LocalDateTime.now().withNano(0))
-                .factDateOut(LocalDateTime.now().withNano(0))
-                .planDateIn(LocalDateTime.now().withNano(0))
-                .planDateOut(LocalDateTime.now().withNano(0))
-                .status(AdmissionsStatus.ACTIVE)
-                .build();
-    }
-
-    private AdmissionDto admissionToDto(Admission admission) {
-        return conversionService.convert(admission, AdmissionDto.class);
-    }
-
-    private PatientDto patientToDto(Patient patient) {
-        return conversionService.convert(patient, PatientDto.class);
+        assertEquals(givenDto, result);
     }
 }

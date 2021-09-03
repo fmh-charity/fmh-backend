@@ -6,4 +6,5 @@ import ru.iteco.fmh.model.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
+    Room findRoomById(Integer id);
 }
