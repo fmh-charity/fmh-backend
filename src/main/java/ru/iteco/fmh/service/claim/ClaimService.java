@@ -62,7 +62,7 @@ public interface ClaimService {
      * @param claimId ид заявки
      * @return заявку с добпвленным коментом
      */
-    int addComment(int claimId, ClaimCommentDto claimCommentDto);
+    ClaimCommentDto addComment(int claimId, ClaimCommentDto claimCommentDto);
 
     /**
      * возвращает комментарий заявки для просмотра

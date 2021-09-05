@@ -260,7 +260,6 @@ public class TestUtils {
 
     public static ClaimCommentDto getClaimCommentDto() {
         return ClaimCommentDto.builder()
-                .id(24)
                 .claimId(2)
                 .creatorId(2)
                 .description("description")
@@ -270,7 +269,6 @@ public class TestUtils {
 
     public static ClaimComment getClaimComment(Claim claim) {
         return ClaimComment.builder()
-                .id(23)
                 .claim(claim)
                 .creator(getUser())
                 .description("description")

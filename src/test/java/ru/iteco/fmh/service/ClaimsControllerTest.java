@@ -257,9 +257,9 @@ public class ClaimsControllerTest {
         claimCommentDto.setCreatorId(userRepository.findUserById(claimCommentDto.getCreatorId()).getId());
         claimCommentDto.setClaimId(claimRepository.findClaimById(claimCommentDto.getClaimId()).getId());
 
-        int idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
+        ClaimCommentDto idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
         assertNotNull(idNotNullExecutor);
-        ClaimComment result = claimCommentRepository.findById(idNotNullExecutor).get();
+        ClaimComment result = claimCommentRepository.findById(idNotNullExecutor.getId()).get();
 
         assertAll(
                 () -> assertEquals(claimCommentDto.getDescription(), result.getDescription()),
@@ -270,7 +270,7 @@ public class ClaimsControllerTest {
         );
 
         // deleting result entity
-        claimCommentRepository.deleteById(idNotNullExecutor);
+        claimCommentRepository.deleteById(idNotNullExecutor.getId());
     }
 
 
