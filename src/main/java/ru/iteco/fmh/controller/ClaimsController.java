@@ -41,7 +41,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public Integer createClaim(@RequestBody ClaimDto request) {
+    public ClaimDto createClaim(@RequestBody ClaimDto request) {
         return claimService.createClaim(request);
     }
 
@@ -80,7 +80,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание нового комментария к заявке")
     @PostMapping("{id}/comments")
-    public int createClaimComment(
+    public ClaimCommentDto createClaimComment(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int id,
             @RequestBody ClaimCommentDto request) {
         return claimService.addComment(id, request);

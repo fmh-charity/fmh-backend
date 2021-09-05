@@ -78,25 +78,27 @@ public class ClaimsControllerTest {
         ClaimDto given = getClaimDtoOpen();
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
-        int idNullExecutor = sut.createClaim(given);
-        assertNotNull(idNullExecutor);
-        Claim result = claimRepository.findById(idNullExecutor).get();
+        ClaimDto claimDtoNullExecutor = sut.createClaim(given);
+        System.out.println(claimDtoNullExecutor);
+        assertNotNull(claimDtoNullExecutor.getId());
+        Claim result = claimRepository.findById(claimDtoNullExecutor.getId()).get();
+        System.out.println(result);
         assertEquals(given.getStatus(), result.getStatus());
 
         assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(),result.getCreator().getId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutor()),
-                () -> assertNull(given.getExecutorId()),
-                () -> assertNull(result.getExecutor()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate())
+                () -> assertEquals(claimDtoNullExecutor.getDescription(), result.getDescription()),
+                () -> assertEquals(claimDtoNullExecutor.getTitle(), result.getTitle()),
+                () -> assertEquals(claimDtoNullExecutor.getCreatorId(), result.getCreator().getId()),
+                () -> assertEquals(claimDtoNullExecutor.getExecutorId(), result.getExecutor()),
+                () -> assertNull(claimDtoNullExecutor.getExecutorId()),
+                () -> assertNull(claimDtoNullExecutor.getExecutorId()),
+                () -> assertEquals(claimDtoNullExecutor.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(claimDtoNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(claimDtoNullExecutor.getFactExecuteDate(), result.getFactExecuteDate())
         );
 
         // deleting result entity
-        claimRepository.deleteById(idNullExecutor);
+        claimRepository.deleteById(claimDtoNullExecutor.getId());
     }
 
     @Test
@@ -106,25 +108,25 @@ public class ClaimsControllerTest {
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
         given.setExecutorId(userRepository.findUserById(given.getExecutorId()).getId());
-        int idNotNullExecutor = sut.createClaim(given);
-        assertNotNull(idNotNullExecutor);
-        Claim result = claimRepository.findById(idNotNullExecutor).get();
+        ClaimDto claimDtoNotNullExecutor = sut.createClaim(given);
+        assertNotNull(claimDtoNotNullExecutor.getId());
+        Claim result = claimRepository.findById(claimDtoNotNullExecutor.getId()).get();
         assertEquals(given.getStatus(), result.getStatus());
 
         assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(),result.getCreator().getId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutor().getId()),
-                () -> assertNotNull(given.getExecutorId()),
+                () -> assertEquals(claimDtoNotNullExecutor.getDescription(), result.getDescription()),
+                () -> assertEquals(claimDtoNotNullExecutor.getTitle(), result.getTitle()),
+                () -> assertEquals(claimDtoNotNullExecutor.getCreatorId(), result.getCreator().getId()),
+                () -> assertEquals(claimDtoNotNullExecutor.getExecutorId(), result.getExecutor().getId()),
+                () -> assertNotNull(claimDtoNotNullExecutor.getExecutorId()),
                 () -> assertNotNull(result.getExecutor()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate())
+                () -> assertEquals(claimDtoNotNullExecutor.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(claimDtoNotNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(claimDtoNotNullExecutor.getFactExecuteDate(), result.getFactExecuteDate())
         );
 
         // deleting result entity
-        claimRepository.deleteById(idNotNullExecutor);
+        claimRepository.deleteById(claimDtoNotNullExecutor.getId());
     }
 
 
@@ -188,8 +190,8 @@ public class ClaimsControllerTest {
                 () -> assertEquals(given.getTitle(), result.getTitle()),
                 () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertNull (result.getExecutorId()),
-                () -> assertNull (given.getExecutorId()),
+                () -> assertNull(result.getExecutorId()),
+                () -> assertNull(given.getExecutorId()),
                 () -> assertEquals(given.getStatus(), result.getStatus()),
                 () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
@@ -255,9 +257,9 @@ public class ClaimsControllerTest {
         claimCommentDto.setCreatorId(userRepository.findUserById(claimCommentDto.getCreatorId()).getId());
         claimCommentDto.setClaimId(claimRepository.findClaimById(claimCommentDto.getClaimId()).getId());
 
-        int idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
+        ClaimCommentDto idNotNullExecutor = sut.createClaimComment(2, claimCommentDto);
         assertNotNull(idNotNullExecutor);
-        ClaimComment result = claimCommentRepository.findById(idNotNullExecutor).get();
+        ClaimComment result = claimCommentRepository.findById(idNotNullExecutor.getId()).get();
 
         assertAll(
                 () -> assertEquals(claimCommentDto.getDescription(), result.getDescription()),
@@ -268,7 +270,7 @@ public class ClaimsControllerTest {
         );
 
         // deleting result entity
-        claimCommentRepository.deleteById(idNotNullExecutor);
+        claimCommentRepository.deleteById(idNotNullExecutor.getId());
     }
 
 

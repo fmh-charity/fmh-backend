@@ -44,10 +44,11 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int createClaim(ClaimDto claimDto) {
+    public ClaimDto createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
-        return claimRepository.save(claim).getId();
+        claimRepository.save(claim);
+        return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Override
@@ -92,11 +93,12 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int addComment(int claimId, ClaimCommentDto claimCommentDto) {
+    public ClaimCommentDto addComment(int claimId, ClaimCommentDto claimCommentDto) {
         ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
         claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует")));
-        return claimCommentRepository.save(claimComment).getId();
+        claimCommentRepository.save(claimComment);
+        return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
 
     @Transactional

@@ -29,7 +29,7 @@ public interface ClaimService {
      * @param claimDto информация по новой заявке
      * @return id заявки
      */
-    int createClaim(ClaimDto claimDto);
+    ClaimDto createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра
@@ -62,7 +62,7 @@ public interface ClaimService {
      * @param claimId ид заявки
      * @return заявку с добпвленным коментом
      */
-    int addComment(int claimId, ClaimCommentDto claimCommentDto);
+    ClaimCommentDto addComment(int claimId, ClaimCommentDto claimCommentDto);
 
     /**
      * возвращает комментарий заявки для просмотра
