@@ -44,10 +44,13 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     @Override
-    public int createClaim(ClaimDto claimDto) {
+    public ClaimDto createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
-        return claimRepository.save(claim).getId();
+        System.out.println("Service" + claim.getId());
+        claimRepository.save(claim);
+        System.out.println("Service" + claim.getId());
+        return conversionService.convert(claim, ClaimDto.class);
     }
 
     @Override

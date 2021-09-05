@@ -42,12 +42,24 @@ public class ClaimServiceTest {
         Claim claim = getClaimInProgress();
         claim.setId(6);
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+        dto.setCreatorId(5);
+        dto.setExecutorId(5);
         when(claimRepository.save(any())).thenReturn(claim);
-        Integer resultId = sut.createClaim(dto);
+        ClaimDto result = sut.createClaim(dto);
         assertEquals(claim.getStatus(), IN_PROGRESS);
-        assertEquals(6, resultId);
+        assertAll(
+                () -> assertEquals(dto.getId(), result.getId()),
+                () -> assertEquals(dto.getDescription(), result.getDescription()),
+                () -> assertEquals(dto.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(dto.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(dto.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(dto.getStatus(), result.getStatus()),
+                () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(dto.getCreatorId(), result.getCreatorId())
+        );
+//        assertEquals(6, resultId);
         assertNotNull(dto.getExecutorId());
-        assertNotNull( dto.getCreatorId());
+        assertNotNull(dto.getCreatorId());
     }
     @Test
     public void createClaimShouldPassSuccessExecutorNull() {
@@ -55,11 +67,22 @@ public class ClaimServiceTest {
         Claim claim = getClaimOpen();
         claim.setId(7);
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+        dto.setCreatorId(5);
         when(claimRepository.save(any())).thenReturn(claim);
-        Integer resultId = sut.createClaim(dto);
+        ClaimDto result = sut.createClaim(dto);
         assertNull(dto.getExecutorId());
         assertEquals(claim.getStatus(), dto.getStatus());
-        assertEquals(7, resultId);
+        assertAll(
+                () -> assertEquals(dto.getId(), result.getId()),
+                () -> assertEquals(dto.getDescription(), result.getDescription()),
+                () -> assertEquals(dto.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(dto.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(dto.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(dto.getStatus(), result.getStatus()),
+                () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(dto.getCreatorId(), result.getCreatorId())
+        );
+
     }
 
 

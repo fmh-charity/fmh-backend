@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
 
 
 public class TestUtils {
@@ -231,7 +231,6 @@ public class TestUtils {
 
         return ClaimDto.builder()
                 // TODO: убрать hardcode
-                .id(87)
                 .title("Title")
                 .description("description")
                 .creatorId(3)
@@ -247,7 +246,6 @@ public class TestUtils {
 
         return ClaimDto.builder()
                 // TODO: убрать hardcode
-                .id(87)
                 .title("Title")
                 .description("description")
                 .creatorId(3)

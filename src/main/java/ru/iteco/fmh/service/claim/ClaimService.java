@@ -29,7 +29,7 @@ public interface ClaimService {
      * @param claimDto информация по новой заявке
      * @return id заявки
      */
-    int createClaim(ClaimDto claimDto);
+    ClaimDto createClaim(ClaimDto claimDto);
 
     /**
      * возвращает заявку для просмотра

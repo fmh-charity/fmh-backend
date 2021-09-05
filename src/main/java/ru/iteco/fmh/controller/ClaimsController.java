@@ -41,7 +41,7 @@ public class ClaimsController {
 
     @ApiOperation(value = "Создание новой заявки")
     @PostMapping
-    public Integer createClaim(@RequestBody ClaimDto request) {
+    public ClaimDto createClaim(@RequestBody ClaimDto request) {
         return claimService.createClaim(request);
     }
 
