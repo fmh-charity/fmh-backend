@@ -96,7 +96,7 @@ public class TestUtils {
     }
 
     public static UserDto getUserDto() {
-        UserDto userDto = UserDto.builder()
+        return UserDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
@@ -105,14 +105,10 @@ public class TestUtils {
                 .password(getAlphabeticString())
                 .phoneNumber(getAlphabeticString())
                 .build();
-        String shortName = getShortName(userDto.getFirstName(), userDto.getLastName(), userDto.getMiddleName());
-        userDto.setShortUserName(shortName);
-        return userDto;
-
     }
 
     public static User getUser() {
-        User user = User.builder()
+        return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
                 .password(getAlphabeticString())
@@ -122,10 +118,6 @@ public class TestUtils {
                 .phoneNumber(getAlphabeticString())
                 .email(getAlphabeticString())
                 .build();
-        String shortName = getShortName(user.getFirstName(), user.getLastName(), user.getMiddleName());
-        user.setShortUserName(shortName);
-        return user;
-
     }
 
     public static WishDto getWishDto(StatusE statusE) {
