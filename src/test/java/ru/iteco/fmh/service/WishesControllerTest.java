@@ -20,10 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.TestUtils.getWishDto;
 import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
 import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
 import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
@@ -70,43 +67,43 @@ public class WishesControllerTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createInProgressWishShouldPassSuccess() {
-        //given
-        WishDto givenWishDto = getWishDto();
-        givenWishDto.getPatientId().setId(1);
-        givenWishDto.getExecutorId().setId(1);
-        givenWishDto.getCreatorId().setId(1);
-
-        Integer resultId = sut.createWish(givenWishDto);
-        assertNotNull(resultId);
-
-        Wish result = wishRepository.findById(resultId).get();
-
-        assertEquals(IN_PROGRESS, result.getStatus());
-
-        // AFTER - deleting result entity
-        wishRepository.deleteById(resultId);
-    }
-
-    @Test
-    public void createOpenWishShouldPassSuccess() {
-        //given
-        WishDto givenWishDto = getWishDto();
-        givenWishDto.getPatientId().setId(1);
-        givenWishDto.getCreatorId().setId(1);
-        givenWishDto.setExecutorId(null);
-
-        Integer resultId = sut.createWish(givenWishDto);
-        assertNotNull(resultId);
-
-        Wish result = wishRepository.findById(resultId).get();
-
-        assertEquals(OPEN, result.getStatus());
-
-        // AFTER - deleting result entity
-        wishRepository.deleteById(resultId);
-    }
+//    @Test
+//    public void createInProgressWishShouldPassSuccess() {
+//        //given
+//        WishDto givenWishDto = getWishDto();
+//        givenWishDto.getPatientId().setId(1);
+//        givenWishDto.getExecutorId().setId(1);
+//        givenWishDto.getCreatorId().setId(1);
+//
+//        Integer resultId = sut.createWish(givenWishDto);
+//        assertNotNull(resultId);
+//
+//        Wish result = wishRepository.findById(resultId).get();
+//
+//        assertEquals(IN_PROGRESS, result.getStatus());
+//
+//        // AFTER - deleting result entity
+//        wishRepository.deleteById(resultId);
+//    }
+//
+//    @Test
+//    public void createOpenWishShouldPassSuccess() {
+//        //given
+//        WishDto givenWishDto = getWishDto();
+//        givenWishDto.getPatientId().setId(1);
+//        givenWishDto.getCreatorId().setId(1);
+//        givenWishDto.setExecutorId(null);
+//
+//        Integer resultId = sut.createWish(givenWishDto);
+//        assertNotNull(resultId);
+//
+//        Wish result = wishRepository.findById(resultId).get();
+//
+//        assertEquals(OPEN, result.getStatus());
+//
+//        // AFTER - deleting result entity
+//        wishRepository.deleteById(resultId);
+//    }
 
     @Test
     public void getWishShouldPassSuccess() {
@@ -224,22 +221,22 @@ public class WishesControllerTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createWishCommentShouldPassSuccess() {
-        // given
-        WishCommentDto givenWishCommentDto = getWishCommentDto(OPEN);
-        int wishId = 1;
-        int creatorId = 1;
-        givenWishCommentDto.getWishId().setId(wishId);
-        givenWishCommentDto.getCreatorId().setId(creatorId);
-
-        Integer resultId = sut.createWishComment(wishId, givenWishCommentDto);
-
-        assertNotNull(resultId);
-
-        // AFTER - deleting result entity
-        wishCommentRepository.deleteById(resultId);
-    }
+//    @Test
+//    public void createWishCommentShouldPassSuccess() {
+//        // given
+//        WishCommentDto givenWishCommentDto = getWishCommentDto(OPEN);
+//        int wishId = 1;
+//        int creatorId = 1;
+//        givenWishCommentDto.getWishId().setId(wishId);
+//        givenWishCommentDto.getCreatorId().setId(creatorId);
+//
+//        Integer resultId = sut.createWishComment(wishId, givenWishCommentDto);
+//
+//        assertNotNull(resultId);
+//
+//        // AFTER - deleting result entity
+//        wishCommentRepository.deleteById(resultId);
+//    }
 
     @Test
     public void updateWishCommentShouldPassSuccess() {
