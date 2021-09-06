@@ -26,12 +26,12 @@ class WishDtoToWishConverterTest {
         Wish wish = convert.convert(wishDto);
         assertAll(
                 () -> assertEquals(wishDto.getId(), wish.getId()),
-                () -> assertEquals(wishDto.getPatient(), patientToPatientDtoConverter.convert(wish.getPatient())),
+                () -> assertEquals(wishDto.getPatientId(), patientToPatientDtoConverter.convert(wish.getPatient())),
                 () -> assertEquals(wishDto.getDescription(), wish.getDescription()),
                 () -> assertEquals(wishDto.getPlanExecuteDate(), wish.getPlanExecuteDate()),
                 () -> assertEquals(wishDto.getStatus(), wish.getStatus()),
-                () -> assertEquals(wishDto.getCreator(), userToUserDtoConverter.convert(wish.getCreator())),
-                () -> assertEquals(wishDto.getExecutor(), userToUserDtoConverter.convert(wish.getExecutor()))
+                () -> assertEquals(wishDto.getCreatorId(), userToUserDtoConverter.convert(wish.getCreator())),
+                () -> assertEquals(wishDto.getExecutorId(), userToUserDtoConverter.convert(wish.getExecutor()))
         );
     }
 }

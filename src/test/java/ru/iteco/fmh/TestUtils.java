@@ -129,13 +129,13 @@ public class TestUtils {
     public static WishDto getWishDto() {
 
         return WishDto.builder()
-                .patient(getPatientDto())
+                .patientId(getPatientDto())
                 .description(getAlphabeticString())
                 .planExecuteDate(LocalDateTime.now().withNano(0))
                 .createDate(LocalDateTime.now().withNano(0))
                 .factExecuteDate(null)
-                .executor(getUserDto())
-                .creator(getUserDto())
+                .executorId(getUserDto())
+                .creatorId(getUserDto())
                 .status(StatusE.OPEN)
                 .build();
     }
@@ -282,9 +282,9 @@ public class TestUtils {
     public static WishCommentDto getWishCommentDto(StatusE wishStatus) {
         return WishCommentDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .wish(getWishDto(wishStatus))
+                .wishId(getWishDto(wishStatus))
                 .description(getAlphabeticString())
-                .creator(getUserDto())
+                .creatorId(getUserDto())
                 .createDate(LocalDateTime.now())
                 .build();
     }

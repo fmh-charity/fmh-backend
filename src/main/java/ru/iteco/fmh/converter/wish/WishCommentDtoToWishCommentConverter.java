@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.user.UserDtoToUserConverter;
+import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
@@ -15,19 +16,22 @@ import ru.iteco.fmh.model.user.User;
 @RequiredArgsConstructor
 public class WishCommentDtoToWishCommentConverter implements Converter<WishCommentDto, WishComment> {
 
-    private final UserDtoToUserConverter userDtoToUserConverter;
-    private final WishDtoToWishConverter wishDtoToWishConverter;
+    private final UserRepository userRepository;
+    private final WishRepository wishRepository;
 
     @Override
     public WishComment convert(@NonNull WishCommentDto dto) {
         WishComment wishComment = new WishComment();
         BeanUtils.copyProperties(dto, wishComment);
 
-        Wish wish = dto.getWish() != null ? wishDtoToWishConverter.convert(dto.getWish()) : null;
-        User creator = dto.getCreator() != null ? userDtoToUserConverter.convert(dto.getCreator()) : null;
+        Wish wish = dto.getWishId() != null ? wishRepository.findWishById(dto.getWishId()) : null;
+        User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
 
         wishComment.setWish(wish);
         wishComment.setCreator(creator);
         return wishComment;
     }
 }
+
+
+

@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.StatusE;
 
 import java.time.LocalDateTime;
@@ -21,16 +19,16 @@ public class WishDto {
     @ApiModelProperty("идентификатор записки")
     private Integer id;
     @ApiModelProperty("идентификатор пациента")
-    private PatientDto patient;
+    private Integer patientId;
     @ApiModelProperty("тема просьбы")
     private String title;
 
     @ApiModelProperty("описание записки")
     private String description;
     @ApiModelProperty("идентификатор создателя")
-    private UserDto creator;
+    private Integer creatorId;
     @ApiModelProperty("идентификатор исполнителя")
-    private UserDto executor;
+    private Integer executorId;
     @ApiModelProperty("дата создания")
     private LocalDateTime createDate;
     @ApiModelProperty("плановая дата исполнения")

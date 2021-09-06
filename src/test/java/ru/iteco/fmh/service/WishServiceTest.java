@@ -20,10 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getWish;
+import static ru.iteco.fmh.TestUtils.getWishComment;
+import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
+import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -107,13 +114,13 @@ public class WishServiceTest {
 
         assertAll(
                 () -> assertEquals(givenDto.getId(), resultDto.getId()),
-                () -> assertEquals(givenDto.getPatient(), resultDto.getPatient()),
+                () -> assertEquals(givenDto.getPatientId(), resultDto.getPatientId()),
                 () -> assertEquals(givenDto.getDescription(), resultDto.getDescription()),
                 () -> assertEquals(givenDto.getPlanExecuteDate(), resultDto.getPlanExecuteDate()),
                 () -> assertEquals(givenDto.getFactExecuteDate(), resultDto.getFactExecuteDate()),
                 () -> assertEquals(givenDto.getCreateDate(), resultDto.getCreateDate()),
-                () -> assertEquals(givenDto.getExecutor(), resultDto.getExecutor()),
-                () -> assertEquals(givenDto.getCreator(), resultDto.getCreator())
+                () -> assertEquals(givenDto.getExecutorId(), resultDto.getExecutorId()),
+                () -> assertEquals(givenDto.getCreatorId(), resultDto.getCreatorId())
         );
 
         assertEquals(IN_PROGRESS, givenDto.getStatus());

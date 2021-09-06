@@ -46,7 +46,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public int createWish(WishDto wishDto) {
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         return wishRepository.save(wish).getId();
     }
@@ -62,7 +62,7 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto updateWish(WishDto wishDto) {
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
