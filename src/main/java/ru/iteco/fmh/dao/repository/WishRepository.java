@@ -20,4 +20,6 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
     );
 
     List<Wish> findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Integer patientId);
+
+    Wish findWishById(int id);
 }

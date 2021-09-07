@@ -41,7 +41,7 @@ public class WishesController {
 
     @ApiOperation(value = "Создание новой просьбы")
     @PostMapping
-    public int createWish(@RequestBody WishDto wishDto) {
+    public WishDto createWish(@RequestBody WishDto wishDto) {
         return wishService.createWish(wishDto);
     }
 
@@ -84,7 +84,7 @@ public class WishesController {
 
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public int createWishComment(
+    public WishCommentDto createWishComment(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);

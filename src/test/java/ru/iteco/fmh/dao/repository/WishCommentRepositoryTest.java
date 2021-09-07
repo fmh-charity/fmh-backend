@@ -28,9 +28,10 @@ public class WishCommentRepositoryTest {
     static WishComment testEntity2;
 
     @Test
-    public void saveToRepositorytestShouldPassSuccess() {
+    public void saveToRepositoryTestShouldPassSuccess() {
         Wish wish = getWish(OPEN);
         wish.setId(1);
+        wish.setExecutor(null);
         User user = getUser();
         user.setId(1);
 

@@ -20,10 +20,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.StatusE.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getWish;
+import static ru.iteco.fmh.TestUtils.getWishComment;
+import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
+import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
+import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -71,21 +79,41 @@ public class WishServiceTest {
     @Test
     public void createWishShouldPassSuccess() {
         // given
-        Wish wish = getWish(null);
-        wish.setId(1);
+        Wish wish = getWish(IN_PROGRESS);
+//        wish.setId(6);
+//        wish.getCreator().setId(5);
+//        wish.getCreator().setId(5);
+//        wish.getPatient().setId(5);
+
         WishDto dto = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
-        Integer resultId = sut.createWish(dto);
+        WishDto result = sut.createWish(dto);
+        System.out.println(result);
 
-        assertEquals(1, resultId);
-        assertEquals(IN_PROGRESS, dto.getStatus());
+        assertEquals(dto.getStatus(), IN_PROGRESS);
+        assertAll(
+                () -> assertEquals(dto.getId(), result.getId()),
+                () -> assertEquals(dto.getDescription(), result.getDescription()),
+                () -> assertEquals(dto.getPlanExecuteDate(), result.getPlanExecuteDate()),
+                () -> assertEquals(dto.getFactExecuteDate(), result.getFactExecuteDate()),
+                () -> assertEquals(dto.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(dto.getStatus(), result.getStatus()),
+                () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(dto.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(dto.getPatientId(), result.getPatientId()),
+                () -> assertNotNull(result.getExecutorId()),
+                () -> assertNotNull(result.getCreatorId())
+        );
+
     }
+
 
     @Test
     public void getWishShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
+        wish.setExecutor(null);
         int wishId = 1;
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
@@ -99,6 +127,7 @@ public class WishServiceTest {
     public void updateWishShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
+
         WishDto givenDto = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
@@ -107,16 +136,16 @@ public class WishServiceTest {
 
         assertAll(
                 () -> assertEquals(givenDto.getId(), resultDto.getId()),
-                () -> assertEquals(givenDto.getPatient(), resultDto.getPatient()),
+                () -> assertEquals(givenDto.getPatientId(), resultDto.getPatientId()),
                 () -> assertEquals(givenDto.getDescription(), resultDto.getDescription()),
                 () -> assertEquals(givenDto.getPlanExecuteDate(), resultDto.getPlanExecuteDate()),
                 () -> assertEquals(givenDto.getFactExecuteDate(), resultDto.getFactExecuteDate()),
                 () -> assertEquals(givenDto.getCreateDate(), resultDto.getCreateDate()),
-                () -> assertEquals(givenDto.getExecutor(), resultDto.getExecutor()),
-                () -> assertEquals(givenDto.getCreator(), resultDto.getCreator())
+                () -> assertEquals(givenDto.getExecutorId(), resultDto.getExecutorId()),
+                () -> assertEquals(givenDto.getCreatorId(), resultDto.getCreatorId())
         );
 
-        assertEquals(IN_PROGRESS, givenDto.getStatus());
+        assertEquals(givenDto.getStatus(), IN_PROGRESS);
     }
 
     @Test
@@ -282,9 +311,17 @@ public class WishServiceTest {
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
-        Integer resultId = sut.createWishComment(wishId, wishCommentDto);
 
-        assertEquals(commentId, resultId);
+        WishCommentDto result = sut.createWishComment(wishId, wishCommentDto);
+
+        assertAll(
+                () -> assertEquals(wishCommentDto.getId(), result.getId()),
+                () -> assertEquals(wishCommentDto.getDescription(), result.getDescription()),
+                () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(wishCommentDto.getCreatorId(), result.getCreatorId()),
+                () -> assertEquals(wishCommentDto.getWishId(), result.getWishId())
+        );
+
     }
 
     @Test

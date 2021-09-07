@@ -129,13 +129,13 @@ public class TestUtils {
     public static WishDto getWishDto() {
 
         return WishDto.builder()
-                .patient(getPatientDto())
+                .patientId(3)
                 .description(getAlphabeticString())
                 .planExecuteDate(LocalDateTime.now().withNano(0))
                 .createDate(LocalDateTime.now().withNano(0))
                 .factExecuteDate(null)
-                .executor(getUserDto())
-                .creator(getUserDto())
+                .executorId(null)
+                .creatorId(3)
                 .status(StatusE.OPEN)
                 .build();
     }
@@ -282,9 +282,9 @@ public class TestUtils {
     public static WishCommentDto getWishCommentDto(StatusE wishStatus) {
         return WishCommentDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .wish(getWishDto(wishStatus))
+                .wishId(1)
                 .description(getAlphabeticString())
-                .creator(getUserDto())
+                .creatorId(3)
                 .createDate(LocalDateTime.now())
                 .build();
     }
@@ -318,9 +318,9 @@ public class TestUtils {
 
     public static NewsDto getNewsDto() {
         return NewsDto.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .creatorId(Integer.valueOf(getNumeric(2)))
-                .newsCategoryId(Integer.valueOf(getNumeric(2)))
+                .id(Integer.parseInt(getNumeric(2)))
+                .creatorId(Integer.parseInt(getNumeric(2)))
+                .newsCategoryId(Integer.parseInt(getNumeric(2)))
                 .createDate(LocalDateTime.now())
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
@@ -342,7 +342,7 @@ public class TestUtils {
                 .name(getAlphabeticString())
                 .block(getBlock())
                 .nurseStation(getNurseStation())
-                .maxOccupancy(Integer.valueOf(getNumeric(2)))
+                .maxOccupancy(Integer.parseInt(getNumeric(2)))
                 .comment(getAlphabeticString())
                 .deleted(false)
                 .build();

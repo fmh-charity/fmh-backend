@@ -47,7 +47,7 @@ public class ClaimServiceImpl implements ClaimService {
     public ClaimDto createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
-        claimRepository.save(claim);
+        claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }
 

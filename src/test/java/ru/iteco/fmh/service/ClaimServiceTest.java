@@ -40,12 +40,15 @@ public class ClaimServiceTest {
     public void createClaimShouldPassSuccessExecutorNotNull() {
         // given
         Claim claim = getClaimInProgress();
-        claim.setId(6);
+//        claim.setId(6);
+//        claim.getCreator().setId(5);
+//        claim.getExecutor().setId(5);
+
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
-        dto.setCreatorId(5);
-        dto.setExecutorId(5);
+
         when(claimRepository.save(any())).thenReturn(claim);
         ClaimDto result = sut.createClaim(dto);
+
         assertEquals(claim.getStatus(), IN_PROGRESS);
         assertAll(
                 () -> assertEquals(dto.getId(), result.getId()),
@@ -57,17 +60,18 @@ public class ClaimServiceTest {
                 () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
                 () -> assertEquals(dto.getCreatorId(), result.getCreatorId())
         );
-//        assertEquals(6, resultId);
+
         assertNotNull(dto.getExecutorId());
         assertNotNull(dto.getCreatorId());
     }
+
     @Test
     public void createClaimShouldPassSuccessExecutorNull() {
         // given
         Claim claim = getClaimOpen();
-        claim.setId(7);
+//        claim.setId(7);
+//        claim.getCreator().setId(5);
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
-        dto.setCreatorId(5);
         when(claimRepository.save(any())).thenReturn(claim);
         ClaimDto result = sut.createClaim(dto);
         assertNull(dto.getExecutorId());
@@ -90,7 +94,6 @@ public class ClaimServiceTest {
     public void getClaimShouldPassSuccess() {
         // given
         Claim claim = getClaimInProgress();
-        int claimId = 1;
         when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
         ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
         ClaimDto result = sut.getClaim(expected.getId());
@@ -102,11 +105,8 @@ public class ClaimServiceTest {
         // claim
         Claim claim = getClaimInProgress();
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);
-
         when(claimRepository.save(any())).thenReturn(claim);
-
         ClaimDto result = sut.updateClaim(given);
-
         assertAll(
                 () -> assertEquals(given.getId(), result.getId()),
                 () -> assertEquals(given.getDescription(), result.getDescription()),
