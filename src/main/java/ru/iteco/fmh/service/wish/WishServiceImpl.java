@@ -45,10 +45,11 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public int createWish(WishDto wishDto) {
+    public WishDto createWish(WishDto wishDto) {
         wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
-        return wishRepository.save(wish).getId();
+        wish = wishRepository.save(wish);
+        return conversionService.convert(wish, WishDto.class);
     }
 
     @Override
@@ -114,11 +115,12 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public int createWishComment(int wishId, WishCommentDto wishCommentDto) {
+    public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
-        return wishCommentRepository.save(wishComment).getId();
+        wishComment = wishCommentRepository.save(wishComment);
+        return conversionService.convert(wishComment, WishCommentDto.class);
     }
 
     @Transactional

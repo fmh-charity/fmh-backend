@@ -29,10 +29,11 @@ public interface WishService {
 
     /**
      * создает новую просьбу
+     *
      * @param wishDto информация по новой просьбе
      * @return id просьбы
      */
-    int createWish(WishDto wishDto);
+    WishDto createWish(WishDto wishDto);
 
     /**
      * обновляет просьбу
@@ -81,11 +82,12 @@ public interface WishService {
 
     /**
      * создает новый комментарий просьбы
-     * @param wishId ид просьбы
+     *
+     * @param wishId         ид просьбы
      * @param wishCommentDto информация по комментарию
      * @return id комментария
      */
-    int createWishComment(int wishId, WishCommentDto wishCommentDto);
+    WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto);
 
 
     /**

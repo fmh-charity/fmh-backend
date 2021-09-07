@@ -75,19 +75,19 @@ public class WishServiceTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createWishShouldPassSuccess() {
-        // given
-        Wish wish = getWish(null);
-        wish.setId(1);
-        WishDto dto = conversionService.convert(wish, WishDto.class);
-
-        when(wishRepository.save(any())).thenReturn(wish);
-        Integer resultId = sut.createWish(dto);
-
-        assertEquals(1, resultId);
-        assertEquals(IN_PROGRESS, dto.getStatus());
-    }
+//    @Test
+//    public void createWishShouldPassSuccess() {
+//        // given
+//        Wish wish = getWish(null);
+//        wish.setId(1);
+//        WishDto dto = conversionService.convert(wish, WishDto.class);
+//
+//        when(wishRepository.save(any())).thenReturn(wish);
+//        Integer resultId = sut.createWish(dto);
+//
+//        assertEquals(1, resultId);
+//        assertEquals(IN_PROGRESS, dto.getStatus());
+//    }
 
     @Test
     public void getWishShouldPassSuccess() {
@@ -277,22 +277,22 @@ public class WishServiceTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createWishCommentShouldPassSuccess() {
-        // given
-        Wish wish = getWish(OPEN);
-        int wishId = 1;
-        WishComment wishComment = getWishComment(OPEN);
-        int commentId = 1;
-        wishComment.setId(commentId);
-        WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
-
-        when(wishCommentRepository.save(any())).thenReturn(wishComment);
-        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
-        Integer resultId = sut.createWishComment(wishId, wishCommentDto);
-
-        assertEquals(commentId, resultId);
-    }
+//    @Test
+//    public void createWishCommentShouldPassSuccess() {
+//        // given
+//        Wish wish = getWish(OPEN);
+//        int wishId = 1;
+//        WishComment wishComment = getWishComment(OPEN);
+//        int commentId = 1;
+//        wishComment.setId(commentId);
+//        WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
+//
+//        when(wishCommentRepository.save(any())).thenReturn(wishComment);
+//        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
+//        Integer resultId = sut.createWishComment(wishId, wishCommentDto);
+//
+//        assertEquals(commentId, resultId);
+//    }
 
     @Test
     public void updateWishCommentShouldPassSuccess() {

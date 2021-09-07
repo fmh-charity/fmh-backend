@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.LocalDate;
@@ -46,7 +46,7 @@ public class WishRepositoryTest {
                 .description(TestUtils.getAlphabeticString())
                 .patient(patient)
                 .creator(author)
-                .executor(doer)
+                .executor(null)
                 .createDate(LocalDateTime.now())
                 .factExecuteDate(null)
                 .planExecuteDate(LocalDateTime.now().plusDays(2))
