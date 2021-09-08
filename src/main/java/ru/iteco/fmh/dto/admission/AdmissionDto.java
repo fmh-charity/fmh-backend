@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.LocalDateTime;
@@ -22,7 +20,7 @@ public class AdmissionDto {
     @ApiModelProperty("идентификатор госпитализации")
     private int id;
     @ApiModelProperty("идентификатор пациента")
-    private int patientId;
+    private Integer patientId;
 
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
@@ -39,7 +37,7 @@ public class AdmissionDto {
     @ApiModelProperty(value = "статус госпитализации")
     AdmissionsStatus status;
     @ApiModelProperty(value = "идентификатор палаты")
-    int roomId;
+    private Integer roomId;
     @ApiModelProperty(value = "комментарий")
     private String comment;
 }

@@ -20,9 +20,9 @@ public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
         News news = new News();
         BeanUtils.copyProperties(newsDto, news);
 
-        news.setNewsCategory(newsDto.getNewsCategoryId() != 0
+        news.setNewsCategory(newsDto.getNewsCategoryId() != null
                 ? newsCategoryRepository.findNewsCategoryById(newsDto.getNewsCategoryId()) : null);
-        news.setCreator(newsDto.getCreatorId() != 0
+        news.setCreator(newsDto.getCreatorId() != null
                 ? userRepository.findUserById(newsDto.getCreatorId()) : null);
 
         return news;
