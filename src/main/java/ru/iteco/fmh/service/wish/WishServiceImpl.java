@@ -44,6 +44,7 @@ public class WishServiceImpl implements WishService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public WishDto createWish(WishDto wishDto) {
         wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
@@ -113,6 +114,7 @@ public class WishServiceImpl implements WishService {
         return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentDto.class))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {

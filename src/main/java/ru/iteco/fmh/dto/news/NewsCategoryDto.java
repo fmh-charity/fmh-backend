@@ -2,7 +2,11 @@ package ru.iteco.fmh.dto.news;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @ApiModel(description = "категория новости")
@@ -13,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewsCategoryDto {
     @ApiModelProperty("идентификатор категории новости")
-    Integer id;
+    private Integer id;
     @ApiModelProperty("название категории новости")
-    String name;
+    private String name;
 }

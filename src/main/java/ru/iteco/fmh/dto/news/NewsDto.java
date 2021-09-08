@@ -2,7 +2,11 @@ package ru.iteco.fmh.dto.news;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -15,19 +19,19 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewsDto {
     @ApiModelProperty("идентификатор новости")
-    int id;
+    private Integer id;
     @ApiModelProperty("идентификатор категории новости")
-    int newsCategoryId;
+    private Integer newsCategoryId;
     @ApiModelProperty("заголовок новости")
-    String title;
+    private String title;
     @ApiModelProperty("описание новости")
-    String description;
+    private String description;
     @ApiModelProperty("идентификатор создателя")
-    int creatorId;
+    private Integer creatorId;
     @ApiModelProperty("дата создания")
-    LocalDateTime createDate;
+    private LocalDateTime createDate;
     @ApiModelProperty("дата для публикации")
-    LocalDateTime publishDate;
+    private LocalDateTime publishDate;
     @ApiModelProperty("признак для публикации новости")
-    boolean publishEnabled;
+    private boolean publishEnabled;
 }

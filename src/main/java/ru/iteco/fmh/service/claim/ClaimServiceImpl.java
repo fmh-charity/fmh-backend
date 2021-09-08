@@ -43,6 +43,7 @@ public class ClaimServiceImpl implements ClaimService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public ClaimDto createClaim(ClaimDto claimDto) {
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
@@ -91,6 +92,7 @@ public class ClaimServiceImpl implements ClaimService {
                 .map(i -> conversionService.convert(i, ClaimCommentDto.class))
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public ClaimCommentDto addComment(int claimId, ClaimCommentDto claimCommentDto) {

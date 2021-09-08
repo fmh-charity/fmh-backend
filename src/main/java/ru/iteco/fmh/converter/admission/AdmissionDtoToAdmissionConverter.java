@@ -26,8 +26,8 @@ public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto,
         Admission admission = new Admission();
         BeanUtils.copyProperties(dto, admission);
 
-        Patient patient = dto.getPatientId() != 0 ? patientRepository.findPatientById(dto.getPatientId()) : null;
-        Room room = dto.getRoomId() != 0 ? roomRepository.findRoomById(dto.getRoomId()) : null;
+        Patient patient = dto.getPatientId() != null ? patientRepository.findPatientById(dto.getPatientId()) : null;
+        Room room = dto.getRoomId() != null ? roomRepository.findRoomById(dto.getRoomId()) : null;
 
         admission.setPatient(patient);
         admission.setRoom(room);
