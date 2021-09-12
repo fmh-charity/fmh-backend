@@ -239,17 +239,17 @@ comment on column claim_visibility.claim_id is 'id заявки';
 comment on column claim_visibility.role_id is 'id роли';
 comment on column claim_visibility.deleted is 'флаг удаления';
 
-create sequence role_seq;
-create table role
+create sequence roles_seq;
+create table roles
 (
-    id      int not null primary key default nextval('role_seq'),
+    id      int not null primary key default nextval('roles_seq'),
     name    varchar,
     deleted boolean
 );
-comment on table role is 'роли';
-comment on column role.id is 'id в системе';
-comment on column role.name is 'название роли';
-comment on column role.deleted is 'флаг удаления';
+comment on table roles is 'роли';
+comment on column roles.id is 'id в системе';
+comment on column roles.name is 'название роли';
+comment on column roles.deleted is 'флаг удаления';
 
 create sequence news_seq;
 create table news
@@ -298,7 +298,7 @@ comment on table user_role is 'роли пользователя';
 comment on column user_role.id is 'id в системе';
 comment on column user_role.user_id is 'id пользователя';
 comment on column user_role.role_id is 'id роли';
-comment on column role.deleted is 'флаг удаления';
+comment on column user_role.deleted is 'флаг удаления';
 
 
 alter table admission
@@ -329,37 +329,9 @@ alter table wish_comment
     add foreign key (wish_id) references wish;
 alter table wish_comment
     add foreign key (creator_id) references users;
+alter table user_role
+    add foreign key (user_id) references users;
+alter table user_role
+    add foreign key (role_id) references roles;
 
 
-
--- ДАЛЬШЕ НЕ ПОКА НЕ ТРОГАЛ !
--- CREATE TYPE admissions_status AS ENUM ('Discharged', 'Active', 'Expected');
--- create sequence admissions_status_seq;
--- create table adm_status
--- (
---     id      int not null primary key default nextval('admissions_status_seq'),
---     name    admissions_status,
---     code    varchar,
---     deleted boolean
--- );
--- comment on table adm_status is 'статусы госпитализации';
--- comment on column adm_status.id is 'id в системе';
--- comment on column adm_status.name is 'название статуса в enum';
--- comment on column adm_status.code is 'код статуса';
--- comment on column adm_status.deleted is 'флаг удаления';
---
---
--- CREATE TYPE role_u AS ENUM ('Администратор', 'Медицинский работник', 'Волонтёр', 'Сотрудник АХЧ');
--- create sequence role_seq;
--- create table role
--- (
---     id      int not null primary key default nextval('role_seq'),
---     name    role_u,
---     code    varchar,
---     deleted boolean
--- );
--- comment on table role is 'роли';
--- comment on column role.id is 'id в системе';
--- comment on column role.name is 'название роли в enum';
--- comment on column role.code is 'код роли';
--- comment on column role.deleted is 'флаг удаления';
