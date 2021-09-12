@@ -80,16 +80,11 @@ public class WishServiceTest {
     public void createWishShouldPassSuccess() {
         // given
         Wish wish = getWish(IN_PROGRESS);
-//        wish.setId(6);
-//        wish.getCreator().setId(5);
-//        wish.getCreator().setId(5);
-//        wish.getPatient().setId(5);
 
         WishDto dto = conversionService.convert(wish, WishDto.class);
 
         when(wishRepository.save(any())).thenReturn(wish);
         WishDto result = sut.createWish(dto);
-        System.out.println(result);
 
         assertEquals(dto.getStatus(), IN_PROGRESS);
         assertAll(

@@ -12,6 +12,7 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.service.news.NewsService;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class NewsServiceTest {
 
     @Test
     public void getAllNewsShouldPassSuccess() {
-        List<News> newsList = List.of(getNews(LocalDateTime.now()), getNews(LocalDateTime.now().minusDays(1)));
+        List<News> newsList = List.of(getNews(Instant.now()), getNews(Instant.now().minusSeconds(1000)));
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
 

@@ -9,6 +9,8 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 
+import java.time.Instant;
+
 @Component
 @RequiredArgsConstructor
 public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
@@ -22,8 +24,15 @@ public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
 
         news.setNewsCategory(newsDto.getNewsCategoryId() != null
                 ? newsCategoryRepository.findNewsCategoryById(newsDto.getNewsCategoryId()) : null);
+
         news.setCreator(newsDto.getCreatorId() != null
                 ? userRepository.findUserById(newsDto.getCreatorId()) : null);
+
+        news.setCreateDate(newsDto.getCreateDate() != null
+                ? Instant.ofEpochMilli(newsDto.getCreateDate()) : null);
+
+        news.setPublishDate(newsDto.getPublishDate() != null
+                ? Instant.ofEpochMilli(newsDto.getPublishDate()) : null);
 
         return news;
     }
