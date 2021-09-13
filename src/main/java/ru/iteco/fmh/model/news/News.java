@@ -5,8 +5,7 @@ import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-
+import java.time.Instant;
 
 /**
  * Новость
@@ -36,8 +35,8 @@ public class News {
     @JoinColumn(name = "creator_id")
     User creator;
 
-    LocalDateTime createDate;
-    LocalDateTime publishDate;
+    Instant createDate;
+    Instant publishDate;
     boolean publishEnabled;
     boolean deleted;
 }

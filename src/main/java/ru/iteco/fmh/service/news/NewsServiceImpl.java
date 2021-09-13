@@ -8,6 +8,7 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> getAllNews() {
         List<News> news = newsRepository
-                .findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueAndDeletedIsFalseOrderByPublishDateDesc(LocalDateTime.now());
+                .findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueAndDeletedIsFalseOrderByPublishDateDesc(Instant.now());
         return news.stream()
                 .map(v -> conversionService.convert(v, NewsDto.class))
                 .collect(Collectors.toList());

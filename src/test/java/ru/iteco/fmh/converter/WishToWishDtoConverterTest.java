@@ -21,8 +21,6 @@ class WishToWishDtoConverterTest {
     @Test
     void convertWishForOpen() {
         Wish wish = getWish(OPEN);
-        System.out.println(wish.getPatient().getId());
-        System.out.println(wish.getCreator().getId());
         wish.setExecutor(null);
         WishDto dto = convertor.convert(wish);
         assertAll(
@@ -42,10 +40,6 @@ class WishToWishDtoConverterTest {
     @Test
     void convertWishForInProgress() {
         Wish wish = getWish(IN_PROGRESS);
-
-        System.out.println(wish.getPatient().getId());
-        System.out.println(wish.getCreator().getId());
-
         WishDto dto = convertor.convert(wish);
         assertAll(
                 () -> assertEquals(wish.getId(), dto.getId()),
