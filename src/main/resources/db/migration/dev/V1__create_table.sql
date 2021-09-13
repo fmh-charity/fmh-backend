@@ -228,7 +228,7 @@ comment on column claim_visibility.role_id is 'id роли';
 comment on column claim_visibility.deleted is 'флаг удаления';
 
 
-create table role
+create table roles
 (
     id      serial  primary key,
     name    varchar,
