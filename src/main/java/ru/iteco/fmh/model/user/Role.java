@@ -16,7 +16,7 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
 
     @Id

@@ -228,16 +228,16 @@ comment on column claim_visibility.role_id is 'id роли';
 comment on column claim_visibility.deleted is 'флаг удаления';
 
 
-create table role
+create table roles
 (
     id      serial  primary key,
     name    varchar,
     deleted boolean
 );
-comment on table role is 'роли';
-comment on column role.id is 'id в системе';
-comment on column role.name is 'название роли';
-comment on column role.deleted is 'флаг удаления';
+comment on table roles is 'роли';
+comment on column roles.id is 'id в системе';
+comment on column roles.name is 'название роли';
+comment on column roles.deleted is 'флаг удаления';
 
 
 create table news
@@ -286,7 +286,7 @@ comment on table user_role is 'роли пользователя';
 comment on column user_role.id is 'id в системе';
 comment on column user_role.user_id is 'id пользователя';
 comment on column user_role.role_id is 'id роли';
-comment on column role.deleted is 'флаг удаления';
+comment on column user_role.deleted is 'флаг удаления';
 
 
 alter table admission
@@ -317,4 +317,8 @@ alter table wish_comment
     add foreign key (wish_id) references wish;
 alter table wish_comment
     add foreign key (creator_id) references users;
+alter table user_role
+    add foreign key (user_id) references users;
+alter table user_role
+    add foreign key (role_id) references roles;
 
