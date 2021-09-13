@@ -15,6 +15,8 @@ public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
         BeanUtils.copyProperties(news, newsDto);
         newsDto.setNewsCategoryId(news.getNewsCategory().getId());
         newsDto.setCreatorId(news.getCreator().getId());
+        newsDto.setCreateDate(news.getCreateDate().toEpochMilli());
+        newsDto.setPublishDate(news.getPublishDate().toEpochMilli());
         return newsDto;
     }
 }

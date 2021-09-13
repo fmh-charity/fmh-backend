@@ -79,10 +79,10 @@ public class ClaimsControllerTest {
         //executor notNull
         given.setCreatorId(userRepository.findUserById(given.getCreatorId()).getId());
         ClaimDto claimDtoNullExecutor = sut.createClaim(given);
-        System.out.println(claimDtoNullExecutor);
+
         assertNotNull(claimDtoNullExecutor.getId());
         Claim result = claimRepository.findById(claimDtoNullExecutor.getId()).get();
-        System.out.println(result);
+
         assertEquals(given.getStatus(), result.getStatus());
 
         assertAll(

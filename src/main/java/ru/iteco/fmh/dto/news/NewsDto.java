@@ -29,9 +29,9 @@ public class NewsDto {
     @ApiModelProperty("идентификатор создателя")
     private Integer creatorId;
     @ApiModelProperty("дата создания")
-    private LocalDateTime createDate;
+    private Long createDate;
     @ApiModelProperty("дата для публикации")
-    private LocalDateTime publishDate;
+    private Long publishDate;
     @ApiModelProperty("признак для публикации новости")
     private boolean publishEnabled;
 }

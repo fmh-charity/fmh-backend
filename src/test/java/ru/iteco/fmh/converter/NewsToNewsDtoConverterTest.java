@@ -21,12 +21,12 @@ public class NewsToNewsDtoConverterTest {
 
         assertAll(
                 () -> assertEquals(news.getId(), result.getId()),
-                () -> assertEquals(news.getCreateDate(), result.getCreateDate()),
+                () -> assertEquals(news.getCreateDate().toEpochMilli(), result.getCreateDate()),
                 () -> assertEquals(news.getCreator().getId(), result.getCreatorId()),
                 () -> assertEquals(news.getDescription(), result.getDescription()),
                 () -> assertEquals(news.getNewsCategory().getId(), result.getNewsCategoryId()),
                 () -> assertEquals(news.getTitle(), result.getTitle()),
-                () -> assertEquals(news.getPublishDate(), result.getPublishDate()),
+                () -> assertEquals(news.getPublishDate().toEpochMilli(), result.getPublishDate()),
                 () -> assertEquals(news.isPublishEnabled(), result.isPublishEnabled())
         );
     }

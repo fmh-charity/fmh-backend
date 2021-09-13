@@ -24,6 +24,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -295,15 +296,15 @@ public class TestUtils {
                 .id(Integer.valueOf(getNumeric(2)))
                 .creator(getUser())
                 .newsCategory(getNewsCategory())
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .publishDate(LocalDateTime.now())
+                .publishDate(Instant.now())
                 .publishEnabled(true)
                 .build();
     }
 
-    public static News getNews(LocalDateTime publishDate) {
+    public static News getNews(Instant publishDate) {
         News news = getNews();
         news.setPublishDate(publishDate);
         return news;
@@ -321,10 +322,10 @@ public class TestUtils {
                 .id(Integer.parseInt(getNumeric(2)))
                 .creatorId(Integer.parseInt(getNumeric(2)))
                 .newsCategoryId(Integer.parseInt(getNumeric(2)))
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now().toEpochMilli())
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .publishDate(LocalDateTime.now())
+                .publishDate(Instant.now().toEpochMilli())
                 .publishEnabled(true)
                 .build();
     }

@@ -1,7 +1,6 @@
-create sequence block_seq;
 create table block
 (
-    id      int not null primary key default nextval('block_seq'),
+    id      serial primary key,
     name    varchar,
     comment varchar,
     deleted boolean
@@ -12,11 +11,9 @@ comment on column block.name is 'наименование блока';
 comment on column block.comment is 'комментарий';
 comment on column block.deleted is 'флаг удаления';
 
-
-create sequence nurseStation_seq;
 create table nurse_station
 (
-    id      int not null primary key default nextval('nurseStation_seq'),
+    id      serial primary key,
     name    varchar,
     comment varchar,
     deleted boolean
@@ -27,11 +24,9 @@ comment on column nurse_station.name is 'наименование';
 comment on column nurse_station.comment is 'комментарий';
 comment on column nurse_station.deleted is 'флаг удаления';
 
-
-create sequence room_seq;
 create table room
 (
-    id               int not null primary key default nextval('room_seq'),
+    id               serial primary key,
     name             varchar,
     block_id         int,
     nurse_station_id int,
@@ -48,11 +43,9 @@ comment on column room.max_occupancy is 'макс вместимость';
 comment on column room.comment is 'Комментарии';
 comment on column room.deleted is 'флаг удаления';
 
-
-create sequence admission_seq;
 create table admission
 (
-    id            int       not null primary key default nextval('admission_seq'),
+    id            serial primary key,
     patient_id    int       not null,
     plan_date_in  timestamp not null,
     plan_date_out timestamp,
@@ -76,10 +69,9 @@ comment on column admission.comment is 'комментарий';
 comment on column admission.deleted is 'флаг удаления';
 
 
-create sequence patient_seq;
 CREATE TABLE patient
 (
-    id                   int not null primary key default nextval('patient_seq'),
+    id                   serial primary key,
     first_name           varchar(100),
     last_name            varchar(100),
     middle_name          varchar(100),
@@ -97,10 +89,9 @@ comment on column patient.current_admission_id is 'id актуальной го�
 comment on column patient.deleted is 'флаг удаления';
 
 
-create sequence wish_seq;
 create table wish
 (
-    id                int     not null primary key default nextval('wish_seq'),
+    id                serial primary key,
     patient_id        int     not null,
     title             varchar,
     description       varchar not null,
@@ -125,10 +116,10 @@ comment on column wish.fact_execute_date is 'фактическое время �
 comment on column wish.status is 'статус';
 comment on column wish.deleted is 'флаг удаления';
 
-create sequence wish_comment_seq;
+
 create table wish_comment
 (
-    id          int not null primary key default nextval('wish_comment_seq'),
+    id         serial primary key,
     wish_id    int,
     description varchar,
     creator_id  int not null,
@@ -143,10 +134,9 @@ comment on column wish_comment.creator_id is 'id автора комментар
 comment on column wish_comment.create_date is 'дата создания комментария к просьбе';
 
 
-create sequence wish_visibility_seq;
 create table wish_visibility
 (
-    id       int not null primary key default nextval('wish_visibility_seq'),
+    id      serial primary key,
     wish_id int,
     role_id  int,
     deleted  boolean
@@ -157,10 +147,9 @@ comment on column wish_visibility.wish_id is 'id просьбы';
 comment on column wish_visibility.role_id is 'id роли';
 comment on column wish_visibility.deleted is 'флаг удаления';
 
-create sequence user_seq;
 create table users
 (
-    id           int not null primary key default nextval('user_seq'),
+    id           serial primary key,
     login        varchar,
     password     varchar,
     first_name   varchar(100),
@@ -182,10 +171,9 @@ comment on column users.email is 'почта';
 comment on column users.deleted is 'флаг удаления';
 
 
-create sequence claim_seq;
 create table claim
 (
-    id                int     not null primary key default nextval('claim_seq'),
+    id                serial primary key,
     title             varchar,
     description       varchar,
     creator_id        int     not null,
@@ -208,10 +196,10 @@ comment on column claim.fact_execute_date is 'фактическое время 
 comment on column claim.status is 'статус заявки';
 comment on column claim.deleted is 'флаг удаления';
 
-create sequence claimComment_seq;
+
 create table claim_comment
 (
-    id          int not null primary key default nextval('claimComment_seq'),
+    id          serial primary key,
     claim_id    int,
     description varchar not null,
     creator_id  int ,
@@ -225,10 +213,10 @@ comment on column claim_comment.description is 'описание коммент�
 comment on column claim_comment.creator_id is 'id автора комментария к заявке';
 comment on column claim_comment.create_date is 'дата создания комментария к заявке';
 
-create sequence claim_visibility_seq;
+
 create table claim_visibility
 (
-    id       int not null primary key default nextval('claim_visibility_seq'),
+    id       serial primary key,
     claim_id int,
     role_id  int,
     deleted  boolean
@@ -239,10 +227,10 @@ comment on column claim_visibility.claim_id is 'id заявки';
 comment on column claim_visibility.role_id is 'id роли';
 comment on column claim_visibility.deleted is 'флаг удаления';
 
-create sequence roles_seq;
-create table roles
+
+create table role
 (
-    id      int not null primary key default nextval('roles_seq'),
+    id      serial  primary key,
     name    varchar,
     deleted boolean
 );
@@ -251,10 +239,10 @@ comment on column roles.id is 'id в системе';
 comment on column roles.name is 'название роли';
 comment on column roles.deleted is 'флаг удаления';
 
-create sequence news_seq;
+
 create table news
 (
-    id          int not null primary key default nextval('news_seq'),
+    id          serial  primary key,
     news_category_id int,
     title       varchar,
     description varchar,
@@ -274,10 +262,10 @@ comment on column news.publish_date is 'дата публикации';
 comment on column news.publish_enabled is 'флаг публикации';
 comment on column news.deleted is 'флаг удаления';
 
-create sequence news_category_seq;
+
 create table news_category
 (
-    id int not null primary key default nextval('news_category_seq'),
+    id serial primary key,
     name varchar,
     deleted boolean
 );
@@ -286,10 +274,10 @@ comment on column news_category.id is 'id в системе';
 comment on column news_category.name is 'наименование категории';
 comment on column news_category.name is 'флаг удаления';
 
-create sequence userRole_seq;
+
 create table user_role
 (
-    id      int not null primary key default nextval('userRole_seq'),
+    id      serial primary key,
     user_id int,
     role_id int,
     deleted boolean
@@ -333,5 +321,4 @@ alter table user_role
     add foreign key (user_id) references users;
 alter table user_role
     add foreign key (role_id) references roles;
-
 
