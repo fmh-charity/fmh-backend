@@ -12,6 +12,8 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
+
 @Component
 @RequiredArgsConstructor
 public class WishCommentDtoToWishCommentConverter implements Converter<WishCommentDto, WishComment> {
@@ -26,6 +28,9 @@ public class WishCommentDtoToWishCommentConverter implements Converter<WishComme
 
         Wish wish = dto.getWishId() != null ? wishRepository.findWishById(dto.getWishId()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
+
+        wishComment.setCreateDate(dto.getCreateDate() != null
+                ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
 
         wishComment.setWish(wish);
         wishComment.setCreator(creator);

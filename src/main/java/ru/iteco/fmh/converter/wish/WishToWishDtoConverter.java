@@ -22,6 +22,10 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         Integer creatorId = wish.getCreator() != null ? wish.getCreator().getId() : null;
         Integer executorId = wish.getExecutor() != null ? wish.getExecutor().getId() : null;
 
+        dto.setCreateDate(wish.getCreateDate() != null ? wish.getCreateDate().toEpochMilli() : null);
+        dto.setPlanExecuteDate(wish.getPlanExecuteDate() != null ? wish.getPlanExecuteDate().toEpochMilli() : null);
+        dto.setFactExecuteDate(wish.getFactExecuteDate() != null ? wish.getFactExecuteDate().toEpochMilli() : null);
+
         dto.setPatientId(patientId);
         dto.setCreatorId(creatorId);
         dto.setExecutorId(executorId);

@@ -1,6 +1,9 @@
 package ru.iteco.fmh.model.task.wish;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.Patient;
@@ -12,7 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * просьба
@@ -35,7 +38,7 @@ public class Wish extends Task {
     }
 
     public Wish(Integer id, String title, String description, User creator, User executor,
-                LocalDateTime createDate, LocalDateTime planExecuteDate, LocalDateTime factExecuteDate,
+                Instant createDate, Instant planExecuteDate, Instant factExecuteDate,
                 StatusE status, boolean deleted, Patient patient) {
         super(id, title, description, creator, executor, createDate, planExecuteDate,
                 factExecuteDate, status, deleted);

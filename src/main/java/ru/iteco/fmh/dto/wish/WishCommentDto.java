@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @ApiModel(description = "комментарий к заявке")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +22,5 @@ public class WishCommentDto {
     @ApiModelProperty("идентификатор создателя комментария к просьбе")
     private Integer creatorId;
     @ApiModelProperty("дата создания комментария к просьбе")
-    private LocalDateTime createDate;
+    private Long createDate;
 }

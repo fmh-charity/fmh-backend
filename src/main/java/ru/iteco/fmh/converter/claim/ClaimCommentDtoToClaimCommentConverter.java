@@ -12,6 +12,8 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
+
 @Component
 @RequiredArgsConstructor
 public class ClaimCommentDtoToClaimCommentConverter implements Converter<ClaimCommentDto, ClaimComment> {
@@ -27,6 +29,9 @@ public class ClaimCommentDtoToClaimCommentConverter implements Converter<ClaimCo
                 ? claimRepository.findClaimById(claimCommentDto.getClaimId()) : null;
         User creator = claimCommentDto.getCreatorId() != null
                 ? userRepository.findUserById(claimCommentDto.getCreatorId()) : null;
+
+        claimComment.setCreateDate(claimCommentDto.getCreateDate() != null
+                ? Instant.ofEpochMilli(claimCommentDto.getCreateDate()) : null);
         claimComment.setClaim(claim);
         claimComment.setCreator(creator);
         return claimComment;

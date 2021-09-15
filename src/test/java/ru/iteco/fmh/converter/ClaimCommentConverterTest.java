@@ -38,7 +38,7 @@ public class ClaimCommentConverterTest {
                 () -> assertEquals(claimComment.getClaim().getId(), dto.getClaimId()),
                 () -> assertEquals(claimComment.getDescription(), dto.getDescription()),
                 () -> assertEquals(claimComment.getCreator().getId(), dto.getCreatorId()),
-                () -> assertEquals(claimComment.getCreateDate(), dto.getCreateDate())
+                () -> assertEquals(claimComment.getCreateDate().toEpochMilli(), dto.getCreateDate())
         );
     }
 
@@ -62,7 +62,7 @@ public class ClaimCommentConverterTest {
                 () -> assertEquals(dto.getClaimId(), claimComment.getClaim().getId()),
                 () -> assertEquals(dto.getDescription(), claimComment.getDescription()),
                 () -> assertEquals(dto.getCreatorId(), claimComment.getCreator().getId()),
-                () -> assertEquals(dto.getCreateDate(), claimComment.getCreateDate())
+                () -> assertEquals(dto.getCreateDate(), claimComment.getCreateDate().toEpochMilli())
         );
     }
 

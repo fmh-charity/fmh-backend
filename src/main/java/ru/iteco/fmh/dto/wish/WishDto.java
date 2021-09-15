@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.model.task.StatusE;
 
-import java.time.LocalDateTime;
-
 @ApiModel(description = "просьба")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,11 +28,11 @@ public class WishDto {
     @ApiModelProperty("идентификатор исполнителя")
     private Integer executorId;
     @ApiModelProperty("дата создания")
-    private LocalDateTime createDate;
+    private Long createDate;
     @ApiModelProperty("плановая дата исполнения")
-    private LocalDateTime planExecuteDate;
+    private Long planExecuteDate;
     @ApiModelProperty("фактическая дата исполнения")
-    private LocalDateTime factExecuteDate;
+    private Long factExecuteDate;
     @ApiModelProperty("статус записки")
     private StatusE status;
 }

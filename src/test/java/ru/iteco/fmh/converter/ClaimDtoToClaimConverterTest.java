@@ -42,14 +42,15 @@ public class ClaimDtoToClaimConverterTest {
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
-                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
-                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
+                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate().toEpochMilli()),
+                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate().toEpochMilli()),
                 () -> assertEquals(dto.getStatus(), claim.getStatus()),
                 () -> assertEquals(dto.getCreatorId(), claim.getCreator().getId()),
                 () -> assertEquals(dto.getExecutorId(), claim.getExecutor()),
                 () -> assertNull(dto.getExecutorId()),
-                () -> assertNull(claim.getExecutor())
+                () -> assertNull(claim.getExecutor()),
+                () -> assertNull(dto.getFactExecuteDate()),
+                () -> assertNull(claim.getFactExecuteDate())
         );
     }
 
@@ -68,14 +69,15 @@ public class ClaimDtoToClaimConverterTest {
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
                 () -> assertEquals(dto.getDescription(), claim.getDescription()),
-                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate()),
-                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate()),
-                () -> assertEquals(dto.getFactExecuteDate(), claim.getFactExecuteDate()),
+                () -> assertEquals(dto.getPlanExecuteDate(), claim.getPlanExecuteDate().toEpochMilli()),
+                () -> assertEquals(dto.getCreateDate(), claim.getCreateDate().toEpochMilli()),
                 () -> assertEquals(dto.getStatus(), claim.getStatus()),
                 () -> assertEquals(dto.getCreatorId(), claim.getCreator().getId()),
                 () -> assertEquals(dto.getExecutorId(), claim.getExecutor().getId()),
                 () -> assertNotNull(dto.getExecutorId()),
-                () -> assertNotNull(claim.getExecutor())
+                () -> assertNull(dto.getFactExecuteDate()),
+                () -> assertNull(claim.getFactExecuteDate())
+
         );
     }
 

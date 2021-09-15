@@ -1,13 +1,14 @@
 package ru.iteco.fmh.model.task.claim;
 
-import lombok.*;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.Task;
 import ru.iteco.fmh.model.user.User;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.time.Instant;
 
 /**
  * Заявка
@@ -18,8 +19,8 @@ import java.time.LocalDateTime;
 @Table(name = "claim")
 public class Claim extends Task {
     public Claim(Integer id, String title, String description, User creator,
-                 User executor, LocalDateTime createDate, LocalDateTime planExecuteDate,
-                 LocalDateTime factExecuteDate, StatusE status, boolean deleted) {
+                 User executor, Instant createDate, Instant planExecuteDate,
+                 Instant factExecuteDate, StatusE status, boolean deleted) {
         super(id, title, description, creator, executor, createDate, planExecuteDate,
                 factExecuteDate, status, deleted);
     }

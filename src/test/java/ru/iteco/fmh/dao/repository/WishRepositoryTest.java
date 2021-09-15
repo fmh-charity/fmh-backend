@@ -13,7 +13,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -47,9 +47,9 @@ public class WishRepositoryTest {
                 .patient(patient)
                 .creator(author)
                 .executor(null)
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .factExecuteDate(null)
-                .planExecuteDate(LocalDateTime.now().plusDays(2))
+                .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
                 .status(StatusE.OPEN)
 
                 .build();
@@ -60,9 +60,9 @@ public class WishRepositoryTest {
                 .patient(patient)
                 .creator(author)
                 .executor(doer)
-                .createDate(LocalDateTime.now().minusDays(1))
-                .factExecuteDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now().plusDays(2))
+                .createDate(Instant.now().minus(1, ChronoUnit.DAYS))
+                .factExecuteDate(Instant.now())
+                .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
                 .status(StatusE.EXECUTED)
 
                 .build();

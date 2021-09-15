@@ -10,7 +10,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -37,7 +37,7 @@ public class WishCommentRepositoryTest {
 
         testEntity1 = WishComment.builder()
                 .description(TestUtils.getAlphabeticString())
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .creator(user)
                 .wish(wish)
                 .build();
@@ -46,7 +46,7 @@ public class WishCommentRepositoryTest {
 
         testEntity2 = WishComment.builder()
                 .description(TestUtils.getAlphabeticString())
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .creator(user)
                 .wish(wish)
                 .build();
