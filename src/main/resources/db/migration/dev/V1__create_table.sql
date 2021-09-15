@@ -75,7 +75,7 @@ CREATE TABLE patient
     first_name           varchar(100),
     last_name            varchar(100),
     middle_name          varchar(100),
-    birth_date           date,
+    birth_date           timestamp,
     current_admission_id int,
     deleted              boolean
 );

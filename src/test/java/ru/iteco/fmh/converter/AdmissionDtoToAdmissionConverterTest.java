@@ -11,7 +11,10 @@ import ru.iteco.fmh.model.admission.Admission;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getAdmissionDto;
 import static ru.iteco.fmh.TestUtils.getPatient;
 import static ru.iteco.fmh.TestUtils.getRoom;
@@ -33,7 +36,7 @@ public class AdmissionDtoToAdmissionConverterTest {
         patient.setId(1);
         Room room = getRoom();
         room.setId(1);
-
+        System.out.println(admissionDto);
         when(patientRepository.findPatientById(any())).thenReturn(patient);
         when(roomRepository.findRoomById(any())).thenReturn(room);
 
@@ -42,10 +45,13 @@ public class AdmissionDtoToAdmissionConverterTest {
         assertAll(
                 () -> assertEquals(admissionDto.getId(), admission.getId()),
                 () -> assertEquals(admissionDto.getPatientId(), admission.getPatient().getId()),
-                () -> assertEquals(admissionDto.getPlanDateIn(), admission.getPlanDateIn()),
-                () -> assertEquals(admissionDto.getPlanDateOut(), admission.getPlanDateOut()),
-                () -> assertEquals(admissionDto.getFactDateIn(), admission.getFactDateIn()),
-                () -> assertEquals(admissionDto.getFactDateOut(), admission.getFactDateOut()),
+                () -> assertEquals(admissionDto.getPlanDateIn(), admission.getPlanDateIn().toEpochMilli()),
+                () -> assertNull(admission.getPlanDateOut()),
+                () -> assertNull(admissionDto.getPlanDateOut()),
+                () -> assertNull(admission.getFactDateIn()),
+                () -> assertNull(admissionDto.getFactDateIn()),
+                () -> assertNull(admission.getFactDateOut()),
+                () -> assertNull(admissionDto.getFactDateOut()),
                 () -> assertEquals(admissionDto.getStatus(), admission.getStatus()),
                 () -> assertEquals(admissionDto.getRoomId(), admission.getRoom().getId()),
                 () -> assertEquals(admissionDto.getComment(), admission.getComment())

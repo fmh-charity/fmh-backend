@@ -7,6 +7,7 @@ import ru.iteco.fmh.model.admission.Admission;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.getAdmission;
 
 
@@ -17,16 +18,17 @@ public class AdmissionToAdmissionDtoConverterTest {
     void convertShouldPassSuccess() {
         // given
         Admission admission = getAdmission();
-
         AdmissionDto admissionDto = sut.convert(admission);
-
         assertAll(
                 () -> assertEquals(admission.getId(), admissionDto.getId()),
                 () -> assertEquals(admission.getPatient().getId(), admissionDto.getPatientId()),
-                () -> assertEquals(admission.getPlanDateIn(), admissionDto.getPlanDateIn()),
-                () -> assertEquals(admission.getPlanDateOut(), admissionDto.getPlanDateOut()),
-                () -> assertEquals(admission.getFactDateIn(), admissionDto.getFactDateIn()),
-                () -> assertEquals(admission.getFactDateOut(), admissionDto.getFactDateOut()),
+                () -> assertEquals(admission.getPlanDateIn().toEpochMilli(), admissionDto.getPlanDateIn()),
+                () -> assertNull(admission.getPlanDateOut()),
+                () -> assertNull(admissionDto.getPlanDateOut()),
+                () -> assertNull(admission.getFactDateIn()),
+                () -> assertNull(admissionDto.getFactDateIn()),
+                () -> assertNull(admission.getFactDateOut()),
+                () -> assertNull(admissionDto.getFactDateOut()),
                 () -> assertEquals(admission.getStatus(), admissionDto.getStatus()),
                 () -> assertEquals(admission.getRoom().getId(), admissionDto.getRoomId()),
                 () -> assertEquals(admission.getComment(), admissionDto.getComment())

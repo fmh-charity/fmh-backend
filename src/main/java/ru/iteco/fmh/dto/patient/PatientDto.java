@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @ApiModel(description = "основная информация по пациенту")
 @Builder
 @AllArgsConstructor
@@ -24,5 +22,5 @@ public class PatientDto {
     @ApiModelProperty("отчество пациента")
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
-    private LocalDate birthDate;
+    private Long birthDate;
 }

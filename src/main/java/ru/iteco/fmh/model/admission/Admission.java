@@ -1,12 +1,26 @@
 package ru.iteco.fmh.model.admission;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.Instant;
 
 
 /**
@@ -31,13 +45,13 @@ public class Admission {
     Patient patient;
 
     //Планируемая дата поступления
-    LocalDateTime planDateIn;
+    Instant planDateIn;
     //Планируемая дата выписки
-    LocalDateTime planDateOut;
+    Instant planDateOut;
     //Фактическая дата поступления
-    LocalDateTime factDateIn;
+    Instant factDateIn;
     //Фактическая дата выписки
-    LocalDateTime factDateOut;
+    Instant factDateOut;
 
     // Статус госпитализации
     @Enumerated(EnumType.STRING)

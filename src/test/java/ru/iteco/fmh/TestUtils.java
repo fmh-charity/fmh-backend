@@ -25,7 +25,6 @@ import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -84,7 +83,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .birthDate(Instant.now())
                 .currentAdmission(Admission.builder().build())
                 .build();
         return patient;
@@ -146,7 +145,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .birthDate(Instant.now().toEpochMilli())
                 .build();
         return patientDto;
     }
@@ -159,7 +158,7 @@ public class TestUtils {
         return Admission.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
-                .planDateIn(LocalDateTime.now())
+                .planDateIn(Instant.now())
                 .planDateOut(null)
                 .factDateIn(null)
                 .factDateOut(null)
@@ -178,7 +177,7 @@ public class TestUtils {
         return AdmissionDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patientId(Integer.valueOf(getNumeric(2)))
-                .planDateIn(LocalDateTime.now())
+                .planDateIn(Instant.now().toEpochMilli())
                 .planDateOut(null)
                 .factDateIn(null)
                 .factDateOut(null)

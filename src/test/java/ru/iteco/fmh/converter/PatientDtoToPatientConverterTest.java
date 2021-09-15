@@ -24,7 +24,7 @@ class PatientDtoToPatientConverterTest {
                 () -> assertEquals(patientDto.getFirstName(), patient.getFirstName()),
                 () -> assertEquals(patientDto.getLastName(), patient.getLastName()),
                 () -> assertEquals(patientDto.getMiddleName(), patient.getMiddleName()),
-                () -> assertEquals(patientDto.getBirthDate(), patient.getBirthDate())
+                () -> assertEquals(patientDto.getBirthDate(), patient.getBirthDate().toEpochMilli())
         );
     }
 }

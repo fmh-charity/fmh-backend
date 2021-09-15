@@ -12,6 +12,8 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
 
+import java.time.Instant;
+
 /**
  * конвертер из {@link AdmissionDto} в {@link Admission}
  */
@@ -28,6 +30,11 @@ public class AdmissionDtoToAdmissionConverter implements Converter<AdmissionDto,
 
         Patient patient = dto.getPatientId() != null ? patientRepository.findPatientById(dto.getPatientId()) : null;
         Room room = dto.getRoomId() != null ? roomRepository.findRoomById(dto.getRoomId()) : null;
+
+        admission.setPlanDateIn(dto.getPlanDateIn() != null ? Instant.ofEpochMilli(dto.getPlanDateIn()) : null);
+        admission.setPlanDateOut(dto.getPlanDateOut() != null ? Instant.ofEpochMilli(dto.getPlanDateOut()) : null);
+        admission.setFactDateIn(dto.getFactDateIn() != null ? Instant.ofEpochMilli(dto.getFactDateIn()) : null);
+        admission.setFactDateOut(dto.getFactDateOut() != null ? Instant.ofEpochMilli(dto.getFactDateOut()) : null);
 
         admission.setPatient(patient);
         admission.setRoom(room);
