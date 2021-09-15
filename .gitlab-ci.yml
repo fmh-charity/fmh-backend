@@ -1,0 +1,46 @@
+image: maven:3-jdk-11
+
+services:
+    - name: docker:dind
+variables:
+  # Instruct Docker not to start over TLS.
+    DOCKER_TLS_CERTDIR: ""
+    # Improve performance with overlayfs.
+    DOCKER_DRIVER: overlay2
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest  
+
+build-job:
+  image: docker:stable
+  stage: build
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+test-job:
+  stage: test
+  script:
+    - mvn test -P test
+
+deploy-prod:
+  image: docker:stable
+  stage: deploy
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - ssh $SSH_USER@"$SSH_HOST" 'cd /usr/src/docker && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
+  only:
+    - develop

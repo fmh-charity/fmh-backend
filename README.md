@@ -1,11 +1,20 @@
-### Java Spring template project
+# О проекте:
 
-This project is based on a GitLab [Project Template](https://docs.gitlab.com/ee/gitlab-basics/create-project.html).
+Backend сервис для приложения «Мобильный хоспис»
 
-Improvements can be proposed in the [original project](https://gitlab.com/gitlab-org/project-templates/spring).
+**Технологии:** Java, Spring Boot, Postgres
 
-### CI/CD with Auto DevOps
+# Локальный запуск:
 
-This template is compatible with [Auto DevOps](https://docs.gitlab.com/ee/topics/autodevops/).
+## Вариант 1, backend сервис и окружение в докере
 
-If Auto DevOps is not already enabled for this project, you can [turn it on](https://docs.gitlab.com/ee/topics/autodevops/#enabling-auto-devops) in the project settings.
+1. Собрать docker image: `docker build -t fmh_back:1.0`  
+1. Выполнить в корне `docker-compose up`
+1. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/#/` 
+
+## Вариант 2, backend запустить локально, а окружение в докере
+
+1. Выполнить в корне `docker-compose -f docker-compose-env-only.yml up`
+1. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123`
+1. Запустить backend сервис
+1. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/#/`
