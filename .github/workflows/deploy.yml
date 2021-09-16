@@ -2,9 +2,13 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ develop ]
+    branches:
+      - develop
+      - master
   pull_request:
-    branches: [ develop ]
+    branches:
+      - develop
+      - master
     
 env:
   REGISTRY: ghcr.io
@@ -22,7 +26,10 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: maven
-    
+
+    - name: Run tests
+      run: mvn test -P test
+
     - name: Package with Maven
       run: mvn clean package    
       
