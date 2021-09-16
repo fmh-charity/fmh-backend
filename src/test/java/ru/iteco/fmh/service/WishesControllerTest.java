@@ -16,7 +16,6 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -178,7 +177,7 @@ public class WishesControllerTest {
         WishDto result = sut.changeStatus(wishInProgressId, EXECUTED);
 
         assertEquals(EXECUTED, result.getStatus());
-        assertEquals(LocalDateTime.now().withNano(0), result.getFactExecuteDate());
+        assertNotNull(result.getFactExecuteDate());
 
         // after
         Wish wish = wishRepository.findById(wishInProgressId).get();

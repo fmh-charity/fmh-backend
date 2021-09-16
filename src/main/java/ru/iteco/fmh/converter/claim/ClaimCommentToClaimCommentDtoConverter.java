@@ -19,6 +19,7 @@ public class ClaimCommentToClaimCommentDtoConverter implements Converter<ClaimCo
 
         Integer claimId = claimComment.getClaim() != null ? claimComment.getClaim().getId() : null;
         Integer creatorId = claimComment.getCreator() != null ? claimComment.getCreator().getId() : null;
+        dto.setCreateDate(claimComment.getCreateDate() != null ? claimComment.getCreateDate().toEpochMilli() : null);
 
         dto.setClaimId(claimId);
         dto.setCreatorId(creatorId);

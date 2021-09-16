@@ -25,8 +25,7 @@ import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
@@ -70,9 +69,9 @@ public class TestUtils {
                 .creator(getUser())
                 .executor(getUser())
                 .description(getAlphabeticString())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
-                .factExecuteDate(LocalDateTime.now())
+                .createDate(Instant.now())
+                .planExecuteDate(Instant.now())
+                .factExecuteDate(Instant.now())
                 .status(statusE)
                 .build();
     }
@@ -84,7 +83,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .birthDate(Instant.now())
                 .currentAdmission(Admission.builder().build())
                 .build();
         return patient;
@@ -132,8 +131,8 @@ public class TestUtils {
         return WishDto.builder()
                 .patientId(3)
                 .description(getAlphabeticString())
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().withNano(0))
+                .planExecuteDate(Instant.now().toEpochMilli())
+                .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
                 .executorId(null)
                 .creatorId(3)
@@ -146,7 +145,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .birthDate(Instant.now().toEpochMilli())
                 .build();
         return patientDto;
     }
@@ -159,7 +158,7 @@ public class TestUtils {
         return Admission.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
-                .planDateIn(LocalDateTime.now())
+                .planDateIn(Instant.now())
                 .planDateOut(null)
                 .factDateIn(null)
                 .factDateOut(null)
@@ -178,7 +177,7 @@ public class TestUtils {
         return AdmissionDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patientId(Integer.valueOf(getNumeric(2)))
-                .planDateIn(LocalDateTime.now())
+                .planDateIn(Instant.now().toEpochMilli())
                 .planDateOut(null)
                 .factDateIn(null)
                 .factDateOut(null)
@@ -197,8 +196,8 @@ public class TestUtils {
                 .description("description")
                 .creator(getUser())
                 .executor(getUser())
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
+                .createDate(Instant.now())
+                .planExecuteDate(Instant.now())
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
                 .build();
@@ -213,8 +212,8 @@ public class TestUtils {
                 .description("description")
                 .creator(getUser())
                 .executor(null)
-                .createDate(LocalDateTime.now())
-                .planExecuteDate(LocalDateTime.now())
+                .createDate(Instant.now())
+                .planExecuteDate(Instant.now())
                 .factExecuteDate(null)
                 .status(StatusE.OPEN)
                 .build();
@@ -228,8 +227,8 @@ public class TestUtils {
                 .description("description")
                 .creatorId(3)
                 .executorId(null)
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .planExecuteDate(Instant.now().toEpochMilli())
+                .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
                 .factExecuteDate(null)
                 .status(StatusE.OPEN)
                 .build();
@@ -243,8 +242,8 @@ public class TestUtils {
                 .description("description")
                 .creatorId(3)
                 .executorId(3)
-                .planExecuteDate(LocalDateTime.now().withNano(0))
-                .createDate(LocalDateTime.now().plusDays(2).withNano(0))
+                .planExecuteDate(Instant.now().toEpochMilli())
+                .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
                 .factExecuteDate(null)
                 .status(StatusE.IN_PROGRESS)
                 .build();
@@ -256,7 +255,7 @@ public class TestUtils {
                 .claimId(2)
                 .creatorId(2)
                 .description("description")
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now().toEpochMilli())
                 .build();
     }
 
@@ -265,7 +264,7 @@ public class TestUtils {
                 .claim(claim)
                 .creator(getUser())
                 .description("description")
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .build();
     }
 
@@ -276,7 +275,7 @@ public class TestUtils {
                 .wish(getWish(wishStatus))
                 .description(getAlphabeticString())
                 .creator(getUser())
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now())
                 .build();
     }
 
@@ -286,7 +285,7 @@ public class TestUtils {
                 .wishId(1)
                 .description(getAlphabeticString())
                 .creatorId(3)
-                .createDate(LocalDateTime.now())
+                .createDate(Instant.now().toEpochMilli())
                 .build();
     }
 

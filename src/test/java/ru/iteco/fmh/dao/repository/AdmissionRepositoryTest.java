@@ -8,8 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,13 +30,13 @@ public class AdmissionRepositoryTest {
                 .firstName("first")
                 .middleName("first")
                 .lastName("first")
-                .birthDate(LocalDate.now())
+                .birthDate(Instant.now())
                 .build();
 
         patient = patientRepository.save(patient);
         entity = Admission.builder()
-                .planDateIn(LocalDateTime.now().withNano(0))
-                .factDateIn(LocalDateTime.now().withNano(0))
+                .planDateIn(Instant.now())
+                .factDateIn(Instant.now())
                 .patient(patient)
                 .build();
 

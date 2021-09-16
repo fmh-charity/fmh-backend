@@ -9,7 +9,6 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +48,10 @@ public class PatientServiceImpl implements PatientService {
 
     // ставит верные dateIn, dateOut и флаги для отправки на фронт
     private PatientAdmissionDto setAdmissionDates(PatientAdmissionDto patientAdmissionDto) {
-        LocalDateTime factDateIn = patientAdmissionDto.getFactDateIn();
-        LocalDateTime factDateOut = patientAdmissionDto.getFactDateOut();
-        LocalDateTime planDateIn = patientAdmissionDto.getPlanDateIn();
-        LocalDateTime planDateOut = patientAdmissionDto.getPlanDateOut();
+        Long factDateIn = patientAdmissionDto.getFactDateIn();
+        Long factDateOut = patientAdmissionDto.getFactDateOut();
+        Long planDateIn = patientAdmissionDto.getPlanDateIn();
+        Long planDateOut = patientAdmissionDto.getPlanDateOut();
 
         // ставим dateIn
         if (factDateIn != null) {

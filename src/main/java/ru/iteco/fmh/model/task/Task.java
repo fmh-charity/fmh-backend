@@ -1,12 +1,24 @@
 package ru.iteco.fmh.model.task;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.user.User;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import java.time.Instant;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -31,9 +43,9 @@ public class Task {
     @JoinColumn(name = "executor_id")
     User executor;
 
-    LocalDateTime createDate;
-    LocalDateTime planExecuteDate;
-    LocalDateTime factExecuteDate;
+    Instant createDate;
+    Instant planExecuteDate;
+    Instant factExecuteDate;
 
     @Enumerated(EnumType.STRING)
     StatusE status;

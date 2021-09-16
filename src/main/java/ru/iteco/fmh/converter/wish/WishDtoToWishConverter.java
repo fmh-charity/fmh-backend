@@ -12,6 +12,8 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
+
 @Component
 @RequiredArgsConstructor
 public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
@@ -26,6 +28,10 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
         Patient patient = dto.getPatientId() != null ? patientRepository.findPatientById(dto.getPatientId()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
         User executor = dto.getExecutorId() != null ? userRepository.findUserById(dto.getExecutorId()) : null;
+
+        entity.setCreateDate(dto.getCreateDate() != null ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
+        entity.setPlanExecuteDate(dto.getPlanExecuteDate() != null ? Instant.ofEpochMilli(dto.getPlanExecuteDate()) : null);
+        entity.setFactExecuteDate(dto.getFactExecuteDate() != null ? Instant.ofEpochMilli(dto.getFactExecuteDate()) : null);
 
 
         entity.setPatient(patient);

@@ -20,6 +20,10 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
         Integer creatorId = claim.getCreator() != null ? claim.getCreator().getId() : null;
         Integer executorId = claim.getExecutor() != null ? claim.getExecutor().getId() : null;
 
+        claimDto.setCreateDate(claim.getCreateDate() != null ? claim.getCreateDate().toEpochMilli() : null);
+        claimDto.setPlanExecuteDate(claim.getPlanExecuteDate() != null ? claim.getPlanExecuteDate().toEpochMilli() : null);
+        claimDto.setFactExecuteDate(claim.getFactExecuteDate() != null ? claim.getFactExecuteDate().toEpochMilli() : null);
+
         claimDto.setCreatorId(creatorId);
         claimDto.setExecutorId(executorId);
         return claimDto;

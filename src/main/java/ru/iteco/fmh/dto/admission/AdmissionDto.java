@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import java.time.LocalDateTime;
-
 @ApiModel(description = "информация по госпитализации")
 @Builder
 @Data
@@ -24,15 +22,15 @@ public class AdmissionDto {
 
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
-    private LocalDateTime planDateIn;
+    private Long planDateIn;
     @ApiModelProperty("плановая дата выписки")
-    private LocalDateTime planDateOut;
+    private Long planDateOut;
 
     //для сценария "Госпитализация пациента"
     @ApiModelProperty(value = "фактическая дата поступления")
-    private LocalDateTime factDateIn;
+    private Long factDateIn;
     @ApiModelProperty(value = "фактическая дата выписки")
-    private LocalDateTime factDateOut;
+    private Long factDateOut;
 
     @ApiModelProperty(value = "статус госпитализации")
     AdmissionsStatus status;

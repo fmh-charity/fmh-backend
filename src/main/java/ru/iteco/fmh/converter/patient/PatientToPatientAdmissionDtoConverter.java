@@ -11,22 +11,28 @@ import ru.iteco.fmh.model.admission.Admission;
  */
 @Component
 public class PatientToPatientAdmissionDtoConverter implements Converter<Patient, PatientAdmissionDto> {
-
     @Override
     public PatientAdmissionDto convert(Patient patient) {
         Admission currentAdmission = patient.getCurrentAdmission();
-
-        return PatientAdmissionDto.builder()
+        PatientAdmissionDto dto = PatientAdmissionDto.builder()
                 .id(patient.getId())
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .middleName(patient.getMiddleName())
-                .birthday(patient.getBirthDate())
                 .admissionsStatus(patient.getStatus())
-                .factDateIn(currentAdmission != null ? currentAdmission.getFactDateIn() : null)
-                .factDateOut(currentAdmission != null ? currentAdmission.getFactDateOut() : null)
-                .planDateIn(currentAdmission != null ? currentAdmission.getPlanDateIn() : null)
-                .planDateOut(currentAdmission != null ? currentAdmission.getPlanDateOut() : null)
                 .build();
+        dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochMilli() : null);
+        if (currentAdmission != null) {
+            dto.setFactDateIn(currentAdmission.getFactDateIn() != null ? currentAdmission.getFactDateIn().toEpochMilli() : null);
+            dto.setFactDateOut(currentAdmission.getFactDateOut() != null ? currentAdmission.getFactDateOut().toEpochMilli() : null);
+            dto.setPlanDateIn(currentAdmission.getPlanDateIn() != null ? currentAdmission.getPlanDateIn().toEpochMilli() : null);
+            dto.setPlanDateOut(currentAdmission.getPlanDateOut() != null ? currentAdmission.getPlanDateOut().toEpochMilli() : null);
+        } else {
+            dto.setFactDateIn(null);
+            dto.setFactDateOut(null);
+            dto.setPlanDateIn(null);
+            dto.setPlanDateOut(null);
+        }
+        return dto;
     }
 }

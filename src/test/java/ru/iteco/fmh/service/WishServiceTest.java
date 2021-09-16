@@ -15,7 +15,6 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.service.wish.WishService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -181,7 +180,7 @@ public class WishServiceTest {
 
         WishDto result = sut.changeStatus(wishId, EXECUTED);
         assertEquals(EXECUTED, result.getStatus());
-        assertEquals(LocalDateTime.now().withNano(0), result.getFactExecuteDate());
+        assertNotNull(result.getFactExecuteDate());
     }
 
     @Test

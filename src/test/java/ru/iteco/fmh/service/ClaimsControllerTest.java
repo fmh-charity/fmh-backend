@@ -16,7 +16,7 @@ import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,10 +54,10 @@ public class ClaimsControllerTest {
         List<ClaimDto> claimDtoList = sut.getAllClaims();
 
         assertEquals(5, claimDtoList.size());
-        assertTrue(claimDtoList.get(3).getPlanExecuteDate().isBefore
-                (claimDtoList.get(4).getPlanExecuteDate()));
-        assertTrue(claimDtoList.get(1).getCreateDate().isBefore
-                (claimDtoList.get(2).getCreateDate()));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.get(3).getPlanExecuteDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.get(4).getPlanExecuteDate())));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.get(1).getCreateDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.get(2).getCreateDate())));
 
     }
 
@@ -66,10 +66,10 @@ public class ClaimsControllerTest {
         List<ClaimDto> claimDtoList = sut.getOpenInProgressClaims();
 
         assertEquals(4, claimDtoList.size());
-        assertTrue(claimDtoList.get(1).getPlanExecuteDate().isBefore
-                (claimDtoList.get(2).getPlanExecuteDate()));
-        assertTrue(claimDtoList.get(0).getCreateDate().isBefore
-                (claimDtoList.get(1).getCreateDate()));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.get(1).getPlanExecuteDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.get(2).getPlanExecuteDate())));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.get(0).getCreateDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.get(1).getCreateDate())));
     }
 
     @Test
@@ -92,9 +92,9 @@ public class ClaimsControllerTest {
                 () -> assertEquals(claimDtoNullExecutor.getExecutorId(), result.getExecutor()),
                 () -> assertNull(claimDtoNullExecutor.getExecutorId()),
                 () -> assertNull(claimDtoNullExecutor.getExecutorId()),
-                () -> assertEquals(claimDtoNullExecutor.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(claimDtoNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(claimDtoNullExecutor.getFactExecuteDate(), result.getFactExecuteDate())
+                () -> assertEquals(claimDtoNullExecutor.getCreateDate(), result.getCreateDate().toEpochMilli()),
+                () -> assertEquals(claimDtoNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate().toEpochMilli())
+
         );
 
         // deleting result entity
@@ -120,9 +120,9 @@ public class ClaimsControllerTest {
                 () -> assertEquals(claimDtoNotNullExecutor.getExecutorId(), result.getExecutor().getId()),
                 () -> assertNotNull(claimDtoNotNullExecutor.getExecutorId()),
                 () -> assertNotNull(result.getExecutor()),
-                () -> assertEquals(claimDtoNotNullExecutor.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(claimDtoNotNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(claimDtoNotNullExecutor.getFactExecuteDate(), result.getFactExecuteDate())
+                () -> assertEquals(claimDtoNotNullExecutor.getCreateDate(), result.getCreateDate().toEpochMilli()),
+                () -> assertEquals(claimDtoNotNullExecutor.getPlanExecuteDate(), result.getPlanExecuteDate().toEpochMilli())
+
         );
 
         // deleting result entity
@@ -209,7 +209,7 @@ public class ClaimsControllerTest {
         ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED);
         ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN);
         assertEquals(EXECUTED, resultExecuted.getStatus());
-        assertEquals(LocalDateTime.now().withNano(0), resultExecuted.getFactExecuteDate());
+        assertNotNull(resultExecuted.getFactExecuteDate());
         assertEquals(OPEN, resultOpen.getStatus());
 //        assertNull(resultOpen.getFactExecuteDate());
         Claim claim = claimRepository.findById(4).get();
@@ -264,7 +264,7 @@ public class ClaimsControllerTest {
         assertAll(
                 () -> assertEquals(claimCommentDto.getDescription(), result.getDescription()),
                 () -> assertEquals(claimCommentDto.getCreatorId(), result.getCreator().getId()),
-                () -> assertEquals(claimCommentDto.getCreateDate().withNano(0), result.getCreateDate().withNano(0)),
+                () -> assertEquals(claimCommentDto.getCreateDate(), result.getCreateDate().toEpochMilli()),
                 () -> assertEquals(claimCommentDto.getClaimId(), result.getClaim().getId())
 
         );

@@ -1,13 +1,24 @@
 package ru.iteco.fmh.model;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Formula;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.time.Instant;
 
 /**
  * Пациент
@@ -29,7 +40,7 @@ public class Patient {
     String firstName;
     String lastName;
     String middleName;
-    LocalDate birthDate;
+    Instant birthDate;
 
     @OneToOne
     @JoinColumn(name = "current_admission_id")

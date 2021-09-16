@@ -20,6 +20,11 @@ public class AdmissionToAdmissionDtoConverter implements Converter<Admission, Ad
         admissionDto.setPatientId(admission.getPatient().getId());
         admissionDto.setRoomId(admission.getRoom().getId());
 
+        admissionDto.setPlanDateIn(admission.getPlanDateIn() != null ? admission.getPlanDateIn().toEpochMilli() : null);
+        admissionDto.setPlanDateOut(admission.getPlanDateOut() != null ? admission.getPlanDateOut().toEpochMilli() : null);
+        admissionDto.setFactDateIn(admission.getFactDateIn() != null ? admission.getFactDateIn().toEpochMilli() : null);
+        admissionDto.setFactDateOut(admission.getFactDateOut() != null ? admission.getFactDateOut().toEpochMilli() : null);
+
         return admissionDto;
     }
 }

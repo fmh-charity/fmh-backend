@@ -1,6 +1,6 @@
 package ru.iteco.fmh.model.task;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * Enum для статуса заявки и записки
@@ -16,7 +16,7 @@ public enum StatusE {
                         + newStatus.getName());
             }
             if (EXECUTED == newStatus) {
-                task.setFactExecuteDate(LocalDateTime.now().withNano(0));
+                task.setFactExecuteDate(Instant.now());
             }
             if (OPEN == newStatus) {
                 task.setExecutor(null);
