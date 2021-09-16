@@ -240,6 +240,9 @@ comment on column roles.id is 'id в системе';
 comment on column roles.name is 'название роли';
 comment on column roles.deleted is 'флаг удаления';
 
+insert into roles (name, deleted)
+values ('ROLE_ADMINISTRATOR', false),
+       ('ROLE_MEDICAL_WORKER', false);
 
 create table news
 (
