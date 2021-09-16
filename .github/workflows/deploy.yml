@@ -1,15 +1,11 @@
-name: Docker Image CI
+name: Run tests, build docker image and deploy
 
 on:
   push:
     branches:
       - develop
       - master
-  pull_request:
-    branches:
-      - develop
-      - master
-    
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}  
