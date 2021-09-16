@@ -47,8 +47,8 @@ jobs:
 #         tags: ${{ steps.meta.outputs.tags }}
 #         labels: ${{ steps.meta.outputs.labels }}
 
-    - name: executing remote ssh commands using ssh key
-      uses: appleboy/ssh-action@master
+    - name: SSH Remote Commands
+      uses: appleboy/ssh-action@v0.1.4
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USER }}
