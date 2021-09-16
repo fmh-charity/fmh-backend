@@ -6,9 +6,8 @@ package ru.iteco.fmh.model.user;
 public enum RoleE {
 
     ADMINISTRATOR,
-    MEDICAL_WORKER,
-    VOLUNTEER,
-    EMPLOYEE_AHC;
+    MEDICAL_WORKER;
+
 
     RoleE() {
     }
