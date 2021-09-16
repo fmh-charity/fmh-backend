@@ -47,8 +47,7 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
-
-    - name: deploy to yandex cloud
+    - name: Deploy to yandex cloud
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
