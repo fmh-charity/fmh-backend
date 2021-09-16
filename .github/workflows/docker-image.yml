@@ -7,7 +7,8 @@ on:
     branches: [ develop ]
     
 env:
-  REGISTRY: ${{ secrets.REGISTRY }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}  
 
 jobs:
   build:
@@ -25,6 +26,14 @@ jobs:
     - name: Package with Maven
       run: mvn clean package
       
+    - name: Generate build ID
+      id: prep
+      run: |
+          branch=${GITHUB_REF##*/}
+          sha=${GITHUB_SHA::8}
+          ts=$(date +%s)
+          echo "::set-output name=BUILD_ID::${branch}-${sha}-${ts}"      
+      
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
       with:
@@ -36,12 +45,12 @@ jobs:
       id: meta
       uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       with:
-        images: ${{ env.REGISTRY }}/${{ github.repository }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY }}/${{ github.repository }}:$(date +%s)
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.prep.outputs.BUILD_ID }}
         labels: ${{ steps.meta.outputs.labels }}   
