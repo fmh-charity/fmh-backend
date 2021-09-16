@@ -24,15 +24,7 @@ jobs:
         cache: maven
     
     - name: Package with Maven
-      run: mvn clean package
-      
-    - name: Generate build ID
-      id: prep
-      run: |
-          branch=${GITHUB_REF##*/}
-          sha=${GITHUB_SHA::8}
-          ts=$(date +%s)
-          echo "::set-output name=BUILD_ID::${branch}-${sha}-${ts}"      
+      run: mvn clean package    
       
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -52,5 +44,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.prep.outputs.BUILD_ID }}
-        labels: ${{ steps.meta.outputs.labels }}   
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
