@@ -1,7 +1,6 @@
 package ru.iteco.fmh.converter.admission;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import ru.iteco.fmh.model.admission.Admission;
  * конвертер из {@link Admission} в {@link AdmissionDto}
  */
 @Component
-@RequiredArgsConstructor
 public class AdmissionToAdmissionDtoConverter implements Converter<Admission, AdmissionDto> {
     @Override
     public AdmissionDto convert(@NonNull Admission admission) {

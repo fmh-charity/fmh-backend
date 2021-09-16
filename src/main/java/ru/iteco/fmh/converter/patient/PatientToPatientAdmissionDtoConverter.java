@@ -11,7 +11,6 @@ import ru.iteco.fmh.model.admission.Admission;
  */
 @Component
 public class PatientToPatientAdmissionDtoConverter implements Converter<Patient, PatientAdmissionDto> {
-
     @Override
     public PatientAdmissionDto convert(Patient patient) {
         Admission currentAdmission = patient.getCurrentAdmission();
@@ -28,15 +27,12 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
             dto.setFactDateOut(currentAdmission.getFactDateOut() != null ? currentAdmission.getFactDateOut().toEpochMilli() : null);
             dto.setPlanDateIn(currentAdmission.getPlanDateIn() != null ? currentAdmission.getPlanDateIn().toEpochMilli() : null);
             dto.setPlanDateOut(currentAdmission.getPlanDateOut() != null ? currentAdmission.getPlanDateOut().toEpochMilli() : null);
-
         } else {
             dto.setFactDateIn(null);
             dto.setFactDateOut(null);
             dto.setPlanDateIn(null);
             dto.setPlanDateOut(null);
-
         }
-
         return dto;
     }
 }

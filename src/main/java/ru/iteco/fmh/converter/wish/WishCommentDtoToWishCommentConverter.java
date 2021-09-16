@@ -29,8 +29,7 @@ public class WishCommentDtoToWishCommentConverter implements Converter<WishComme
         Wish wish = dto.getWishId() != null ? wishRepository.findWishById(dto.getWishId()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
 
-        wishComment.setCreateDate(dto.getCreateDate() != null
-                ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
+        wishComment.setCreateDate(dto.getCreateDate() != null ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
 
         wishComment.setWish(wish);
         wishComment.setCreator(creator);
