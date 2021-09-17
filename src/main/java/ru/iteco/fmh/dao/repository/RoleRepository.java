@@ -1,4 +1,4 @@
-package ru.iteco.fmh.security;
+package ru.iteco.fmh.dao.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,7 +6,9 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.RoleE;
 
 @Repository
-public interface RoleEntityRepository extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 
     Role findByName(RoleE name);
+
+    Role findRoleById(Integer id);
 }
