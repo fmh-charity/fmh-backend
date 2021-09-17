@@ -2,9 +2,12 @@ package ru.iteco.fmh.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.iteco.fmh.model.user.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 //Он просто хранит информацию о пользователе, которая позже инкапсулируется в объекты аутентификации.
@@ -14,21 +17,22 @@ public class UserPrinciple implements UserDetails {
 
     private final int id;
 
-    private final String name;
+    private final String login;
+
 
     @JsonIgnore
     private final String password;
 
-    public UserPrinciple(int id, String name, String password) {
+    public UserPrinciple(int id, String login, String password) {
         this.id = id;
-        this.name = name;
+        this.login = login;
         this.password = password;
     }
 
-    public static UserPrinciple build(User user) {
+    public static UserPrinciple build(User user, List<SimpleGrantedAuthority> authorities) {
         return new UserPrinciple(
                 user.getId(),
-                user.getName(),
+                user.getLogin(),
                 user.getPassword()
         );
     }
@@ -45,7 +49,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return login;
     }
 
 
