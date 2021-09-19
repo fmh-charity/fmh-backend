@@ -38,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         List<SimpleGrantedAuthority> authorities = Arrays.asList(
                 new SimpleGrantedAuthority(roleRepository.findRoleById
-                        ((userRoleRepository.findUserRoleByUser(user)).getId()).getName().name()));
+                        ((userRoleRepository.findUserRoleByUser(user)).getId()).getName()));
 
         return UserPrinciple.build(user, authorities);
     }
