@@ -1,5 +1,7 @@
 package ru.iteco.fmh.model.task;
 
+import ru.iteco.fmh.model.user.User;
+
 import java.time.Instant;
 
 /**
@@ -8,7 +10,7 @@ import java.time.Instant;
 public enum StatusE {
     IN_PROGRESS("В РАБОТЕ") {
         @Override
-        public void changeStatus(Task task, StatusE newStatus) {
+        public void changeStatus(Task task, StatusE newStatus, User executor) {
             if (CANCELLED == newStatus) {
                 throw new IllegalArgumentException("нельзя перевести из статуса "
                         + this.getName()
@@ -27,14 +29,14 @@ public enum StatusE {
 
     CANCELLED("ОТМЕНЕНО") {
         @Override
-        public void changeStatus(Task task, StatusE newStatus) {
+        public void changeStatus(Task task, StatusE newStatus, User executor) {
             throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в иной статус");
         }
     },
 
     OPEN("ОТКРЫТО") {
         @Override
-        public void changeStatus(Task task, StatusE newStatus) {
+        public void changeStatus(Task task, StatusE newStatus, User executor) {
             if (EXECUTED == newStatus) {
                 throw new IllegalArgumentException("нельзя перевести из статуса "
                         + this.getName()
@@ -42,15 +44,16 @@ public enum StatusE {
                         + newStatus.getName());
             }
             if (IN_PROGRESS == newStatus) {
-                //  TODO: task.setExecutor(); - взять значение user'а из spring security context
+                task.setExecutor(executor);
             }
+
             task.setStatus(newStatus);
         }
     },
 
     EXECUTED("ИСПОЛНЕНО") {
         @Override
-        public void changeStatus(Task task, StatusE newStatus) {
+        public void changeStatus(Task task, StatusE newStatus, User executor) {
             throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в иной статус");
         }
     };
@@ -61,7 +64,7 @@ public enum StatusE {
         this.name = name;
     }
 
-    public abstract void changeStatus(Task task, StatusE newStatus);
+    public abstract void changeStatus(Task task, StatusE newStatus, User executor);
 
     public String getName() {
         return name;

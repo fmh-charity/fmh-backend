@@ -52,7 +52,7 @@ public class Task {
 
     boolean deleted;
 
-    public void changeStatus(StatusE newStatus) {
-        status.changeStatus(this, newStatus);
+    public void changeStatus(StatusE newStatus, User executor) {
+        status.changeStatus(this, newStatus, executor);
     }
 }

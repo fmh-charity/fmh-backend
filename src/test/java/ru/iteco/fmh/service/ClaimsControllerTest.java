@@ -206,8 +206,8 @@ public class ClaimsControllerTest {
     public void changeStatusShouldPassSuccess() {
         int claimId = 4;
         int claimId2 = 5;
-        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED);
-        ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN);
+        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, null, null);
+        ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN, null, getClaimCommentDto());
         assertEquals(EXECUTED, resultExecuted.getStatus());
         assertNotNull(resultExecuted.getFactExecuteDate());
         assertEquals(OPEN, resultOpen.getStatus());
@@ -220,9 +220,9 @@ public class ClaimsControllerTest {
     @Test
     public void changeStatusNotShouldPassSuccessWrongId() {
         int claimId = 12;
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED));
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(3, OPEN));
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.CANCELLED));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED, null, null));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(3, OPEN, null, null));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.CANCELLED, null, null));
     }
 
 
