@@ -145,7 +145,6 @@ public class WishesControllerTest {
     public void changeStatusOpenToCancelledShouldPassSuccess() {
         // given
         int wishOpenId = 7;
-        System.out.println(wishRepository.findById(wishOpenId));
 
         WishDto result = sut.changeStatus(wishOpenId, CANCELLED, null, null);
 
