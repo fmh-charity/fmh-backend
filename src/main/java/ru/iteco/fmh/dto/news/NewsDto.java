@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @ApiModel(description = "новости")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,4 +32,6 @@ public class NewsDto {
     private Long publishDate;
     @ApiModelProperty("признак для публикации новости")
     private boolean publishEnabled;
+    @ApiModelProperty("ФИО создателя")
+    private String creatorName;
 }

@@ -8,19 +8,23 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NewsRepository;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.service.news.NewsService;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.TestUtils.*;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getNews;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 
 @RunWith(SpringRunner.class)
@@ -31,6 +35,8 @@ public class NewsServiceTest {
 
     @MockBean
     NewsRepository newsRepository;
+    @MockBean
+    UserRepository userRepository;
 
     @Autowired
     ConversionService conversionService;
@@ -38,6 +44,8 @@ public class NewsServiceTest {
     @Test
     public void getAllNewsShouldPassSuccess() {
         List<News> newsList = List.of(getNews(Instant.now()), getNews(Instant.now().minusSeconds(1000)));
+        User user = getUser();
+        when(userRepository.findUserById(any())).thenReturn(user);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
 
@@ -55,7 +63,10 @@ public class NewsServiceTest {
     public void getNewsShouldPassSuccess() {
         // given
         News news = getNews();
+        User user = getUser();
         int newsId = 1;
+
+        when(userRepository.findUserById(any())).thenReturn(user);
         NewsDto expected = conversionService.convert(news, NewsDto.class);
 
         when(newsRepository.findById(any())).thenReturn(Optional.of(news));
@@ -69,6 +80,9 @@ public class NewsServiceTest {
     public void createOrUpdateNewsShouldPassSuccess() {
         // given
         News news = getNews();
+        User user = getUser();
+        when(userRepository.findUserById(any())).thenReturn(user);
+
         NewsDto givenDto = conversionService.convert(news, NewsDto.class);
 
         when(newsRepository.save(any())).thenReturn(news);
