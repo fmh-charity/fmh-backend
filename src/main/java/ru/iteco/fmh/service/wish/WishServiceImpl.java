@@ -6,16 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.StatusE;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
+import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
 import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
@@ -92,14 +95,21 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(int wishId, StatusE status) {
-        Wish wish = wishRepository
-                .findById(wishId)
-                .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует"));
-        wish.changeStatus(status);
+    public WishDto changeStatus(int wishId, StatusE status, UserDto executor, WishCommentDto wishCommentDto) {
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
+                new IllegalArgumentException("Просьбы с таким ID не существует"));
+        if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {
+            if (wishCommentDto != null) {
+                createWishComment(wishId, wishCommentDto);
+            } else {
+                throw new IllegalArgumentException("Комментарий не может быть пустым!");
+            }
+        }
+        wish.changeStatus(status, conversionService.convert(executor, User.class));
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
+
 
     @Override
     public WishCommentDto getWishComment(int commentId) {

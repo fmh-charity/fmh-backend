@@ -206,7 +206,7 @@ public class ClaimsControllerTest {
     public void changeStatusShouldPassSuccess() {
         int claimId = 4;
         int claimId2 = 5;
-        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, null, null);
+        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, null, getClaimCommentDto());
         ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN, null, getClaimCommentDto());
         assertEquals(EXECUTED, resultExecuted.getStatus());
         assertNotNull(resultExecuted.getFactExecuteDate());

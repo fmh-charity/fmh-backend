@@ -17,6 +17,7 @@ import ru.iteco.fmh.model.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
 import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.StatusE.OPEN;
 
@@ -75,7 +76,7 @@ public class ClaimServiceImpl implements ClaimService {
     public ClaimDto changeStatus(int claimId, StatusE status, UserDto executor, ClaimCommentDto claimCommentDto) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
-        if (claim.getStatus() == IN_PROGRESS) {
+        if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {
             if (claimCommentDto != null) {
                 addComment(claimId, claimCommentDto);
             } else {
