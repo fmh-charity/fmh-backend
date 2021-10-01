@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static ru.iteco.fmh.TestUtils.getUser;
 import static ru.iteco.fmh.TestUtils.getWish;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

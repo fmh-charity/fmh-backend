@@ -22,7 +22,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimOpen;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

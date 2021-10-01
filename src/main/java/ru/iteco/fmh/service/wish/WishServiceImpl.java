@@ -9,7 +9,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.CANCELLED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 @Service
 @RequiredArgsConstructor
@@ -95,7 +95,7 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(int wishId, StatusE status, UserDto executor, WishCommentDto wishCommentDto) {
+    public WishDto changeStatus(int wishId, Status status, UserDto executor, WishCommentDto wishCommentDto) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new IllegalArgumentException("Просьбы с таким ID не существует"));
         if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {

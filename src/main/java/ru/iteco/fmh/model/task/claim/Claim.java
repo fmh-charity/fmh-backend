@@ -2,7 +2,7 @@ package ru.iteco.fmh.model.task.claim;
 
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.Task;
 import ru.iteco.fmh.model.user.User;
 
@@ -20,7 +20,7 @@ import java.time.Instant;
 public class Claim extends Task {
     public Claim(Integer id, String title, String description, User creator,
                  User executor, Instant createDate, Instant planExecuteDate,
-                 Instant factExecuteDate, StatusE status, boolean deleted) {
+                 Instant factExecuteDate, Status status, boolean deleted) {
         super(id, title, description, creator, executor, createDate, planExecuteDate,
                 factExecuteDate, status, deleted);
     }

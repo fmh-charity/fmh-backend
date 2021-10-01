@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 
 @ApiModel(description = "просьба")
 @NoArgsConstructor
@@ -34,5 +34,5 @@ public class WishDto {
     @ApiModelProperty("фактическая дата исполнения")
     private Long factExecuteDate;
     @ApiModelProperty("статус записки")
-    private StatusE status;
+    private Status status;
 }

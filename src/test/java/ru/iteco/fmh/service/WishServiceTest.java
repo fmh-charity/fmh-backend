@@ -29,10 +29,10 @@ import static ru.iteco.fmh.TestUtils.getUserDto;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.TestUtils.getWishComment;
 import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
-import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.CANCELLED;
+import static ru.iteco.fmh.model.task.Status.EXECUTED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

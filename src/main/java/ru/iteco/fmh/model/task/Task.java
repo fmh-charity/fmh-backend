@@ -48,11 +48,11 @@ public class Task {
     Instant factExecuteDate;
 
     @Enumerated(EnumType.STRING)
-    StatusE status;
+    Status status;
 
     boolean deleted;
 
-    public void changeStatus(StatusE newStatus, User executor) {
+    public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);
     }
 }

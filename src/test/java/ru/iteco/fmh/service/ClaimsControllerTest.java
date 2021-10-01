@@ -12,7 +12,7 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
@@ -29,9 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
 import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
-import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.EXECUTED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -222,7 +222,7 @@ public class ClaimsControllerTest {
         int claimId = 12;
         assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED, null, null));
         assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(3, OPEN, null, null));
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, StatusE.CANCELLED, null, null));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, Status.CANCELLED, null, null));
     }
 
 

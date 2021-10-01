@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public class ClaimsController {
     @PutMapping("{id}/status")
     public ClaimDto changeStatus(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
-            @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") StatusE status,
+            @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") Status status,
             @ApiParam(value = "исполнитель", required = true) @RequestParam("executor") UserDto executor,
             @ApiParam(value = "комментарий", required = true) @RequestParam("claimComment") ClaimCommentDto claimCommentDto) {
         return claimService.changeStatus(claimId, status, executor, claimCommentDto);

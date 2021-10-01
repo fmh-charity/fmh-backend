@@ -3,7 +3,7 @@ package ru.iteco.fmh.service.claim;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.user.UserDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public interface ClaimService {
      * @param status  значение нового статуса для заявки
      * @return заявку с измененным статусом
      */
-    ClaimDto changeStatus(int claimId, StatusE status, UserDto executor, ClaimCommentDto claimCommentDto);
+    ClaimDto changeStatus(int claimId, Status status, UserDto executor, ClaimCommentDto claimCommentDto);
 
     /**
      * добавляет комент к заявке
