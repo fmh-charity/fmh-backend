@@ -74,6 +74,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Transactional
     @Override
     public ClaimDto changeStatus(int claimId, Status status, UserDto executor, ClaimCommentDto claimCommentDto) {
+        System.out.println(claimCommentDto);
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {

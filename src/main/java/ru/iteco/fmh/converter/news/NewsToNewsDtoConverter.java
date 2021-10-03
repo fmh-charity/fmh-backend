@@ -23,11 +23,11 @@ public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
         newsDto.setCreatorId(news.getCreator().getId());
         newsDto.setCreateDate(news.getCreateDate().toEpochMilli());
         newsDto.setPublishDate(news.getPublishDate().toEpochMilli());
-        newsDto.setCreatorName(createCreatorName(newsDto));
+        newsDto.setCreatorName(getCreatorName(newsDto));
         return newsDto;
     }
 
-    public String createCreatorName(NewsDto newsDto) {
+    public String getCreatorName(NewsDto newsDto) {
         User creator = userRepository.findUserById(newsDto.getCreatorId());
         return creator.getLastName()
                 + " "

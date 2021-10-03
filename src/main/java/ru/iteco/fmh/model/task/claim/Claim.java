@@ -18,6 +18,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "claim")
 public class Claim extends Task {
+
     public Claim(Integer id, String title, String description, User creator,
                  User executor, Instant createDate, Instant planExecuteDate,
                  Instant factExecuteDate, Status status, boolean deleted) {

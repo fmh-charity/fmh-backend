@@ -207,7 +207,9 @@ public class ClaimsControllerTest {
         int claimId = 4;
         int claimId2 = 5;
         ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, null, getClaimCommentDto());
-        ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN, null, getClaimCommentDto());
+        ClaimCommentDto commentDto = getClaimCommentDto();
+        ClaimDto resultOpen = sut.changeStatus(claimId2, OPEN, null, commentDto);
+        assertNotNull(claimCommentRepository.findById(commentDto.getId()));
         assertEquals(EXECUTED, resultExecuted.getStatus());
         assertNotNull(resultExecuted.getFactExecuteDate());
         assertEquals(OPEN, resultOpen.getStatus());

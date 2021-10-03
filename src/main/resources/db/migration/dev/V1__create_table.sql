@@ -102,6 +102,7 @@ create table wish
     fact_execute_date timestamp,
     status            varchar not null,
     deleted           boolean
+
 );
 comment on table wish is 'просьбы';
 comment on column wish.id is 'id в системе';
@@ -119,8 +120,8 @@ comment on column wish.deleted is 'флаг удаления';
 
 create table wish_comment
 (
-    id         serial primary key,
-    wish_id    int,
+    id          serial primary key,
+    wish_id     int,
     description varchar,
     creator_id  int not null,
     create_date timestamp
@@ -138,8 +139,8 @@ create table wish_visibility
 (
     id      serial primary key,
     wish_id int,
-    role_id  int,
-    deleted  boolean
+    role_id int,
+    deleted boolean
 );
 comment on table wish_visibility is 'видимости просьб';
 comment on column wish_visibility.id is 'id в системе';
@@ -202,7 +203,7 @@ create table claim_comment
     id          serial primary key,
     claim_id    int,
     description varchar not null,
-    creator_id  int ,
+    creator_id  int,
     create_date timestamp
 
 );
@@ -230,7 +231,7 @@ comment on column claim_visibility.deleted is 'флаг удаления';
 
 create table roles
 (
-    id      serial  primary key,
+    id      serial primary key,
     name    varchar,
     deleted boolean
 );
@@ -242,15 +243,15 @@ comment on column roles.deleted is 'флаг удаления';
 
 create table news
 (
-    id          serial  primary key,
+    id               serial primary key,
     news_category_id int,
-    title       varchar,
-    description varchar,
-    creator_id  int,
-    create_date timestamp,
-    publish_date timestamp,
-    publish_enabled boolean,
-    deleted     boolean
+    title            varchar,
+    description      varchar,
+    creator_id       int,
+    create_date      timestamp,
+    publish_date     timestamp,
+    publish_enabled  boolean,
+    deleted          boolean
 );
 comment on table news is 'новости';
 comment on column news.id is 'id в системе';
@@ -265,8 +266,8 @@ comment on column news.deleted is 'флаг удаления';
 
 create table news_category
 (
-    id serial primary key,
-    name varchar,
+    id      serial primary key,
+    name    varchar,
     deleted boolean
 );
 comment on table news_category is 'категории новостей';

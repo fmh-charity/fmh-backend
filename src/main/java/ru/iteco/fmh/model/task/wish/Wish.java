@@ -33,15 +33,16 @@ public class Wish extends Task {
     @JoinColumn(name = "patient_id")
     Patient patient;
 
+
     public Wish() {
         super();
     }
 
-    public Wish(Integer id, String title, String description, User creator, User executor,
-                Instant createDate, Instant planExecuteDate, Instant factExecuteDate,
-                Status status, boolean deleted, Patient patient) {
-        super(id, title, description, creator, executor, createDate, planExecuteDate,
-                factExecuteDate, status, deleted);
+    public Wish(Integer id, String title, String description, User creator, User executor, Instant createDate,
+                Instant planExecuteDate, Instant factExecuteDate, Status status,
+                boolean deleted, Patient patient) {
+        super(id, title, description, creator, executor, createDate,
+                planExecuteDate, factExecuteDate, status, deleted);
         this.patient = patient;
     }
 }
