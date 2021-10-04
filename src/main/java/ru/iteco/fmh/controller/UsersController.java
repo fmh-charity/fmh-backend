@@ -3,6 +3,7 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех пользователей с учетом пагинации")
     @GetMapping
     public List<UserShortInfoDto> getAllUsers(
@@ -34,6 +35,7 @@ public class UsersController {
         return null;
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает информацию по пользователю")
     @GetMapping("/{id}")
     public UserDto getUser(
@@ -42,6 +44,7 @@ public class UsersController {
         return null;
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "создание пользователя")
     @PostMapping
     public Integer createUser(
@@ -50,6 +53,7 @@ public class UsersController {
         return null;
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "изменение пользователя")
     @PatchMapping
     public void updateUser(
