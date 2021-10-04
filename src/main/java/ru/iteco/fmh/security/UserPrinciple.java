@@ -36,6 +36,10 @@ public class UserPrinciple implements UserDetails {
         );
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

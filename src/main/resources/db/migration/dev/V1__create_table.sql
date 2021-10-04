@@ -292,6 +292,20 @@ comment on column user_role.user_id is 'id пользователя';
 comment on column user_role.role_id is 'id роли';
 comment on column user_role.deleted is 'флаг удаления';
 
+create table tokens
+(
+    id            serial primary key,
+    user_id       int,
+    refresh_token varchar,
+    disabled      boolean,
+    deleted       boolean
+);
+comment on table tokens is 'токены для авторизации';
+comment on column tokens.id is 'id в системе';
+comment on column tokens.user_id is 'id пользователя';
+comment on column tokens.refresh_token is 'refresh token';
+comment on column tokens.deleted is 'флаг удаления';
+
 
 alter table admission
     add foreign key (patient_id) references patient;

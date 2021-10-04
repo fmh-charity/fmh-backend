@@ -13,7 +13,7 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.model.user.User;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,9 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User Not Found with -> Login : " + login);
         }
-        List<SimpleGrantedAuthority> authorities = Arrays.asList(
-                new SimpleGrantedAuthority(roleRepository.findRoleById
-                        ((userRoleRepository.findUserRoleByUser(user)).getId()).getName()));
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getUsersRoll().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
         return UserPrinciple.build(user, authorities);
     }
