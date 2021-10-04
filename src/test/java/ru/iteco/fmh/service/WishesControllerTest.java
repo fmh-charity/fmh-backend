@@ -192,9 +192,9 @@ public class WishesControllerTest {
     public void changeStatusInProgressToOpenShouldPassSuccess() {
         // given
         int wishInProgressId = 2;
-
-        WishDto result = sut.changeStatus(wishInProgressId, OPEN, null, getWishCommentDto(OPEN));
-
+        WishCommentDto wishCommentDto = getWishCommentDto(OPEN);
+        WishDto result = sut.changeStatus(wishInProgressId, OPEN, null, wishCommentDto);
+        assertNotNull(wishCommentRepository.findById(wishCommentDto.getId()));
         assertEquals(OPEN, result.getStatus());
         assertNull(result.getExecutorId());
 
