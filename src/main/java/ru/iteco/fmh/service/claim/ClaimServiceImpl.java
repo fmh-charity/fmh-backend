@@ -8,15 +8,18 @@ import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.dto.user.UserDto;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.CANCELLED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 @Service
 @RequiredArgsConstructor
@@ -70,10 +73,17 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto changeStatus(int claimId, StatusE status) {
+    public ClaimDto changeStatus(int claimId, Status status, UserDto executor, ClaimCommentDto claimCommentDto) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
-        claim.changeStatus(status);
+        if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {
+            if (claimCommentDto != null) {
+                addComment(claimId, claimCommentDto);
+            } else {
+                throw new IllegalArgumentException("Комментарий не может быть пустым!");
+            }
+        }
+        claim.changeStatus(status, conversionService.convert(executor, User.class));
         claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }

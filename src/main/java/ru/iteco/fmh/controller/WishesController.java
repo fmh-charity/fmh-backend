@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -61,10 +62,12 @@ public class WishesController {
     @PutMapping("{id}/status")
     public WishDto changeStatus(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
-            @ApiParam(value = "новое значение статуса для просьбы", required = true) @RequestParam("status") StatusE status
-    ) {
-        return wishService.changeStatus(id, status);
+            @ApiParam(value = "новый статус для просьбы", required = true) @RequestParam("status") Status status,
+            @ApiParam(value = "исполнитель", required = true) @RequestParam("executor") UserDto executor,
+            @ApiParam(value = "комментарий", required = true) @RequestParam("wishComment") WishCommentDto wishCommentDto) {
+        return wishService.changeStatus(id, status, executor, wishCommentDto);
     }
+
 
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")

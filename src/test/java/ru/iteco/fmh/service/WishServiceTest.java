@@ -25,12 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getUserDto;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.TestUtils.getWishComment;
-import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
-import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.TestUtils.getWishCommentDto;
+import static ru.iteco.fmh.model.task.Status.CANCELLED;
+import static ru.iteco.fmh.model.task.Status.EXECUTED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -151,7 +153,7 @@ public class WishServiceTest {
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
 
-        WishDto result = sut.changeStatus(wishId, CANCELLED);
+        WishDto result = sut.changeStatus(wishId, CANCELLED, null, null);
         assertEquals(CANCELLED, result.getStatus());
     }
 
@@ -164,7 +166,7 @@ public class WishServiceTest {
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
 
-        WishDto result = sut.changeStatus(wishId, IN_PROGRESS);
+        WishDto result = sut.changeStatus(wishId, IN_PROGRESS, getUserDto(), null);
         assertEquals(IN_PROGRESS, result.getStatus());
     }
 
@@ -178,7 +180,7 @@ public class WishServiceTest {
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
 
-        WishDto result = sut.changeStatus(wishId, EXECUTED);
+        WishDto result = sut.changeStatus(wishId, EXECUTED, null, getWishCommentDto(EXECUTED));
         assertEquals(EXECUTED, result.getStatus());
         assertNotNull(result.getFactExecuteDate());
     }
@@ -190,8 +192,8 @@ public class WishServiceTest {
         Wish inProgressWish = getWish(IN_PROGRESS);
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(inProgressWish));
-
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, CANCELLED));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, CANCELLED, null, null));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, CANCELLED, null, null));
     }
 
     @Test
@@ -202,7 +204,7 @@ public class WishServiceTest {
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(openWish));
 
-        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, EXECUTED));
+        assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, EXECUTED, null, null));
     }
 
     @Test
@@ -213,9 +215,9 @@ public class WishServiceTest {
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(cancelledWish));
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, EXECUTED)),
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, OPEN)),
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, IN_PROGRESS))
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, EXECUTED, null, null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, OPEN, null, null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, IN_PROGRESS, null, null))
         );
     }
 
@@ -227,9 +229,9 @@ public class WishServiceTest {
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(executedWish));
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, CANCELLED)),
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, OPEN)),
-                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, IN_PROGRESS))
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, CANCELLED, null, null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, OPEN, null, null)),
+                () -> assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(wishId, IN_PROGRESS, null, null))
         );
     }
 

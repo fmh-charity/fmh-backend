@@ -17,7 +17,7 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -62,7 +62,7 @@ public class TestUtils {
                 .toString();
     }
 
-    public static Wish getWish(StatusE statusE) {
+    public static Wish getWish(Status status) {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
@@ -72,7 +72,7 @@ public class TestUtils {
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())
                 .factExecuteDate(Instant.now())
-                .status(statusE)
+                .status(status)
                 .build();
     }
 
@@ -120,9 +120,9 @@ public class TestUtils {
                 .build();
     }
 
-    public static WishDto getWishDto(StatusE statusE) {
+    public static WishDto getWishDto(Status status) {
         WishDto wishDto = getWishDto();
-        wishDto.setStatus(statusE);
+        wishDto.setStatus(status);
         return wishDto;
     }
 
@@ -136,7 +136,7 @@ public class TestUtils {
                 .factExecuteDate(null)
                 .executorId(null)
                 .creatorId(3)
-                .status(StatusE.OPEN)
+                .status(Status.OPEN)
                 .build();
     }
 
@@ -199,7 +199,7 @@ public class TestUtils {
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())
                 .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
+                .status(Status.IN_PROGRESS)
                 .build();
     }
 
@@ -215,7 +215,7 @@ public class TestUtils {
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())
                 .factExecuteDate(null)
-                .status(StatusE.OPEN)
+                .status(Status.OPEN)
                 .build();
     }
 
@@ -230,7 +230,7 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
                 .factExecuteDate(null)
-                .status(StatusE.OPEN)
+                .status(Status.OPEN)
                 .build();
     }
 
@@ -245,7 +245,7 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
                 .factExecuteDate(null)
-                .status(StatusE.IN_PROGRESS)
+                .status(Status.IN_PROGRESS)
                 .build();
     }
 
@@ -269,7 +269,7 @@ public class TestUtils {
     }
 
 
-    public static WishComment getWishComment(StatusE wishStatus) {
+    public static WishComment getWishComment(Status wishStatus) {
         return WishComment.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .wish(getWish(wishStatus))
@@ -279,7 +279,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static WishCommentDto getWishCommentDto(StatusE wishStatus) {
+    public static WishCommentDto getWishCommentDto(Status wishStatus) {
         return WishCommentDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .wishId(1)

@@ -7,7 +7,7 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.task.StatusE;
+import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.Task;
 import ru.iteco.fmh.model.user.User;
 
@@ -33,15 +33,16 @@ public class Wish extends Task {
     @JoinColumn(name = "patient_id")
     Patient patient;
 
+
     public Wish() {
         super();
     }
 
-    public Wish(Integer id, String title, String description, User creator, User executor,
-                Instant createDate, Instant planExecuteDate, Instant factExecuteDate,
-                StatusE status, boolean deleted, Patient patient) {
-        super(id, title, description, creator, executor, createDate, planExecuteDate,
-                factExecuteDate, status, deleted);
+    public Wish(Integer id, String title, String description, User creator, User executor, Instant createDate,
+                Instant planExecuteDate, Instant factExecuteDate, Status status,
+                boolean deleted, Patient patient) {
+        super(id, title, description, creator, executor, createDate,
+                planExecuteDate, factExecuteDate, status, deleted);
         this.patient = patient;
     }
 }

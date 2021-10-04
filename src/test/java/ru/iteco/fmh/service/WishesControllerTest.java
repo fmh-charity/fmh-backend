@@ -11,6 +11,7 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -22,12 +23,13 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static ru.iteco.fmh.TestUtils.getUserDto;
 import static ru.iteco.fmh.TestUtils.getWishCommentDto;
 import static ru.iteco.fmh.TestUtils.getWishDto;
-import static ru.iteco.fmh.model.task.StatusE.CANCELLED;
-import static ru.iteco.fmh.model.task.StatusE.EXECUTED;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.CANCELLED;
+import static ru.iteco.fmh.model.task.Status.EXECUTED;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -142,9 +144,9 @@ public class WishesControllerTest {
     @Test
     public void changeStatusOpenToCancelledShouldPassSuccess() {
         // given
-        int wishOpenId = 1;
+        int wishOpenId = 7;
 
-        WishDto result = sut.changeStatus(wishOpenId, CANCELLED);
+        WishDto result = sut.changeStatus(wishOpenId, CANCELLED, null, null);
 
         assertEquals(CANCELLED, result.getStatus());
 
@@ -158,8 +160,9 @@ public class WishesControllerTest {
     public void changeStatusOpenToInProgressShouldPassSuccess() {
         // given
         int wishOpenId = 1;
-
-        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS);
+        UserDto userDto = getUserDto();
+        userDto.setId(4);
+        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS, userDto, null);
 
         assertEquals(IN_PROGRESS, result.getStatus());
 
@@ -174,7 +177,7 @@ public class WishesControllerTest {
         // given
         int wishInProgressId = 2;
 
-        WishDto result = sut.changeStatus(wishInProgressId, EXECUTED);
+        WishDto result = sut.changeStatus(wishInProgressId, EXECUTED, null, getWishCommentDto(EXECUTED));
 
         assertEquals(EXECUTED, result.getStatus());
         assertNotNull(result.getFactExecuteDate());
@@ -189,9 +192,9 @@ public class WishesControllerTest {
     public void changeStatusInProgressToOpenShouldPassSuccess() {
         // given
         int wishInProgressId = 2;
-
-        WishDto result = sut.changeStatus(wishInProgressId, OPEN);
-
+        WishCommentDto wishCommentDto = getWishCommentDto(OPEN);
+        WishDto result = sut.changeStatus(wishInProgressId, OPEN, null, wishCommentDto);
+        assertNotNull(wishCommentRepository.findById(wishCommentDto.getId()));
         assertEquals(OPEN, result.getStatus());
         assertNull(result.getExecutorId());
 

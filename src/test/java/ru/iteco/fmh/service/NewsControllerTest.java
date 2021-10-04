@@ -13,7 +13,11 @@ import ru.iteco.fmh.model.news.News;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
@@ -47,6 +51,7 @@ public class NewsControllerTest {
         givenDto.setId(0);
         givenDto.setNewsCategoryId(1);
         givenDto.setCreatorId(1);
+        givenDto.setCreatorName("user1-lastname user1-firstname user1-middlename");
 
         NewsDto resultDto = sut.createNews(givenDto);
 

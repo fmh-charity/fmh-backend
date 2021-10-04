@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.getWish;
-import static ru.iteco.fmh.model.task.StatusE.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.StatusE.OPEN;
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.task.Status.OPEN;
 
 
 class WishToWishDtoConverterTest {
