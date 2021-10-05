@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.iteco.fmh.model.user.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -21,18 +22,24 @@ public class UserPrinciple implements UserDetails {
 
     @JsonIgnore
     private final String password;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(int id, String login, String password) {
+
+    public UserPrinciple(int id, String login, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.authorities = authorities;
     }
 
-    public static UserPrinciple build(User user, List<SimpleGrantedAuthority> authorities) {
+    public static UserPrinciple build(User user) {
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getUsersRoll().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return new UserPrinciple(
                 user.getId(),
                 user.getLogin(),
-                user.getPassword()
+                user.getPassword(),
+                authorities
         );
     }
 
@@ -42,7 +49,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override

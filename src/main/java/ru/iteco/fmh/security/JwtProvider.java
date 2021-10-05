@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 //https://www.baeldung.com/spring-injection-lombok#constructor-injection-with-lombok
 @RequiredArgsConstructor
 @Component
@@ -21,18 +24,37 @@ public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     private static final String key = "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=";
 
-    //сгенерировать токен JWT
-    public String generateJwtToken(Authentication authentication) {
+    //сгенерировать токен JWT (Access Token)
+    public String generateAccessJwtToken(Authentication authentication) {
         //get our user like userPrincipal
         UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
         //генерируем токен
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setExpiration(convertToDateViaSqlTimestamp(LocalDateTime.now().plusDays(1)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)
                 )
                 .compact();
+    }
+
+    //сгенерировать токен JWT (refresh token)
+    public String generateRefreshJwtToken(Authentication authentication) {
+        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setExpiration(convertToDateViaSqlTimestamp(LocalDateTime.now().plusMonths(1)))
+                .signWith(
+                        SignatureAlgorithm.HS512,
+                        setSigningKey(key)
+                )
+                .compact();
+    }
+
+
+    public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
+        return java.sql.Timestamp.valueOf(dateToConvert);
     }
 
     public byte[] setSigningKey(String base64EncodedKeyBytes) {
