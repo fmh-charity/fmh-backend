@@ -16,6 +16,7 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.security.UserPrinciple;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,7 +133,7 @@ public class WishesControllerTest {
         String initialDescription = given.getDescription();
         given.setDescription("new description");
 
-        WishDto result = sut.updateWish(given);
+        WishDto result = sut.updateWish(given, UserPrinciple.build(userRepository.findUserById(1)));
 
         assertEquals(given.getDescription(), result.getDescription());
 
@@ -255,7 +256,7 @@ public class WishesControllerTest {
         String initialDescription = givenWishCommentDto.getDescription();
         givenWishCommentDto.setDescription("new description");
 
-        WishCommentDto result = sut.updateWishComment(givenWishCommentDto);
+        WishCommentDto result = sut.updateWishComment(givenWishCommentDto, UserPrinciple.build(userRepository.findUserById(1)));
 
         assertEquals(givenWishCommentDto, result);
 

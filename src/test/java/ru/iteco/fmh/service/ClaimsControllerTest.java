@@ -15,6 +15,7 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.security.UserPrinciple;
 
 import java.time.Instant;
 import java.util.List;
@@ -158,7 +159,7 @@ public class ClaimsControllerTest {
         given.setExecutorId(userRepository.findUserById(1).getId());
         given.setTitle(newTitle);
 
-        ClaimDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given, UserPrinciple.build(userRepository.findUserById(4)));
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
@@ -184,7 +185,7 @@ public class ClaimsControllerTest {
         String newTitle = "new title";
         given.setTitle(newTitle);
 
-        ClaimDto result = sut.updateClaim(given);
+        ClaimDto result = sut.updateClaim(given, UserPrinciple.build(userRepository.findUserById(2)));
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
@@ -294,7 +295,7 @@ public class ClaimsControllerTest {
         String newDescription = "new title";
         given.setDescription(newDescription);
 
-        ClaimCommentDto result = sut.updateClaimComment(given);
+        ClaimCommentDto result = sut.updateClaimComment(given, UserPrinciple.build(userRepository.findUserById(5)));
 
         assertAll(
                 () -> assertEquals(given.getDescription(), result.getDescription()),
