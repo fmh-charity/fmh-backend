@@ -3,6 +3,7 @@ package ru.iteco.fmh.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Api(description = "Информация по пользователю")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UsersController {
 
