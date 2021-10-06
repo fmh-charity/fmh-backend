@@ -26,15 +26,6 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
 
-    //метод для получения токен JWT из заголовка request'a
-    private String getJwt(HttpServletRequest request) {
-        String authHeader = request.getHeader("auth-token");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.replace("Bearer ", "");
-        }
-        return null;
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -57,5 +48,15 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             logger.error("Can NOT set user authentication -> Message: {}", e);
         }
         filterChain.doFilter(request, response);
+    }
+
+
+    //метод для получения токен JWT из заголовка request'a
+    private String getJwt(HttpServletRequest request) {
+        String authHeader = request.getHeader("auth-token");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
+        }
+        return null;
     }
 }

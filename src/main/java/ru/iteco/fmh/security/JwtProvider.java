@@ -9,12 +9,12 @@ import io.jsonwebtoken.impl.TextCodec;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 //https://www.baeldung.com/spring-injection-lombok#constructor-injection-with-lombok
 @RequiredArgsConstructor
@@ -25,13 +25,11 @@ public class JwtProvider {
     private static final String key = "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=";
 
     //сгенерировать токен JWT (Access Token)
-    public String generateAccessJwtToken(Authentication authentication) {
-        //get our user like userPrincipal
-        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+    public String generateAccessJwtToken(UserPrinciple userPrincipal) {
         //генерируем токен
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
-                .setExpiration(convertToDateViaSqlTimestamp(LocalDateTime.now().plusDays(1)))
+                .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)
@@ -40,11 +38,10 @@ public class JwtProvider {
     }
 
     //сгенерировать токен JWT (refresh token)
-    public String generateRefreshJwtToken(Authentication authentication) {
-        UserPrinciple userPrincipal = (UserPrinciple) authentication.getPrincipal();
+    public String generateRefreshJwtToken(UserPrinciple userPrincipal) {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
-                .setExpiration(convertToDateViaSqlTimestamp(LocalDateTime.now().plusMonths(1)))
+                .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.MONTHS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)
@@ -53,9 +50,6 @@ public class JwtProvider {
     }
 
 
-    public Date convertToDateViaSqlTimestamp(LocalDateTime dateToConvert) {
-        return java.sql.Timestamp.valueOf(dateToConvert);
-    }
 
     public byte[] setSigningKey(String base64EncodedKeyBytes) {
         Assert.hasText(base64EncodedKeyBytes, "signing key cannot be null or empty.");

@@ -29,17 +29,17 @@ public class AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        //get token
-        String accessJwtToken = jwtProvider.generateAccessJwtToken(authentication);
-        String refreshJwtToken = jwtProvider.generateRefreshJwtToken(authentication);
 
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
+
+        //get token
+        String accessJwtToken = jwtProvider.generateAccessJwtToken(userDetails);
+        String refreshJwtToken = jwtProvider.generateRefreshJwtToken(userDetails);
 
         Token newToken = Token.builder()
                 .user(userRepository.findUserById(userDetails.getId()))
                 .refreshToken(refreshJwtToken)
                 .createDate(Instant.now())
-                .deleted(false)
                 .deleted(false)
                 .build();
 
