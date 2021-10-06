@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/news")
 public class NewsController {
+
     private final NewsService newsService;
 
     @ApiOperation(value = "реестр всех новостей")

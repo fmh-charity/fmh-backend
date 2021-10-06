@@ -63,8 +63,8 @@ public class WishesController {
     public WishDto changeStatus(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @ApiParam(value = "новый статус для просьбы", required = true) @RequestParam("status") Status status,
-            @ApiParam(value = "исполнитель", required = true) @RequestParam("executor") UserDto executor,
-            @ApiParam(value = "комментарий", required = true) @RequestParam("wishComment") WishCommentDto wishCommentDto) {
+            @ApiParam(value = "исполнитель", required = true) @RequestBody UserDto executor,
+            @ApiParam(value = "комментарий", required = true) @RequestBody WishCommentDto wishCommentDto) {
         return wishService.changeStatus(id, status, executor, wishCommentDto);
     }
 

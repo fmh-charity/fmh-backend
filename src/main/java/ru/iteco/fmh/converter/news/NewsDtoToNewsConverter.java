@@ -1,5 +1,6 @@
 package ru.iteco.fmh.converter.news;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
@@ -18,7 +19,7 @@ public class NewsDtoToNewsConverter implements Converter<NewsDto, News> {
     private final UserRepository userRepository;
 
     @Override
-    public News convert(NewsDto newsDto) {
+    public News convert(@NonNull NewsDto newsDto) {
         News news = new News();
         BeanUtils.copyProperties(newsDto, news);
 
