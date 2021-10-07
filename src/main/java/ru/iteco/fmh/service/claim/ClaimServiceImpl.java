@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -28,6 +28,7 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimRepository claimRepository;
     private final ClaimCommentRepository claimCommentRepository;
     private final ConversionService conversionService;
+    private final UserRepository userRepository;
 
     @Override
     public List<ClaimDto> getAllClaims() {
@@ -73,7 +74,7 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto changeStatus(int claimId, Status status, UserDto executor, ClaimCommentDto claimCommentDto) {
+    public ClaimDto changeStatus(int claimId, Status status, Integer executorId, ClaimCommentDto claimCommentDto) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {
@@ -83,7 +84,10 @@ public class ClaimServiceImpl implements ClaimService {
                 throw new IllegalArgumentException("Комментарий не может быть пустым!");
             }
         }
-        claim.changeStatus(status, conversionService.convert(executor, User.class));
+        User executor = userRepository.findById(executorId).orElseThrow(() ->
+                new IllegalArgumentException("User does not exist!"));
+        System.out.println(executor);
+        claim.changeStatus(status, executor);
         claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }
