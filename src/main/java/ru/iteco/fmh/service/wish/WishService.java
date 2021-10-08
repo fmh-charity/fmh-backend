@@ -1,6 +1,5 @@
 package ru.iteco.fmh.service.wish;
 
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.Status;
@@ -64,7 +63,7 @@ public interface WishService {
      * @param status значение нового статуса для просьбы
      * @return просьбу с измененным статусом
      */
-    WishDto changeStatus(int wishId, Status status, UserDto executor, WishCommentDto wishCommentDto);
+    WishDto changeStatus(int wishId, Status status, Integer executor, WishCommentDto wishCommentDto);
 
 
     /**
