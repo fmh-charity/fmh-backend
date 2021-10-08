@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.Status;
@@ -95,7 +94,7 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(int wishId, Status status, UserDto executor, WishCommentDto wishCommentDto) {
+    public WishDto changeStatus(int wishId, Status status, Integer executor, WishCommentDto wishCommentDto) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new IllegalArgumentException("Просьбы с таким ID не существует"));
         if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {
