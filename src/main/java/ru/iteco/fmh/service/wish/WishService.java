@@ -63,7 +63,7 @@ public interface WishService {
      * @param status значение нового статуса для просьбы
      * @return просьбу с измененным статусом
      */
-    WishDto changeStatus(int wishId, Status status, Integer executor, WishCommentDto wishCommentDto);
+    WishDto changeStatus(int wishId, Status status, Integer executorId, WishCommentDto wishCommentDto);
 
 
     /**
