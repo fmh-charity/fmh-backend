@@ -8,10 +8,12 @@ on:
     branches-ignore:
       - develop
       - master
+      - feature/pmh-148
   pull_request:
     branches-ignore:
       - develop
       - master
+      - feature/pmh-148
 
 jobs:
   build:
