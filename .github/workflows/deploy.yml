@@ -6,6 +6,8 @@ on:
       - develop
       - master
       - feature/pmh-148
+    tags:
+      - 'v*'      
 
 env:
   REGISTRY: ghcr.io
