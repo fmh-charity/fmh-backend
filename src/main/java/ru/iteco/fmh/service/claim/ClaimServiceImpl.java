@@ -78,7 +78,7 @@ public class ClaimServiceImpl implements ClaimService {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
                 new IllegalArgumentException("Заявки с таким ID не существует"));
         if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {
-            if (claimCommentDto != null) {
+            if (!claimCommentDto.getDescription().equals("")) {
                 addComment(claimId, claimCommentDto);
             } else {
                 throw new IllegalArgumentException("Комментарий не может быть пустым!");
