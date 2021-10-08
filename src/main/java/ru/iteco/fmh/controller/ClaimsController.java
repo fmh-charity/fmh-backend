@@ -19,7 +19,7 @@ import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
 
-@Api(description = "Заявки")
+@Api("Заявки")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/claims")
