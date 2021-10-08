@@ -24,11 +24,8 @@ jobs:
         distribution: 'adopt'
         cache: maven
 
-    - name: Run tests
-      run: mvn test -P test
-
     - name: Package with Maven
-      run: mvn clean package    
+      run: mvn clean package -DskipTests
       
     - name: Log in to the Container registry
       uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
