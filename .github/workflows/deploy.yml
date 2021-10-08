@@ -5,9 +5,8 @@ on:
     branches:
       - develop
       - master
-      - feature/pmh-148
     tags:
-      - 'v*'      
+      - 'v*'    
 
 env:
   REGISTRY: ghcr.io
@@ -33,7 +32,7 @@ jobs:
       run: mvn clean package    
       
     - name: Log in to the Container registry
-      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      uses: docker/login-action@v3
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
