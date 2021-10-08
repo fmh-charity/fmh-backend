@@ -162,7 +162,7 @@ public class WishesControllerTest {
         int wishOpenId = 1;
         UserDto userDto = getUserDto();
         userDto.setId(4);
-        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS, userDto, null);
+        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS, 4, null);
 
         assertEquals(IN_PROGRESS, result.getStatus());
 
