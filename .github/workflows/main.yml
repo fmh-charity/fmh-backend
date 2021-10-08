@@ -1,4 +1,4 @@
-name: Run tests, build docker image and deploy
+name: Temp deploy
 
 on:
   push:
