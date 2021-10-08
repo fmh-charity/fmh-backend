@@ -166,7 +166,7 @@ public class WishServiceTest {
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
 
-        WishDto result = sut.changeStatus(wishId, IN_PROGRESS, getUserDto(), null);
+        WishDto result = sut.changeStatus(wishId, IN_PROGRESS, 2, null);
         assertEquals(IN_PROGRESS, result.getStatus());
     }
 
