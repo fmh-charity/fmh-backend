@@ -154,21 +154,21 @@ public class WishesControllerTest {
         wishRepository.save(wish);
     }
 
-//    @Test
-//    public void changeStatusOpenToInProgressShouldPassSuccess() {
-//        // given
-//        int wishOpenId = 1;
-//        UserDto userDto = getUserDto();
-//        userDto.setId(4);
-//        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS, userDto, null);
-//
-//        assertEquals(IN_PROGRESS, result.getStatus());
-//
-//        // after
-//        Wish wish = wishRepository.findById(wishOpenId).get();
-//        wish.setStatus(OPEN);
-//        wishRepository.save(wish);
-//    }
+    @Test
+    public void changeStatusOpenToInProgressShouldPassSuccess() {
+        // given
+        int wishOpenId = 1;
+
+        WishDto result = sut.changeStatus(wishOpenId, IN_PROGRESS, userRepository.findUserById(1).getId(), null);
+
+        assertEquals(IN_PROGRESS, result.getStatus());
+
+        // after
+        Wish wish = wishRepository.findById(wishOpenId).get();
+        wish.setStatus(OPEN);
+        wishRepository.save(wish);
+    }
+
 
     @Test
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
