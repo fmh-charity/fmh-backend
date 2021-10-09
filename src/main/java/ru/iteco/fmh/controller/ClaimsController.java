@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +62,7 @@ public class ClaimsController {
     public ClaimDto changeStatus(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
             @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") Status status,
-            @ApiParam(value = "исполнитель", required = true) @Nullable @RequestParam("executorId") Integer executorId,
+            @ApiParam(value = "исполнитель", required = false) @RequestParam("executorId") Integer executorId,
             @ApiParam(value = "комментарий", required = true) @RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.changeStatus(claimId, status, executorId, claimCommentDto);
     }
