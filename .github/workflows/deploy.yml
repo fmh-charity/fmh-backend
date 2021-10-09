@@ -5,10 +5,11 @@ on:
     branches:
       - develop
       - master
+      - feature/pmh-148
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}  
 
 jobs:
   build:
@@ -55,5 +56,5 @@ jobs:
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
+        key: ${{ secrets.SSH_KEY }}            
         script: 'cd /usr/src/docker && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
