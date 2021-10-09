@@ -7,12 +7,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getUser;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.TestUtils.getWishComment;
 import static ru.iteco.fmh.TestUtils.getWishCommentDto;
@@ -44,6 +47,9 @@ public class WishServiceTest {
 
     @MockBean
     WishCommentRepository wishCommentRepository;
+    @MockBean
+    UserRepository userRepository;
+
 
     @Autowired
     ConversionService conversionService;
@@ -156,18 +162,20 @@ public class WishServiceTest {
         assertEquals(CANCELLED, result.getStatus());
     }
 
-//    @Test
-//    public void changeStatusOpenToInProgressShouldPassSuccess() {
-//        // given
-//        int wishId = 1;
-//        Wish givenWish = getWish(OPEN);
-//
-//        when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
-//        when(wishRepository.save(any())).thenReturn(givenWish);
-//
-//        WishDto result = sut.changeStatus(wishId, IN_PROGRESS, getUserDto(), null);
-//        assertEquals(IN_PROGRESS, result.getStatus());
-//    }
+    @Test
+    public void changeStatusOpenToInProgressShouldPassSuccess() {
+        // given
+        int wishId = 1;
+        Wish givenWish = getWish(OPEN);
+        User user = getUser();
+
+        when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        when(wishRepository.save(any())).thenReturn(givenWish);
+
+        WishDto result = sut.changeStatus(wishId, IN_PROGRESS, user.getId(), null);
+        assertEquals(IN_PROGRESS, result.getStatus());
+    }
 
     @Test
     public void changeStatusInProgressToExecutedShouldPassSuccess() {

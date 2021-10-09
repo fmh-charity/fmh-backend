@@ -100,15 +100,18 @@ public class WishServiceImpl implements WishService {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new IllegalArgumentException("Просьбы с таким ID не существует"));
         if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {
-            if (wishCommentDto != null) {
+            if (!wishCommentDto.getDescription().equals("")) {
                 createWishComment(wishId, wishCommentDto);
             } else {
                 throw new IllegalArgumentException("Комментарий не может быть пустым!");
             }
         }
-        User executor = userRepository.findById(executorId).orElseThrow(() ->
-                new IllegalArgumentException("User does not exist!"));
-        wish.changeStatus(status, conversionService.convert(executor, User.class));
+        User executor = new User();
+        if (executorId != null) {
+            executor = userRepository.findById(executorId).orElseThrow(() ->
+                    new IllegalArgumentException("User does not exist!"));
+        }
+        wish.changeStatus(status, executor);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }

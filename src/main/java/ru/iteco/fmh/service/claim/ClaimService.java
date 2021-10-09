@@ -54,7 +54,7 @@ public interface ClaimService {
      * @param status  значение нового статуса для заявки
      * @return заявку с измененным статусом
      */
-    ClaimDto changeStatus(int claimId, Status status, Integer executorid, ClaimCommentDto claimCommentDto);
+    ClaimDto changeStatus(int claimId, Status status, Integer executorId, ClaimCommentDto claimCommentDto);
 
     /**
      * добавляет комент к заявке

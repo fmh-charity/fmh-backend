@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.ClaimsController;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
@@ -234,7 +233,6 @@ public class ClaimsControllerTest {
         int claimId = 12;
         assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(claimId, EXECUTED, null, null));
         assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(3, OPEN, null, null));
-        assertThrows(InvalidDataAccessApiUsageException.class, () -> sut.changeStatus(3, OPEN, null, null));
         assertThrows(IllegalArgumentException.class, () -> sut.changeStatus(4, Status.CANCELLED, null, null));
     }
 

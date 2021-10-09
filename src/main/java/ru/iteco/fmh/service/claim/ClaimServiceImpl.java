@@ -88,14 +88,9 @@ public class ClaimServiceImpl implements ClaimService {
         if (executorId != null) {
             executor = userRepository.findById(executorId).orElseThrow(() ->
                     new IllegalArgumentException("User does not exist!"));
-            claim.changeStatus(status, executor);
-            claim = claimRepository.save(claim);
-            return conversionService.convert(claim, ClaimDto.class);
-        } else {
-            claim.changeStatus(status, executor);
-            claim = claimRepository.save(claim);
         }
-
+        claim.changeStatus(status, executor);
+        claim = claimRepository.save(claim);
         return conversionService.convert(claim, ClaimDto.class);
     }
 
