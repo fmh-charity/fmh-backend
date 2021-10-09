@@ -62,7 +62,7 @@ public class ClaimsController {
     public ClaimDto changeStatus(
             @ApiParam(value = "идентификатор заявки", required = true) @PathVariable("id") int claimId,
             @ApiParam(value = "новый статус для заявки", required = true) @RequestParam("status") Status status,
-            @ApiParam(value = "исполнитель", required = true) @RequestParam("executorId") Integer executorId,
+            @ApiParam(value = "исполнитель") @RequestParam(value = "executorId", required = false) Integer executorId,
             @ApiParam(value = "комментарий", required = true) @RequestBody ClaimCommentDto claimCommentDto) {
         return claimService.changeStatus(claimId, status, executorId, claimCommentDto);
     }
