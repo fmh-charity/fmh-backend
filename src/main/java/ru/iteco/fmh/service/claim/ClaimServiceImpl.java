@@ -84,11 +84,18 @@ public class ClaimServiceImpl implements ClaimService {
                 throw new IllegalArgumentException("Комментарий не может быть пустым!");
             }
         }
-        User executor = userRepository.findById(executorId).orElseThrow(() ->
-                new IllegalArgumentException("User does not exist!"));
-        System.out.println(executor);
-        claim.changeStatus(status, executor);
-        claim = claimRepository.save(claim);
+        User executor = new User();
+        if (executorId != null) {
+            executor = userRepository.findById(executorId).orElseThrow(() ->
+                    new IllegalArgumentException("User does not exist!"));
+            claim.changeStatus(status, executor);
+            claim = claimRepository.save(claim);
+            return conversionService.convert(claim, ClaimDto.class);
+        } else {
+            claim.changeStatus(status, executor);
+            claim = claimRepository.save(claim);
+        }
+
         return conversionService.convert(claim, ClaimDto.class);
     }
 
