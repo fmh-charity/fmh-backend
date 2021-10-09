@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.Status;
@@ -63,9 +62,9 @@ public class WishesController {
     public WishDto changeStatus(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @ApiParam(value = "новый статус для просьбы", required = true) @RequestParam("status") Status status,
-            @ApiParam(value = "исполнитель", required = true) @RequestBody UserDto executor,
+            @ApiParam(value = "исполнитель", required = true) @RequestParam("executorId") Integer executorId,
             @ApiParam(value = "комментарий", required = true) @RequestBody WishCommentDto wishCommentDto) {
-        return wishService.changeStatus(id, status, executor, wishCommentDto);
+        return wishService.changeStatus(id, status, executorId, wishCommentDto);
     }
 
 

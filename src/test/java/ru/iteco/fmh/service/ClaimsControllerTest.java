@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
 import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
-import static ru.iteco.fmh.TestUtils.getUserDto;
 import static ru.iteco.fmh.model.task.Status.EXECUTED;
 import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.Status.OPEN;
@@ -211,7 +210,8 @@ public class ClaimsControllerTest {
         commentForExecute.setCreatorId(userRepository.findUserById(commentForExecute.getCreatorId()).getId());
         commentForExecute.setClaimId(claimRepository.findClaimById(commentForExecute.getClaimId()).getId());
         commentForExecute.setId(23);
-        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, getUserDto(), commentForExecute);
+
+        ClaimDto resultExecuted = sut.changeStatus(claimId, EXECUTED, userRepository.findUserById(1).getId(), commentForExecute);
         assertNotNull(claimCommentRepository.findById(commentForExecute.getId()));
         ClaimCommentDto commentForOpen = getClaimCommentDto();
         commentForOpen.setCreatorId(userRepository.findUserById(commentForOpen.getCreatorId()).getId());

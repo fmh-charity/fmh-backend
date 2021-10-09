@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.Status;
@@ -29,6 +29,7 @@ public class WishServiceImpl implements WishService {
     private final WishRepository wishRepository;
     private final WishCommentRepository wishCommentRepository;
     private final ConversionService conversionService;
+    private final UserRepository userRepository;
 
     @Override
     public List<WishDto> getAllWishes() {
@@ -95,17 +96,22 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto changeStatus(int wishId, Status status, UserDto executor, WishCommentDto wishCommentDto) {
+    public WishDto changeStatus(int wishId, Status status, Integer executorId, WishCommentDto wishCommentDto) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new IllegalArgumentException("Просьбы с таким ID не существует"));
         if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {
-            if (wishCommentDto != null) {
+            if (!wishCommentDto.getDescription().equals("")) {
                 createWishComment(wishId, wishCommentDto);
             } else {
                 throw new IllegalArgumentException("Комментарий не может быть пустым!");
             }
         }
-        wish.changeStatus(status, conversionService.convert(executor, User.class));
+        User executor = new User();
+        if (executorId != null) {
+            executor = userRepository.findById(executorId).orElseThrow(() ->
+                    new IllegalArgumentException("User does not exist!"));
+        }
+        wish.changeStatus(status, executor);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
