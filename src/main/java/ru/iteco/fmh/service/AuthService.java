@@ -2,9 +2,6 @@ package ru.iteco.fmh.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -26,9 +23,10 @@ public class AuthService {
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         //convert user
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //Дима сказал удалить
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 

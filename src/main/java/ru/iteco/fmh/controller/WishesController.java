@@ -69,10 +69,7 @@ public class WishesController {
     @PutMapping
     public WishDto updateWish(@RequestBody WishDto wishDto, UserPrinciple userPrinciple) {
         User userCreator = userRepository.findUserById(wishDto.getCreatorId());
-        String roleName = userRoleRepository.findUserRoleByUser(userCreator).getRole().getName();
-        if (userCreator.getId() != userPrinciple.getId() && !roleName.equals("ROLE_ADMINISTRATOR")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
-        }
+        checkRole(userCreator, userPrinciple);
         return wishService.updateWish(wishDto);
     }
 
@@ -120,10 +117,20 @@ public class WishesController {
     @PutMapping("/comments")
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, UserPrinciple userPrinciple) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
+        checkRole(userCreator, userPrinciple);
+        return wishService.updateWishComment(wishCommentDto);
+    }
+
+
+    public void checkRole(User userCreator, UserPrinciple userPrinciple) {
         String roleName = userRoleRepository.findUserRoleByUser(userCreator).getRole().getName();
         if (userCreator.getId() != userPrinciple.getId() && !roleName.equals("ROLE_ADMINISTRATOR")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
         }
-        return wishService.updateWishComment(wishCommentDto);
     }
 }
+
+
+
+
+

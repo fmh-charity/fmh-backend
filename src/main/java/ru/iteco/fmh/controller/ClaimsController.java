@@ -69,10 +69,7 @@ public class ClaimsController {
     @PutMapping
     public ClaimDto updateClaim(@RequestBody ClaimDto request, UserPrinciple userPrinciple) {
         User userCreator = userRepository.findUserById(request.getCreatorId());
-        String roleName = userRoleRepository.findUserRoleByUser(userCreator).getRole().getName();
-        if (userCreator.getId() != userPrinciple.getId() && !roleName.equals("ROLE_ADMINISTRATOR")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
-        }
+        checkRole(userCreator, userPrinciple);
         return claimService.updateClaim(request);
     }
 
@@ -116,12 +113,17 @@ public class ClaimsController {
     @PutMapping("/comments")
     public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto request, UserPrinciple userPrinciple) {
         User userCreator = userRepository.findUserById(request.getCreatorId());
+        checkRole(userCreator, userPrinciple);
+        return claimService.updateClaimComment(request);
+    }
+
+    public void checkRole(User userCreator, UserPrinciple userPrinciple) {
         String roleName = userRoleRepository.findUserRoleByUser(userCreator).getRole().getName();
         if (userCreator.getId() != userPrinciple.getId() && !roleName.equals("ROLE_ADMINISTRATOR")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
         }
-        return claimService.updateClaimComment(request);
     }
+
 }
 
 
