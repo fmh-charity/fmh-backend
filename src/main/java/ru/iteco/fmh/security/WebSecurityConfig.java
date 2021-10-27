@@ -22,13 +22,18 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 // в качестве особого конфигурационного бина. Not sure that it needs, but this was in example
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    UserDetailsServiceImpl userDetailsServiceImpl;
+    UserRepository userRepository;
+    private final AuthEntryPointJwt unauthorizedHandler;
+
+
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, UserRepository userRepository,
+                             AuthEntryPointJwt unauthorizedHandler) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.userRepository = userRepository;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     //https://www.baeldung.com/spring-security-login#1-authentication-manager
     @Autowired
