@@ -9,7 +9,6 @@ import ru.iteco.fmh.model.Token;
 import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
-import ru.iteco.fmh.security.UserPrinciple;
 
 import java.time.Instant;
 
@@ -23,10 +22,6 @@ public class AuthService {
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         //convert user
-
-
-
-        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
         //get token
         String accessJwtToken = jwtProvider.generateAccessJwtToken(userDetails);

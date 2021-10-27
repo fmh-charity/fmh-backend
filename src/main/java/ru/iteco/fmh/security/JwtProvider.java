@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import ru.iteco.fmh.model.user.User;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -25,7 +26,7 @@ public class JwtProvider {
     private static final String key = "Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=";
 
     //сгенерировать токен JWT (Access Token)
-    public String generateAccessJwtToken(UserPrinciple userPrincipal) {
+    public String generateAccessJwtToken(User userPrincipal) {
         //генерируем токен
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
@@ -38,7 +39,7 @@ public class JwtProvider {
     }
 
     //сгенерировать токен JWT (refresh token)
-    public String generateRefreshJwtToken(UserPrinciple userPrincipal) {
+    public String generateRefreshJwtToken(User userPrincipal) {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.MONTHS)))
