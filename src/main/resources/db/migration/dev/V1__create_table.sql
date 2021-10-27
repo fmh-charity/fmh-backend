@@ -295,7 +295,6 @@ comment on column user_role.deleted is 'флаг удаления';
 create table tokens
 (
     id            serial primary key,
-    user_id       int,
     refresh_token varchar,
     disabled      boolean,
     create_date   timestamp,
@@ -303,7 +302,6 @@ create table tokens
 );
 comment on table tokens is 'токены для авторизации';
 comment on column tokens.id is 'id в системе';
-comment on column tokens.user_id is 'id пользователя';
 comment on column tokens.refresh_token is 'refresh token';
 comment on column tokens.create_date is 'дата создания';
 comment on column tokens.deleted is 'флаг удаления';

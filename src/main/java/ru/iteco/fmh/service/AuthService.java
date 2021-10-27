@@ -23,10 +23,8 @@ public class AuthService {
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
         //convert user
-        //Дима сказал удалить
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
 
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
