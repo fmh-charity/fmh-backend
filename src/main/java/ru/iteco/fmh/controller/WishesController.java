@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +21,8 @@ import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.Status;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.security.UserPrinciple;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -67,9 +68,9 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по просьбе")
     @PutMapping
-    public WishDto updateWish(@RequestBody WishDto wishDto, UserPrinciple userPrinciple) {
+    public WishDto updateWish(@RequestBody WishDto wishDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishDto.getCreatorId());
-        checkRole(userCreator, userPrinciple);
+        checkRole(userCreator, authentication);
         return wishService.updateWish(wishDto);
     }
 
@@ -112,19 +113,24 @@ public class WishesController {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
+    String administrator = "ROLE_ADMINISTRATOR";
+
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по комментарию")
     @PutMapping("/comments")
-    public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, UserPrinciple userPrinciple) {
+    public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
-        checkRole(userCreator, userPrinciple);
+        checkRole(userCreator, authentication);
         return wishService.updateWishComment(wishCommentDto);
     }
 
 
-    public void checkRole(User userCreator, UserPrinciple userPrinciple) {
-        String roleName = userRoleRepository.findUserRoleByUser(userCreator).getRole().getName();
-        if (userCreator.getId() != userPrinciple.getId() && !roleName.equals("ROLE_ADMINISTRATOR")) {
+    public void checkRole(User userCreator, Authentication authentication) {
+        List<Role> userRoles = userCreator.getUserRoles();
+
+        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
+
+        if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
         }
     }

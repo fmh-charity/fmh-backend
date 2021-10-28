@@ -8,5 +8,4 @@ import ru.iteco.fmh.model.user.Role;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
-    Role findRoleById(Integer id);
 }

@@ -15,7 +15,6 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
-import ru.iteco.fmh.security.UserPrinciple;
 
 import java.util.List;
 import java.util.stream.Collectors;
