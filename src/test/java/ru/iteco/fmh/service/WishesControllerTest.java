@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -15,6 +17,7 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +54,9 @@ public class WishesControllerTest {
 
     @Autowired
     ConversionService conversionService;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
@@ -129,8 +135,10 @@ public class WishesControllerTest {
         WishDto given = conversionService.convert(wishRepository.findById(wishId).get(), WishDto.class);
         String initialDescription = given.getDescription();
         given.setDescription("new description");
-
-        WishDto result = sut.updateWish(given, UserPrinciple.build(userRepository.findUserById(1)));
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRepository.findUserById(given.getCreatorId()).getLogin());
+        UsernamePasswordAuthenticationToken authentication
+                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        WishDto result = sut.updateWish(given, authentication);
 
         assertEquals(given.getDescription(), result.getDescription());
 
@@ -252,8 +260,11 @@ public class WishesControllerTest {
                 .convert(wishCommentRepository.findById(wishCommentId).get(), WishCommentDto.class);
         String initialDescription = givenWishCommentDto.getDescription();
         givenWishCommentDto.setDescription("new description");
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRepository.findUserById(givenWishCommentDto.getCreatorId()).getLogin());
+        UsernamePasswordAuthenticationToken authentication
+                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-        WishCommentDto result = sut.updateWishComment(givenWishCommentDto, UserPrinciple.build(userRepository.findUserById(1)));
+        WishCommentDto result = sut.updateWishComment(givenWishCommentDto, authentication);
 
         assertEquals(givenWishCommentDto, result);
 
