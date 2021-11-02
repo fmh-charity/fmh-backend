@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @ApiModel(description = "общая информация по пользователю")
 @Builder
 @Data
@@ -19,6 +17,7 @@ public class UserShortInfoDto {
     private String lastName;
     @ApiModelProperty("отчество")
     private String middleName;
-    @ApiModelProperty("логин")
-    private String login;
+    @ApiModelProperty("является ли администратором")
+    private boolean isAdmin;
+
 }

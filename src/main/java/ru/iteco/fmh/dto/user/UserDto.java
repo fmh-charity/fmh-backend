@@ -32,6 +32,4 @@ public class UserDto {
     private String email;
     @ApiModelProperty("ФИО пользователя, в формате \"Кузнецова Н.П.\"")
     private String shortUserName;
-//    @ApiModelProperty("роли")
-//    private List<String> roles;
 }

@@ -39,6 +39,7 @@ import java.util.Objects;
 @ToString
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -52,12 +53,12 @@ public class User implements UserDetails {
     String email;
     boolean deleted;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> userRoles;
     //к одному юзеру несколько токенов
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Token> tokens;
 
 
@@ -68,9 +69,6 @@ public class User implements UserDetails {
         this.tokens = tokens;
     }
 
-    public int getId() {
-        return id;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

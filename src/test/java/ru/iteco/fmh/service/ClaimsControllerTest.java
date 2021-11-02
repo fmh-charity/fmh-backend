@@ -5,8 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.ClaimsController;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
@@ -21,7 +19,6 @@ import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -154,65 +151,6 @@ public class ClaimsControllerTest {
 
 
     @Test
-    public void updateClaimShouldPassSuccessNotNull() {
-        // given
-        int claimId = 4;
-        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        String newTitle = "new title";
-        given.setExecutorId(userRepository.findUserById(1).getId());
-        given.setTitle(newTitle);
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRepository.findUserById(given.getCreatorId()).getLogin());
-        UsernamePasswordAuthenticationToken authentication
-                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        ClaimDto result = sut.updateClaim(given, authentication);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-        );
-
-        given.setTitle("title4");
-        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
-    }
-
-
-    @Test
-    public void updateClaimShouldPassSuccessExecutorNull() {
-        // given
-        int claimId = 1;
-        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        String newTitle = "new title";
-        given.setTitle(newTitle);
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRepository.findUserById(4).getLogin());
-        UsernamePasswordAuthenticationToken authentication
-                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-        ClaimDto result = sut.updateClaim(given, authentication);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertNull(result.getExecutorId()),
-                () -> assertNull(given.getExecutorId()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-        );
-
-        given.setTitle("title4");
-        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
-    }
-
-    @Test
     public void changeStatusShouldPassSuccess() {
         int claimId = 4;
         int claimId2 = 5;
@@ -292,32 +230,6 @@ public class ClaimsControllerTest {
 
         // deleting result entity
         claimCommentRepository.deleteById(idNotNullExecutor.getId());
-    }
-
-
-    @Test
-    public void updateClaimCommentShouldPassSuccess() {
-        // given
-        int claimCommentId = 4;
-        ClaimCommentDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
-                ClaimCommentDto.class);
-        String newDescription = "new title";
-        given.setDescription(newDescription);
-
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(userRepository.findUserById(given.getCreatorId()).getLogin());
-        UsernamePasswordAuthenticationToken authentication
-                = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        ClaimCommentDto result = sut.updateClaimComment(given, authentication);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getClaimId(), result.getClaimId())
-        );
-
-        given.setDescription("claim4-description");
-        claimCommentRepository.save(Objects.requireNonNull(conversionService.convert(given, ClaimComment.class)));
     }
 
 
