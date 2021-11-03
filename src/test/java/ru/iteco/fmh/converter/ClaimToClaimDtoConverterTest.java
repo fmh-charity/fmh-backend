@@ -5,14 +5,18 @@ import ru.iteco.fmh.converter.claim.ClaimToClaimDtoConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
+import ru.iteco.fmh.model.user.User;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimInProgress;
 import static ru.iteco.fmh.TestUtils.getClaimOpen;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 
 public class ClaimToClaimDtoConverterTest {
@@ -24,10 +28,10 @@ public class ClaimToClaimDtoConverterTest {
     @Test
     void convertClaimForOpen() {
         Claim claim = getClaimOpen();
-
+        User user = getUser();
+        user.setId(3);
+        when(userRepository.findUserById(any())).thenReturn(user);
         ClaimDto dto = converter.convert(claim);
-        System.out.println(dto.getCreatorName());
-        System.out.println(dto.getExecutorName());
         assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),
@@ -46,9 +50,10 @@ public class ClaimToClaimDtoConverterTest {
     @Test
     void convertClaimForInProgress() {
         Claim claim = getClaimInProgress();
-
+        User user = getUser();
+        user.setId(2);
+        when(userRepository.findUserById(any())).thenReturn(user);
         ClaimDto dto = converter.convert(claim);
-
         assertAll(
                 () -> assertEquals(dto.getId(), claim.getId()),
                 () -> assertEquals(dto.getTitle(), claim.getTitle()),

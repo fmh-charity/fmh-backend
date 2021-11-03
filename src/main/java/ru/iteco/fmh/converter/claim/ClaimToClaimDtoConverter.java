@@ -32,8 +32,6 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
 
         claimDto.setCreatorName(getCreatorAnaExecutorName(claimDto.getCreatorId()));
         claimDto.setExecutorName(claimDto.getExecutorId() != null ? getCreatorAnaExecutorName(claimDto.getExecutorId()) : null);
-
-        claimDto.setExecutorName(getCreatorAnaExecutorName(claimDto.getExecutorId()));
         return claimDto;
     }
 

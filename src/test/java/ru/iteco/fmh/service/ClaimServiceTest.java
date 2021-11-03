@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.service.claim.ClaimService;
@@ -36,14 +37,15 @@ public class ClaimServiceTest {
     @Autowired
     ConversionService conversionService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Test
     public void createClaimShouldPassSuccessExecutorNotNull() {
         // given
         Claim claim = getClaimInProgress();
-//        claim.setId(6);
-//        claim.getCreator().setId(5);
-//        claim.getExecutor().setId(5);
-
+        claim.getCreator().setId(2);
+        claim.getExecutor().setId(3);
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);
@@ -70,8 +72,9 @@ public class ClaimServiceTest {
         // given
         Claim claim = getClaimOpen();
 //        claim.setId(7);
-//        claim.getCreator().setId(5);
+        claim.getCreator().setId(5);
         ClaimDto dto = conversionService.convert(claim, ClaimDto.class);
+
         when(claimRepository.save(any())).thenReturn(claim);
         ClaimDto result = sut.createClaim(dto);
         assertNull(dto.getExecutorId());
@@ -94,6 +97,8 @@ public class ClaimServiceTest {
     public void getClaimShouldPassSuccess() {
         // given
         Claim claim = getClaimInProgress();
+        claim.getCreator().setId(2);
+        claim.getExecutor().setId(3);
         when(claimRepository.findById(any())).thenReturn(Optional.of(claim));
         ClaimDto expected = conversionService.convert(claim, ClaimDto.class);
         ClaimDto result = sut.getClaim(expected.getId());
@@ -104,6 +109,8 @@ public class ClaimServiceTest {
     public void updateClaimShouldPassSuccess() {
         // claim
         Claim claim = getClaimInProgress();
+        claim.getCreator().setId(2);
+        claim.getExecutor().setId(3);
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);
         when(claimRepository.save(any())).thenReturn(claim);
         ClaimDto result = sut.updateClaim(given);
@@ -124,6 +131,7 @@ public class ClaimServiceTest {
     public void updateClaimShouldPassSuccessNull() {
         // claim
         Claim claim = getClaimOpen();
+        claim.getCreator().setId(2);
         ClaimDto given = conversionService.convert(claim, ClaimDto.class);
 
         when(claimRepository.save(any())).thenReturn(claim);
