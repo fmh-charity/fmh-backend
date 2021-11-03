@@ -30,6 +30,7 @@ public class JwtProvider {
         //генерируем токен
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setId(String.valueOf(userPrincipal.getId()))
                 .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
@@ -42,6 +43,7 @@ public class JwtProvider {
     public String generateRefreshJwtToken(User userPrincipal) {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setId(String.valueOf(userPrincipal.getId()))
                 .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.MONTHS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
@@ -51,19 +53,30 @@ public class JwtProvider {
     }
 
 
-
     public byte[] setSigningKey(String base64EncodedKeyBytes) {
         Assert.hasText(base64EncodedKeyBytes, "signing key cannot be null or empty.");
         return TextCodec.BASE64.decode(base64EncodedKeyBytes);
     }
 
-    //анализировать имя пользователя из из проверенного JWT
+    //анализировать имя пользователя из проверенного JWT
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser()
                 .setSigningKey(setSigningKey(key))
                 .parseClaimsJws(token)
-                .getBody().getSubject();
+                .getBody()
+                .getSubject();
     }
+
+    //получаем ID пользователя из проверенного JWT
+    public int getUserIdFromJwtToken(String accessToken) {
+        String id = Jwts.parser()
+                .setSigningKey(setSigningKey(key))
+                .parseClaimsJws(accessToken)
+                .getBody()
+                .getId();
+        return Integer.parseInt(id);
+    }
+
 
     //проверить токен JWT
     public boolean validateJwtToken(String authToken) {

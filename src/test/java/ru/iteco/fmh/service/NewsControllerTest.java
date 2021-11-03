@@ -51,7 +51,7 @@ public class NewsControllerTest {
         givenDto.setId(0);
         givenDto.setNewsCategoryId(1);
         givenDto.setCreatorId(1);
-        givenDto.setCreatorName("user1-lastname user1-firstname user1-middlename");
+        givenDto.setCreatorName("Смирнов Николай Петрович");
 
         NewsDto resultDto = sut.createNews(givenDto);
 

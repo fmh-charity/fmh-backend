@@ -15,7 +15,6 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
-import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
 import java.time.Instant;
 import java.util.List;
@@ -48,8 +47,7 @@ public class ClaimsControllerTest {
     ConversionService conversionService;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+
 
     @Test
     public void getAllClaims() {

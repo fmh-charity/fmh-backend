@@ -2,63 +2,32 @@ package ru.iteco.fmh.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
+import ru.iteco.fmh.service.user.UserService;
 
 import java.util.List;
 
 /**
  * Информация по пользователю
  */
+
+@RequiredArgsConstructor
 @Api(description = "Информация по пользователю")
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "реестр всех пользователей с учетом пагинации")
+    private final UserService userService;
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @ApiOperation(value = "реестр всех пользователей ")
     @GetMapping
-    public List<UserShortInfoDto> getAllUsers(
-            @ApiParam(value = "начальная позиция пагинации", required = true) @RequestParam("offset") int offset,
-            @ApiParam(value = "конечная позиция пагинации", required = true) @RequestParam("limit") int limit,
-            @ApiParam(value = "показывать только активных") @RequestParam("show_active") Boolean showActive
-    ) {
-        return null;
+    public List<UserShortInfoDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "возвращает информацию по пользователю")
-    @GetMapping("/{id}")
-    public UserDto getUser(
-            @ApiParam(value = "идентификатор пользователя", required = true) @PathVariable int id
-    ) {
-        return null;
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "создание пользователя")
-    @PostMapping
-    public Integer createUser(
-            @RequestBody UserDto userDto
-    ) {
-        return null;
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "изменение пользователя")
-    @PatchMapping
-    public void updateUser(
-            @RequestBody UserDto userDto
-    ) {
-
-    }
 }
