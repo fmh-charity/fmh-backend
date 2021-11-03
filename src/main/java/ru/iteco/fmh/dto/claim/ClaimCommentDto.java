@@ -24,4 +24,6 @@ public class ClaimCommentDto {
     private Integer creatorId;
     @ApiModelProperty("дата создания комментария к заявке")
     private Long createDate;
+    @ApiModelProperty("ФИО создателя")
+    private String creatorName;
 }
