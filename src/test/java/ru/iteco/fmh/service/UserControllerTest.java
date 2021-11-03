@@ -22,9 +22,6 @@ public class UserControllerTest {
     @Test
     public void getAllUsers() {
         List<UserShortInfoDto> userShortInfoDtoList = sut.getAllUsers();
-        for (UserShortInfoDto dto : userShortInfoDtoList) {
-            System.out.println(dto);
-        }
         assertEquals(5, userShortInfoDtoList.size());
 
 
