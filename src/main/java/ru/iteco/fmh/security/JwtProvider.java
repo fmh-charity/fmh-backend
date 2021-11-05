@@ -44,7 +44,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setId(String.valueOf(userPrincipal.getId()))
-                .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.MONTHS)))
+                .setExpiration(Timestamp.from(Instant.now().plus(30, ChronoUnit.DAYS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)

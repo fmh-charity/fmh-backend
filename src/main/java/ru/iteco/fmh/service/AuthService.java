@@ -27,9 +27,11 @@ public class AuthService {
 
         //get token
         String accessJwtToken = jwtProvider.generateAccessJwtToken(user);
+        System.out.println(accessJwtToken);
         String refreshJwtToken = jwtProvider.generateRefreshJwtToken(user);
 
         Token newToken = Token.builder()
+                .user(user)
                 .refreshToken(refreshJwtToken)
                 .createDate(Instant.now())
                 .disabled(false)

@@ -37,7 +37,7 @@ public class AuthController {
     @ApiOperation(value = "получение пользователя, который залогинен")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @PostMapping("/check")
-    public UserShortInfoDto getAuthorizedUser(String accessToken) {
+    public UserShortInfoDto getAuthorizedUser(@RequestBody String accessToken) {
         return authService.getAuthorizedUser(accessToken);
     }
 }
