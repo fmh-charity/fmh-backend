@@ -22,7 +22,7 @@ public class UserControllerTest {
     @Test
     public void getAllUsers() {
         List<UserShortInfoDto> userShortInfoDtoList = sut.getAllUsers();
-        assertEquals(5, userShortInfoDtoList.size());
+        assertEquals(10, userShortInfoDtoList.size());
 
 
     }
