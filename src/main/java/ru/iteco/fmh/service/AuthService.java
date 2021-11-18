@@ -45,7 +45,7 @@ public class AuthService {
     }
 
 
-    public JwtResponse tokensUpdate(String refreshToken) {
+    public JwtResponse refreshToken(String refreshToken) {
         Token token = tokenRepository
                 .findTokenByRefreshToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Такого refresh token не существует"));

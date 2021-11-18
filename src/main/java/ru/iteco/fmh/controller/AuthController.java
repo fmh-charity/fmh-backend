@@ -29,14 +29,14 @@ public class AuthController {
 
     @ApiOperation(value = "обновление токенов")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @PostMapping("/update")
-    public JwtResponse tokensUpdate(String refreshToken) {
-        return authService.tokensUpdate(refreshToken);
+    @PostMapping("/refresh")
+    public JwtResponse refreshToken(String token) {
+        return authService.refreshToken(token);
     }
 
     @ApiOperation(value = "получение пользователя, который залогинен")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @PostMapping("/check")
+    @PostMapping("/userInfo")
     public UserShortInfoDto getAuthorizedUser(@RequestBody String accessToken) {
         return authService.getAuthorizedUser(accessToken);
     }

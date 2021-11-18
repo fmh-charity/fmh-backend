@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import ru.iteco.fmh.converter.ConverterUtil;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
-import ru.iteco.fmh.model.user.User;
 
 @Component
 @RequiredArgsConstructor
@@ -29,21 +29,11 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
 
         claimDto.setCreatorId(creatorId);
         claimDto.setExecutorId(executorId);
-
-        claimDto.setCreatorName(getCreatorAnaExecutorName(claimDto.getCreatorId()));
-        claimDto.setExecutorName(claimDto.getExecutorId() != null ? getCreatorAnaExecutorName(claimDto.getExecutorId()) : null);
+        ConverterUtil util = new ConverterUtil(userRepository);
+        claimDto.setCreatorName(util.getCreatorName(claimDto.getCreatorId()));
+        claimDto.setExecutorName(claimDto.getExecutorId() != null ? util.getCreatorName(claimDto.getExecutorId()) : null);
         return claimDto;
     }
 
-
-    public String getCreatorAnaExecutorName(Integer id) {
-
-        User userById = userRepository.findUserById(id);
-        return userById.getLastName()
-                + " "
-                + userById.getFirstName()
-                + " "
-                + userById.getMiddleName();
-    }
 
 }

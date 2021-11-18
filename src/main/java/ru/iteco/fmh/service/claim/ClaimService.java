@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.claim;
 
+import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
@@ -45,7 +46,7 @@ public interface ClaimService {
      * @param claimDto информация по заявке для обновления
      * @return обновленная сущность
      */
-    ClaimDto updateClaim(ClaimDto claimDto);
+    ClaimDto updateClaim(ClaimDto claimDto, Authentication authentication);
 
     /**
      * изменяет статус заявки на - исполнен, отменен
@@ -82,7 +83,7 @@ public interface ClaimService {
      *
      * @return обновленная сущность коммента
      */
-    ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto);
+    ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto, Authentication authentication);
 
 
 }

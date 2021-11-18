@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
@@ -70,10 +66,8 @@ public class ClaimsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "изменение информации по заявке")
     @PutMapping
-    public ClaimDto updateClaim(@RequestBody ClaimDto request, Authentication authentication) {
-        User userCreator = userRepository.findUserById(request.getCreatorId());
-        checkRole(userCreator, authentication);
-        return claimService.updateClaim(request);
+    public ClaimDto updateClaim(@RequestBody ClaimDto claim, Authentication authentication) {
+        return claimService.updateClaim(claim, authentication);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -111,24 +105,15 @@ public class ClaimsController {
         return claimService.addComment(id, request);
     }
 
-    String administrator = "ROLE_ADMINISTRATOR";
+
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "изменение информации по комментарии к заявке")
     @PutMapping("/comments")
     public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto request, Authentication authentication) {
-        User userCreator = userRepository.findUserById(request.getCreatorId());
-        checkRole(userCreator, authentication);
-        return claimService.updateClaimComment(request);
+        return claimService.updateClaimComment(request, authentication);
     }
 
-    public void checkRole(User userCreator, Authentication authentication) {
-        List<Role> userRoles = userCreator.getUserRoles();
-        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
-        if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
-        }
-    }
 
 }
 

@@ -24,12 +24,7 @@ public class UserToUserShortInfoDtoConverter implements Converter<User, UserShor
         List<Role> userRoles = user.getUserRoles();
 
         boolean isAdmin = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
-        if (isAdmin) {
-            dto.setAdmin(true);
-        } else {
-            dto.setAdmin(false);
-        }
-
+        dto.setAdmin(isAdmin);
         return dto;
     }
 }

@@ -2,8 +2,11 @@ package ru.iteco.fmh.service.claim;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -12,6 +15,7 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
@@ -29,6 +33,7 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimCommentRepository claimCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
+    String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
     public List<ClaimDto> getAllClaims() {
@@ -65,7 +70,9 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto updateClaim(ClaimDto claimDto) {
+    public ClaimDto updateClaim(ClaimDto claimDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(claimDto.getCreatorId());
+        checkUpdatePossibility(userCreator, authentication);
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
@@ -121,9 +128,20 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
+    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(commentDto.getCreatorId());
+        checkUpdatePossibility(userCreator, authentication);
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
+
+    public void checkUpdatePossibility(User userCreator, Authentication authentication) {
+        List<Role> userRoles = userCreator.getUserRoles();
+        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
+        if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
+        }
+    }
+
 }
