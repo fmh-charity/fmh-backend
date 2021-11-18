@@ -2,6 +2,7 @@ package ru.iteco.fmh.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -68,10 +69,9 @@ public class AuthService {
         return new JwtResponse(accessJwtToken, refreshJwtToken);
     }
 
-    public UserShortInfoDto getAuthorizedUser(String accessToken) {
-        int userId = jwtProvider.getUserIdFromJwtToken(accessToken);
-        User user = userRepository.findUserById(userId);
-        return conversionService.convert(user, UserShortInfoDto.class);
+    public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
+        return conversionService.convert(userRepository.findUserByLogin(authentication.getName()),
+                UserShortInfoDto.class);
     }
 
 }

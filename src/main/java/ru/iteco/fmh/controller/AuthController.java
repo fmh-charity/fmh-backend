@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class AuthController {
     @ApiOperation(value = "получение пользователя, который залогинен")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @PostMapping("/userInfo")
-    public UserShortInfoDto getAuthorizedUser(@RequestBody String accessToken) {
-        return authService.getAuthorizedUser(accessToken);
+    public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
+        return authService.getAuthorizedUser(authentication);
     }
 }

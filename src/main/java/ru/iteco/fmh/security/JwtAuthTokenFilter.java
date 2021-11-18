@@ -53,10 +53,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     //метод для получения токен JWT из заголовка request'a
     private String getJwt(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.replace("Bearer ", "");
-        }
-        return null;
+        return request.getHeader("Authorization");
+
     }
+
+
 }
