@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.ConverterUtil;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
@@ -23,7 +23,7 @@ public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
         newsDto.setCreatorId(news.getCreator().getId());
         newsDto.setCreateDate(news.getCreateDate().toEpochMilli());
         newsDto.setPublishDate(news.getPublishDate().toEpochMilli());
-        ConverterUtil util = new ConverterUtil(userRepository);
+        Util util = new Util(userRepository);
         newsDto.setCreatorName(util.getCreatorNameFromNews(newsDto));
         return newsDto;
     }

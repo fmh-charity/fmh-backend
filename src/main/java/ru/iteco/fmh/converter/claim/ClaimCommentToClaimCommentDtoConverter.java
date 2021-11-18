@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.converter.ConverterUtil;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -27,7 +27,7 @@ public class ClaimCommentToClaimCommentDtoConverter implements Converter<ClaimCo
 
         dto.setClaimId(claimId);
         dto.setCreatorId(creatorId);
-        ConverterUtil util = new ConverterUtil(userRepository);
+        Util util = new Util(userRepository);
         dto.setCreatorName(util.getCreatorName(dto.getCreatorId()));
         return dto;
     }

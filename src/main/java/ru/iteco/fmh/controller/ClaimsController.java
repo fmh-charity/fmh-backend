@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.iteco.fmh.dao.repository.RoleRepository;
-import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.Status;
@@ -31,9 +28,7 @@ import java.util.List;
 public class ClaimsController {
 
     private final ClaimService claimService;
-    private final UserRoleRepository userRoleRepository;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех заявок")

@@ -105,50 +105,5 @@ public class ClaimServiceTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void updateClaimShouldPassSuccess() {
-        // claim
-        Claim claim = getClaimInProgress();
-        claim.getCreator().setId(2);
-        claim.getExecutor().setId(3);
-        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
-        when(claimRepository.save(any())).thenReturn(claim);
-        ClaimDto result = sut.updateClaim(given);
-        assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId())
-        );
-    }
-
-
-    @Test
-    public void updateClaimShouldPassSuccessNull() {
-        // claim
-        Claim claim = getClaimOpen();
-        claim.getCreator().setId(2);
-        ClaimDto given = conversionService.convert(claim, ClaimDto.class);
-
-        when(claimRepository.save(any())).thenReturn(claim);
-
-        ClaimDto result = sut.updateClaim(given);
-
-        assertAll(
-                () -> assertEquals(given.getId(), result.getId()),
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId())
-        );
-    }
-
 
 }
