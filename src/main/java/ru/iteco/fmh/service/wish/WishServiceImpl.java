@@ -2,8 +2,10 @@ package ru.iteco.fmh.service.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -67,7 +69,10 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto updateWish(WishDto wishDto) {
+    public WishDto updateWish(WishDto wishDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(wishDto.getCreatorId());
+        Util util = new Util(userRepository);
+        util.checkUpdatePossibility(userCreator, authentication);
         wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
@@ -143,7 +148,10 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto) {
+    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
+        Util util = new Util(userRepository);
+        util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentDto.class);

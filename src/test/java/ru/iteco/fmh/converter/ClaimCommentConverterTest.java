@@ -12,6 +12,7 @@ import ru.iteco.fmh.model.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getClaimComment;
@@ -20,8 +21,8 @@ import static ru.iteco.fmh.TestUtils.getClaimOpen;
 import static ru.iteco.fmh.TestUtils.getUser;
 
 public class ClaimCommentConverterTest {
-
-    ClaimCommentToClaimCommentDtoConverter claimCommentToClaimCommentDtoConverter = new ClaimCommentToClaimCommentDtoConverter();
+    UserRepository userRepository1 = mock(UserRepository.class);
+    ClaimCommentToClaimCommentDtoConverter claimCommentToClaimCommentDtoConverter = new ClaimCommentToClaimCommentDtoConverter(userRepository1);
 
     UserRepository userRepository = mock(UserRepository.class);
     ClaimRepository claimRepository = mock(ClaimRepository.class);
@@ -31,7 +32,9 @@ public class ClaimCommentConverterTest {
     @Test
     void convertClaimCommentToClaimCommentRequestDto() {
         ClaimComment claimComment = getClaimComment(getClaimOpen());
-
+        User user = getUser();
+        user.setId(3);
+        when(userRepository1.findUserById(any())).thenReturn(user);
         ClaimCommentDto dto = claimCommentToClaimCommentDtoConverter.convert(claimComment);
         assertAll(
                 () -> assertEquals(claimComment.getId(), dto.getId()),

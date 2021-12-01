@@ -124,30 +124,6 @@ public class WishServiceTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void updateWishShouldPassSuccess() {
-        // given
-        Wish wish = getWish(OPEN);
-
-        WishDto givenDto = conversionService.convert(wish, WishDto.class);
-
-        when(wishRepository.save(any())).thenReturn(wish);
-
-        WishDto resultDto = sut.updateWish(givenDto);
-
-        assertAll(
-                () -> assertEquals(givenDto.getId(), resultDto.getId()),
-                () -> assertEquals(givenDto.getPatientId(), resultDto.getPatientId()),
-                () -> assertEquals(givenDto.getDescription(), resultDto.getDescription()),
-                () -> assertEquals(givenDto.getPlanExecuteDate(), resultDto.getPlanExecuteDate()),
-                () -> assertEquals(givenDto.getFactExecuteDate(), resultDto.getFactExecuteDate()),
-                () -> assertEquals(givenDto.getCreateDate(), resultDto.getCreateDate()),
-                () -> assertEquals(givenDto.getExecutorId(), resultDto.getExecutorId()),
-                () -> assertEquals(givenDto.getCreatorId(), resultDto.getCreatorId())
-        );
-
-        assertEquals(givenDto.getStatus(), IN_PROGRESS);
-    }
 
     @Test
     public void changeStatusOpenToCancelledShouldPassSuccess() {
@@ -327,16 +303,4 @@ public class WishServiceTest {
 
     }
 
-    @Test
-    public void updateWishCommentShouldPassSuccess() {
-        // given
-        WishComment wishComment = getWishComment(OPEN);
-        WishCommentDto givenDto = conversionService.convert(wishComment, WishCommentDto.class);
-
-        when(wishCommentRepository.save(any())).thenReturn(wishComment);
-
-        WishCommentDto resultDto = sut.updateWishComment(givenDto);
-
-        assertEquals(givenDto, resultDto);
-    }
 }

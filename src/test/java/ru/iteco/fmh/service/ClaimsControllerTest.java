@@ -18,7 +18,6 @@ import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,6 +47,7 @@ public class ClaimsControllerTest {
     ConversionService conversionService;
     @Autowired
     UserRepository userRepository;
+
 
     @Test
     public void getAllClaims() {
@@ -149,60 +149,6 @@ public class ClaimsControllerTest {
 
 
     @Test
-    public void updateClaimShouldPassSuccessNotNull() {
-        // given
-        int claimId = 4;
-        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        String newTitle = "new title";
-        given.setExecutorId(userRepository.findUserById(1).getId());
-        given.setTitle(newTitle);
-
-        ClaimDto result = sut.updateClaim(given);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-        );
-
-        given.setTitle("title4");
-        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
-    }
-
-
-    @Test
-    public void updateClaimShouldPassSuccessExecutorNull() {
-        // given
-        int claimId = 1;
-        ClaimDto given = conversionService.convert(claimRepository.findById(claimId).get(), ClaimDto.class);
-        String newTitle = "new title";
-        given.setTitle(newTitle);
-
-        ClaimDto result = sut.updateClaim(given);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getTitle(), result.getTitle()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getExecutorId(), result.getExecutorId()),
-                () -> assertNull(result.getExecutorId()),
-                () -> assertNull(given.getExecutorId()),
-                () -> assertEquals(given.getStatus(), result.getStatus()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getFactExecuteDate(), result.getFactExecuteDate()),
-                () -> assertEquals(given.getPlanExecuteDate(), result.getPlanExecuteDate())
-        );
-
-        given.setTitle("title4");
-        claimRepository.save(Objects.requireNonNull(conversionService.convert(given, Claim.class)));
-    }
-
-    @Test
     public void changeStatusShouldPassSuccess() {
         int claimId = 4;
         int claimId2 = 5;
@@ -282,29 +228,6 @@ public class ClaimsControllerTest {
 
         // deleting result entity
         claimCommentRepository.deleteById(idNotNullExecutor.getId());
-    }
-
-
-    @Test
-    public void updateClaimCommentShouldPassSuccess() {
-        // given
-        int claimCommentId = 4;
-        ClaimCommentDto given = conversionService.convert(claimCommentRepository.findClaimCommentById(claimCommentId),
-                ClaimCommentDto.class);
-        String newDescription = "new title";
-        given.setDescription(newDescription);
-
-        ClaimCommentDto result = sut.updateClaimComment(given);
-
-        assertAll(
-                () -> assertEquals(given.getDescription(), result.getDescription()),
-                () -> assertEquals(given.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(given.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(given.getClaimId(), result.getClaimId())
-        );
-
-        given.setDescription("claim4-description");
-        claimCommentRepository.save(Objects.requireNonNull(conversionService.convert(given, ClaimComment.class)));
     }
 
 

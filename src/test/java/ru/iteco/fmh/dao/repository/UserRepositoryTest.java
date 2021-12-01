@@ -16,13 +16,22 @@ public class UserRepositoryTest {
     @Autowired
     UserRepository repository;
 
+    @Autowired
+    UserRoleRepository userRoleRepository;
+
     @Test
     public void testWriteSuccess() {
         User entity = User.builder()
                 .firstName(TestUtils.getAlphabeticString())
                 .lastName(TestUtils.getAlphabeticString())
                 .middleName(TestUtils.getAlphabeticString())
+                .login(TestUtils.getAlphabeticString())
+                .password(TestUtils.getAlphabeticString())
+                .password(TestUtils.getAlphabeticString())
+                .email(TestUtils.getAlphabeticString())
+                .deleted(false)
                 .build();
+
         entity = repository.save(entity);
         assertNotNull(entity.getId());
         repository.delete(entity);

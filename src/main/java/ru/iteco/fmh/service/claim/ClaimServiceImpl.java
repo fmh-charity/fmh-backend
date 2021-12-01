@@ -2,8 +2,10 @@ package ru.iteco.fmh.service.claim;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -29,6 +31,7 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimCommentRepository claimCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
+    String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
     public List<ClaimDto> getAllClaims() {
@@ -65,7 +68,10 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimDto updateClaim(ClaimDto claimDto) {
+    public ClaimDto updateClaim(ClaimDto claimDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(claimDto.getCreatorId());
+        Util util = new Util(userRepository);
+        util.checkUpdatePossibility(userCreator, authentication);
         claimDto.setStatus(claimDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         Claim claim = conversionService.convert(claimDto, Claim.class);
         claim = claimRepository.save(claim);
@@ -121,9 +127,14 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Transactional
     @Override
-    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto) {
+    public ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto, Authentication authentication) {
+        User userCreator = userRepository.findUserById(commentDto.getCreatorId());
+        Util util = new Util(userRepository);
+        util.checkUpdatePossibility(userCreator, authentication);
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
+
+
 }

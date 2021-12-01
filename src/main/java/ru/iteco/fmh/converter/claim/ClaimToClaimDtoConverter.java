@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import ru.iteco.fmh.Util;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.model.task.claim.Claim;
 
 @Component
 @RequiredArgsConstructor
 public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
+    private final UserRepository userRepository;
 
     @Override
     public ClaimDto convert(@NonNull Claim claim) {
@@ -26,7 +29,11 @@ public class ClaimToClaimDtoConverter implements Converter<Claim, ClaimDto> {
 
         claimDto.setCreatorId(creatorId);
         claimDto.setExecutorId(executorId);
+        Util util = new Util(userRepository);
+        claimDto.setCreatorName(util.getCreatorName(claimDto.getCreatorId()));
+        claimDto.setExecutorName(claimDto.getExecutorId() != null ? util.getCreatorName(claimDto.getExecutorId()) : null);
         return claimDto;
     }
+
 
 }

@@ -14,7 +14,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +51,9 @@ public class WishesControllerTest {
 
     @Autowired
     ConversionService conversionService;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
@@ -122,22 +125,6 @@ public class WishesControllerTest {
     }
 
 
-    @Test
-    public void updateWishShouldPassSuccess() {
-        // given
-        int wishId = 1;
-        WishDto given = conversionService.convert(wishRepository.findById(wishId).get(), WishDto.class);
-        String initialDescription = given.getDescription();
-        given.setDescription("new description");
-
-        WishDto result = sut.updateWish(given);
-
-        assertEquals(given.getDescription(), result.getDescription());
-
-        // after
-        given.setDescription(initialDescription);
-        wishRepository.save(conversionService.convert(given, Wish.class));
-    }
 
     @Test
     public void changeStatusOpenToCancelledShouldPassSuccess() {
@@ -244,21 +231,5 @@ public class WishesControllerTest {
         wishCommentRepository.deleteById(resultId.getId());
     }
 
-    @Test
-    public void updateWishCommentShouldPassSuccess() {
-        // given
-        int wishCommentId = 1;
-        WishCommentDto givenWishCommentDto = conversionService
-                .convert(wishCommentRepository.findById(wishCommentId).get(), WishCommentDto.class);
-        String initialDescription = givenWishCommentDto.getDescription();
-        givenWishCommentDto.setDescription("new description");
 
-        WishCommentDto result = sut.updateWishComment(givenWishCommentDto);
-
-        assertEquals(givenWishCommentDto, result);
-
-        // after
-        givenWishCommentDto.setDescription(initialDescription);
-        wishCommentRepository.save(conversionService.convert(givenWishCommentDto, WishComment.class));
-    }
 }

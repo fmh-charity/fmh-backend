@@ -33,4 +33,8 @@ public class ClaimDto {
     private Long factExecuteDate;
     @ApiModelProperty("статус заявки")
     private Status status;
+    @ApiModelProperty("ФИО создателя")
+    private String creatorName;
+    @ApiModelProperty("ФИО исполнителя")
+    private String executorName;
 }

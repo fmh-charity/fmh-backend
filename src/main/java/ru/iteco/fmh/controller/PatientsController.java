@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public class PatientsController {
     private final AdmissionService admissionService;
     private final WishService wishService;
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех пациентов")
     @GetMapping
     public List<PatientAdmissionDto> getAllPatientsByStatus(
@@ -41,12 +43,14 @@ public class PatientsController {
         return patientService.getAllPatientsByStatus(statuses);
     }
 
+    @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание пациента")
     @PostMapping
     public PatientDto createPatient(@RequestBody PatientDto patientDto) {
         return patientService.createOrUpdatePatient(patientDto);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")
     public PatientDto getPatient(
@@ -54,6 +58,7 @@ public class PatientsController {
         return patientService.getPatient(id);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает информацию по всем госпитализациям пациента")
     @GetMapping("/{id}/admissions")
     public List<AdmissionDto> getAdmissions(
@@ -62,6 +67,7 @@ public class PatientsController {
         return admissionService.getPatientAdmissions(id);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает информацию по всем просьбам пациента")
     @GetMapping("/{id}/wishes")
     public List<WishDto> getAllWishes(
@@ -70,6 +76,7 @@ public class PatientsController {
         return wishService.getPatientAllWishes(id);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает информацию по всем просьбам пациента со статусом open/in progress")
     @GetMapping("/{id}/wishes/open-in-progress")
     public List<WishDto> getOpenInProgressWishes(
@@ -78,6 +85,7 @@ public class PatientsController {
         return wishService.getPatientOpenInProgressWishes(id);
     }
 
+    @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "изменение пациента")
     @PutMapping
     public PatientDto updatePatient(@RequestBody PatientDto patientDto) {

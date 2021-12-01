@@ -240,6 +240,9 @@ comment on column roles.id is 'id в системе';
 comment on column roles.name is 'название роли';
 comment on column roles.deleted is 'флаг удаления';
 
+insert into roles (name, deleted)
+values ('ROLE_ADMINISTRATOR', false),
+       ('ROLE_MEDICAL_WORKER', false);
 
 create table news
 (
@@ -289,6 +292,22 @@ comment on column user_role.user_id is 'id пользователя';
 comment on column user_role.role_id is 'id роли';
 comment on column user_role.deleted is 'флаг удаления';
 
+create table tokens
+(
+    id            serial primary key,
+    user_id       int,
+    refresh_token varchar,
+    disabled      boolean,
+    create_date   timestamp,
+    deleted       boolean
+);
+comment on table tokens is 'токены для авторизации';
+comment on column tokens.id is 'id в системе';
+comment on column tokens.user_id is 'id пользователя';
+comment on column tokens.refresh_token is 'refresh token';
+comment on column tokens.create_date is 'дата создания';
+comment on column tokens.deleted is 'флаг удаления';
+
 
 alter table admission
     add foreign key (patient_id) references patient;
@@ -322,4 +341,6 @@ alter table user_role
     add foreign key (user_id) references users;
 alter table user_role
     add foreign key (role_id) references roles;
+alter table tokens
+    add foreign key (user_id) references users;
 

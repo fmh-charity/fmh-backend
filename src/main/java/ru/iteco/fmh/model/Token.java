@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model.user;
+package ru.iteco.fmh.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,15 +8,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Instant;
 
 /**
- * Роли
+ * Токены
  */
 @Builder
 @NoArgsConstructor
@@ -25,13 +29,18 @@ import javax.persistence.Table;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name = "tokens")
 @ToString
-@Table(name = "roles")
-public class Role {
+public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String name;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+    String refreshToken;
+    Instant createDate;
+    boolean disabled;
     boolean deleted;
 }
