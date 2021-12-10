@@ -3,6 +3,7 @@ package ru.iteco.fmh.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.TokenRepository;
@@ -24,14 +25,17 @@ public class AuthService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final ConversionService conversionService;
+    private final PasswordEncoder encoder;
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
-        if (loginRequest.getLogin() == null) {
-            throw new IllegalArgumentException("Логин не может ровняться null");
+
+        if (loginRequest.getLogin() == null || loginRequest.getPassword() == null) {
+            throw new IllegalArgumentException("Логин и пароль не могут ровняться null");
         }
         User user = userRepository.findUserByLogin(loginRequest.getLogin());
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+
+        if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Password is wrong!");
         }
         //get token
@@ -54,7 +58,6 @@ public class AuthService {
 
 
     public JwtResponse refreshToken(RefreshTokenRequest refreshToken) {
-        System.out.println(refreshToken);
         Token token = tokenRepository.findTokenByRefreshToken(refreshToken.getRefreshToken());
         if (token == null) {
             throw new IllegalArgumentException("Такого refresh token не существует");
