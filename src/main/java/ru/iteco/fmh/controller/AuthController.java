@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
+import ru.iteco.fmh.security.RefreshTokenRequest;
 import ru.iteco.fmh.service.AuthService;
 
 @Api(description = "Авторизация м Аутентификация пользователя")
@@ -22,17 +23,15 @@ public class AuthController {
     private final AuthService authService;
 
     @ApiOperation(value = "login")
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @PostMapping("/login")
     public JwtResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
         return authService.authenticateUser(loginRequest);
     }
 
     @ApiOperation(value = "обновление токенов")
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @PostMapping("/refresh")
-    public JwtResponse refreshToken(String token) {
-        return authService.refreshToken(token);
+    public JwtResponse refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
+        return authService.refreshToken(refreshToken);
     }
 
     @ApiOperation(value = "получение пользователя, который залогинен")
