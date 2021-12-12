@@ -20,6 +20,6 @@ public class SecurityExceptionHandler implements AccessDeniedHandler {
             AccessDeniedException accessDeniedException
     ) throws IOException {
         log.error(accessDeniedException.getMessage(), accessDeniedException);
-        response.sendError(HttpStatus.UNAUTHORIZED.value(), accessDeniedException.getMessage());
+        response.sendError(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage());
     }
 }
