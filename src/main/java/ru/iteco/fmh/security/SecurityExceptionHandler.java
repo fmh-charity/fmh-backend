@@ -14,7 +14,12 @@ public class SecurityExceptionHandler implements AccessDeniedHandler {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+    public void handle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AccessDeniedException accessDeniedException
+    ) throws IOException
+    {
         log.error(accessDeniedException.getMessage(), accessDeniedException);
         response.sendError(HttpStatus.UNAUTHORIZED.value(), accessDeniedException.getMessage());
     }
