@@ -18,8 +18,7 @@ public class SecurityExceptionHandler implements AccessDeniedHandler {
             HttpServletRequest request,
             HttpServletResponse response,
             AccessDeniedException accessDeniedException
-    ) throws IOException
-    {
+    ) throws IOException {
         log.error(accessDeniedException.getMessage(), accessDeniedException);
         response.sendError(HttpStatus.UNAUTHORIZED.value(), accessDeniedException.getMessage());
     }
