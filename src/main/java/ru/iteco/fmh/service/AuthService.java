@@ -1,6 +1,8 @@
 package ru.iteco.fmh.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
+import ru.iteco.fmh.exceptions.InvalidLoginException;
+import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.model.Token;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.JwtProvider;
@@ -21,6 +25,9 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
+
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
@@ -31,12 +38,14 @@ public class AuthService {
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
 
         if (loginRequest.getLogin() == null || loginRequest.getPassword() == null) {
-            throw new IllegalArgumentException("Логин и пароль не могут ровняться null");
+            LOGGER.error("Логин и пароль не могут ровняться null");
+            throw new InvalidLoginException();
         }
         User user = userRepository.findUserByLogin(loginRequest.getLogin());
 
         if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Password is wrong!");
+            LOGGER.error("Неверный пароль");
+            throw new InvalidLoginException();
         }
         //get token
         String accessJwtToken = jwtProvider.generateAccessJwtToken(user);
@@ -59,11 +68,8 @@ public class AuthService {
 
     public JwtResponse refreshToken(RefreshTokenRequest refreshToken) {
         Token token = tokenRepository.findTokenByRefreshToken(refreshToken.getRefreshToken());
-        if (token == null) {
-            throw new IllegalArgumentException("Такого refresh token не существует");
-        }
-        if (token.isDisabled()) {
-            throw new IllegalArgumentException("This token is disabled");
+        if (token == null || token.isDisabled()) {
+            throw new InvalidTokenException();
         }
         token.setDisabled(true);
         tokenRepository.save(token);
