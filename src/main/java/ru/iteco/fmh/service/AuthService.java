@@ -26,7 +26,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
