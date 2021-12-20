@@ -1,7 +1,6 @@
 package ru.iteco.fmh.exceptions;
 
 import lombok.Builder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.Map;
 import java.util.Optional;
 
-import static ru.iteco.fmh.exceptions.ErrorCodes.*;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
 
 @ControllerAdvice
 public class AppAdvice {
