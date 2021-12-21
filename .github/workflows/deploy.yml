@@ -9,7 +9,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}  
+  IMAGE_NAME: ${{ github.repository }}
+  CERTIFICATE_PATH: /usr/local/src/certs
+  CERTIFICATE_LOCAL_PATH: certificates
 
 jobs:
   build:
@@ -50,6 +52,15 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }},ghcr.io/fmh-charity/fmh-backend:latest
         labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Copy certificates to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: ${{ env.CERTIFICATE_LOCAL_PATH }}
+          remote: ${{ env.CERTIFICATE_PATH }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
 
     - name: Deploy
       uses: appleboy/ssh-action@v0.1.4
