@@ -43,6 +43,11 @@ public class AuthService {
         }
         User user = userRepository.findUserByLogin(loginRequest.getLogin());
 
+        if (user == null) {
+            LOGGER.error("пользователь не найден");
+            throw new InvalidLoginException();
+        }
+
         if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
             LOGGER.error("Неверный пароль");
             throw new InvalidLoginException();
