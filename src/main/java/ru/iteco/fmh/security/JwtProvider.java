@@ -27,11 +27,10 @@ public class JwtProvider {
 
     //сгенерировать токен JWT (Access Token)
     public String generateAccessJwtToken(User userPrincipal) {
-        //генерируем токен(Instant.now().plus(1, ChronoUnit.DAYS)))
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setId(String.valueOf(userPrincipal.getId()))
-                .setExpiration(Timestamp.from(Instant.now().plus(2, ChronoUnit.MINUTES)))
+                .setExpiration(Timestamp.from(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)
@@ -39,12 +38,12 @@ public class JwtProvider {
                 .compact();
     }
 
-    //сгенерировать токен JWT (refresh token)(Instant.now().plus(30, ChronoUnit.DAYS)))
+    //сгенерировать токен JWT (refresh token)
     public String generateRefreshJwtToken(User userPrincipal) {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setId(String.valueOf(userPrincipal.getId()))
-                .setExpiration(Timestamp.from(Instant.now().plus(5, ChronoUnit.MINUTES)))
+                .setExpiration(Timestamp.from(Instant.now().plus(30, ChronoUnit.DAYS)))
                 .signWith(
                         SignatureAlgorithm.HS512,
                         setSigningKey(key)
