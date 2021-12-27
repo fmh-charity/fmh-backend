@@ -13,7 +13,7 @@ env:
   CERTIFICATE_PATH: /certs
   CERTIFICATE_LOCAL_PATH: certificates
   DOCKER_COMPOSE_FILE: docker-compose.yml
-  DOCKER_COMPOSE_DIRECTORY: /usr/src/docker/
+  DOCKER_COMPOSE_DIRECTORY: /usr/src/docker/compose/
   NGINX_CONF_FILE: main.conf
   NGINX_CONF_REMOTE_FILE: main.conf
   NGINX_CONF_DIRECTORY: /nginx/
@@ -71,7 +71,7 @@ jobs:
       uses: garygrossgarten/github-action-scp@release
       with:
         local: ${{ env.DOCKER_COMPOSE_FILE }}
-        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
+        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.DOCKER_COMPOSE_REMOTE_FILE }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         privateKey : ${{ secrets.SSH_KEY }}
@@ -91,4 +91,4 @@ jobs:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_KEY }}
-        script: 'cd /usr/src/docker && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
+        script: 'cd /usr/src/docker/compose && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
