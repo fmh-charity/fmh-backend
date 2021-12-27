@@ -16,8 +16,6 @@ services:
     image: fmh_back:1.0
     build: ./
     restart: always
-#    ports:
-#      - 8081:8080
     depends_on:
       - pg_db
     environment:
@@ -25,3 +23,16 @@ services:
       DB_HOST: pg_database
       DB_USER: postgres
       DB_PASS: 123
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    links:
+      - backend
+      ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+      - /usr/local/src/certs/:/src/certs/
+      - ./nginx/main.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend

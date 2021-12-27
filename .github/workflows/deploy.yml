@@ -9,7 +9,14 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}  
+  IMAGE_NAME: ${{ github.repository }}
+  CERTIFICATE_PATH: /usr/local/src/certs
+  CERTIFICATE_LOCAL_PATH: certificates
+  DOCKER_COMPOSE_FILE: docker-compose.yml
+  DOCKER_COMPOSE_DIRECTORY: /usr/src/docker
+  NGINX_CONF_FILE: main.conf
+  NGINX_CONF_REMOTE_FILE: main.conf
+  NGINX_CONF_DIRECTORY: /nginx/
 
 jobs:
   build:
@@ -51,10 +58,37 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }},ghcr.io/fmh-charity/fmh-backend:latest
         labels: ${{ steps.meta.outputs.labels }}
 
+    - name: Copy certificates to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: ${{ env.CERTIFICATE_LOCAL_PATH }}
+        remote: ${{ env.CERTIFICATE_PATH }}
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+
+    - name: Copy docker-compose file to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: ${{ env.DOCKER_COMPOSE_FILE }}
+        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.DOCKER_COMPOSE_REMOTE_FILE }}
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+
+    - name: Copy nginx config file to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: ${{ env.NGINX_CONF_FILE }}
+        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.NGINX_CONF_DIRECTORY }}${{ env.NGINX_CONF_REMOTE_FILE }}
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+
     - name: Deploy
       uses: appleboy/ssh-action@v0.1.4
       with:
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}            
+        key: ${{ secrets.SSH_KEY }}
         script: 'cd /usr/src/docker && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
