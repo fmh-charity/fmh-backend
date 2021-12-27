@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  CERTIFICATE_PATH: /usr/local/src/certs
+  CERTIFICATE_PATH: /usr/src/certs
   CERTIFICATE_LOCAL_PATH: certificates
   DOCKER_COMPOSE_FILE: docker-compose.yml
   DOCKER_COMPOSE_DIRECTORY: /usr/src/docker
