@@ -65,7 +65,7 @@ jobs:
         remote: ${{ env.CERTIFICATE_PATH }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_KEY }}
 
     - name: Copy docker-compose file to remote
       uses: garygrossgarten/github-action-scp@release
@@ -74,7 +74,7 @@ jobs:
         remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.DOCKER_COMPOSE_REMOTE_FILE }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_KEY }}
 
     - name: Copy nginx config file to remote
       uses: garygrossgarten/github-action-scp@release
@@ -83,7 +83,7 @@ jobs:
         remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.NGINX_CONF_DIRECTORY }}${{ env.NGINX_CONF_REMOTE_FILE }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
+        password: ${{ secrets.SSH_KEY }}
 
     - name: Deploy
       uses: appleboy/ssh-action@v0.1.4
