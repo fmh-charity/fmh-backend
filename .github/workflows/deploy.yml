@@ -71,7 +71,7 @@ jobs:
       uses: garygrossgarten/github-action-scp@release
       with:
         local: ${{ env.DOCKER_COMPOSE_FILE }}
-        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.DOCKER_COMPOSE_REMOTE_FILE }}
+        remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         privateKey : ${{ secrets.SSH_KEY }}
