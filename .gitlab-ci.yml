@@ -41,6 +41,6 @@ deploy-prod:
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
     - echo "$SSH_PRIVATE_KEY" | ssh-add -
-    - ssh $SSH_USER@"$SSH_HOST" 'cd /usr/src/docker/compose && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
+    - ssh $SSH_USER@"$SSH_HOST" 'cd /usr/src/docker && docker-compose stop && yes | docker-compose rm && docker-compose pull && docker-compose up -d'
   only:
     - develop
