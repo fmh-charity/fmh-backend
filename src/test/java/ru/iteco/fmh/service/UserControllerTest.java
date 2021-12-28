@@ -22,8 +22,6 @@ public class UserControllerTest {
     @Test
     public void getAllUsers() {
         List<UserShortInfoDto> userShortInfoDtoList = sut.getAllUsers();
-        assertEquals(10, userShortInfoDtoList.size());
-
-
+        assertEquals(5, userShortInfoDtoList.size());
     }
 }
