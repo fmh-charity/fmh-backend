@@ -70,11 +70,12 @@ jobs:
     - name: Copy docker-compose file to remote
       uses: garygrossgarten/github-action-scp@release
       with:
-        local: ${{ env.CERTIFICATE_PATH }}
+        local: ${{ env.DOCKER_COMPOSE_FILE }}
         remote: ${{ env.DOCKER_COMPOSE_DIRECTORY }}${{ env.CERTIFICATE_PATH }}
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
         privateKey : ${{ secrets.SSH_KEY }}
+        verbose: true
 
     - name: Copy nginx config file to remote
       uses: garygrossgarten/github-action-scp@release
