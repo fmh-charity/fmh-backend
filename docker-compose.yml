@@ -26,9 +26,9 @@ services:
     image: nginx:latest
     links:
       - backend
-      ports:
-        - "80:80"
-        - "443:443"
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
       - /usr/src/docker/certs/:/src/certs/
       - ./nginx/main.conf:/etc/nginx/conf.d/default.conf
