@@ -50,7 +50,7 @@ public class NewsServiceTest {
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
 
         when(newsRepository
-                .findAllByPublishDateLessThanEqualAndPublishEnabledIsTrueAndDeletedIsFalseOrderByPublishDateDesc(any()))
+                .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(any()))
                 .thenReturn(newsList);
 
         List<NewsDto> result = sut.getAllNews();
