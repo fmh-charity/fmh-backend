@@ -15,7 +15,7 @@ Backend сервис для приложения «Мобильный хоспи
 7. запустить Application
 
 
-#Тестирование эндпойнтов через scratch:
+# Тестирование эндпойнтов через scratch:
 
 POST http://localhost:8080/fmh/authentication/login
 Content-Type: application/json
