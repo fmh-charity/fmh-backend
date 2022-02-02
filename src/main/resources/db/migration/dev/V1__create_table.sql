@@ -151,7 +151,7 @@ comment on column wish_visibility.deleted is 'флаг удаления';
 create table users
 (
     id           serial primary key,
-    login        varchar,
+    login        varchar unique,
     password     varchar,
     first_name   varchar(100),
     last_name    varchar(100),
