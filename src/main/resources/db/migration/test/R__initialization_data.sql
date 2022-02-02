@@ -113,15 +113,6 @@ values (1, 'claim1-description', 1, now() - INTERVAL '4 DAYS'),
        (3, 'claim4-description', 5, now() - INTERVAL '2 DAYS'),
        (3, 'claim5-description', 5, now());
 
-insert into news_category (name, deleted)
-values ('ОБЪЯВЛЕНИЕ', false),
-       ('ДЕНЬ РОЖДЕНИЯ', false),
-       ('ЗАРПЛАТА', false),
-       ('ПРОФСОЮЗ', false),
-       ('ПРАЗДНИК', false),
-       ('МАССАЖ', false),
-       ('БЛАГОДАРНОСТЬ', false),
-       ('НУЖНА ПОМОЩЬ', false);
 
 insert into news (news_category_id, title, description, creator_id, create_date, publish_date, publish_enabled, deleted)
 values (1, 'news-title1', 'news-description1', 1, now() - INTERVAL '8 DAY', now(), true, false),
@@ -131,7 +122,8 @@ values (1, 'news-title1', 'news-description1', 1, now() - INTERVAL '8 DAY', now(
        (5, 'news-title5', 'news-description5', 1, now() - INTERVAL '4 DAY', now() - INTERVAL '4 DAY', true, false),
        (6, 'news-title6', 'news-description6', 1, now() - INTERVAL '3 DAY', now() - INTERVAL '3 DAY', true, false),
        (7, 'news-title7', 'news-description7', 1, now() - INTERVAL '2 DAY', now() - INTERVAL '2 DAY', true, false),
-       (8, 'news-title8', 'news-description8', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 DAY', true, false);
+       (8, 'news-title8', 'news-description8', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 DAY', true, false),
+       (8, 'news-title9', 'news-description9', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 HOUR', false, false);
 
 
 insert into user_role (user_id, role_id, deleted)

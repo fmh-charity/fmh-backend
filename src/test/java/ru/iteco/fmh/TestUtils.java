@@ -22,10 +22,12 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
@@ -104,6 +106,20 @@ public class TestUtils {
                 .login(getAlphabeticString())
                 .password(getAlphabeticString())
                 .phoneNumber(getAlphabeticString())
+                .build();
+    }
+
+    public static User getUser(List<Role> roles) {
+        return User.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .login(getAlphabeticString())
+                .password(getAlphabeticString())
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .phoneNumber(getAlphabeticString())
+                .email(getAlphabeticString())
+                .userRoles(roles)
                 .build();
     }
 
@@ -309,6 +325,13 @@ public class TestUtils {
         return news;
     }
 
+    public static News getNews(Instant publishDate, boolean publishEnabled) {
+        News news = getNews();
+        news.setPublishEnabled(publishEnabled);
+        news.setPublishDate(publishDate);
+        return news;
+    }
+
     public static NewsCategory getNewsCategory() {
         return NewsCategory.builder()
                 .id(Integer.valueOf(getNumeric(2)))
@@ -365,4 +388,13 @@ public class TestUtils {
                 .deleted(false)
                 .build();
     }
+
+    public static List<Role> getRoleAdmin() {
+        return List.of(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build());
+    }
+
+    public static List<Role> getRoleMedic() {
+        return List.of(Role.builder().id(2).name("ROLE_MEDICAL_WORKER").deleted(false).build());
+    }
+
 }

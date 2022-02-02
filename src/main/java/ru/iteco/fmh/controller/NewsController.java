@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.service.news.NewsService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Api(description = "новости")
@@ -29,8 +30,8 @@ public class NewsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех новостей")
     @GetMapping
-    public List<NewsDto> getAllNews() {
-        return newsService.getAllNews();
+    public List<NewsDto> getAllNews(Principal principal) {
+        return newsService.getAllNews(principal);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

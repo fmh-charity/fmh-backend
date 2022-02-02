@@ -4,5 +4,11 @@ spring:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc:
+          lob.non_contextual_creation: true
+        format_sql: true
   flyway:
     locations: classpath:db/migration/dev, classpath:db/migration/test
