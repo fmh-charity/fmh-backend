@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
@@ -28,11 +30,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsDto> getAllNews(Principal principal) {
-        User userByLogin = userRepository.findUserByLogin(principal.getName());
-        if (userByLogin.getUserRoles().stream()
-                .map(Role::getName)
-                .collect(Collectors.toList())
-                .contains("ROLE_ADMINISTRATOR")) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Util util = new Util(userRepository);
+        if (util.isAdmin(principal)) {
             List<News> news = newsRepository
                     .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(Instant.now());
             return news.stream()

@@ -9,7 +9,9 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class Util {
@@ -42,6 +44,13 @@ public class Util {
         if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
         }
+    }
+
+    public boolean isAdmin(Principal principal) {
+        return userRepository.findUserByLogin(principal.getName()).getUserRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList())
+                .contains("ROLE_ADMINISTRATOR");
     }
 
 

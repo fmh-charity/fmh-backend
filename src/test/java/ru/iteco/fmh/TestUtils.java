@@ -27,6 +27,7 @@ import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -109,7 +110,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static User getUser(List<Role> roles) {
+    public static User getUser(Collection<Role> roles) {
         return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
@@ -119,7 +120,7 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .phoneNumber(getAlphabeticString())
                 .email(getAlphabeticString())
-                .userRoles(roles)
+                .userRoles((List<Role>) roles)
                 .build();
     }
 
@@ -387,14 +388,6 @@ public class TestUtils {
                 .comment(getAlphabeticString())
                 .deleted(false)
                 .build();
-    }
-
-    public static List<Role> getRoleAdmin() {
-        return List.of(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build());
-    }
-
-    public static List<Role> getRoleMedic() {
-        return List.of(Role.builder().id(2).name("ROLE_MEDICAL_WORKER").deleted(false).build());
     }
 
 }
