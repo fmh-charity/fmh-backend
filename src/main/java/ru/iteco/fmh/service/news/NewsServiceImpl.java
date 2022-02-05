@@ -12,6 +12,7 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.security.RequestContext;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -27,8 +28,10 @@ public class NewsServiceImpl implements NewsService {
     private final UserRepository userRepository;
 
     @Override
-    public List<NewsDto> getAllNews(Principal principal) {
-        User userByLogin = userRepository.findUserByLogin(principal.getName());
+    public List<NewsDto> getAllNews() {
+        User currentUser = RequestContext.getCurrentUser();
+        User userByLogin = userRepository.findUserByLogin(currentUser.getUsername());
+
         if (userByLogin.getUserRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toList())
