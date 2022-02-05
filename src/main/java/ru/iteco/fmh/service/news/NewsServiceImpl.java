@@ -14,6 +14,7 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.security.RequestContext;
 
 import java.security.Principal;
 import java.time.Instant;
