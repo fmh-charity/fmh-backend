@@ -9,7 +9,6 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +45,8 @@ public class Util {
         }
     }
 
-    public boolean isAdmin(Principal principal) {
-        return userRepository.findUserByLogin(principal.getName()).getUserRoles().stream()
+    public boolean isAdmin(User user) {
+        return userRepository.findUserByLogin(user.getLogin()).getUserRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toList())
                 .contains("ROLE_ADMINISTRATOR");

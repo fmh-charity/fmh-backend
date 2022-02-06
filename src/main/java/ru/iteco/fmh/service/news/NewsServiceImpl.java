@@ -2,9 +2,6 @@ package ru.iteco.fmh.service.news;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
@@ -12,11 +9,9 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
-import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
 
-import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,10 +25,10 @@ public class NewsServiceImpl implements NewsService {
     private final UserRepository userRepository;
 
     @Override
-    public List<NewsDto> getAllNews(Principal principal) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public List<NewsDto> getAllNews() {
+        User currentUser = RequestContext.getCurrentUser();
         Util util = new Util(userRepository);
-        if (util.isAdmin(principal)) {
+        if (util.isAdmin(currentUser)) {
             List<News> news = newsRepository
                     .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(Instant.now());
             return news.stream()

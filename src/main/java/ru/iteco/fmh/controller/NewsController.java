@@ -5,18 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.service.news.NewsService;
 
-import java.security.Principal;
 import java.util.List;
 
 @Api(description = "новости")
@@ -30,8 +22,8 @@ public class NewsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех новостей")
     @GetMapping
-    public List<NewsDto> getAllNews(Principal principal) {
-        return newsService.getAllNews(principal);
+    public List<NewsDto> getAllNews() {
+        return newsService.getAllNews();
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

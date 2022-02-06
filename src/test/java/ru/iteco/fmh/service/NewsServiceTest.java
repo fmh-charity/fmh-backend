@@ -13,22 +13,21 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.security.RequestContext;
 import ru.iteco.fmh.service.news.NewsService;
 
-import javax.security.auth.Subject;
-import java.security.Principal;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.TestUtils.getNews;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 
 @RunWith(SpringRunner.class)
@@ -52,14 +51,12 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-
         when(newsRepository
                 .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(any()))
                 .thenReturn(newsList);
         when(userRepository.findUserByLogin(any())).thenReturn(userAdmin);
-        TestUser testUser = new TestUser();
-        testUser.login = userAdmin.getLogin();
-        List<NewsDto> result = sut.getAllNews(testUser);
+        RequestContext.setCurrentUser(userAdmin);
+        List<NewsDto> result = sut.getAllNews();
 
         assertEquals(expected, result);
     }
@@ -80,10 +77,8 @@ public class NewsServiceTest {
                 .findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrueOrderByPublishDateDesc(any()))
                 .thenReturn(newsList.stream().filter(News::isPublishEnabled).collect(Collectors.toList()));
         when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
-        TestUser testUser = new TestUser();
-        testUser.login = userMedic.getLogin();
-        List<NewsDto> result = sut.getAllNews(testUser);
-
+        RequestContext.setCurrentUser(userMedic);
+        List<NewsDto> result = sut.getAllNews();
         assertEquals(expected, result);
     }
 
@@ -134,18 +129,4 @@ public class NewsServiceTest {
         assertTrue(news.isDeleted());
     }
 
-    private class TestUser implements Principal {
-        String login;
-        String password;
-
-        @Override
-        public String getName() {
-            return login;
-        }
-
-        @Override
-        public boolean implies(Subject subject) {
-            return Principal.super.implies(subject);
-        }
-    }
 }

@@ -2,7 +2,6 @@ package ru.iteco.fmh.service.news;
 
 import ru.iteco.fmh.dto.news.NewsDto;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ public interface NewsService {
     /**
      * возвращает список всех новостей
      */
-    List<NewsDto> getAllNews(Principal principal);
+    List<NewsDto> getAllNews();
 
     /**
      * возвращает новость для просмотра

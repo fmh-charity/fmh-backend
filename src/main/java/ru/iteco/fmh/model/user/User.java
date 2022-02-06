@@ -59,6 +59,7 @@ public class User implements UserDetails {
     List<Role> userRoles;
     //к одному юзеру несколько токенов
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @ToString.Exclude
     List<Token> tokens;
 
 

@@ -4,35 +4,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NewsController;
-import ru.iteco.fmh.dao.repository.NewsCategoryRepository;
 import ru.iteco.fmh.dao.repository.NewsRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
-import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.security.RequestContext;
 
-import javax.security.auth.Subject;
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
@@ -51,11 +37,11 @@ public class NewsControllerTest {
         //given
         List<String> expected = Stream.of("news-title1", "news-title8", "news-title7", "news-title6",
                 "news-title5", "news-title4", "news-title3", "news-title2", "news-title9").sorted().collect(Collectors.toList());
-        TestUser testUser = new TestUser();
-        testUser.login = "login1";
-        List<String> result = sut.getAllNews(testUser).stream()
+        RequestContext.setCurrentUser(User.builder()
+                .login("login1").build());
+        List<String> result = sut.getAllNews().stream()
                 .map(NewsDto::getTitle).sorted().collect(Collectors.toList());
-        assertEquals(expected,result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -63,11 +49,12 @@ public class NewsControllerTest {
         //given
         List<String> expected = Stream.of("news-title1", "news-title2", "news-title3", "news-title4",
                 "news-title5", "news-title6", "news-title7", "news-title8").sorted().collect(Collectors.toList());
-        TestUser testUser = new TestUser();
-        testUser.login = "login3";
-        List<String> result = sut.getAllNews(testUser).stream()
+        RequestContext.setCurrentUser(User.builder()
+                .login("login3")
+                .build());
+        List<String> result = sut.getAllNews().stream()
                 .map(NewsDto::getTitle).sorted().collect(Collectors.toList());
-        assertEquals(expected,result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -142,21 +129,6 @@ public class NewsControllerTest {
         // After
         result.setDeleted(false);
         newsRepository.save(result);
-    }
-    private class TestUser implements Principal {
-        String login;
-        String password;
-
-
-        @Override
-        public String getName() {
-            return login;
-        }
-
-        @Override
-        public boolean implies(Subject subject) {
-            return Principal.super.implies(subject);
-        }
     }
 }
 
