@@ -11,10 +11,13 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.security.RequestContext;
 import ru.iteco.fmh.service.news.NewsService;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,20 +47,40 @@ public class NewsServiceTest {
     @Test
     public void getAllNewsShouldPassSuccess() {
         List<News> newsList = List.of(getNews(Instant.now()), getNews(Instant.now().minusSeconds(1000)));
-        User user = getUser();
-        when(userRepository.findUserById(any())).thenReturn(user);
+        User userAdmin = getUser(Collections.singletonList(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
+        when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-
         when(newsRepository
                 .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(any()))
                 .thenReturn(newsList);
-
+        when(userRepository.findUserByLogin(any())).thenReturn(userAdmin);
+        RequestContext.setCurrentUser(userAdmin);
         List<NewsDto> result = sut.getAllNews();
 
         assertEquals(expected, result);
     }
 
+    @Test
+    public void getOnlyAllPublishedNewsShouldPassSuccess() {
+        List<News> newsList = List.of(
+                getNews(Instant.now()),
+                getNews(Instant.now().minusSeconds(1000)),
+                getNews(Instant.now().minusSeconds(5000), false));
+
+        User userMedic = getUser(Collections.singletonList(Role.builder().id(2).name("ROLE_MEDICAL_WORKER").deleted(false).build()));
+        when(userRepository.findUserById(any())).thenReturn(userMedic);
+        List<NewsDto> expected = newsList.stream().filter(News::isPublishEnabled)
+                .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
+
+        when(newsRepository
+                .findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrueOrderByPublishDateDesc(any()))
+                .thenReturn(newsList.stream().filter(News::isPublishEnabled).collect(Collectors.toList()));
+        when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
+        RequestContext.setCurrentUser(userMedic);
+        List<NewsDto> result = sut.getAllNews();
+        assertEquals(expected, result);
+    }
 
     @Test
     public void getNewsShouldPassSuccess() {
@@ -105,4 +128,5 @@ public class NewsServiceTest {
 
         assertTrue(news.isDeleted());
     }
+
 }
