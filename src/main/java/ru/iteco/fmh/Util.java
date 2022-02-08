@@ -10,6 +10,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class Util {
@@ -42,6 +43,13 @@ public class Util {
         if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
         }
+    }
+
+    public boolean isAdmin(User user) {
+        return userRepository.findUserByLogin(user.getLogin()).getUserRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList())
+                .contains("ROLE_ADMINISTRATOR");
     }
 
 
