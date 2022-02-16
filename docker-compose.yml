@@ -21,6 +21,7 @@ services:
       DB_HOST: pg_database
       DB_USER: postgres
       DB_PASS: 123
+      SWAGGER_HOST: vhospice.org/api
   nginx:
     container_name: nginx
     image: nginx:latest

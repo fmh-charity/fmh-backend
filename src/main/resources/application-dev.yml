@@ -18,6 +18,9 @@ spring:
     locations: classpath:db/migration/dev
 server:
   servlet:
-    context-path: "/fmh"
+    context-path: /fmh
 
 logging.level.ru.iteco.fmh: debug
+
+swagger:
+  host: ${SWAGGER_HOST}

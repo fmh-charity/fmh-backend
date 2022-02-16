@@ -1,5 +1,6 @@
 package ru.iteco.fmh;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -16,6 +17,9 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
+    @Value("${swagger.host:#{null}}")
+    private String swaggerHost;
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -24,7 +28,8 @@ public class SwaggerConfig {
                 .build()
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .securityContexts(Collections.singletonList(securityContext()))
-                .useDefaultResponseMessages(false);
+                .useDefaultResponseMessages(false)
+                .host(swaggerHost);
     }
 
     private ApiKey apiKey() {
