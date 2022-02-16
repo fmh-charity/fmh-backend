@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.security.JwtProvider;
@@ -42,7 +39,7 @@ public class AuthController {
 
     @ApiOperation(value = "получение пользователя, который залогинен")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @PostMapping("/userInfo")
+    @GetMapping("/userInfo")
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
         return authService.getAuthorizedUser(authentication);
     }
