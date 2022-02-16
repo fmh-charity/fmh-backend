@@ -33,7 +33,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
-            //получаем токен JWT из заголовка request'a с помощью метода gerJwt
+            //получаем токен JWT из заголовка request'a с помощью метода getJwt
             String jwt = getJwt(request);
             //проверяем JWT помощью метода validateJwtToken() из класса JWTProvider
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
@@ -43,6 +43,15 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication
                         = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                logger.info("{}, {}, {}, {}, {}",
+                        authentication.isAuthenticated(),
+                        authentication.getAuthorities(),
+                        authentication.getCredentials(),
+                        authentication.getDetails(),
+                        authentication.getPrincipal()
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 RequestContext.setCurrentUser((User) authentication.getPrincipal());
             }
