@@ -9,7 +9,8 @@ public enum ErrorCodes {
 
     ERR_INVALID_LOGIN(HttpStatus.UNAUTHORIZED),
     ERR_UNEXPECTED(HttpStatus.INTERNAL_SERVER_ERROR),
-    ERR_INVALID_REFRESH(HttpStatus.UNAUTHORIZED);
+    ERR_INVALID_REFRESH(HttpStatus.UNAUTHORIZED),
+    ERR_NO_RIGHTS(HttpStatus.FORBIDDEN);
 
     private HttpStatus httpStatus;
 

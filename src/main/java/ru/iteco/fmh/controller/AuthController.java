@@ -17,7 +17,7 @@ import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
 import ru.iteco.fmh.service.AuthService;
 
-@Api(description = "Авторизация м Аутентификация пользователя")
+@Api(description = "Авторизация и Аутентификация пользователя")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/authentication")

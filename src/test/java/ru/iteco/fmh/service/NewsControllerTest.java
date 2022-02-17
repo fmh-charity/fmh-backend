@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
+import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -83,7 +84,9 @@ public class NewsControllerTest {
     public void getNewsShouldPassSuccess() {
         // given
         int newsId = 1;
-
+        RequestContext.setCurrentUser(User.builder()
+                .login("login3")
+                .build());
         NewsDto expected = conversionService.convert(newsRepository.findById(newsId).get(), NewsDto.class);
         NewsDto result = sut.getNews(newsId);
 
@@ -94,8 +97,10 @@ public class NewsControllerTest {
     public void getNewsShouldThrowException() {
         // given
         int newsId = 10;
-
-        assertThrows(IllegalArgumentException.class, () -> sut.getNews(newsId));
+        RequestContext.setCurrentUser(User.builder()
+                .login("login3")
+                .build());
+        assertThrows(NoRightsException.class, () -> sut.getNews(newsId));
     }
 
     @Test
