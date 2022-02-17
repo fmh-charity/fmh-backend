@@ -14,8 +14,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
 
     List<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrueOrderByPublishDateDesc(Instant publishDate);
 
-    Optional<News> findById(Integer newsId);
+    Optional<News> findById(int newsId);
 
-    Optional<News> findByIdAndPublishEnabledIsTrue(Integer newsId);
+    Optional<News> findByIdAndPublishEnabledIsTrue(int newsId);
 
 }
