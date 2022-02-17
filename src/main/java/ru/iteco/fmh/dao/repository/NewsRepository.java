@@ -6,10 +6,16 @@ import ru.iteco.fmh.model.news.News;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
     List<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(Instant publishDate);
 
     List<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrueOrderByPublishDateDesc(Instant publishDate);
+
+    Optional<News> findById(Integer newsId);
+
+    Optional<News> findByIdAndPublishEnabledIsTrue(Integer newsId);
+
 }

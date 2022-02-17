@@ -46,10 +46,19 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDto getNews(int id) {
-        News news = newsRepository
-                .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
-        return conversionService.convert(news, NewsDto.class);
+
+        User currentUser = RequestContext.getCurrentUser();
+        Util util = new Util(userRepository);
+        if (util.isAdmin(currentUser)) {
+            News news = newsRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
+            return conversionService.convert(news, NewsDto.class);
+        } else {
+            News news = newsRepository.findByIdAndPublishEnabledIsTrue(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
+            return conversionService.convert(news, NewsDto.class);
+        }
+
     }
 
     @Transactional
