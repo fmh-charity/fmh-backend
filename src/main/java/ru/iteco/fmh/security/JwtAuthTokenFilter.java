@@ -33,7 +33,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
-            //получаем токен JWT из заголовка request'a с помощью метода gerJwt
+            //получаем токен JWT из заголовка request'a с помощью метода getJwt
             String jwt = getJwt(request);
             //проверяем JWT помощью метода validateJwtToken() из класса JWTProvider
             if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
