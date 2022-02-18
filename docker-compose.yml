@@ -20,6 +20,7 @@ services:
       DB_PORT: 5432
       DB_HOST: pg_database
       DB_USER: postgres
+      DB_NAME: FMH_DB
       DB_PASS: 123
       SWAGGER_HOST: vhospice.org/api
   nginx:
