@@ -85,14 +85,17 @@ public class NewsServiceTest {
     @Test
     public void getNewsShouldPassSuccess() {
         // given
+        int newsId = 10;
         News news = getNews();
-        User user = getUser();
-        int newsId = 1;
+        User user= getUser(Collections.singletonList(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
 
         when(userRepository.findUserById(any())).thenReturn(user);
-        NewsDto expected = conversionService.convert(news, NewsDto.class);
 
+        NewsDto expected = conversionService.convert(news, NewsDto.class);
         when(newsRepository.findById(any())).thenReturn(Optional.of(news));
+
+        when(userRepository.findUserByLogin(any())).thenReturn(user);
+        RequestContext.setCurrentUser(user);
 
         NewsDto result = sut.getNews(newsId);
 
