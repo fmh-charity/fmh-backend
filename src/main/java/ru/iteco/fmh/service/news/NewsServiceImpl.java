@@ -8,6 +8,7 @@ import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
+import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -46,10 +47,19 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDto getNews(int id) {
-        News news = newsRepository
-                .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
-        return conversionService.convert(news, NewsDto.class);
+
+        User currentUser = RequestContext.getCurrentUser();
+        Util util = new Util(userRepository);
+        if (util.isAdmin(currentUser)) {
+            News news = newsRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
+            return conversionService.convert(news, NewsDto.class);
+        } else {
+            News news = newsRepository.findByIdAndPublishEnabledIsTrue(id)
+                    .orElseThrow(NoRightsException::new);
+            return conversionService.convert(news, NewsDto.class);
+        }
+
     }
 
     @Transactional
