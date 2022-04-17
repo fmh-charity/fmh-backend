@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:9.6:///FMH_TEST
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    locations: classpath:db/migration/dev, classpath:db/migration/test
