@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonFormat
-public class AuthResponse {
+public class UserInput {
 
-    @JsonProperty("accessToken")
-    private String accessToken;
-    @JsonProperty("tokenType")
-    private String tokenType;
+    @JsonProperty(value = "login")
+    private String login;
+    @JsonProperty(value = "password")
+    private String password;
 
 }
