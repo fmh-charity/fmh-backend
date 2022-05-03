@@ -26,3 +26,4 @@
 /.nb-gradle/
 /.github/
 /cucumber-tests/.idea/
+/cucumber-tests/target/
