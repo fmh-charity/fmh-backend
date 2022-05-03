@@ -1,5 +1,24 @@
-package ru.iteco.fmh.dto.post;
+package ru.iteco.fmh.dto.nurse_station;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class PostDto {
+@ApiModel(description = "Информация поста")
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class NurseStationDto {
+
+    @ApiModelProperty("id поста")
+    private Integer id;
+    @ApiModelProperty("название")
+    private String name;
+    @ApiModelProperty("комментарий")
+    private String comment;
+
 }

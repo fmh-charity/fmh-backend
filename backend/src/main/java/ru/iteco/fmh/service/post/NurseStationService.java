@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service.post;
 
-import ru.iteco.fmh.dto.post.PostDto;
+import ru.iteco.fmh.dto.nurse_station.NurseStationDto;
 
 import java.util.List;
 
@@ -8,20 +8,20 @@ import java.util.List;
  * Сервис для работы с постами
  */
 
-public interface PostService {
+public interface NurseStationService {
 
     /**
      * Возвращает список всех постов
      */
-    List<PostDto> getAll();
+    List<NurseStationDto> getAll();
 
     /**
      * Создание нового поста / обновление поста
      *
-     * @param postDto - новый или измененный объект поста
+     * @param nurseStationDto - новый или измененный объект поста
      * @return - новый или измененный объект поста
      */
-    PostDto createOrUpdatePost(PostDto postDto);
+    NurseStationDto createOrUpdateNurseStation(NurseStationDto nurseStationDto);
 
     /**
      * Просмотр карточки поста
@@ -29,13 +29,13 @@ public interface PostService {
      * @param - ID поста
      * @return - объект поста
      */
-    PostDto getPost(int id);
+    NurseStationDto getNurseStation(int id);
 
     /**
      * Удаление поста
      *
      * @param id - ID удаляемого поста
      */
-    void deletePost(int id);
+    void deleteNurseStation(int id);
 
 }

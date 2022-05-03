@@ -6,47 +6,47 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import ru.iteco.fmh.dto.post.PostDto;
-import ru.iteco.fmh.service.post.PostService;
+import ru.iteco.fmh.dto.nurse_station.NurseStationDto;
+import ru.iteco.fmh.service.post.NurseStationService;
 
 import java.util.List;
 
+@RestController
 @Api("Посты")
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/posts")
-public class PostController {
+@RequestMapping("/nurse_stations")
+public class NurseStationController {
 
-    private final PostService postService;
+    private final NurseStationService nurseStationService;
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Список всех постов")
     @GetMapping
-    public List<PostDto> getAllPosts() {
-        return postService.getAll();
+    public List<NurseStationDto> getAllNurseStations() {
+        return nurseStationService.getAll();
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Создание нового поста")
     @PostMapping
-    public PostDto createPost(@RequestBody PostDto postDto) {
-        return postService.createOrUpdatePost(postDto);
+    public NurseStationDto createNurseStation(@RequestBody NurseStationDto nurseStationDto) {
+        return nurseStationService.createOrUpdateNurseStation(nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Редактировать пост")
     @PutMapping
-    public PostDto updatePost(@RequestBody PostDto postDto) {
-        return postService.createOrUpdatePost(postDto);
+    public NurseStationDto updateNurseStation(@RequestBody NurseStationDto nurseStationDto) {
+        return nurseStationService.createOrUpdateNurseStation(nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Просмотр поста")
     @GetMapping("/{id}")
-    public PostDto getPost(
+    public NurseStationDto getNurseStation(
             @ApiParam(value = "Идентификатор поста", required = true)
                 @PathVariable("id") int id) {
-        return postService.getPost(id);
+        return nurseStationService.getNurseStation(id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
@@ -55,7 +55,7 @@ public class PostController {
     public void deletePost(
             @ApiParam(value = "Идентификатор поста", required = true)
                 @PathVariable("id") int id) {
-        postService.deletePost(id);
+        nurseStationService.deleteNurseStation(id);
     }
 
 }
