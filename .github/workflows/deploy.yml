@@ -61,6 +61,7 @@ jobs:
       uses: appleboy/ssh-action@v0.1.4
       with:
         host: ${{ secrets.REMOTE_HOST }}
+        port: ${{ secrets.REMOTE_PORT }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_KEY }}
         script: 'cd /usr/src/docker && docker-compose stop && yes | docker-compose pull && docker-compose up -d'
