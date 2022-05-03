@@ -3,7 +3,7 @@ FROM maven:3-jdk-11
 WORKDIR /usr/src/app
 
 COPY . /usr/src/app
-RUN mvn package
+RUN mvn package -am
 
 ENV PORT 5000
 EXPOSE $PORT
