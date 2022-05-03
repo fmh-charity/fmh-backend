@@ -26,6 +26,9 @@
     <profiles>
         <profile>
             <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <activatedProperties>dev</activatedProperties>
                 <skipTests>true</skipTests>
