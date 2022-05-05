@@ -7,4 +7,4 @@ RUN mvn clean package -pl backend -am
 
 ENV PORT 5000
 EXPOSE $PORT
-CMD [ "sh", "-c", "mvn -Dserver.port=${PORT} spring-boot:run" ]
+CMD [ "sh", "-c", "mvn -Dserver.port=${PORT} -pl backend spring-boot:run" ]
