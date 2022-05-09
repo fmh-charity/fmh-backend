@@ -27,4 +27,4 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build with Maven
-      run: mvn test -P test
+      run: mvn test -P test -pl backend -am

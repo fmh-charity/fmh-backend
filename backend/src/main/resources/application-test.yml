@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:tc:postgresql:9.6:///FMH_TEST
+    url: jdbc:tc:postgresql:12:///FMH_TEST
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect

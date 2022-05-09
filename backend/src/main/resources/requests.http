@@ -1,0 +1,9 @@
+
+###
+POST https://vhospice.org/api/fmh/authentication/login
+#POST http://localhost:8080/fmh/authentication/login
+Content-Type: application/json
+
+{"login": "login3", "password": "password3"}
+
+###
