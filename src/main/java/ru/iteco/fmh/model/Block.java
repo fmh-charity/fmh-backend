@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Блок
@@ -22,7 +24,15 @@ public class Block {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @Column(nullable = false)
     String name;
+
     String comment;
+
     boolean deleted;
+
+    @OneToMany(mappedBy = "block")
+    @ToString.Exclude
+    Set<Room> roomSet;
+
 }
