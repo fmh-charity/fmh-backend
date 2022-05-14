@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.NurseStationRepository;
-import ru.iteco.fmh.dto.nurse_station.NurseStationDto;
+import ru.iteco.fmh.dto.post.NurseStationDto;
 import ru.iteco.fmh.model.NurseStation;
 
 import java.util.List;

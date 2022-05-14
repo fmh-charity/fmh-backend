@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.nurse_station;
+package ru.iteco.fmh.dto.post;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

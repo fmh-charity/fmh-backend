@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service.post;
 
-import ru.iteco.fmh.dto.nurse_station.NurseStationDto;
+import ru.iteco.fmh.dto.post.NurseStationDto;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface NurseStationService {
     /**
      * Просмотр карточки поста
      *
-     * @param - ID поста
+     * @param id - ID поста
      * @return - объект поста
      */
     NurseStationDto getNurseStation(int id);
