@@ -16,6 +16,6 @@ Feature: Действия пользователя.
      Examples:
       | login   | password  | token         | news | result   |
       | login1  | password1 | TOKEN         | 1    | SUCCESS  |
-#      | login3  | password3 | TOKEN         | 2    | SUCCESS  |
-#      | login3  | password3 | TOKEN         | 3    | SUCCESS  |
-#      | login3  | password3 | TOKEN         | 2    | ERROR  |
+      | login3  | password3 | TOKEN         | 2    | SUCCESS  |
+      | login3  | password3 | TOKEN         | 3    | SUCCESS  |
+      | login3  | password3 | TOKEN         | 9    | ERROR  |

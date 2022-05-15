@@ -13,8 +13,11 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.cucumber.model.UserInput;
+
 import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 
 @Slf4j
@@ -42,8 +45,8 @@ public class UserStepsTest {
         RequestEntity<String> requestEntity = RequestEntity
                 .post(baseUrl + "/authentication/login")
                 .headers(headers)
-                .body(objectMapper.writeValueAsString(input));;
-
+                .body(objectMapper.writeValueAsString(input));
+        
         ResponseEntity<String> responseEntity;
         try {
             responseEntity = restTemplate
@@ -59,7 +62,7 @@ public class UserStepsTest {
     @When("2. получен {string}")
     public void checkingUserLogging(String token) {
         String result = "Unauthorized";
-        if(!jwt.equals("Unauthorized")) {
+        if (!jwt.equals("Unauthorized")) {
             result = "TOKEN";
         }
         assertEquals(token, result);
@@ -68,7 +71,7 @@ public class UserStepsTest {
     @SneakyThrows
     @And("3. получена информация по пользователю")
     public void getUSerInfo() {
-        if(!jwt.equals("Unauthorized")) {
+        if (!jwt.equals("Unauthorized")) {
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.ACCEPT, "*/*");
             headers.set(HttpHeaders.AUTHORIZATION, jwt);
@@ -82,8 +85,7 @@ public class UserStepsTest {
 //            UserShortInfoDto user = objectMapper
 //                    .readValue(responseEntity.getBody(), UserShortInfoDto.class);
             log.info("USER INFO: {}", responseEntity.getBody());
-        }
-        else {
+        } else {
             status = ERROR;
         }
     }
@@ -91,7 +93,7 @@ public class UserStepsTest {
     @SneakyThrows
     @And("4. пользователь просматривает список доступных новостей")
     public void getAllNews() {
-        if(!jwt.equals("Unauthorized")) {
+        if (!jwt.equals("Unauthorized")) {
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.ACCEPT, "*/*");
             headers.set(HttpHeaders.AUTHORIZATION, jwt);
@@ -104,8 +106,7 @@ public class UserStepsTest {
 //            List<NewsDto> news = objectMapper.readValue(responseEntity.getBody(), ArrayList.class);
 //            log.info("SIZE: {}", Objects.requireNonNull(news).size());
             log.info("ALL NEWS: {}", responseEntity.getBody());
-        }
-        else {
+        } else {
             status = ERROR;
         }
     }
@@ -113,7 +114,7 @@ public class UserStepsTest {
     @SneakyThrows
     @And("5. пользователь просматривает новость {string}")
     public void getNewsById(String news) {
-        if(!jwt.equals("Unauthorized")) {
+        if (!jwt.equals("Unauthorized")) {
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.ACCEPT, "*/*");
             headers.set(HttpHeaders.AUTHORIZATION, jwt);
@@ -122,12 +123,17 @@ public class UserStepsTest {
                     .get(baseUrl + "/news/" + news)
                     .headers(headers)
                     .build();
-            ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+            ResponseEntity<String> responseEntity = null;
+            try {
+                responseEntity = restTemplate.exchange(requestEntity, String.class);
+                NewsDto newsDto = objectMapper.readValue(responseEntity.getBody(), NewsDto.class);
+                assertEquals(news, newsDto.getId().toString());
+            } catch (RestClientException clientException) {
+                status = ERROR;
+            }
+            log.info("NEWS: {}", responseEntity == null ? null : responseEntity.getBody());
 
-//            NewsDto newsDto = objectMapper.readValue(responseEntity.getBody(), NewsDto.class);
-            log.info("NEWS: {}", responseEntity.getBody());
-        }
-        else {
+        } else {
             status = ERROR;
         }
     }
