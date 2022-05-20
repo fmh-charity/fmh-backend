@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Пост
@@ -25,6 +26,11 @@ public class NurseStation {
 
     String name;
     String comment;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "nurse_station_id")
+    List<Room> rooms;
+
     boolean deleted;
 
 }
