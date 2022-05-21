@@ -11,6 +11,7 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
+target/
 .idea
 *.iws
 *.iml
@@ -27,4 +28,4 @@
 /.github/
 /cucumber-tests/.idea/
 /cucumber-tests/target/
-/cucumber-tests/*.iml
+**/cucumber-tests/*.iml

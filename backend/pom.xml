@@ -36,6 +36,14 @@
         </profile>
 
         <profile>
+            <id>cucumber</id>
+            <properties>
+                <activatedProperties>cucumber</activatedProperties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+
+        <profile>
             <id>test</id>
             <properties>
                 <activatedProperties>test</activatedProperties>
