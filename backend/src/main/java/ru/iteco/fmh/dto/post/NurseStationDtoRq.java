@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NurseStationDtoRq {
 
-    @ApiModelProperty("id поста")
-    private Integer id;
     @ApiModelProperty("название")
     private String name;
     @ApiModelProperty("комментарий")

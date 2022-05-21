@@ -29,7 +29,6 @@ public class NurseStationConverter {
 
     public NurseStation rqToEntity(@NotNull NurseStationDtoRq dto) {
         NurseStation entity = new NurseStation();
-        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setComment(dto.getComment());
         return entity;

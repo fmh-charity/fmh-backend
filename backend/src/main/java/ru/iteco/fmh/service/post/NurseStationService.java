@@ -23,7 +23,15 @@ public interface NurseStationService {
      * @param nurseStationDto - новый или измененный объект поста
      * @return - новый или измененный объект поста
      */
-    NurseStationDtoRs createOrUpdateNurseStation(int id, NurseStationDtoRq nurseStationDto);
+    NurseStationDtoRs updateNurseStation(int id, NurseStationDtoRq nurseStationDto);
+
+    /**
+     * Создание нового поста / обновление поста
+     *
+     * @param nurseStationDto - новый или измененный объект поста
+     * @return - новый или измененный объект поста
+     */
+    NurseStationDtoRs createNurseStation(NurseStationDtoRq nurseStationDto);
 
     /**
      * Просмотр карточки поста

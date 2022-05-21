@@ -7,8 +7,10 @@ import ru.iteco.fmh.dao.repository.NurseStationRepository;
 import ru.iteco.fmh.dto.post.NurseStationDto;
 import ru.iteco.fmh.dto.post.NurseStationDtoRq;
 import ru.iteco.fmh.dto.post.NurseStationDtoRs;
+import ru.iteco.fmh.model.NurseStation;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +28,22 @@ public class NurseStationServiceImpl implements NurseStationService {
     }
 
     @Override
-    public NurseStationDtoRs createOrUpdateNurseStation(int id, NurseStationDtoRq nurseStationDto) {
+    public NurseStationDtoRs updateNurseStation(int id, NurseStationDtoRq nurseStationDto) {
+        NurseStation nurseStation = nurseStationRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Не найдена сущность с id = " + id));
+        updateEntity(nurseStation, nurseStationDto);
+        NurseStation updatedNurseStation = nurseStationRepo.save(nurseStation);
+        return nurseStationConverter.toRsDto(updatedNurseStation);
+    }
+
+    private void updateEntity(NurseStation nurseStation, NurseStationDtoRq nurseStationDto) {
+        nurseStation.setName(nurseStationDto.getName());
+        nurseStation.setComment(nurseStationDto.getComment());
+    }
+
+
+    @Override
+    public NurseStationDtoRs createNurseStation(NurseStationDtoRq nurseStationDto) {
         var ns = nurseStationConverter.rqToEntity(nurseStationDto);
-        ns.setId(id);
         ns = nurseStationRepo.save(ns);
         return nurseStationConverter.toRsDto(ns);
     }

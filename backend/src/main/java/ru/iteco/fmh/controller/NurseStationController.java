@@ -37,11 +37,10 @@ public class NurseStationController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Создание нового поста")
-    @PostMapping("/{id}")
+    @PostMapping
     public NurseStationDtoRs createNurseStation(
-            @PathVariable(value = "id") int id,
             @RequestBody NurseStationDtoRq nurseStationDto) {
-        return nurseStationService.createOrUpdateNurseStation(id, nurseStationDto);
+        return nurseStationService.createNurseStation(nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
@@ -50,7 +49,7 @@ public class NurseStationController {
     public NurseStationDtoRs updateNurseStation(
             @PathVariable(value = "id") int id,
             @RequestBody NurseStationDtoRq nurseStationDto) {
-        return nurseStationService.createOrUpdateNurseStation(id, nurseStationDto);
+        return nurseStationService.updateNurseStation(id, nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
