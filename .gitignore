@@ -27,3 +27,4 @@
 /.github/
 /cucumber-tests/.idea/
 /cucumber-tests/target/
+/cucumber-tests/*.iml
