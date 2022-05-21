@@ -29,7 +29,8 @@ public class NurseStationServiceImpl implements NurseStationService {
 
     @Override
     public NurseStationDtoRs updateNurseStation(int id, NurseStationDtoRq nurseStationDto) {
-        NurseStation nurseStation = nurseStationRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Не найдена сущность с id = " + id));
+        NurseStation nurseStation = nurseStationRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Не найдена сущность с id = " + id));
         updateEntity(nurseStation, nurseStationDto);
         NurseStation updatedNurseStation = nurseStationRepo.save(nurseStation);
         return nurseStationConverter.toRsDto(updatedNurseStation);

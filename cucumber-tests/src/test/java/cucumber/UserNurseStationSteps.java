@@ -51,14 +51,13 @@ public class UserNurseStationSteps {
     @And("Создает новый пост: {string}, {string}")
     public void createPost(String name, String comment) {
         NurseStationDtoRq nurseStation = NurseStationDtoRq.builder()
-                .id(0)
                 .name(name)
                 .comment(comment)
                 .build();
         nurseStation.setName(name);
         nurseStation.setComment(comment);
         String responseBody = rest
-                .postRq(jwt, objectMapper.writeValueAsString(nurseStation), nurseStationsUrl + "/" + nurseStation.getId())
+                .postRq(jwt, objectMapper.writeValueAsString(nurseStation), nurseStationsUrl)
                 .getBody();
         assertNotNull(responseBody);
         nurseStationDto = objectMapper.readValue(responseBody, NurseStationDto.class);
