@@ -1,11 +1,12 @@
 package ru.iteco.fmh.service.post;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import ru.iteco.fmh.converter.post.NurseStationConverter;
 import ru.iteco.fmh.dao.repository.NurseStationRepository;
 import ru.iteco.fmh.dto.post.NurseStationDto;
-import ru.iteco.fmh.model.NurseStation;
+import ru.iteco.fmh.dto.post.NurseStationDtoRq;
+import ru.iteco.fmh.dto.post.NurseStationDtoRs;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,27 +16,28 @@ import java.util.stream.Collectors;
 public class NurseStationServiceImpl implements NurseStationService {
 
     private final NurseStationRepository nurseStationRepo;
-    private final ConversionService conversionService;
+    private final NurseStationConverter nurseStationConverter;
 
     @Override
     public List<NurseStationDto> getAll() {
-        return nurseStationRepo.findAll().stream()
-                .map(ns -> conversionService.convert(ns, NurseStationDto.class))
+        return nurseStationRepo.findAllByDeletedIsFalse().stream()
+                .map(nurseStationConverter::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public NurseStationDto createOrUpdateNurseStation(NurseStationDto nurseStationDto) {
-        var ns = conversionService.convert(nurseStationDto, NurseStation.class);
+    public NurseStationDtoRs createOrUpdateNurseStation(int id, NurseStationDtoRq nurseStationDto) {
+        var ns = nurseStationConverter.rqToEntity(nurseStationDto);
+        ns.setId(id);
         ns = nurseStationRepo.save(ns);
-        return conversionService.convert(ns, NurseStationDto.class);
+        return nurseStationConverter.toRsDto(ns);
     }
 
     @Override
     public NurseStationDto getNurseStation(int id) {
-        var ns = nurseStationRepo.findById(id)
+        var ns = nurseStationRepo.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new IllegalArgumentException("Пост с таким ID не существует"));
-        return conversionService.convert(ns, NurseStationDto.class);
+        return nurseStationConverter.toDto(ns);
     }
 
     @Override

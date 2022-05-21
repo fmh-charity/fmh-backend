@@ -8,12 +8,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.iteco.fmh.dto.post.NurseStationDto;
+import ru.iteco.fmh.dto.post.NurseStationDtoRq;
+import ru.iteco.fmh.dto.post.NurseStationDtoRs;
 import ru.iteco.fmh.service.post.NurseStationService;
 
 import java.util.List;
@@ -35,16 +37,20 @@ public class NurseStationController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Создание нового поста")
-    @PostMapping
-    public NurseStationDto createNurseStation(@RequestBody NurseStationDto nurseStationDto) {
-        return nurseStationService.createOrUpdateNurseStation(nurseStationDto);
+    @PostMapping("/{id}")
+    public NurseStationDtoRs createNurseStation(
+            @PathVariable(value = "id") int id,
+            @RequestBody NurseStationDtoRq nurseStationDto) {
+        return nurseStationService.createOrUpdateNurseStation(id, nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "Редактировать пост")
-    @PutMapping
-    public NurseStationDto updateNurseStation(@RequestBody NurseStationDto nurseStationDto) {
-        return nurseStationService.createOrUpdateNurseStation(nurseStationDto);
+    @PutMapping("/{id}")
+    public NurseStationDtoRs updateNurseStation(
+            @PathVariable(value = "id") int id,
+            @RequestBody NurseStationDtoRq nurseStationDto) {
+        return nurseStationService.createOrUpdateNurseStation(id, nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")

@@ -1,6 +1,8 @@
 package ru.iteco.fmh.service.post;
 
 import ru.iteco.fmh.dto.post.NurseStationDto;
+import ru.iteco.fmh.dto.post.NurseStationDtoRq;
+import ru.iteco.fmh.dto.post.NurseStationDtoRs;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public interface NurseStationService {
      * @param nurseStationDto - новый или измененный объект поста
      * @return - новый или измененный объект поста
      */
-    NurseStationDto createOrUpdateNurseStation(NurseStationDto nurseStationDto);
+    NurseStationDtoRs createOrUpdateNurseStation(int id, NurseStationDtoRq nurseStationDto);
 
     /**
      * Просмотр карточки поста
