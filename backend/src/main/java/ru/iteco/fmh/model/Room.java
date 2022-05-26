@@ -24,10 +24,12 @@ public class Room {
 
     String name;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "block_id")
     Block block;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "nurse_station_id")
     NurseStation nurseStation;

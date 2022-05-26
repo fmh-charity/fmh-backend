@@ -19,7 +19,7 @@
     <name>fmh-backend</name>
 
     <properties>
-        <spring-boot-starter-version>2.4.1</spring-boot-starter-version>
+        <spring-boot-starter-version>2.7.0</spring-boot-starter-version>
         <testcontainers>1.16.3</testcontainers>
     </properties>
 
@@ -31,6 +31,14 @@
             </activation>
             <properties>
                 <activatedProperties>dev</activatedProperties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>cucumber</id>
+            <properties>
+                <activatedProperties>cucumber</activatedProperties>
                 <skipTests>true</skipTests>
             </properties>
         </profile>
