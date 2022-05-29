@@ -2,10 +2,14 @@ package ru.iteco.fmh.dto.room;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.Block;
-import ru.iteco.fmh.model.NurseStation;
+
+import javax.validation.constraints.NotBlank;
 
 @ApiModel(description = "Палаты")
 @NoArgsConstructor
@@ -16,16 +20,17 @@ import ru.iteco.fmh.model.NurseStation;
 public class RoomDtoRq {
 
     @ApiModelProperty("идентификатор палаты")
-    private Integer id;
+    private int id;
 
+    @NotBlank
     @ApiModelProperty("название палаты")
     private String name;
 
     @ApiModelProperty("блок")
-    private Block block;
+    private int blockId;
 
     @ApiModelProperty("пост")
-    private NurseStation nurseStation;
+    private int nurseStationId;
 
     @ApiModelProperty("количество доступных мест")
     private int maxOccupancy;

@@ -39,8 +39,7 @@ public class RoomController {
     @ApiOperation(value = "просмотреть карточку палаты")
     @GetMapping("/{id}")
     public RoomDto getRoom(
-            @ApiParam(value = "идентификатор палаты", required = true)
-                    @PathVariable("id") int id) {
+            @ApiParam(value = "идентификатор палаты", required = true) @PathVariable("id") int id) {
         return roomService.getRoom(id);
     }
 
@@ -58,7 +57,7 @@ public class RoomController {
         return roomService.createOrUpdateRoom(id, roomDto);
     }
 
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "удалить палату")
     @DeleteMapping("/{id}")
     public void deleteRoom(

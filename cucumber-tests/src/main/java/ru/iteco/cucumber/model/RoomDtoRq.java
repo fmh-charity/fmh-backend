@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.room;
+package ru.iteco.cucumber.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoomDtoRs {
+public class RoomDtoRq {
 
     @ApiModelProperty("идентификатор палаты")
     private int id;

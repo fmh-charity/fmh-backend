@@ -9,8 +9,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.Block;
-import ru.iteco.fmh.model.NurseStation;
 
 @ApiModel(description = "Палаты")
 @NoArgsConstructor
@@ -21,16 +19,16 @@ import ru.iteco.fmh.model.NurseStation;
 public class RoomDto {
 
     @ApiModelProperty("идентификатор палаты")
-    private Integer id;
+    private int id;
 
     @ApiModelProperty("название палаты")
     private String name;
 
     @ApiModelProperty("блок")
-    private Block block;
+    private int blockId;
 
     @ApiModelProperty("пост")
-    private NurseStation nurseStation;
+    private int nurseStationId;
 
     @ApiModelProperty("количество доступных мест")
     private int maxOccupancy;

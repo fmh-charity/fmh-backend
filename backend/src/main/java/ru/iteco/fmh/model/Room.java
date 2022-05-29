@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.persistence.Column;
 
 
 /**
@@ -34,6 +36,8 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @NotBlank
+    @Column(unique=true)
     String name;
 
     @ToString.Exclude

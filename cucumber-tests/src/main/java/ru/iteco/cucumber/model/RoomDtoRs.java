@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.room;
+package ru.iteco.cucumber.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
