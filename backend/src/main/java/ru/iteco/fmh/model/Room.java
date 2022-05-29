@@ -37,7 +37,7 @@ public class Room {
     Integer id;
 
     @NotBlank
-    @Column(unique=true)
+    @Column(unique = true)
     String name;
 
     @ToString.Exclude
