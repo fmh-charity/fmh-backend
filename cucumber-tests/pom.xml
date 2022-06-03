@@ -19,7 +19,7 @@
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <cucumber.version>7.3.2</cucumber.version>
+        <cucumber.version>7.3.4</cucumber.version>
     </properties>
 
     <dependencies>
