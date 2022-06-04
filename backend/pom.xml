@@ -20,7 +20,7 @@
 
     <properties>
         <spring-boot-starter-version>2.7.0</spring-boot-starter-version>
-        <testcontainers>1.16.3</testcontainers>
+        <testcontainers>1.17.2</testcontainers>
     </properties>
 
     <profiles>
