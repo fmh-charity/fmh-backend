@@ -18,7 +18,7 @@ public class RoomConverter {
     private final BlockRepository blockRepository;
     private final NurseStationRepository nurseStationRepository;
 
-    public RoomDto toDto(@NotNull Room entity) {
+    public RoomDto roomEntityToRoomDto(@NotNull Room entity) {
         return RoomDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -29,7 +29,7 @@ public class RoomConverter {
                 .build();
     }
 
-    public RoomDtoRs toDtoRs(@NotNull Room entity) {
+    public RoomDtoRs roomEntityToRoomDtoRs(@NotNull Room entity) {
         return RoomDtoRs.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -40,22 +40,19 @@ public class RoomConverter {
                 .build();
     }
 
-    public Room toEntity(RoomDtoRq roomDto) {
-        Room entity = new Room();
-        entity.setId(roomDto.getId());
-        entity.setName(roomDto.getName());
-        entity.setBlock(
-                blockRepository
+    public Room roomDtoRqToRoomEntity(RoomDtoRq roomDto) {
+        return Room.builder()
+                .id(roomDto.getId())
+                .name(roomDto.getName())
+                .block(blockRepository
                         .findById(roomDto.getBlockId())
-                        .orElseThrow(() -> new IllegalArgumentException("Блок с таким ID не существует"))
-        );
-        entity.setNurseStation(
-                nurseStationRepository
+                        .orElseThrow(() -> new IllegalArgumentException("Блок с таким ID не существует")))
+                .nurseStation(nurseStationRepository
                         .findById(roomDto.getNurseStationId())
-                        .orElseThrow(() -> new IllegalArgumentException("Пост с таким ID не существует"))
-        );
-        entity.setMaxOccupancy(roomDto.getMaxOccupancy());
-        entity.setComment(roomDto.getComment());
-        return entity;
+                        .orElseThrow(() -> new IllegalArgumentException("Пост с таким ID не существует")))
+                .maxOccupancy(roomDto.getMaxOccupancy())
+                .comment(roomDto.getComment())
+                .build();
     }
+
 }

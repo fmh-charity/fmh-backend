@@ -25,7 +25,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomDto> getAllRooms() {
         List<Room> rooms = roomRepository.findAllByDeletedIsFalse();
         return rooms.stream()
-                .map(roomConverter::toDto)
+                .map(roomConverter::roomEntityToRoomDto)
                 .collect(Collectors.toList());
     }
 
@@ -33,16 +33,16 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDtoRs createOrUpdateRoom(int id, RoomDtoRq roomDto) {
         roomDto.setId(id);
-        Room room = roomConverter.toEntity(roomDto);
+        Room room = roomConverter.roomDtoRqToRoomEntity(roomDto);
         room = roomRepository.save(Objects.requireNonNull(room));
-        return roomConverter.toDtoRs(room);
+        return roomConverter.roomEntityToRoomDtoRs(room);
     }
 
     @Override
     public RoomDto getRoom(int id) {
         Room room = roomRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new IllegalArgumentException("Палаты с таким ID не существует"));
-        return roomConverter.toDto(room);
+        return roomConverter.roomEntityToRoomDto(room);
     }
 
     @Override

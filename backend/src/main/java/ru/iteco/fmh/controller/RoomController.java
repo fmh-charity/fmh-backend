@@ -60,9 +60,7 @@ public class RoomController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "удалить палату")
     @DeleteMapping("/{id}")
-    public void deleteRoom(
-            @ApiParam(value = "идентификатор палаты", required = true)
-                    @PathVariable("id") int id) {
+    public void deleteRoom(@ApiParam(value = "идентификатор палаты", required = true) @PathVariable("id") int id) {
         roomService.deleteRoom(id);
     }
 
