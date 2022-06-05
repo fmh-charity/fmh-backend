@@ -82,6 +82,7 @@ public class UserRoomSteps {
     @And("Редактирует созданную палату: {string}, {string}, {string}, {string}, {string}")
     public void editCreatedRoom(String name, String blockId, String nurseStationId, String maxOccupancy, String comment) {
         RoomDtoRq dtoRq = RoomDtoRq.builder()
+                .id(roomDto.getId())
                 .name(name)
                 .blockId(Integer.parseInt(blockId))
                 .nurseStationId(Integer.parseInt(nurseStationId))
