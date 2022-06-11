@@ -17,14 +17,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoomDtoRq {
 
-    @ApiModelProperty("идентификатор палаты")
-    private int id;
-
     @ApiModelProperty("название палаты")
     private String name;
-
-    @ApiModelProperty("блок")
-    private int blockId;
 
     @ApiModelProperty("пост")
     private int nurseStationId;

@@ -1,11 +1,10 @@
 package ru.iteco.fmh.service.room;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.iteco.fmh.converter.room.RoomConverter;
 import ru.iteco.fmh.dao.repository.RoomRepository;
-import ru.iteco.fmh.dto.room.RoomDto;
 import ru.iteco.fmh.dto.room.RoomDtoRq;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.Room;
@@ -19,30 +18,39 @@ import java.util.stream.Collectors;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-    private final RoomConverter roomConverter;
+    private final ConversionService conversionService;
+
 
     @Override
-    public List<RoomDto> getAllRooms() {
+    public List<RoomDtoRs> getAllRooms() {
         List<Room> rooms = roomRepository.findAllByDeletedIsFalse();
         return rooms.stream()
-                .map(roomConverter::roomEntityToRoomDto)
+                .map(room -> conversionService.convert(room, RoomDtoRs.class))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Override
-    public RoomDtoRs createOrUpdateRoom(int id, RoomDtoRq roomDto) {
-        roomDto.setId(id);
-        Room room = roomConverter.roomDtoRqToRoomEntity(roomDto);
+    public RoomDtoRs createRoom(RoomDtoRq roomDto) {
+        Room room = conversionService.convert(roomDto, Room.class);
         room = roomRepository.save(Objects.requireNonNull(room));
-        return roomConverter.roomEntityToRoomDtoRs(room);
+        return conversionService.convert(room, RoomDtoRs.class);
+    }
+
+    @Transactional
+    @Override
+    public RoomDtoRs updateRoom(int id, RoomDtoRq roomDto) {
+        Room room = conversionService.convert(roomDto, Room.class);
+        Objects.requireNonNull(room).setId(id);
+        room = roomRepository.save(room);
+        return conversionService.convert(room, RoomDtoRs.class);
     }
 
     @Override
-    public RoomDto getRoom(int id) {
+    public RoomDtoRs getRoom(int id) {
         Room room = roomRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new IllegalArgumentException("Палаты с таким ID не существует"));
-        return roomConverter.roomEntityToRoomDto(room);
+        return conversionService.convert(room, RoomDtoRs.class);
     }
 
     @Override

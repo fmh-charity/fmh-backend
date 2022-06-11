@@ -23,9 +23,6 @@ public class RoomDtoRs {
     @ApiModelProperty("название палаты")
     private String name;
 
-    @ApiModelProperty("блок")
-    private int blockId;
-
     @ApiModelProperty("пост")
     private int nurseStationId;
 

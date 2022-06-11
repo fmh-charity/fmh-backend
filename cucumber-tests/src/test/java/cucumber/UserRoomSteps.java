@@ -1,13 +1,13 @@
 package cucumber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.utils.BackendUrls;
 import cucumber.utils.RestTemplateUtil;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ru.iteco.cucumber.model.RoomDto;
 import ru.iteco.cucumber.model.RoomDtoRq;
 import ru.iteco.cucumber.model.RoomDtoRs;
 
@@ -27,9 +27,8 @@ public class UserRoomSteps {
     private final ResultSteps resultSteps;
     private String jwt;
 
-    private final String roomsUrl = "/rooms";
-
-    private RoomDto roomDto;
+    private final String roomsUrl = BackendUrls.ROOMS_BASE_URL;
+    private RoomDtoRs roomDtoRs;
 
 
     @SneakyThrows
@@ -40,57 +39,52 @@ public class UserRoomSteps {
                 .getRq(userCommonSteps.getJwt(), roomsUrl)
                 .getBody();
         assertNotNull(responseBody);
-        ArrayList<RoomDto> rooms = objectMapper.readValue(responseBody, ArrayList.class);
+        ArrayList<RoomDtoRs> rooms = objectMapper.readValue(responseBody, ArrayList.class);
         assertNotNull(rooms);
         log.info("SIZE: {}", rooms.size());
         log.info("ALL ROOMS: {}", rooms);
     }
 
     @SneakyThrows
-    @And("Создает новую палату: {string}, {string}, {string}, {string}, {string}")
-    public void createRoom(String name, String blockId, String nurseStationId, String maxOccupancy, String comment) {
+    @And("Создает новую палату: {string}, {string}, {string}, {string}")
+    public void createRoom(String name, String nurseStationId, String maxOccupancy, String comment) {
         RoomDtoRq roomDtoRq = RoomDtoRq.builder()
                 .name(name)
-                .blockId(Integer.parseInt(blockId))
                 .nurseStationId(Integer.parseInt(nurseStationId))
                 .maxOccupancy(Integer.parseInt(maxOccupancy))
                 .comment(comment)
                 .build();
         String responseBody = rest
-                .postRq(jwt, objectMapper.writeValueAsString(roomDtoRq), roomsUrl + "/" + roomDtoRq.getId())
+                .postRq(jwt, objectMapper.writeValueAsString(roomDtoRq), roomsUrl)
                 .getBody();
         assertNotNull(responseBody);
-        roomDto = objectMapper.readValue(responseBody, RoomDto.class);
-        assertNotNull(roomDto);
-        log.info("ROOM: {}", roomDto);
+        roomDtoRs = objectMapper.readValue(responseBody, RoomDtoRs.class);
+        assertNotNull(roomDtoRs);
+        log.info("ROOM: {}", roomDtoRs);
     }
 
     @SneakyThrows
     @And("Просматривает карточку созданной палаты")
     public void getCreatedRoom() {
         String responseBody = rest
-                .getRq(jwt, roomsUrl + "/" + roomDto.getId())
+                .getRq(jwt, roomsUrl + "/" + roomDtoRs.getId())
                 .getBody();
         assertNotNull(responseBody);
         RoomDtoRs roomDtoRs = objectMapper.readValue(responseBody, RoomDtoRs.class);
-        assertNotNull(roomDto);
-        assertEquals(roomDtoRs.getId(), roomDto.getId());
+        assertNotNull(this.roomDtoRs);
+        assertEquals(roomDtoRs.getId(), this.roomDtoRs.getId());
         log.info("ROOM: {}", roomDtoRs);
     }
 
     @SneakyThrows
-    @And("Редактирует созданную палату: {string}, {string}, {string}, {string}, {string}")
-    public void editCreatedRoom(String name, String blockId, String nurseStationId, String maxOccupancy, String comment) {
-        RoomDtoRq dtoRq = RoomDtoRq.builder()
-                .id(roomDto.getId())
-                .name(name)
-                .blockId(Integer.parseInt(blockId))
-                .nurseStationId(Integer.parseInt(nurseStationId))
-                .maxOccupancy(Integer.parseInt(maxOccupancy))
-                .comment(comment)
-                .build();
+    @And("Редактирует созданную палату: {string}, {string}, {string}, {string}")
+    public void editCreatedRoom(String name, String nurseStationId, String maxOccupancy, String comment) {
+        roomDtoRs.setName(name);
+        roomDtoRs.setNurseStationId(Integer.parseInt(nurseStationId));
+        roomDtoRs.setMaxOccupancy(Integer.parseInt(maxOccupancy));
+        roomDtoRs.setComment(comment);
         String responseBody = rest
-                .putRq(jwt, objectMapper.writeValueAsString(dtoRq), roomsUrl + "/" + dtoRq.getId())
+                .putRq(jwt, objectMapper.writeValueAsString(roomDtoRs), roomsUrl + "/" + roomDtoRs.getId())
                 .getBody();
         assertNotNull(responseBody);
         RoomDtoRs editedDto = objectMapper.readValue(responseBody, RoomDtoRs.class);
@@ -99,14 +93,7 @@ public class UserRoomSteps {
 
     @And("Удаляет созданную палату")
     public void deleteCreatedRoom() {
-        String idUrl = "/" + roomDto.getId();
-        rest.deleteRq(jwt, roomsUrl + idUrl);
-//        assertEquals(
-//                rest.getRq(jwt, roomsUrl + idUrl)
-//                        .getStatusCode()
-//                        .value(),
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//                        .value());
-//        resultSteps.setStatus("SUCCESS");
+        int idUrl = roomDtoRs.getId();
+        rest.deleteRq(jwt, roomsUrl + "/" + idUrl);
     }
 }

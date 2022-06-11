@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,8 +16,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -41,12 +43,7 @@ public class Room {
     String name;
 
     @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "block_id")
-    Block block;
-
-    @ToString.Exclude
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nurse_station_id")
     NurseStation nurseStation;
 

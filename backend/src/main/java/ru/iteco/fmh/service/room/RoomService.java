@@ -1,9 +1,7 @@
 package ru.iteco.fmh.service.room;
 
-import ru.iteco.fmh.dto.room.RoomDto;
 import ru.iteco.fmh.dto.room.RoomDtoRq;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
-import ru.iteco.fmh.model.Room;
 
 import java.util.List;
 
@@ -17,15 +15,23 @@ public interface RoomService {
     /**
      *  Получить список всех палат
      */
-    List<RoomDto> getAllRooms();
+    List<RoomDtoRs> getAllRooms();
 
     /**
      * Создание палаты
      *
-     * @param roomDto - объект создаваемой / редактируемой палаты
-     * @return - объект созданной / отредактированной палаты
+     * @param roomDto - объект создаваемой
+     * @return - объект созданной
      */
-    RoomDtoRs createOrUpdateRoom(int id, RoomDtoRq roomDto);
+    RoomDtoRs createRoom(RoomDtoRq roomDto);
+
+    /**
+     * Редактирование палаты
+     *
+     * @param roomDto - объект редактируемой
+     * @return - объект отредактированной палаты
+     */
+    RoomDtoRs updateRoom(int id, RoomDtoRq roomDto);
 
     /**
      * Просмотр карточки палаты
@@ -33,7 +39,7 @@ public interface RoomService {
      * @param id - ИД палаты
      * @return - объект палаты
      */
-    RoomDto getRoom(int id);
+    RoomDtoRs getRoom(int id);
 
     /**
      * Удаление палаты

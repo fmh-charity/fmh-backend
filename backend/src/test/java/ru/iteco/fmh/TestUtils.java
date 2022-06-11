@@ -364,7 +364,6 @@ public class TestUtils {
         return Room.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .name(getAlphabeticString())
-                .block(getBlock())
                 .nurseStation(getNurseStation())
                 .maxOccupancy(Integer.parseInt(getNumeric(2)))
                 .comment(getAlphabeticString())
