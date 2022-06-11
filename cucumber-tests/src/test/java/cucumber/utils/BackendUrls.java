@@ -7,6 +7,4 @@ public class BackendUrls {
     public static final String ROOMS_BASE_URL = "/rooms";
     public static final String NEWS_BASE_URL = "/news";
 
-    public static final String CLEAN_BD_DATA_URL = "/back/clean_db_data";
-
 }
