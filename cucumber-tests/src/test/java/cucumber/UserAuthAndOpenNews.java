@@ -1,6 +1,7 @@
 package cucumber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.utils.BackendUrls;
 import cucumber.utils.RestTemplateUtil;
 import io.cucumber.java.en.And;
 
@@ -26,7 +27,7 @@ public class UserAuthAndOpenNews {
     private final ResultSteps resultSteps;
     private String jwt;
 
-    private final String newsUrl = "/news";
+    private final String newsUrl = BackendUrls.NEWS_BASE_URL;
 
     @SneakyThrows
     @And("Пользователь просматривает список доступных новостей")
@@ -47,7 +48,7 @@ public class UserAuthAndOpenNews {
     public void getNewsById(String news) {
         int id = Integer.parseInt(news);
         String responseBody = rest
-                .getRq(jwt, "/news/" + id)
+                .getRq(jwt, newsUrl + "/" + id)
                 .getBody();
         assertNotNull(responseBody);
         log.info("NEWS: {}", responseBody);

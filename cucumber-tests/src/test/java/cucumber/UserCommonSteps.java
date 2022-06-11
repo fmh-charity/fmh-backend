@@ -1,6 +1,7 @@
 package cucumber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.utils.BackendUrls;
 import cucumber.utils.RestTemplateUtil;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -24,8 +25,9 @@ public class UserCommonSteps {
 
     private final RestTemplateUtil rest = new RestTemplateUtil();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String loginUrl = "/authentication/login";
-    private final String userInfoUrl = "/authentication/userInfo";
+
+    private final String loginUrl = BackendUrls.AUTHENTICATION_BASE_URL + "/login";
+    private final String userInfoUrl = BackendUrls.AUTHENTICATION_BASE_URL + "/userInfo";
 
     private String jwt = "Unauthorized";
 
