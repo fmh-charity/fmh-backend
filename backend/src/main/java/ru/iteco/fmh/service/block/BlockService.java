@@ -1,6 +1,7 @@
 package ru.iteco.fmh.service.block;
 
-import ru.iteco.fmh.dto.block.BlockDto;
+import ru.iteco.fmh.dto.block.BlockDtoRq;
+import ru.iteco.fmh.dto.block.BlockDtoRs;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface BlockService {
     /**
      * возвращает список всех блоков
      */
-    List<BlockDto> getAllBlocks();
+    List<BlockDtoRs> getAllBlocks();
 
     /**
      * возвращает блок для просмотра
@@ -19,15 +20,15 @@ public interface BlockService {
      * @param id ид блока
      * @return блок с полной информацией
      */
-    BlockDto getBlock(int id);
+    BlockDtoRs getBlock(int id);
 
     /**
      * создает новый блок/обновляет блок
      *
-     * @param blockDto информация по блоку для обновления
+     * @param blockDtoRq информация по блоку для обновления
      * @return сущность
      */
-    BlockDto createOrUpdateBlock(BlockDto blockDto);
+    BlockDtoRs createBlock(BlockDtoRq blockDtoRq);
 
     /**
      * удаление блока
@@ -35,4 +36,6 @@ public interface BlockService {
      * @param id ид блока
      */
     void deleteBlock(int id);
+
+    BlockDtoRs updateBlock(BlockDtoRq dto, int id);
 }

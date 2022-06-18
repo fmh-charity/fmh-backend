@@ -13,13 +13,12 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BlockDto {
+public class BlockDtoRs {
 
     @ApiModelProperty("идентификатор блока")
     private Integer id;
 
     @ApiModelProperty("название блока")
-    @NotEmpty
     private String name;
 
     @ApiModelProperty("комментарий")

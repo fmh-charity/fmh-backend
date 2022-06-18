@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.iteco.fmh.dto.block.BlockDto;
+import ru.iteco.fmh.dto.block.BlockDtoRq;
+import ru.iteco.fmh.dto.block.BlockDtoRs;
 import ru.iteco.fmh.service.block.BlockService;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Api(description = "Блоки")
@@ -29,29 +31,29 @@ public class BlockController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "получние всех блоков")
     @GetMapping
-    public List<BlockDto> getAllBlocks() {
+    public List<BlockDtoRs> getAllBlocks() {
         return blockService.getAllBlocks();
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает полную информацию по блоку")
     @GetMapping("/{id}")
-    public BlockDto getBlock(@ApiParam(value = "идентификатор блока", required = true) @PathVariable("id") int id) {
+    public BlockDtoRs getBlock(@ApiParam(value = "идентификатор блока", required = true) @PathVariable("id") int id) {
         return blockService.getBlock(id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "cоздание нового блока")
     @PostMapping
-    public BlockDto createBlock(@RequestBody BlockDto dto) {
-        return blockService.createOrUpdateBlock(dto);
+    public BlockDtoRs createBlock(@RequestBody BlockDtoRq dto) {
+        return blockService.createBlock(dto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "обновляет информацию по блоку")
-    @PutMapping
-    public BlockDto updateBlock(@RequestBody BlockDto dto) {
-        return blockService.createOrUpdateBlock(dto);
+    @PutMapping("/{id}")
+    public BlockDtoRs updateBlock(@RequestBody BlockDtoRq dto, @NotEmpty @PathVariable(value = "id") int id) {
+        return blockService.updateBlock(dto, id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
