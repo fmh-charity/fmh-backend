@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * Палата
  */
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
