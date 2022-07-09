@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.service.news.NewsService;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(description = "новости")
@@ -43,7 +44,7 @@ public class NewsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "cоздание новой новости")
     @PostMapping
-    public NewsDto createNews(@RequestBody NewsDto dto) {
+    public NewsDto createNews(@RequestBody @NotNull NewsDto dto) {
         return newsService.createOrUpdateNews(dto);
     }
 

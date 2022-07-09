@@ -67,6 +67,15 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto createOrUpdateNews(NewsDto newsDto) {
         News news = conversionService.convert(newsDto, News.class);
+        User currentUser = RequestContext.getCurrentUser();
+        User creator = news.getCreator() != null ? news.getCreator() : new User();
+        creator.setId(currentUser.getId());
+        creator.setFirstName(currentUser.getFirstName());
+        creator.setLastName(currentUser.getLastName());
+        creator.setMiddleName(currentUser.getMiddleName());
+        creator.setTokens(currentUser.getTokens());
+        news.setCreator(creator);
+        news.setCreateDate(Instant.now());
         news = newsRepository.save(news);
         return conversionService.convert(news, NewsDto.class);
     }
