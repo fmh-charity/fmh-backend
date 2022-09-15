@@ -8,11 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,8 @@ import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 
 @Api("Заявки")
@@ -116,10 +120,18 @@ public class ClaimsController {
     @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
     @PostMapping("pagination")
     public ResponseEntity<List<ClaimDto>> getPaginationClaims(
+            @ApiParam (required = true, name = "authorization", value = "Здесь должен быть accessToken") 
+                @RequestHeader String authorization,
             @ApiParam(value = "Объект с номером страницы, количеством элементов на странице и сортировками. Все поля необязательные.\n" 
             + "Константы для сортировки: [title, titleReverse, status, statusReverse, createDate, createDateReverse]\n" 
             + "Константы для статуса: [IN_PROGRESS, CANCELLED, OPEN, EXECUTED]",
-            required = true) @RequestBody PageablePogo pageablePogo) {
+            required = true) @RequestBody @Valid PageablePogo pageablePogo,
+            BindingResult bindingResult) {
+        
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
         return ResponseEntity.ok(claimService.getPaginationClaims(pageablePogo));
     }
 }
