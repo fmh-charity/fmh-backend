@@ -4,6 +4,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.pagination.PageablePogo;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
+
 
 @Api("Заявки")
 @RequiredArgsConstructor
@@ -28,7 +32,6 @@ import java.util.List;
 public class ClaimsController {
 
     private final ClaimService claimService;
-
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех заявок")
@@ -109,7 +112,16 @@ public class ClaimsController {
         return claimService.updateClaimComment(request, authentication);
     }
 
-
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
+    @PostMapping("pagination")
+    public ResponseEntity<List<ClaimDto>> getPaginationClaims(
+        @ApiParam(value = "Объект с номером страницы, количеством элементов на странице и сортировками. Все поля необязательные.\n" +
+        "Константы для сортировки: [title, titleReverse, status, statusReverse, createDate, createDateReverse]\n" +
+        "Константы для статуса: [IN_PROGRESS, CANCELLED, OPEN, EXECUTED]",
+         required = true) @RequestBody PageablePogo pageablePogo) {
+        return ResponseEntity.ok(claimService.getPaginationClaims(pageablePogo));
+    }
 }
 
 

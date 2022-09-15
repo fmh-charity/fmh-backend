@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.claim;
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.pagination.PageablePogo;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -85,5 +86,9 @@ public interface ClaimService {
      */
     ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto, Authentication authentication);
 
-
+    /**
+     * возвращает заданное количество просьб на указанной странице (значение page), с заданной сортировкой
+     * @throws Exception
+     */
+    List<ClaimDto> getPaginationClaims(PageablePogo pageablePogo);
 }
