@@ -1,4 +1,0 @@
-{
-    "java.checkstyle.configuration": "${workspaceFolder}\\fmh-backend\\backend\\checkstyle.xml",
-    "java.checkstyle.version": "10.3.3"
-}
