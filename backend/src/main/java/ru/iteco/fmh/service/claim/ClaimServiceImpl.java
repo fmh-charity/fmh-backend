@@ -5,6 +5,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.pagination.PageablePogo;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -36,13 +36,22 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimCommentRepository claimCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
-    private final List<String> typesOfSort = List.of("title", "titleReverse", "status", "statusReverse", "createDate", "createDateReverse");
-    private final List<String> statuses = List.of("IN_PROGRESS", "CANCELLED", "OPEN", "EXECUTED");
     String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
-    public List<ClaimDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
+    public List<ClaimDto> getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
+        List<Claim> list = null;
+
+        Pageable pageableList = planExecuteDate
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending())
+                : PageRequest.of(pages, elements, Sort.by("planExecuteDate"));
+
+        if (status != null) {
+            list = claimRepository.findAllByStatus(status, pageableList);
+        } else {
+            list = claimRepository.findAll(pageableList).getContent();
+        }
+
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))
                 .collect(Collectors.toList());
@@ -141,28 +150,5 @@ public class ClaimServiceImpl implements ClaimService {
         ClaimComment claimComment = conversionService.convert(commentDto, ClaimComment.class);
         claimComment = claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
-    }
-
-    @Override
-    public List<ClaimDto> getPaginationClaims(PageablePogo pageablePogo) {
-        Pageable pageableList = null;
-
-        if (typesOfSort.contains(pageablePogo.getTypeOfSort())) {
-            pageableList = pageablePogo.getTypeOfSort().contains("Reverse")
-                ? PageRequest.of(pageablePogo.getPage(), pageablePogo.getElements(),
-                    Sort.by(pageablePogo.getTypeOfSort().replace("Reverse", "")).descending())
-                : PageRequest.of(pageablePogo.getPage(), pageablePogo.getElements(),
-                    Sort.by(pageablePogo.getTypeOfSort()));  
-        } else {
-            pageableList = PageRequest.of(pageablePogo.getPage(), pageablePogo.getElements(), Sort.by("title")); 
-        }
-
-        List<Claim> list = statuses.contains(pageablePogo.getStatus()) 
-                ? claimRepository.findAllByStatus(Status.valueOf(pageablePogo.getStatus()), pageableList)
-                : claimRepository.findAll(pageableList).getContent();
-
-        return list.stream()
-                .map(i -> conversionService.convert(i, ClaimDto.class))
-                .collect(Collectors.toList());
     }
 }

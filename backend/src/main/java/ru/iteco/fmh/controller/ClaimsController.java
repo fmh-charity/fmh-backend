@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,28 +20,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.pagination.PageablePogo;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.claim.ClaimService;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 
 @Api("Заявки")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/claims")
+@Validated
 public class ClaimsController {
 
     private final ClaimService claimService;
 
+
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "реестр всех заявок")
-    @GetMapping
-    public List<ClaimDto> getAllClaims() {
-        return claimService.getAllClaims();
+    @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
+    @GetMapping()
+    public ResponseEntity<List<ClaimDto>> getClaims(
+                @ApiParam (required = true, name = "authorization", value = "Здесь должен быть accessToken") 
+                    @RequestHeader String authorization,
+                @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]") 
+                    @RequestParam(name = "status", required = false) Status status,
+                @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения, ближайшее время/крайние время") 
+                    @RequestParam(required = false) boolean planExecuteDate,
+                @ApiParam (required = true, name = "pages", value = "От 0") 
+                    @RequestParam @PositiveOrZero int pages,
+                @ApiParam (required = true, name = "elements", value = "От 1 до 200") 
+                    @RequestParam @Min(value = 1) @Max(value = 200) int elements) {
+
+        return ResponseEntity.ok(claimService.getClaims(pages, elements, status, planExecuteDate));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -114,25 +127,6 @@ public class ClaimsController {
     @PutMapping("/comments")
     public ClaimCommentDto updateClaimComment(@RequestBody ClaimCommentDto request, Authentication authentication) {
         return claimService.updateClaimComment(request, authentication);
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
-    @PostMapping("pagination")
-    public ResponseEntity<List<ClaimDto>> getPaginationClaims(
-            @ApiParam (required = true, name = "authorization", value = "Здесь должен быть accessToken") 
-                @RequestHeader String authorization,
-            @ApiParam(value = "Объект с номером страницы, количеством элементов на странице и сортировками. Все поля необязательные.\n" 
-            + "Константы для сортировки: [title, titleReverse, status, statusReverse, createDate, createDateReverse]\n" 
-            + "Константы для статуса: [IN_PROGRESS, CANCELLED, OPEN, EXECUTED]",
-            required = true) @RequestBody @Valid PageablePogo pageablePogo,
-            BindingResult bindingResult) {
-        
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        return ResponseEntity.ok(claimService.getPaginationClaims(pageablePogo));
     }
 }
 

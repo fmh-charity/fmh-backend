@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.ClaimsController;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
@@ -51,13 +52,13 @@ public class ClaimsControllerTest {
 
     @Test
     public void getAllClaims() {
-        List<ClaimDto> claimDtoList = sut.getAllClaims();
+        ResponseEntity<List<ClaimDto>> claimDtoList = sut.getClaims("", null, true, 0, 5);
 
-        assertEquals(5, claimDtoList.size());
-        assertTrue(Instant.ofEpochMilli(claimDtoList.get(3).getPlanExecuteDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.get(4).getPlanExecuteDate())));
-        assertTrue(Instant.ofEpochMilli(claimDtoList.get(1).getCreateDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.get(2).getCreateDate())));
+        assertEquals(4, claimDtoList.getBody().size());
+        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().get(3).getPlanExecuteDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.getBody().get(4).getPlanExecuteDate())));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().get(1).getCreateDate()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.getBody().get(2).getCreateDate())));
 
     }
 

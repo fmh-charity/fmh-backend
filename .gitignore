@@ -1,4 +1,5 @@
 /target/
+.vscode
 !backend/.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
