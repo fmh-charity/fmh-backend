@@ -147,7 +147,7 @@ public class ClaimServiceImpl implements ClaimService {
     public List<ClaimDto> getPaginationClaims(PageablePogo pageablePogo) {
         Pageable pageableList = null;
 
-        if (typesOfSort.contains(pageablePogo.getTypeOfSort())){
+        if (typesOfSort.contains(pageablePogo.getTypeOfSort())) {
             pageableList = pageablePogo.getTypeOfSort().contains("Reverse")
                 ? PageRequest.of(pageablePogo.getPage(), pageablePogo.getElements(),
                     Sort.by(pageablePogo.getTypeOfSort().replace("Reverse", "")).descending())
@@ -158,8 +158,8 @@ public class ClaimServiceImpl implements ClaimService {
         }
 
         List<Claim> list = statuses.contains(pageablePogo.getStatus()) 
-            ? claimRepository.findAllByStatus(Status.valueOf(pageablePogo.getStatus()), pageableList)
-            : claimRepository.findAll(pageableList).getContent();
+                ? claimRepository.findAllByStatus(Status.valueOf(pageablePogo.getStatus()), pageableList)
+                : claimRepository.findAll(pageableList).getContent();
 
         return list.stream()
                 .map(i -> conversionService.convert(i, ClaimDto.class))

@@ -88,7 +88,6 @@ public interface ClaimService {
 
     /**
      * возвращает заданное количество просьб на указанной странице (значение page), с заданной сортировкой
-     * @throws Exception
      */
     List<ClaimDto> getPaginationClaims(PageablePogo pageablePogo);
 }

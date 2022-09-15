@@ -116,10 +116,10 @@ public class ClaimsController {
     @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
     @PostMapping("pagination")
     public ResponseEntity<List<ClaimDto>> getPaginationClaims(
-        @ApiParam(value = "Объект с номером страницы, количеством элементов на странице и сортировками. Все поля необязательные.\n" +
-        "Константы для сортировки: [title, titleReverse, status, statusReverse, createDate, createDateReverse]\n" +
-        "Константы для статуса: [IN_PROGRESS, CANCELLED, OPEN, EXECUTED]",
-         required = true) @RequestBody PageablePogo pageablePogo) {
+            @ApiParam(value = "Объект с номером страницы, количеством элементов на странице и сортировками. Все поля необязательные.\n" 
+            + "Константы для сортировки: [title, titleReverse, status, statusReverse, createDate, createDateReverse]\n" 
+            + "Константы для статуса: [IN_PROGRESS, CANCELLED, OPEN, EXECUTED]",
+            required = true) @RequestBody PageablePogo pageablePogo) {
         return ResponseEntity.ok(claimService.getPaginationClaims(pageablePogo));
     }
 }
