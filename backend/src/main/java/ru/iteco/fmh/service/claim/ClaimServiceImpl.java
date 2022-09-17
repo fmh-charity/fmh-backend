@@ -43,8 +43,8 @@ public class ClaimServiceImpl implements ClaimService {
         List<Claim> list = null;
 
         Pageable pageableList = planExecuteDate
-                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending())
-                : PageRequest.of(pages, elements, Sort.by("planExecuteDate"));
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
+                : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
 
         if (status != null) {
             list = claimRepository.findAllByStatus(status, pageableList);
