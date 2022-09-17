@@ -38,16 +38,13 @@ public class ClaimsController {
 
     private final ClaimService claimService;
 
-
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
     @GetMapping()
     public ResponseEntity<List<ClaimDto>> getClaims(
-                @ApiParam (required = true, name = "authorization", value = "Здесь должен быть accessToken") 
-                    @RequestHeader String authorization,
                 @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]") 
                     @RequestParam(name = "status", required = false) Status status,
-                @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения, ближайшее время/крайние время") 
+                @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения") 
                     @RequestParam(required = false) boolean planExecuteDate,
                 @ApiParam (required = true, name = "pages", value = "От 0") 
                     @RequestParam @PositiveOrZero int pages,

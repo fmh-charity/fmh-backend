@@ -52,7 +52,7 @@ public class ClaimsControllerTest {
 
     @Test
     public void getAllClaims() {
-        ResponseEntity<List<ClaimDto>> claimDtoList = sut.getClaims("", null, true, 0, 5);
+        ResponseEntity<List<ClaimDto>> claimDtoList = sut.getClaims(null, true, 0, 4);
 
         assertEquals(4, claimDtoList.getBody().size());
         assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().get(3).getPlanExecuteDate()).isBefore
