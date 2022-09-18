@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.pagination.PaginationInterface;
 import ru.iteco.fmh.model.task.Status;
 
 @ApiModel(description = "request claim")
@@ -14,7 +13,7 @@ import ru.iteco.fmh.model.task.Status;
 @AllArgsConstructor
 @Builder
 @Data
-public class ClaimDto implements PaginationInterface {
+public class ClaimDto {
 
     @ApiModelProperty("идентификатор заявки")
     private Integer id;
@@ -38,9 +37,4 @@ public class ClaimDto implements PaginationInterface {
     private String creatorName;
     @ApiModelProperty("ФИО исполнителя")
     private String executorName;
-
-    @Override
-    public Long getDateTime() {
-        return planExecuteDate;
-    }
 }

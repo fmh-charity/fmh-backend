@@ -13,7 +13,7 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.pagination.PaginationDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -54,13 +54,14 @@ public class ClaimsControllerTest {
 
     @Test
     public void getAllClaims() {
-        ResponseEntity<PaginationDto> claimDtoList = sut.getClaims(null, true, 0, 5);
+        ResponseEntity<ClaimPaginationDto> claimDtoList = sut.getClaims(null, true, 0, 5);
+        List<ClaimDto> claims = Objects.requireNonNull(claimDtoList.getBody()).getElements();
 
-        assertEquals(5, Objects.requireNonNull(claimDtoList.getBody()).getElements().size());
-        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(0).getDateTime()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(1).getDateTime())));
-        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(3).getDateTime()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(4).getDateTime())));
+        assertEquals(5, claims.size());
+        assertTrue(Instant.ofEpochMilli(claims.get(3).getPlanExecuteDate()).isBefore
+                (Instant.ofEpochMilli(claims.get(4).getPlanExecuteDate())));
+        assertTrue(Instant.ofEpochMilli(claims.get(1).getCreateDate()).isBefore
+                (Instant.ofEpochMilli(claims.get(2).getCreateDate())));
     }
 
     @Test

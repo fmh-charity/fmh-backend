@@ -3,7 +3,7 @@ package ru.iteco.fmh.service.claim;
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.pagination.PaginationDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface ClaimService {
     /**
      * возвращает заданное количество просьб на указанной странице (значение page), с заданной сортировкой
      */
-    PaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate);
+    ClaimPaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate);
 
     /**
      * возвращает полный перечень всех заявок

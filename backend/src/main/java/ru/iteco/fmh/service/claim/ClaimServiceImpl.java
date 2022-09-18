@@ -16,7 +16,7 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.pagination.PaginationDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -40,7 +40,7 @@ public class ClaimServiceImpl implements ClaimService {
     String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
-    public PaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
+    public ClaimPaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
         Page<Claim> list;
 
         Pageable pageableList = planExecuteDate
@@ -53,7 +53,7 @@ public class ClaimServiceImpl implements ClaimService {
             list = claimRepository.findAll(pageableList);
         }
 
-        return PaginationDto.builder()
+        return ClaimPaginationDto.builder()
             .count(list.getTotalPages() - 1)
             .elements(
                 list.stream()
