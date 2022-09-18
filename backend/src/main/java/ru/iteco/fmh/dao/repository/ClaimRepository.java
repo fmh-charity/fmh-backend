@@ -1,5 +1,6 @@
 package ru.iteco.fmh.dao.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
@@ -14,7 +15,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     List<Claim> findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Collection<Status> status);
 
-    List<Claim> findAllByStatus(Status status, Pageable pageable);
+    Page<Claim> findAllByStatus(Status status, Pageable pageable);
 
     List<Claim> findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
 

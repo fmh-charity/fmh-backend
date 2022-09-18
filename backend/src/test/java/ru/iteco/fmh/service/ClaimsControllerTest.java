@@ -13,12 +13,14 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.pagination.PaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,14 +54,13 @@ public class ClaimsControllerTest {
 
     @Test
     public void getAllClaims() {
-        ResponseEntity<List<ClaimDto>> claimDtoList = sut.getClaims(null, true, 0, 5);
+        ResponseEntity<PaginationDto> claimDtoList = sut.getClaims(null, true, 0, 5);
 
-        assertEquals(5, claimDtoList.getBody().size());
-        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().get(3).getPlanExecuteDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.getBody().get(4).getPlanExecuteDate())));
-        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().get(1).getCreateDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.getBody().get(2).getCreateDate())));
-
+        assertEquals(5, Objects.requireNonNull(claimDtoList.getBody()).getElements().size());
+        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(0).getDateTime()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(1).getDateTime())));
+        assertTrue(Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(3).getDateTime()).isBefore
+                (Instant.ofEpochMilli(claimDtoList.getBody().getElements().get(4).getDateTime())));
     }
 
     @Test
@@ -230,6 +231,4 @@ public class ClaimsControllerTest {
         // deleting result entity
         claimCommentRepository.deleteById(idNotNullExecutor.getId());
     }
-
-
 }

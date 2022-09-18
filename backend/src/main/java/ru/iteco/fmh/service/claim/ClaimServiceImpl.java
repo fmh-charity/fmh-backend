@@ -2,10 +2,10 @@ package ru.iteco.fmh.service.claim;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +16,7 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.pagination.PaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -39,8 +40,8 @@ public class ClaimServiceImpl implements ClaimService {
     String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
-    public List<ClaimDto> getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
-        List<Claim> list = null;
+    public PaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
+        Page<Claim> list;
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
@@ -49,12 +50,16 @@ public class ClaimServiceImpl implements ClaimService {
         if (status != null) {
             list = claimRepository.findAllByStatus(status, pageableList);
         } else {
-            list = claimRepository.findAll(pageableList).getContent();
+            list = claimRepository.findAll(pageableList);
         }
 
-        return list.stream()
-                .map(i -> conversionService.convert(i, ClaimDto.class))
-                .collect(Collectors.toList());
+        return PaginationDto.builder()
+            .count(list.getTotalPages() - 1)
+            .elements(
+                list.stream()
+                    .map(i -> conversionService.convert(i, ClaimDto.class))
+                    .collect(Collectors.toList()))
+            .build();
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.pagination.PaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.claim.ClaimService;
 
@@ -41,7 +42,7 @@ public class ClaimsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Получение страницы с заявками, с сортировкой")
     @GetMapping()
-    public ResponseEntity<List<ClaimDto>> getClaims(
+    public ResponseEntity<PaginationDto> getClaims(
                 @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]") 
                     @RequestParam(name = "status", required = false) Status status,
                 @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения") 
