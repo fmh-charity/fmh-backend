@@ -16,8 +16,6 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
 
     Page<Wish> findAllByStatusInAndDeletedIsFalse(List<Status>  status, Pageable pageable);
 
-    List<Wish> findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
-
     List<Wish> findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Collection<Status> status);
 
     List<Wish> findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(

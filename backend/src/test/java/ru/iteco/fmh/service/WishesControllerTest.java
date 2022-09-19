@@ -47,9 +47,9 @@ public class WishesControllerTest {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     PatientRepository patientRepository;
-
 
     @Autowired
     ConversionService conversionService;
@@ -59,7 +59,7 @@ public class WishesControllerTest {
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
-        List<String> expected = List.of("wish-title1", "wish-title8", "wish-title7", "wish-title6", "wish-title5", "wish-title2");
+        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6", "wish-title5", "wish-title2");
 
         List<String> result = sut.getAllOpenInProgressWishes().stream()
                 .map(WishDto::getTitle).collect(Collectors.toList());
@@ -69,13 +69,12 @@ public class WishesControllerTest {
 
     @Test
     public void getAllWishesShouldPassSuccess() {
-        List<String> expected = List.of("wish-title1", "wish-title8", "wish-title7", "wish-title6",
-                "wish-title5", "wish-title4", "wish-title3", "wish-title2");
+        List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
 
         List<String> result = Objects.requireNonNull(
-                sut.getWishes(0, 8, List.of(OPEN, IN_PROGRESS, EXECUTED, CANCELLED), true)
-                        .getBody()).getElements().stream()
-                        .map(WishDto::getTitle).collect(Collectors.toList());
+                sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
+                    .getBody()).getElements().stream()
+                    .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
     }
@@ -232,6 +231,4 @@ public class WishesControllerTest {
         // AFTER - deleting result entity
         wishCommentRepository.deleteById(resultId.getId());
     }
-
-
 }
