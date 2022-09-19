@@ -244,11 +244,11 @@ public class WishServiceTest {
         Integer patientId = 1;
 
         List<Wish> openInProgressWishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
-        List<WishDto> expected = openInProgressWishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
-                .collect(Collectors.toList());
+        List<WishDto> expected = openInProgressWishList.stream()
+                .map(wish -> conversionService.convert(wish, WishDto.class)).collect(Collectors.toList());
 
-        when(wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(patientId, List.of(OPEN, IN_PROGRESS)))
-                .thenReturn(openInProgressWishList);
+        when(wishRepository.findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(
+                patientId, List.of(OPEN, IN_PROGRESS))).thenReturn(openInProgressWishList);
         List<WishDto> result = sut.getPatientOpenInProgressWishes(patientId);
 
         assertEquals(expected, result);
