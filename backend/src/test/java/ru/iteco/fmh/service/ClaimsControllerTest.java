@@ -51,10 +51,10 @@ public class ClaimsControllerTest {
     @Autowired
     UserRepository userRepository;
 
-
     @Test
     public void getAllClaims() {
-        ResponseEntity<ClaimPaginationDto> claimDtoList = sut.getClaims(null, true, 0, 5);
+        ResponseEntity<ClaimPaginationDto> claimDtoList = sut.getClaims(
+                0, 5, List.of(OPEN, IN_PROGRESS, EXECUTED), true);
         List<ClaimDto> claims = Objects.requireNonNull(claimDtoList.getBody()).getElements();
 
         assertEquals(5, claims.size());

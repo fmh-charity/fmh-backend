@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -71,13 +73,16 @@ public class WishServiceTest {
     @Test
     public void getAllWishesShouldPassSuccess() {
         // given
-        List<Wish> wishList = List.of(getWish(OPEN), getWish(CANCELLED));
+        List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
 
-        when(wishRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc())
-                .thenReturn(wishList);
-        List<WishDto> result = sut.getAllWishes();
+        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate"));
+        Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
+        when(wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList))
+                .thenReturn(pageableResult);
+        List<WishDto> result = sut.getWishes(0, 8, null, true)
+                .getElements().stream().toList();
 
         assertEquals(expected, result);
     }
@@ -300,7 +305,5 @@ public class WishServiceTest {
                 () -> assertEquals(wishCommentDto.getCreatorId(), result.getCreatorId()),
                 () -> assertEquals(wishCommentDto.getWishId(), result.getWishId())
         );
-
     }
-
 }

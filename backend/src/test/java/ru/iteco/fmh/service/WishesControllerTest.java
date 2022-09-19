@@ -16,7 +16,9 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -57,7 +59,7 @@ public class WishesControllerTest {
 
     @Test
     public void getOpenInProgressWishesShouldPassSuccess() {
-        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6", "wish-title5", "wish-title2");
+        List<String> expected = List.of("wish-title1", "wish-title8", "wish-title7", "wish-title6", "wish-title5", "wish-title2");
 
         List<String> result = sut.getAllOpenInProgressWishes().stream()
                 .map(WishDto::getTitle).collect(Collectors.toList());
@@ -67,11 +69,13 @@ public class WishesControllerTest {
 
     @Test
     public void getAllWishesShouldPassSuccess() {
-        List<String> expected = List.of("wish-title1", "wish-title7", "wish-title8", "wish-title6",
+        List<String> expected = List.of("wish-title1", "wish-title8", "wish-title7", "wish-title6",
                 "wish-title5", "wish-title4", "wish-title3", "wish-title2");
 
-        List<String> result = sut.getAllWishes().stream()
-                .map(WishDto::getTitle).collect(Collectors.toList());
+        List<String> result = Objects.requireNonNull(
+                sut.getWishes(0, 8, List.of(OPEN, IN_PROGRESS, EXECUTED, CANCELLED), true)
+                        .getBody()).getElements().stream()
+                        .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
     }
@@ -123,8 +127,6 @@ public class WishesControllerTest {
 
         assertEquals(expected, result);
     }
-
-
 
     @Test
     public void changeStatusOpenToCancelledShouldPassSuccess() {

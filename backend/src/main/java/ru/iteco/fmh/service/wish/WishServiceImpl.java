@@ -2,6 +2,10 @@ package ru.iteco.fmh.service.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +13,13 @@ import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.Status;
+import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -34,11 +42,26 @@ public class WishServiceImpl implements WishService {
     private final UserRepository userRepository;
 
     @Override
-    public List<WishDto> getAllWishes() {
-        List<Wish> list = wishRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
-        return list.stream()
-                .map(i -> conversionService.convert(i, WishDto.class))
-                .collect(Collectors.toList());
+    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
+        Page<Wish> list;
+
+        Pageable pageableList = planExecuteDate
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
+                : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
+
+        if (status == null || status.isEmpty()) {
+            list = wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
+        } else {
+            list = wishRepository.findAllByStatusInAndDeletedIsFalse(status, pageableList);
+        }
+
+        return WishPaginationDto.builder()
+                .pages(list.getTotalPages() - 1)
+                .elements(
+                        list.stream()
+                                .map(i -> conversionService.convert(i, WishDto.class))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
     @Override

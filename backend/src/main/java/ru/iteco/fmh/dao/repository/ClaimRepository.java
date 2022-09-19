@@ -15,9 +15,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Integer> {
 
     List<Claim> findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Collection<Status> status);
 
-    Page<Claim> findAllByStatus(Status status, Pageable pageable);
-
-    List<Claim> findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
+    Page<Claim> findAllByStatusInAndDeletedIsFalse(Collection<Status> status, Pageable pageable);
 
     Claim findClaimById(int id);
 }

@@ -16,7 +16,7 @@ public interface ClaimService {
     /**
      * возвращает заданное количество просьб на указанной странице (значение page), с заданной сортировкой
      */
-    ClaimPaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate);
+    ClaimPaginationDto getClaims(int pages, int elements, List<Status> status, boolean planExecuteDate);
 
     /**
      * возвращает полный перечень всех заявок

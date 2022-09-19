@@ -40,21 +40,21 @@ public class ClaimServiceImpl implements ClaimService {
     String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
-    public ClaimPaginationDto getClaims(int pages, int elements, Status status, boolean planExecuteDate) {
+    public ClaimPaginationDto getClaims(int pages, int elements, List<Status> status, boolean planExecuteDate) {
         Page<Claim> list;
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
                 : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
 
-        if (status != null) {
-            list = claimRepository.findAllByStatus(status, pageableList);
+        if (status == null || status.isEmpty()) {
+            list = claimRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
         } else {
-            list = claimRepository.findAll(pageableList);
+            list = claimRepository.findAllByStatusInAndDeletedIsFalse(status, pageableList);
         }
 
         return ClaimPaginationDto.builder()
-            .count(list.getTotalPages() - 1)
+            .pages(list.getTotalPages() - 1)
             .elements(
                 list.stream()
                     .map(i -> conversionService.convert(i, ClaimDto.class))
