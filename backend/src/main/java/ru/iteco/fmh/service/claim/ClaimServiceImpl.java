@@ -2,15 +2,21 @@ package ru.iteco.fmh.service.claim;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -34,11 +40,26 @@ public class ClaimServiceImpl implements ClaimService {
     String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
-    public List<ClaimDto> getAllClaims() {
-        List<Claim> list = claimRepository.findAllByDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc();
-        return list.stream()
-                .map(i -> conversionService.convert(i, ClaimDto.class))
-                .collect(Collectors.toList());
+    public ClaimPaginationDto getClaims(int pages, int elements, List<Status> status, boolean planExecuteDate) {
+        Page<Claim> list;
+
+        Pageable pageableList = planExecuteDate
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
+                : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
+
+        if (status == null || status.isEmpty()) {
+            list = claimRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
+        } else {
+            list = claimRepository.findAllByStatusInAndDeletedIsFalse(status, pageableList);
+        }
+
+        return ClaimPaginationDto.builder()
+            .pages(list.getTotalPages() - 1)
+            .elements(
+                list.stream()
+                    .map(i -> conversionService.convert(i, ClaimDto.class))
+                    .collect(Collectors.toList()))
+            .build();
     }
 
     @Override
@@ -135,6 +156,4 @@ public class ClaimServiceImpl implements ClaimService {
         claimComment = claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
-
-
 }

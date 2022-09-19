@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.wish;
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface WishService {
     /**
      * возвращает список всех просьб
      */
-    List<WishDto> getAllWishes();
+    public WishPaginationDto getWishes(int pages, int elements, List<Status>  status, boolean planExecuteDate);
 
     /**
      * возвращает список всех просьб co статусом open/in_progress

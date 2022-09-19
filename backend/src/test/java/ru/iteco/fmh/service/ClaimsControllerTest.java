@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.ClaimsController;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
@@ -12,12 +13,14 @@ import ru.iteco.fmh.dao.repository.ClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,17 +51,17 @@ public class ClaimsControllerTest {
     @Autowired
     UserRepository userRepository;
 
-
     @Test
     public void getAllClaims() {
-        List<ClaimDto> claimDtoList = sut.getAllClaims();
+        ResponseEntity<ClaimPaginationDto> claimDtoList = sut.getClaims(
+                0, 5, List.of(OPEN, IN_PROGRESS, EXECUTED), true);
+        List<ClaimDto> claims = Objects.requireNonNull(claimDtoList.getBody()).getElements();
 
-        assertEquals(5, claimDtoList.size());
-        assertTrue(Instant.ofEpochMilli(claimDtoList.get(3).getPlanExecuteDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.get(4).getPlanExecuteDate())));
-        assertTrue(Instant.ofEpochMilli(claimDtoList.get(1).getCreateDate()).isBefore
-                (Instant.ofEpochMilli(claimDtoList.get(2).getCreateDate())));
-
+        assertEquals(5, claims.size());
+        assertTrue(Instant.ofEpochMilli(claims.get(3).getPlanExecuteDate()).isBefore
+                (Instant.ofEpochMilli(claims.get(4).getPlanExecuteDate())));
+        assertTrue(Instant.ofEpochMilli(claims.get(1).getCreateDate()).isBefore
+                (Instant.ofEpochMilli(claims.get(2).getCreateDate())));
     }
 
     @Test
@@ -229,6 +232,4 @@ public class ClaimsControllerTest {
         // deleting result entity
         claimCommentRepository.deleteById(idNotNullExecutor.getId());
     }
-
-
 }

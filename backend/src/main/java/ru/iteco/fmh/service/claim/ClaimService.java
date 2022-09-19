@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.claim;
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -13,9 +14,9 @@ import java.util.List;
 public interface ClaimService {
 
     /**
-     * возвращает список всех просьб
+     * возвращает заданное количество просьб на указанной странице (значение page), с заданной сортировкой
      */
-    List<ClaimDto> getAllClaims();
+    ClaimPaginationDto getClaims(int pages, int elements, List<Status> status, boolean planExecuteDate);
 
     /**
      * возвращает полный перечень всех заявок
@@ -84,6 +85,4 @@ public interface ClaimService {
      * @return обновленная сущность коммента
      */
     ClaimCommentDto updateClaimComment(ClaimCommentDto commentDto, Authentication authentication);
-
-
 }
