@@ -21,7 +21,6 @@ import java.util.Objects;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@ToString
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -102,5 +101,21 @@ public class User implements UserDetails {
 
         User user = (User) o;
         return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", login='" + login + '\''
+                + ", password='" + password + '\''
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", middleName='" + middleName + '\''
+                + ", phoneNumber='" + phoneNumber + '\''
+                + ", email='" + email + '\''
+                + ", deleted=" + deleted
+                + ", userRoles=" + userRoles
+                + '}';
     }
 }

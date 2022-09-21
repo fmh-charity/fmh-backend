@@ -1,14 +1,18 @@
 package ru.iteco.fmh.service.news;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
+import ru.iteco.fmh.dto.news.NewsPaginationDto;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.user.User;
@@ -27,22 +31,26 @@ public class NewsServiceImpl implements NewsService {
     private final UserRepository userRepository;
 
     @Override
-    public List<NewsDto> getAllNews() {
+    public NewsPaginationDto getNews(int pages, int elements, boolean publishDate) {
         User currentUser = RequestContext.getCurrentUser();
         Util util = new Util(userRepository);
-        if (util.isAdmin(currentUser)) {
-            List<News> news = newsRepository
-                    .findAllByPublishDateLessThanEqualAndDeletedIsFalseOrderByPublishDateDesc(Instant.now());
-            return news.stream()
-                    .map(v -> conversionService.convert(v, NewsDto.class))
-                    .collect(Collectors.toList());
-        } else {
-            List<News> news = newsRepository
-                    .findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrueOrderByPublishDateDesc(Instant.now());
-            return news.stream()
-                    .map(v -> conversionService.convert(v, NewsDto.class))
-                    .collect(Collectors.toList());
-        }
+
+        Pageable pageableList = publishDate
+                ? PageRequest.of(pages, elements, Sort.by("publishDate"))
+                : PageRequest.of(pages, elements, Sort.by("publishDate").descending());
+
+        Page<News> news = util.isAdmin(currentUser)
+                ? newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(Instant.now(), pageableList)
+                : newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
+                    Instant.now(), pageableList);
+
+        return NewsPaginationDto.builder()
+                .pages(news.getTotalPages())
+                .elements(
+                        news.stream()
+                                .map(v -> conversionService.convert(v, NewsDto.class))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
 

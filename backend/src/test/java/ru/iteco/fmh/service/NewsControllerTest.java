@@ -15,6 +15,7 @@ import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,11 +38,12 @@ public class NewsControllerTest {
     public void getAllNewsShouldPassSuccess() {
         //given
         List<String> expected = Stream.of("news-title1", "news-title8", "news-title7", "news-title6",
-                "news-title5", "news-title4", "news-title3", "news-title2", "news-title9").sorted().collect(Collectors.toList());
+                "news-title5", "news-title4", "news-title3", "news-title2", "news-title9")
+                .sorted().collect(Collectors.toList());
         RequestContext.setCurrentUser(User.builder()
                 .login("login1").build());
-        List<String> result = sut.getAllNews().stream()
-                .map(NewsDto::getTitle).sorted().collect(Collectors.toList());
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+                        .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
 
@@ -53,8 +55,8 @@ public class NewsControllerTest {
         RequestContext.setCurrentUser(User.builder()
                 .login("login3")
                 .build());
-        List<String> result = sut.getAllNews().stream()
-                .map(NewsDto::getTitle).sorted().collect(Collectors.toList());
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+                        .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
 
