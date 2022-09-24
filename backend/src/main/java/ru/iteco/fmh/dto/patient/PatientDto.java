@@ -23,4 +23,6 @@ public class PatientDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
+    @ApiModelProperty("дата рождения пациента")
+    private Integer currentAdmission;
 }
