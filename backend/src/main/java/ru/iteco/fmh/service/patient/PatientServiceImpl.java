@@ -36,6 +36,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto createOrUpdatePatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
+        if (patientDto.getCurrentAdmission() != null) {
+            patient.setCurrentAdmission(admissionRepository.findById(patientDto.getCurrentAdmission()).orElseThrow());
+        }
+
         patient = patientRepository.save(patient);
         return conversionService.convert(patient, PatientDto.class);
     }
