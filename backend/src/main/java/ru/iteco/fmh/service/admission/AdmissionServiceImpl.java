@@ -5,6 +5,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
+import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class AdmissionServiceImpl implements AdmissionService {
 
     private final AdmissionRepository admissionRepository;
+    private final PatientRepository patientRepository;
     private final ConversionService conversionService;
 
     @Override
@@ -39,6 +41,14 @@ public class AdmissionServiceImpl implements AdmissionService {
     @Override
     public AdmissionDto createOrUpdateAdmission(AdmissionDto admissionDto) {
         Admission admission = conversionService.convert(admissionDto, Admission.class);
+
+        if (admissionDto.getId() != 0) {
+            if (!admissionDto.getPatientId().equals(admissionRepository.findById(
+                    admissionDto.getId()).orElseThrow().getPatient().getId())) {
+                return null;
+            }
+        }
+
         admission = admissionRepository.save(admission);
         return conversionService.convert(admission, AdmissionDto.class);
     }

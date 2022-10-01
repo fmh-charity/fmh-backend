@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final AdmissionRepository admissionRepository;
     private final ConversionService conversionService;
 
     @Override

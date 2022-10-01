@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +36,12 @@ public class AdmissionsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание госпитализации")
     @PostMapping
-    public AdmissionDto createAdmission(@RequestBody AdmissionDto admissionDto) {
-        return admissionService.createOrUpdateAdmission(admissionDto);
+    public ResponseEntity<AdmissionDto> createAdmission(@RequestBody AdmissionDto admissionDto) {
+        AdmissionDto dto = admissionService.createOrUpdateAdmission(admissionDto);
+        if (dto == null){
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(dto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
