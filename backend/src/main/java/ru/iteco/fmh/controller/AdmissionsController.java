@@ -38,7 +38,7 @@ public class AdmissionsController {
     @PostMapping
     public ResponseEntity<AdmissionDto> createAdmission(@RequestBody AdmissionDto admissionDto) {
         AdmissionDto dto = admissionService.createOrUpdateAdmission(admissionDto);
-        if (dto == null){
+        if (dto == null) {
             return ResponseEntity.badRequest().body(null);
         }
         return ResponseEntity.ok(dto);
