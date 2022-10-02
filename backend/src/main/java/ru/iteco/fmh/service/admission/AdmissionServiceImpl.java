@@ -41,14 +41,6 @@ public class AdmissionServiceImpl implements AdmissionService {
     @Override
     public AdmissionDto createOrUpdateAdmission(AdmissionDto admissionDto) {
         Admission admission = conversionService.convert(admissionDto, Admission.class);
-
-        if (admissionDto.getId() != 0) {
-            if (!admissionDto.getPatientId().equals(admissionRepository.findById(
-                    admissionDto.getId()).orElseThrow().getPatient().getId())) {
-                return null;
-            }
-        }
-
         admission = admissionRepository.save(admission);
         return conversionService.convert(admission, AdmissionDto.class);
     }
