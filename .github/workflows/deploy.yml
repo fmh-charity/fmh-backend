@@ -58,7 +58,7 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
 
     - name: Deploy
-      uses: appleboy/ssh-action@v0.1.4
+      uses: appleboy/ssh-action@v0.1.5
       with:
         host: ${{ secrets.REMOTE_HOST }}
         port: ${{ secrets.REMOTE_PORT }}
