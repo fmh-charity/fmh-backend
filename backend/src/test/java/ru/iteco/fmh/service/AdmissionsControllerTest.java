@@ -10,6 +10,7 @@ import ru.iteco.fmh.controller.AdmissionsController;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.service.admission.AdmissionService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -26,6 +27,9 @@ public class AdmissionsControllerTest {
 
     @Autowired
     ConversionService conversionService;
+
+    @Autowired
+    AdmissionService admissionService;
 
     @Test
     public void getAdmissionShouldPassSuccess() {
@@ -47,7 +51,7 @@ public class AdmissionsControllerTest {
         givenDto.setPatientId(1);
         givenDto.setRoomId(1);
 
-        AdmissionDto resultDto = sut.createAdmission(givenDto).getBody();
+        AdmissionDto resultDto = sut.createAdmission(givenDto);
 
         Integer resultId = resultDto.getId();
 
@@ -57,7 +61,8 @@ public class AdmissionsControllerTest {
         assertEquals(givenDto, resultDto);
 
         // After
-        admissionRepository.deleteById(resultId);
+
+        admissionService.deleteAdmissionById(resultId);
     }
 
     @Test

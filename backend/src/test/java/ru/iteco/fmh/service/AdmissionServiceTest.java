@@ -10,10 +10,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,6 +32,9 @@ public class AdmissionServiceTest {
 
     @MockBean
     AdmissionRepository admissionRepository;
+
+    @MockBean
+    PatientRepository patientRepository;
 
     @Test
     public void getPatientAdmissionsShouldPassSuccess() {
@@ -70,6 +75,8 @@ public class AdmissionServiceTest {
         AdmissionDto givenDto = conversionService.convert(admission, AdmissionDto.class);
 
         when(admissionRepository.save(any())).thenReturn(admission);
+        when(admissionRepository.findAdmissionsByPatientId(any())).thenReturn(Set.of(admission));
+        when(patientRepository.findPatientById(any())).thenReturn(admission.getPatient());
 
         AdmissionDto result = sut.createOrUpdateAdmission(givenDto);
 

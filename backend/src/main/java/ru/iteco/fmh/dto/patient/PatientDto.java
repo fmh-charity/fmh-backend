@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @ApiModel(description = "основная информация по пациенту")
 @Builder
 @AllArgsConstructor
@@ -23,6 +25,8 @@ public class PatientDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
-    @ApiModelProperty("дата рождения пациента")
-    private Integer currentAdmission;
+    @ApiModelProperty("идентификатор госпитализации")
+    private Integer currentAdmissionId;
+    @ApiModelProperty("идентификатор госпитализации")
+    private Set<Integer> admissions;
 }

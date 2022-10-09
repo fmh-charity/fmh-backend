@@ -1,5 +1,6 @@
 package ru.iteco.fmh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,14 +12,10 @@ import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Пациент
@@ -46,9 +43,17 @@ public class Patient {
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    Set<Admission> admissions = new HashSet<>();
+
     boolean deleted;
 
     public AdmissionsStatus getStatus() {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
+    }
+
+    public void addAdmissionToAdmissions(Admission admission) {
+        admissions.add(admission);
     }
 }

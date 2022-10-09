@@ -1,5 +1,6 @@
 package ru.iteco.fmh.model.admission;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,7 +33,8 @@ public class Admission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @ManyToOne
     @JoinColumn(name = "patient_id")
     Patient patient;
 

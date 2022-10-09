@@ -9,8 +9,10 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,10 +38,6 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto createOrUpdatePatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
-        if (patientDto.getCurrentAdmission() != null) {
-            patient.setCurrentAdmission(admissionRepository.findById(patientDto.getCurrentAdmission()).orElseThrow());
-        }
-
         patient = patientRepository.save(patient);
         return conversionService.convert(patient, PatientDto.class);
     }
