@@ -1,6 +1,5 @@
 package ru.iteco.fmh.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,7 +42,6 @@ public class Patient {
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
-    @ToString.Exclude
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     Set<Admission> admissions = new HashSet<>();
 
