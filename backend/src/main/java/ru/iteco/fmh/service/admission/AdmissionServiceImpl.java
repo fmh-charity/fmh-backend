@@ -62,7 +62,8 @@ public class AdmissionServiceImpl implements AdmissionService {
     @Override
     public boolean deleteAdmissionById(Integer id) {
         try {
-            Admission admission = admissionRepository.findById(id).orElseThrow();
+            Admission admission = admissionRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Не найдена госпитализация!"));
             Patient patient = patientRepository.findByAdmissionsId(id);
             Set<Admission> admissions = patient.getAdmissions();
 

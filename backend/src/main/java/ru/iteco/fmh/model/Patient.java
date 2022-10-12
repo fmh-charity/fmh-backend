@@ -50,8 +50,4 @@ public class Patient {
     public AdmissionsStatus getStatus() {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
     }
-
-    public void addAdmissionToAdmissions(Admission admission) {
-        admissions.add(admission);
-    }
 }

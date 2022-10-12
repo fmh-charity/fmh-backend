@@ -26,8 +26,8 @@ public class PatientDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
-    @ApiModelProperty("идентификатор госпитализации")
+    @ApiModelProperty("текущая госпитализация")
     private AdmissionDto currentAdmission;
-    @ApiModelProperty("идентификатор госпитализации")
+    @ApiModelProperty("id всех госпитализаций")
     private Set<Integer> admissions;
 }
