@@ -59,7 +59,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     private PatientDto getPatientDto(Patient patient) {
-        if (patient.getCurrentAdmission() == null && patient.getCurrentAdmission().getId() == null) {
+        if (patient.getCurrentAdmission() == null || patient.getCurrentAdmission().getId() == null) {
             return conversionService.convert(patient, PatientDto.class);
         }
 
