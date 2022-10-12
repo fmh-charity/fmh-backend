@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
 
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class PatientDto {
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
     @ApiModelProperty("идентификатор госпитализации")
-    private Integer currentAdmissionId;
+    private AdmissionDto currentAdmission;
     @ApiModelProperty("идентификатор госпитализации")
     private Set<Integer> admissions;
 }

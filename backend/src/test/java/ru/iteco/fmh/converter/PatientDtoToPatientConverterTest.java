@@ -17,8 +17,7 @@ import static ru.iteco.fmh.TestUtils.getPatientDto;
 
 class PatientDtoToPatientConverterTest {
 
-    AdmissionRepository admissionRepository = mock(AdmissionRepository.class);
-    PatientDtoToPatientConverter dto = new PatientDtoToPatientConverter(admissionRepository);
+    PatientDtoToPatientConverter dto = new PatientDtoToPatientConverter();
 
     @Test
     void convert() {

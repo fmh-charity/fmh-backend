@@ -25,6 +25,6 @@ public interface PatientService {
      * @param id ид пациента
      * @return полная инфа по конкретному пациенту
      */
-    PatientDto getPatient(int id);
+    PatientDto getPatient(Integer id);
 
 }
