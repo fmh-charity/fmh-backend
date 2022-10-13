@@ -62,14 +62,7 @@ public class AdmissionServiceImpl implements AdmissionService {
     @Override
     public boolean deleteAdmissionById(Integer id) {
         try {
-            Admission admission = admissionRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("Не найдена госпитализация!"));
-            Patient patient = patientRepository.findByAdmissionsId(id);
-            Set<Admission> admissions = patient.getAdmissions();
-
-            admissions.remove(admission);
-            patientRepository.save(patient);
-            admissionRepository.delete(admission);
+            admissionRepository.deleteById(id);
         } catch (Exception e) {
             return false;
         }
@@ -79,7 +72,7 @@ public class AdmissionServiceImpl implements AdmissionService {
 
     private Admission getCurrentAdmission(Set<Admission> admissions) {
 
-        if (admissions.size() < 2) {
+        if (admissions.size() == 1) {
             return admissions.stream().findAny().orElseThrow();
         }
 
