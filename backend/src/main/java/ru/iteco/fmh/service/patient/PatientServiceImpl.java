@@ -41,15 +41,16 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto createOrUpdatePatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
 
-        if (patientDto.getCurrentAdmission() != null) {
-            patient.setCurrentAdmission(conversionService.convert(patientDto.getCurrentAdmission(), Admission.class));
-            patient.setAdmissions(admissionRepository.findAdmissionsByPatientId(patientDto.getId()));
-        }
+        patient.setCurrentAdmission(patientDto.getCurrentAdmission() != null
+                ? conversionService.convert(patientDto.getCurrentAdmission(), Admission.class) : null);
+        patient.setAdmissions(patientDto.getCurrentAdmission() != null
+                ? admissionRepository.findAdmissionsByPatientId(patientDto.getId()) : new HashSet<>());
 
         patient = patientRepository.save(patient);
         return getPatientDto(patient);
     }
 
+    @Transactional
     @Override
     public PatientDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id)
@@ -59,18 +60,15 @@ public class PatientServiceImpl implements PatientService {
     }
 
     private PatientDto getPatientDto(Patient patient) {
-        if (patient.getCurrentAdmission() == null || patient.getCurrentAdmission().getId() == null) {
-            return conversionService.convert(patient, PatientDto.class);
-        }
-
         PatientDto dto = conversionService.convert(patient, PatientDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 
-        if (patient.getAdmissions() != null) {
+        dto.setCurrentAdmission(patient.getCurrentAdmission() != null
+                ? conversionService.convert(patient.getAdmissions(), AdmissionDto.class) : null);
+
+        if (patient.getAdmissions().size() > 0) {
             patient.getAdmissions().forEach(a -> admissionIds.add(a.getId()));
             dto.setCurrentAdmission(conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
-        } else {
-            admissionIds.add(patient.getCurrentAdmission().getId());
         }
 
         dto.setAdmissions(admissionIds);

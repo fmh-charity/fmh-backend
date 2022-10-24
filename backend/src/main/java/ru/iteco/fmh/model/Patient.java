@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Where;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
@@ -38,11 +39,14 @@ public class Patient {
     String middleName;
     Instant birthDate;
 
+
+    @Where(clause = "deleted = false")
     @OneToOne
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    @Where(clause = "deleted = false")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     Set<Admission> admissions = new HashSet<>();
 
     boolean deleted;

@@ -48,8 +48,10 @@ public class AdmissionServiceImpl implements AdmissionService {
         Admission admission = conversionService.convert(admissionDto, Admission.class);
         Patient patient = patientRepository.findPatientById(admissionDto.getPatientId());
 
-        admission = admissionRepository.save(admission);
-        Set<Admission> admissions = admissionRepository.findAdmissionsByPatientId(admissionDto.getPatientId());
+        Set<Admission> admissions = patient.getAdmissions();
+        if (!admissions.contains(admission)) {
+            admissions.add(admissionRepository.save(admission));
+        }
 
         patient.setCurrentAdmission(getCurrentAdmission(admissions));
         patient.setAdmissions(admissions);
@@ -59,10 +61,21 @@ public class AdmissionServiceImpl implements AdmissionService {
         return conversionService.convert(admission, AdmissionDto.class);
     }
 
+    @Transactional
     @Override
     public boolean deleteAdmissionById(Integer id) {
         try {
-            admissionRepository.deleteById(id);
+            Admission admission = admissionRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("Госпитализации с данным " + id + " не найдено"));
+            Patient patient = admission.getPatient();
+
+            admission.setDeleted(true);
+            admissionRepository.save(admission);
+
+            if (patient.getCurrentAdmission() != null && admission.equals(patient.getCurrentAdmission())) {
+                patient.setCurrentAdmission(getCurrentAdmission(patient.getAdmissions()));
+                patientRepository.save(patient);
+            }
         } catch (Exception e) {
             return false;
         }
@@ -71,20 +84,24 @@ public class AdmissionServiceImpl implements AdmissionService {
     }
 
     private Admission getCurrentAdmission(Set<Admission> admissions) {
-
         if (admissions.size() == 1) {
-            return admissions.stream().findAny().orElseThrow();
+            return admissions.stream().filter(a -> !a.isDeleted()).findFirst().orElse(null);
         }
 
         List<Admission> result = admissions.stream()
-                .filter(a -> !a.getStatus().equals(AdmissionsStatus.DISCHARGED))
-                .sorted(Comparator.comparing(Admission::getPlanDateIn))
+                .filter(a -> !a.isDeleted())
+                .sorted(Comparator.comparing(Admission::getStatus).reversed())
                 .toList();
 
-        if (result.size() < 1) {
-            return admissions.stream().findAny().orElseThrow();
+        switch (result.get(0).getStatus()) {
+            case DISCHARGED -> result = result.stream().filter(a -> a.getStatus().equals(AdmissionsStatus.DISCHARGED))
+                    .sorted(Comparator.comparing(Admission::getPlanDateOut)).collect(Collectors.toList());
+            default -> result = result.stream().filter(a -> a.getStatus().equals(AdmissionsStatus.ACTIVE))
+                    .sorted(Comparator.comparing(Admission::getPlanDateIn)).collect(Collectors.toList());
         }
 
-        return result.get(result.size() - 1);
+        result.forEach(System.out::println);
+
+        return result.get(0);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.AdmissionsController;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
@@ -43,6 +44,7 @@ public class AdmissionsControllerTest {
         assertEquals(expected, result);
     }
 
+    @Transactional
     @Test
     public void createAdmissionShouldPassSuccess() {
         // given

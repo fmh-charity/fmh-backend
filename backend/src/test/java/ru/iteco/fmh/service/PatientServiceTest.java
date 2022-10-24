@@ -74,7 +74,6 @@ public class PatientServiceTest {
         );
     }
 
-
     @Test
     public void createOrUpdatePatientShouldPassSuccess() {
         // given
@@ -87,7 +86,6 @@ public class PatientServiceTest {
 
         assertEquals(given, result);
     }
-
 
     @Test
     public void getPatientShouldPassSuccess() {

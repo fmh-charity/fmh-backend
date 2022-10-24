@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @ApiModel(description = "основная информация по пациенту")
@@ -29,5 +30,5 @@ public class PatientDto {
     @ApiModelProperty("текущая госпитализация")
     private AdmissionDto currentAdmission;
     @ApiModelProperty("id всех госпитализаций")
-    private Set<Integer> admissions;
+    private Set<Integer> admissions = new HashSet<>();
 }
