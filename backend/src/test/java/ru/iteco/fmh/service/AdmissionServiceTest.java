@@ -89,6 +89,7 @@ public class AdmissionServiceTest {
         when(roomRepository.findRoomById(any())).thenReturn(admission.getRoom());
         when(admissionRepository.findAdmissionsByPatientId(any())).thenReturn(Set.of(admission));
         when(patientRepository.findPatientById(any())).thenReturn(admission.getPatient());
+        when(patientRepository.save(any())).thenReturn(admission.getPatient());
 
         AdmissionDto result = sut.createOrUpdateAdmission(givenDto);
 
@@ -105,10 +106,11 @@ public class AdmissionServiceTest {
         patient.setCurrentAdmission(admissionDeleted);
 
         when(admissionRepository.findById(any())).thenReturn(Optional.of(admissionActive));
-        when(admissionRepository.save(any())).thenReturn(Optional.of(admissionDeleted));
+        when(admissionRepository.save(any())).thenReturn(admissionDeleted);
         when(patientRepository.save(any())).thenReturn(patient);
         sut.deleteAdmissionById(admissionActive.getId());
 
-        assertEquals(admissionDeleted, patient.getCurrentAdmission());
+        assertEquals(admissionDeleted, admissionActive);
+        assertEquals(null, patient.getCurrentAdmission());
     }
 }

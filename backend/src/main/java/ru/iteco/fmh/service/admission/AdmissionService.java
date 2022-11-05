@@ -24,10 +24,10 @@ public interface AdmissionService {
 
     /**
      * удаляет запись о госпитализации
+     *
      * @param id id госпитализации
-     * @return сущность удалена успешна true/false
      */
-    boolean deleteAdmissionById(Integer id);
+    void deleteAdmissionById(Integer id);
 
     /**
      * возвращает список всех госпитализаций пациента

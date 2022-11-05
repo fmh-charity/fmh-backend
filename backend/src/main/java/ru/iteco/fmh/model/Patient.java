@@ -39,7 +39,6 @@ public class Patient {
     String middleName;
     Instant birthDate;
 
-
     @Where(clause = "deleted = false")
     @OneToOne
     @JoinColumn(name = "current_admission_id")

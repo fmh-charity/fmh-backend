@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -36,6 +37,8 @@ import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
 public class PatientServiceTest {
     @MockBean
     PatientRepository patientRepository;
+    @MockBean
+    AdmissionRepository admissionRepository;
 
     @Autowired
     PatientService sut;
@@ -78,10 +81,11 @@ public class PatientServiceTest {
     public void createOrUpdatePatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
+        patient.setCurrentAdmission(null);
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
-
+        when(admissionRepository.findAdmissionsByPatientId(any())).thenReturn(patient.getAdmissions());
         PatientDto result = sut.createOrUpdatePatient(given);
 
         assertEquals(given, result);
@@ -91,6 +95,7 @@ public class PatientServiceTest {
     public void getPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
+        patient.setCurrentAdmission(null);
 
         when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 

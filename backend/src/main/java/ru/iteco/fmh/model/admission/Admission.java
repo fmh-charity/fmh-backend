@@ -1,13 +1,7 @@
 package ru.iteco.fmh.model.admission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;

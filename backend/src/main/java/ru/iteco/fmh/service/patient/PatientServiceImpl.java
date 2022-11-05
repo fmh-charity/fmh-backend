@@ -41,9 +41,9 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto createOrUpdatePatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
 
-        patient.setCurrentAdmission(patientDto.getCurrentAdmission() != null
-                ? conversionService.convert(patientDto.getCurrentAdmission(), Admission.class) : null);
-        patient.setAdmissions(patientDto.getCurrentAdmission() != null
+        patient.setCurrentAdmission(patientDto.getCurrentAdmission() == null
+                ? null : conversionService.convert(patientDto.getCurrentAdmission(), Admission.class));
+        patient.setAdmissions(patientDto.getAdmissions() != null && patientDto.getAdmissions().size() != 0
                 ? admissionRepository.findAdmissionsByPatientId(patientDto.getId()) : new HashSet<>());
 
         patient = patientRepository.save(patient);
@@ -63,8 +63,8 @@ public class PatientServiceImpl implements PatientService {
         PatientDto dto = conversionService.convert(patient, PatientDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 
-        dto.setCurrentAdmission(patient.getCurrentAdmission() != null
-                ? conversionService.convert(patient.getAdmissions(), AdmissionDto.class) : null);
+        dto.setCurrentAdmission(patient.getCurrentAdmission() == null
+                ? null : conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
 
         if (patient.getAdmissions().size() > 0) {
             patient.getAdmissions().forEach(a -> admissionIds.add(a.getId()));

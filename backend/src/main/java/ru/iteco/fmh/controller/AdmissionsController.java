@@ -50,9 +50,9 @@ public class AdmissionsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "удаляет госпитализацию")
     @DeleteMapping("/{id}")
-    public boolean deleteAdmission(
+    public void deleteAdmission(
             @ApiParam(value = "идентификатор", required = true) @PathVariable("id") Integer id
     ) {
-        return admissionService.deleteAdmissionById(id);
+        admissionService.deleteAdmissionById(id);
     }
 }
