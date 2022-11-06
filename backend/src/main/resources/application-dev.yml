@@ -1,10 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-    driverClassName: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
-    platform: postgres
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
