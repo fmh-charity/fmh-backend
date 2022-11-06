@@ -28,6 +28,8 @@ public class PatientDto {
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
     @ApiModelProperty("текущая госпитализация")
+    private boolean deleted;
+    @ApiModelProperty("текущая госпитализация")
     private AdmissionDto currentAdmission;
     @ApiModelProperty("id всех госпитализаций")
     private Set<Integer> admissions = new HashSet<>();

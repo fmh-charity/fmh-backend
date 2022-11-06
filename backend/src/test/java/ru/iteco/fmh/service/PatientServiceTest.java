@@ -78,15 +78,34 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void createOrUpdatePatientShouldPassSuccess() {
+    public void createPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
         patient.setCurrentAdmission(null);
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
-        when(admissionRepository.findAdmissionsByPatientId(any())).thenReturn(patient.getAdmissions());
-        PatientDto result = sut.createOrUpdatePatient(given);
+        PatientDto result = sut.createPatient(given);
+
+        assertEquals(given, result);
+    }
+
+    @Test
+    public void updatePatientShouldPassSuccess() {
+        // given
+        Patient patient = getPatient();
+        patient.setCurrentAdmission(null);
+        PatientDto given = conversionService.convert(patient, PatientDto.class);
+
+        given.setFirstName("Test");
+        given.setDeleted(true);
+
+        patient.setFirstName("Test");
+        patient.setDeleted(true);
+
+        when(patientRepository.findPatientById(any())).thenReturn(patient);
+        when(patientRepository.save(any())).thenReturn(patient);
+        PatientDto result = sut.updatePatient(given);
 
         assertEquals(given, result);
     }

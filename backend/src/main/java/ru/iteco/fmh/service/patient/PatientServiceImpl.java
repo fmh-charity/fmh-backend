@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
@@ -12,6 +11,7 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
-    private final AdmissionRepository admissionRepository;
     private final ConversionService conversionService;
 
     @Override
@@ -38,13 +37,23 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto createOrUpdatePatient(PatientDto patientDto) {
+    public PatientDto createPatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
 
-        patient.setCurrentAdmission(patientDto.getCurrentAdmission() == null
-                ? null : conversionService.convert(patientDto.getCurrentAdmission(), Admission.class));
-        patient.setAdmissions(patientDto.getAdmissions() != null && patientDto.getAdmissions().size() != 0
-                ? admissionRepository.findAdmissionsByPatientId(patientDto.getId()) : new HashSet<>());
+        patient = patientRepository.save(patient);
+        return getPatientDto(patient);
+    }
+
+    @Transactional
+    @Override
+    public PatientDto updatePatient(PatientDto patientDto) {
+        Patient patient = patientRepository.findPatientById(patientDto.getId());
+
+        patient.setFirstName(patientDto.getFirstName());
+        patient.setMiddleName(patientDto.getMiddleName());
+        patient.setLastName(patientDto.getLastName());
+        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+        patient.setDeleted(patientDto.isDeleted());
 
         patient = patientRepository.save(patient);
         return getPatientDto(patient);
