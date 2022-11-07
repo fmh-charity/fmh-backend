@@ -56,7 +56,7 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-        when(newsRepository.findAll()).thenReturn((List<News>) pageableResult);
+        when(newsRepository.findAll(pageableList)).thenReturn(pageableResult);
 
         System.out.println("\n\n\n\n" + newsRepository.findAll(pageableList)
                 .getContent().size() + "\n\n\n\n\n");
