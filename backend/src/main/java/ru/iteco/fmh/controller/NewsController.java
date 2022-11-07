@@ -43,8 +43,8 @@ public class NewsController {
             @ApiParam (required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean publishDate) {
-        return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate));
+            @RequestParam(defaultValue = "true") boolean createDate) {
+        return ResponseEntity.ok(newsService.getNews(pages, elements, createDate));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

@@ -12,7 +12,6 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -57,9 +56,9 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-        when(newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(any(), any())).thenReturn(pageableResult);
+        when(newsRepository.findAll()).thenReturn((List<News>) pageableResult);
 
-        System.out.println("\n\n\n\n" + newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(Instant.now(), pageableList)
+        System.out.println("\n\n\n\n" + newsRepository.findAll(pageableList)
                 .getContent().size() + "\n\n\n\n\n");
 
         when(userRepository.findUserByLogin(any())).thenReturn(userAdmin);

@@ -7,13 +7,11 @@ import org.springframework.stereotype.Repository;
 import ru.iteco.fmh.model.news.News;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
-    Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalse(
-            Instant publishDate, Pageable pageableList);
+    Page<News> findAll(Pageable pageableList);
 
     Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
             Instant publishDate, Pageable pageableList);
