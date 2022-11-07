@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface BlockRepository extends JpaRepository<Block, Integer> {
-    Optional<Object> findBlockByNameAndDeletedFalse(String name);
+    Optional<Block> findBlockByNameAndDeletedFalse(String name);
 }
