@@ -32,7 +32,6 @@ import javax.persistence.Table;
 @Table(name = "user_role")
 public class UserRole {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;

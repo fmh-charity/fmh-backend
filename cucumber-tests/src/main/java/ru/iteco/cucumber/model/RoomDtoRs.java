@@ -1,4 +1,4 @@
-package ru.iteco.fmh.dto.room;
+package ru.iteco.cucumber.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,17 +9,17 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
-
 @ApiModel(description = "Палаты")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoomDtoRq {
+public class RoomDtoRs {
 
-    @NotBlank
+    @ApiModelProperty("идентификатор палаты")
+    private int id;
+
     @ApiModelProperty("название палаты")
     private String name;
 

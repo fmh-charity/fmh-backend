@@ -19,8 +19,8 @@
     <name>fmh-backend</name>
 
     <properties>
-        <spring-boot-starter-version>2.7.0</spring-boot-starter-version>
-        <testcontainers>1.17.2</testcontainers>
+        <spring-boot-starter-version>2.7.4</spring-boot-starter-version>
+        <testcontainers>1.17.5</testcontainers>
     </properties>
 
     <profiles>
@@ -126,13 +126,13 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.6</version>
+            <version>42.5.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.5.12</version>
+            <version>8.5.13</version>
         </dependency>
 
         <dependency>
@@ -143,7 +143,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.1</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -160,7 +160,7 @@
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.1</version>
         </dependency>
 
     </dependencies>
@@ -186,7 +186,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.3</version>
+                        <version>10.3.4</version>
                     </dependency>
                 </dependencies>
                 <executions>

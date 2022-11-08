@@ -21,7 +21,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.boot.starter.version>2.7.0</spring.boot.starter.version>
+        <spring.boot.starter.version>2.7.4</spring.boot.starter.version>
     </properties>
 
     <dependencies>

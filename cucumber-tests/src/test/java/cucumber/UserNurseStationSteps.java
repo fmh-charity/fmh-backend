@@ -1,6 +1,7 @@
 package cucumber;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.utils.BackendUrls;
 import cucumber.utils.RestTemplateUtil;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
@@ -28,8 +29,7 @@ public class UserNurseStationSteps {
     private final ResultSteps resultSteps;
     private String jwt;
 
-    private final String nurseStationsUrl = "/nurse_stations";
-
+    private final String nurseStationsUrl = BackendUrls.NURSE_STATIONS_BASE_URL;
     private NurseStationDto nurseStationDto;
 
 
@@ -96,14 +96,8 @@ public class UserNurseStationSteps {
 
     @And("Удаляет созданный пост")
     public void deleteCreatedPost() {
-        String idUrl = "/" + nurseStationDto.getId();
-        rest.deleteRq(jwt, nurseStationsUrl + idUrl);
-//        assertEquals(
-//                rest.getRq(jwt, nurseStationsUrl + idUrl)
-//                        .getStatusCode()
-//                        .value(),
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//                        .value());
+        int idUrl = nurseStationDto.getId();
+        rest.deleteRq(jwt, nurseStationsUrl + "/" + idUrl);
         resultSteps.setStatus("SUCCESS");
     }
 
