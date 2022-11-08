@@ -40,7 +40,7 @@ public class NewsServiceImpl implements NewsService {
                 : PageRequest.of(pages, elements, Sort.by("publishDate").descending());
 
         Page<News> news = util.isAdmin(currentUser)
-                ? newsRepository.findAll(pageableList)
+                ? newsRepository.findAllByDeletedIsFalse(pageableList)
                 : newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
                     Instant.now(), pageableList);
 

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
-    Page<News> findAll(Pageable pageableList);
+    Page<News> findAllByDeletedIsFalse(Pageable pageableList);
 
     Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
             Instant publishDate, Pageable pageableList);
