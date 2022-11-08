@@ -20,7 +20,7 @@ import ru.iteco.fmh.service.block.BlockService;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-@Api(description = "Блоки")
+@Api("Блоки")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/blocks")
