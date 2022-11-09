@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.Block;
-import ru.iteco.fmh.model.NurseStation;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @ApiModel(description = "палата")
