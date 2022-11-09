@@ -27,7 +27,6 @@ public interface PatientService {
      * @param patientDto информация по карточке пациента для обновления
      * @return сущность
      */
-    @Transactional
     PatientDto updatePatient(PatientDto patientDto);
 
     /**

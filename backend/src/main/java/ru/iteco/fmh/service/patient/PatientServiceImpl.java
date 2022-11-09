@@ -53,7 +53,6 @@ public class PatientServiceImpl implements PatientService {
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
         patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
-        patient.setDeleted(patientDto.isDeleted());
 
         patient = patientRepository.save(patient);
         return getPatientDto(patient);
