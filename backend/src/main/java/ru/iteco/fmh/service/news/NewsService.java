@@ -13,7 +13,8 @@ public interface NewsService {
     /**
      * возвращает список всех новостей
      */
-    NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId, String publishDateFrom, String publishDateTo);
+    NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId,
+                              String publishDateFrom, String publishDateTo);
 
     /**
      * возвращает новость для просмотра

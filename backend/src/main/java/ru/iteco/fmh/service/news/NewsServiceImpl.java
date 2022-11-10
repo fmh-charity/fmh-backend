@@ -19,8 +19,7 @@ import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
-
-import java.time.*;
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +33,8 @@ public class NewsServiceImpl implements NewsService {
     private final NewsCategoryRepository newsCategoryRepository;
 
     @Override
-    public NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId, String publishDateFrom, String publishDateTo) {
+    public NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId,
+                                     String publishDateFrom, String publishDateTo) {
 
         NewsCategory newsCategory = newsCategoryId == null ? null : newsCategoryRepository.findNewsCategoryById(newsCategoryId);
         User currentUser = RequestContext.getCurrentUser();
@@ -47,7 +47,8 @@ public class NewsServiceImpl implements NewsService {
                 : PageRequest.of(pages, elements, Sort.by("publishDate").descending());
 
         Page<News> news = util.isAdmin(currentUser)
-                ? newsRepository.findAllWithFiltersWhereDeletedIsFalse(newsCategory, instantValuePublishDateFrom, instantValuePublishDateTo, pageableList)
+                ? newsRepository.findAllWithFiltersWhereDeletedIsFalse(newsCategory,
+                instantValuePublishDateFrom, instantValuePublishDateTo, pageableList)
                 : newsRepository.findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(
                 newsCategory, Instant.now(), instantValuePublishDateFrom, instantValuePublishDateTo, pageableList);
 

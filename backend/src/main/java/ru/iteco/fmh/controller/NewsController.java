@@ -39,19 +39,18 @@ public class NewsController {
     @ApiOperation(value = "реестр всех новостей")
     @GetMapping
     public ResponseEntity<NewsPaginationDto> getNews(
-            @ApiParam (required = false, name = "pages", value = "От 0")
+            @ApiParam(required = false, name = "pages", value = "От 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
-            @ApiParam (required = false, name = "elements", value = "От 1 до 200")
+            @ApiParam(required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения")
+            @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
             @RequestParam(defaultValue = "true") boolean publishDate,
-            @ApiParam (required = false, name = "newsCategoryId", value = "Сортировка по новостной категории")
+            @ApiParam(required = false, name = "newsCategoryId", value = "Сортировка по новостной категории")
             @RequestParam() Integer newsCategoryId,
-            @ApiParam (required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
+            @ApiParam(required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
             @RequestParam() String publishDateFrom,
-            @ApiParam (required = false, name = "publishDateTo", value = "Выборка новостей до назначеной даты")
-            @RequestParam() String publishDateTo)
-    {
+            @ApiParam(required = false, name = "publishDateTo", value = "Выборка новостей до назначеной даты")
+            @RequestParam() String publishDateTo) {
         return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo));
     }
 

@@ -16,12 +16,12 @@ import java.util.Optional;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Integer> {
 
-    @Query(value = "SELECT n FROM News n WHERE n.publishDate <= :currentDate " +
-            "and (n.publishDate >= :publishDateFrom or cast(:publishDateFrom as timestamp) is null ) " +
-            "and (n.publishDate <= :publishDateTo or cast(:publishDateTo as timestamp) is null ) " +
-            "and (n.newsCategory = :newsCategory or :newsCategory is null ) " +
-            "and n.publishEnabled is true " +
-            "and n.deleted is false")
+    @Query(value = "SELECT n FROM News n WHERE n.publishDate <= :currentDate "
+            + "and (n.publishDate >= :publishDateFrom or cast(:publishDateFrom as timestamp) is null ) "
+            + "and (n.publishDate <= :publishDateTo or cast(:publishDateTo as timestamp) is null ) "
+            + "and (n.newsCategory = :newsCategory or :newsCategory is null ) "
+            + "and n.publishEnabled is true "
+            + "and n.deleted is false")
     Page<News> findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(
             @Param("newsCategory") NewsCategory newsCategory,
             @Param("currentDate") Instant currentDate,
@@ -29,20 +29,17 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
             @Param("publishDateTo")Instant publishDateTo, Pageable pageableList
     );
 
-    @Query(value = "SELECT n FROM News n WHERE " +
-            "(n.publishDate >= :publishDateFrom or cast(:publishDateFrom as timestamp) is null ) " +
-            "and (n.publishDate <= :publishDateTo or cast(:publishDateTo as timestamp) is null ) " +
-            "and (n.newsCategory = :newsCategory or :newsCategory is null ) " +
-            "and n.deleted is false")
+    @Query(value = "SELECT n FROM News n WHERE "
+            + "(n.publishDate >= :publishDateFrom or cast(:publishDateFrom as timestamp) is null ) "
+            + "and (n.publishDate <= :publishDateTo or cast(:publishDateTo as timestamp) is null ) "
+            + "and (n.newsCategory = :newsCategory or :newsCategory is null ) "
+            + "and n.deleted is false")
     Page<News> findAllWithFiltersWhereDeletedIsFalse(
             @Param("newsCategory") NewsCategory newsCategory,
             @Param("publishDateFrom")Instant publishDateFrom,
             @Param("publishDateTo")Instant publishDateTo,
             Pageable pageableList
     );
-
-    Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalse(
-            Instant publishDate, Pageable pageableList);
 
     Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
             Instant publishDate, Pageable pageableList);
