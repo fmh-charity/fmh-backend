@@ -27,9 +27,7 @@ import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
 
@@ -88,6 +86,7 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now())
                 .currentAdmission(Admission.builder().build())
+                .admissions(new HashSet<>())
                 .build();
         return patient;
     }
@@ -163,6 +162,7 @@ public class TestUtils {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now().toEpochMilli())
+                .admissions(new HashSet<>())
                 .build();
         return patientDto;
     }

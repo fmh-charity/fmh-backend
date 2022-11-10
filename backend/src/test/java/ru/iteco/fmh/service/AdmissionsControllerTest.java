@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.AdmissionsController;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.service.admission.AdmissionService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -27,6 +29,9 @@ public class AdmissionsControllerTest {
     @Autowired
     ConversionService conversionService;
 
+    @Autowired
+    AdmissionService admissionService;
+
     @Test
     public void getAdmissionShouldPassSuccess() {
         // given
@@ -39,6 +44,7 @@ public class AdmissionsControllerTest {
         assertEquals(expected, result);
     }
 
+    @Transactional
     @Test
     public void createAdmissionShouldPassSuccess() {
         // given
@@ -57,7 +63,8 @@ public class AdmissionsControllerTest {
         assertEquals(givenDto, resultDto);
 
         // After
-        admissionRepository.deleteById(resultId);
+
+        admissionService.deleteAdmissionById(resultId);
     }
 
     @Test

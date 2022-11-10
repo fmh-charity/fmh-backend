@@ -47,7 +47,7 @@ public class PatientsController {
     @ApiOperation(value = "создание пациента")
     @PostMapping
     public PatientDto createPatient(@RequestBody PatientDto patientDto) {
-        return patientService.createOrUpdatePatient(patientDto);
+        return patientService.createPatient(patientDto);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -89,6 +89,6 @@ public class PatientsController {
     @ApiOperation(value = "изменение пациента")
     @PutMapping
     public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
-        return patientService.createOrUpdatePatient(patientDto);
+        return patientService.updatePatient(patientDto);
     }
 }
