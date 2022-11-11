@@ -41,9 +41,6 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
             Pageable pageableList
     );
 
-    Page<News> findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
-            Instant publishDate, Pageable pageableList);
-
     Optional<News> findByIdAndPublishEnabledIsTrue(int newsId);
 
 }

@@ -84,7 +84,7 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userMedic);
         when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
         when(newsRepository
-                .findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(any(), any()))
+                .findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(any(), any(), any(), any(), any()))
                 .thenReturn(
                         new PageImpl<>(pageableResult.stream()
                                 .filter(News::isPublishEnabled)
@@ -93,7 +93,7 @@ public class NewsServiceTest {
         RequestContext.setCurrentUser(userMedic);
         List<NewsDto> expected = newsList.stream().filter(News::isPublishEnabled)
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-        List<NewsDto> result = sut.getNews(0, 9, true, 0, null, null).getElements();
+        List<NewsDto> result = sut.getNews(0, 9, true, null, null, null).getElements();
 
         assertEquals(expected, result);
     }
