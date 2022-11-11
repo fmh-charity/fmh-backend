@@ -7,19 +7,20 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonFormat
 public class NewsDto {
-
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("newsCategoryId")
     private Integer newsCategoryId;
+    @JsonProperty("publishDateFrom")
+    private String publishDateFrom;
+    @JsonProperty("publishDateTo")
+    private String publishDateTo;
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")
@@ -27,12 +28,11 @@ public class NewsDto {
     @JsonProperty("creatorId")
     private Integer creatorId;
     @JsonProperty("createDate")
-    private LocalDateTime createDate;
+    private Long createDate;
     @JsonProperty("publishDate")
-    private LocalDateTime publishDate;
+    private Long publishDate;
     @JsonProperty("publishEnabled")
     private boolean publishEnabled;
     @JsonProperty("creatorName")
     private String creatorName;
-
 }

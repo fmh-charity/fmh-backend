@@ -46,11 +46,11 @@ public class NewsController {
             @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
             @RequestParam(defaultValue = "true") boolean publishDate,
             @ApiParam(required = false, name = "newsCategoryId", value = "Сортировка по новостной категории")
-            @RequestParam() Integer newsCategoryId,
+            @RequestParam(required = false) Integer newsCategoryId,
             @ApiParam(required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
-            @RequestParam() String publishDateFrom,
+            @RequestParam(required = false) String publishDateFrom,
             @ApiParam(required = false, name = "publishDateTo", value = "Выборка новостей до назначеной даты")
-            @RequestParam() String publishDateTo) {
+            @RequestParam(required = false) String publishDateTo) {
         return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo));
     }
 
