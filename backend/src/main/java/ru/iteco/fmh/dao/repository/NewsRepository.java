@@ -10,7 +10,6 @@ import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,7 +21,7 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
             + "and (n.newsCategory = :newsCategory or :newsCategory is null ) "
             + "and n.publishEnabled is true "
             + "and n.deleted is false")
-    Page<News> findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(
+    Page<News> getActualNewsInInterval(
             @Param("newsCategory") NewsCategory newsCategory,
             @Param("currentDate") Instant currentDate,
             @Param("publishDateFrom")Instant publishDateFrom,

@@ -9,10 +9,9 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +29,8 @@ public class Util {
                 + userById.getMiddleName();
     }
 
-    public Instant getInstantFromString(String date) {
-        try {
-            Date simpleDate = new SimpleDateFormat("dd.MM.yyyy").parse(date);
-            return simpleDate.toInstant();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public Instant getInstantFromLocalDate(LocalDate localDate) {
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
 
     public String getCreatorNameFromNews(NewsDto newsDto) {

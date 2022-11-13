@@ -20,6 +20,8 @@ import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,18 +31,17 @@ public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
-
     private final NewsCategoryRepository newsCategoryRepository;
 
     @Override
     public NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId,
-                                     String publishDateFrom, String publishDateTo) {
+                                     LocalDate publishDateFrom, LocalDate publishDateTo) {
 
-        NewsCategory newsCategory = newsCategoryId == null ? null : newsCategoryRepository.findNewsCategoryById(newsCategoryId);
         User currentUser = RequestContext.getCurrentUser();
         Util util = new Util(userRepository);
-        Instant instantValuePublishDateFrom = publishDateFrom == null ? null : util.getInstantFromString(publishDateFrom);
-        Instant instantValuePublishDateTo = publishDateTo == null ? null : util.getInstantFromString(publishDateTo);
+        NewsCategory newsCategory = Optional.ofNullable(newsCategoryId).map(newsCategoryRepository::findNewsCategoryById).orElse(null);
+        Instant instantValuePublishDateFrom = Optional.ofNullable(publishDateFrom).map(util::getInstantFromLocalDate).orElse(null);
+        Instant instantValuePublishDateTo = Optional.ofNullable(publishDateTo).map(util::getInstantFromLocalDate).orElse(null);
 
         Pageable pageableList = publishDate
                 ? PageRequest.of(pages, elements, Sort.by("publishDate"))
@@ -49,7 +50,7 @@ public class NewsServiceImpl implements NewsService {
         Page<News> news = util.isAdmin(currentUser)
                 ? newsRepository.findAllWithFiltersWhereDeletedIsFalse(newsCategory,
                 instantValuePublishDateFrom, instantValuePublishDateTo, pageableList)
-                : newsRepository.findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(
+                : newsRepository.getActualNewsInInterval(
                 newsCategory, Instant.now(), instantValuePublishDateFrom, instantValuePublishDateTo, pageableList);
 
         return NewsPaginationDto.builder()

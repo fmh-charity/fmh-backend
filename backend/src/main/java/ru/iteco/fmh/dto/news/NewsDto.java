@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @ApiModel(description = "новости")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,9 +23,9 @@ public class NewsDto {
     @ApiModelProperty("идентификатор категории новости")
     private Integer newsCategoryId;
     @ApiModelProperty("фильтр даты от")
-    private String publishDateFrom;
+    private LocalDate publishDateFrom;
     @ApiModelProperty("фильтр даты до")
-    private String publishDateTo;
+    private LocalDate publishDateTo;
     @ApiModelProperty("заголовок новости")
     private String title;
     @ApiModelProperty("описание новости")

@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -18,9 +20,9 @@ public class NewsDto {
     @JsonProperty("newsCategoryId")
     private Integer newsCategoryId;
     @JsonProperty("publishDateFrom")
-    private String publishDateFrom;
+    private LocalDate publishDateFrom;
     @JsonProperty("publishDateTo")
-    private String publishDateTo;
+    private LocalDate publishDateTo;
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")

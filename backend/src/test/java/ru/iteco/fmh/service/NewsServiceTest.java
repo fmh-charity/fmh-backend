@@ -12,7 +12,6 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -84,7 +83,7 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userMedic);
         when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
         when(newsRepository
-                .findAllWithFiltersWherePublishDateLessThanCurrentAndDeletedIsFalseAndPublishEnabledIsTrue(any(), any(), any(), any(), any()))
+                .getActualNewsInInterval(any(), any(), any(), any(), any()))
                 .thenReturn(
                         new PageImpl<>(pageableResult.stream()
                                 .filter(News::isPublishEnabled)
