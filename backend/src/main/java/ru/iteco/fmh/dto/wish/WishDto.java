@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.task.Status;
 
 @ApiModel(description = "просьба")
@@ -35,4 +36,6 @@ public class WishDto {
     private Long factExecuteDate;
     @ApiModelProperty("статус записки")
     private Status status;
+    @ApiModelProperty("комната пациента")
+    private RoomDtoRs room;
 }
