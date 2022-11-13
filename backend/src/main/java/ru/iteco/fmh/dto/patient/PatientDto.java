@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @ApiModel(description = "основная информация по пациенту")
 @Builder
@@ -23,4 +27,10 @@ public class PatientDto {
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
     private Long birthDate;
+    @ApiModelProperty("текущая госпитализация")
+    private boolean deleted;
+    @ApiModelProperty("текущая госпитализация")
+    private AdmissionDto currentAdmission;
+    @ApiModelProperty("id всех госпитализаций")
+    private Set<Integer> admissions = new HashSet<>();
 }

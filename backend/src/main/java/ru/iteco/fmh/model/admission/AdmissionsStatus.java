@@ -6,12 +6,12 @@ package ru.iteco.fmh.model.admission;
 
 public enum AdmissionsStatus {
     //Выписан
-    DISCHARGED,
+    DISCHARGED(0),
     //В хосписе
-    ACTIVE,
+    ACTIVE(2),
     //Ожидается
-    EXPECTED;
+    EXPECTED(1);
 
-    AdmissionsStatus() {
+    AdmissionsStatus(int weight) {
     }
 }

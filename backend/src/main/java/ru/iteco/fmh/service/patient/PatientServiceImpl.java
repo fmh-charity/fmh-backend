@@ -5,11 +5,16 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.Admission;
 
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,18 +37,51 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto createOrUpdatePatient(PatientDto patientDto) {
+    public PatientDto createPatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
+
         patient = patientRepository.save(patient);
-        return conversionService.convert(patient, PatientDto.class);
+        return getPatientDto(patient);
     }
 
+    @Transactional
     @Override
-    public PatientDto getPatient(int id) {
+    public PatientDto updatePatient(PatientDto patientDto) {
+        Patient patient = patientRepository.findPatientById(patientDto.getId());
+
+        patient.setFirstName(patientDto.getFirstName());
+        patient.setMiddleName(patientDto.getMiddleName());
+        patient.setLastName(patientDto.getLastName());
+        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+
+        patient = patientRepository.save(patient);
+        return getPatientDto(patient);
+    }
+
+    @Transactional
+    @Override
+    public PatientDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Пациента с таким ID не существует"));
 
-        return conversionService.convert(patient, PatientDto.class);
+        return getPatientDto(patient);
+    }
+
+    private PatientDto getPatientDto(Patient patient) {
+        PatientDto dto = conversionService.convert(patient, PatientDto.class);
+        Set<Integer> admissionIds = new HashSet<>();
+
+        dto.setCurrentAdmission(patient.getCurrentAdmission() == null
+                ? null : conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
+
+        if (patient.getAdmissions().size() > 0) {
+            patient.getAdmissions().forEach(a -> admissionIds.add(a.getId()));
+            dto.setCurrentAdmission(conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
+        }
+
+        dto.setAdmissions(admissionIds);
+
+        return dto;
     }
 
     // ставит верные dateIn, dateOut и флаги для отправки на фронт

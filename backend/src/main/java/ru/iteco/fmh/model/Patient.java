@@ -8,17 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Where;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Пациент
@@ -42,9 +39,14 @@ public class Patient {
     String middleName;
     Instant birthDate;
 
+    @Where(clause = "deleted = false")
     @OneToOne
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
+
+    @Where(clause = "deleted = false")
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    Set<Admission> admissions = new HashSet<>();
 
     boolean deleted;
 

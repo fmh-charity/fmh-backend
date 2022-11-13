@@ -23,6 +23,13 @@ public interface AdmissionService {
     AdmissionDto createOrUpdateAdmission(AdmissionDto admissionDto);
 
     /**
+     * удаляет запись о госпитализации
+     *
+     * @param id id госпитализации
+     */
+    void deleteAdmissionById(Integer id);
+
+    /**
      * возвращает список всех госпитализаций пациента
      * @param patientId ид пациента
      * @return список с полной инфой по всем госпитализациям пациента

@@ -14,6 +14,7 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,6 +85,8 @@ public class PatientsControllerTest {
         given.setLastName("newLastName");
 
         PatientDto result = sut.updatePatient(given);
+        result.setCurrentAdmission(null);
+        result.setAdmissions(new HashSet<>());
 
         assertEquals(given, result);
 
