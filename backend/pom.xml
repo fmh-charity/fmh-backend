@@ -19,7 +19,7 @@
     <name>fmh-backend</name>
 
     <properties>
-        <spring-boot-starter-version>2.7.4</spring-boot-starter-version>
+        <spring-boot-starter-version>2.7.5</spring-boot-starter-version>
         <testcontainers>1.17.5</testcontainers>
     </properties>
 
