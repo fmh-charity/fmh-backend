@@ -36,6 +36,6 @@ public class WishDto {
     private Long factExecuteDate;
     @ApiModelProperty("статус записки")
     private Status status;
-    @ApiModelProperty("комната пациента")
+    @ApiModelProperty("палата пациента")
     private RoomDtoRs room;
 }

@@ -16,11 +16,11 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
+    private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter;
 
 
     @Override
     public WishDto convert(@NonNull Wish wish) {
-        RoomEntityToRoomDtoRsConverter roomConverter = new RoomEntityToRoomDtoRsConverter();
         WishDto dto = new WishDto();
         BeanUtils.copyProperties(wish, dto);
 
@@ -28,7 +28,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         Integer creatorId = wish.getCreator() != null ? wish.getCreator().getId() : null;
         Integer executorId = wish.getExecutor() != null ? wish.getExecutor().getId() : null;
         Room patientRoom = wish.getPatient() != null ? wish.getPatient().getCurrentAdmission().getRoom() : null;
-        RoomDtoRs roomDtoRs = Optional.ofNullable(patientRoom).map(roomConverter::convert).orElse(null);
+        RoomDtoRs roomDtoRs = patientRoom != null ? roomEntityToRoomDtoRsConverter.convert(patientRoom) : null;
 
         dto.setCreateDate(wish.getCreateDate() != null ? wish.getCreateDate().toEpochMilli() : null);
         dto.setPlanExecuteDate(wish.getPlanExecuteDate() != null ? wish.getPlanExecuteDate().toEpochMilli() : null);

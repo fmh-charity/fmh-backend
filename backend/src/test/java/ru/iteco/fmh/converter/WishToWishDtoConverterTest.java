@@ -1,6 +1,7 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Test;
+import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -9,14 +10,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.Status.OPEN;
 
 
 class WishToWishDtoConverterTest {
-
-    WishToWishDtoConverter convertor = new WishToWishDtoConverter();
+    RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = mock(RoomEntityToRoomDtoRsConverter.class);
+    WishToWishDtoConverter convertor = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter);
 
     @Test
     void convertWishForOpen() {
