@@ -18,7 +18,6 @@ import java.util.Optional;
 public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter;
 
-
     @Override
     public WishDto convert(@NonNull Wish wish) {
         WishDto dto = new WishDto();
