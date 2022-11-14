@@ -13,7 +13,6 @@ import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -105,10 +104,10 @@ public class WishServiceTest {
                 () -> assertEquals(dto.getFactExecuteDate(), result.getFactExecuteDate()),
                 () -> assertEquals(dto.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(dto.getStatus(), result.getStatus()),
-                () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(dto.getExecutor(), result.getExecutor()),
                 () -> assertEquals(dto.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(dto.getPatientId(), result.getPatientId()),
-                () -> assertNotNull(result.getExecutorId()),
+                () -> assertEquals(dto.getPatient(), result.getPatient()),
+                () -> assertNotNull(result.getExecutor()),
                 () -> assertNotNull(result.getCreatorId())
         );
 

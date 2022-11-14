@@ -1,6 +1,8 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Test;
+import ru.iteco.fmh.converter.patient.PatientToPatientDtoIdFioConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -16,23 +18,26 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 
 class WishToWishDtoConverterTest {
 
-    WishToWishDtoConverter convertor = new WishToWishDtoConverter();
+    PatientToPatientDtoIdFioConverter toPatientDtoIdFio = new PatientToPatientDtoIdFioConverter();
+    UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
+    WishToWishDtoConverter wishToWishDtoConverter = new WishToWishDtoConverter(toPatientDtoIdFio, toUserDtoIdFioConverter);
 
     @Test
     void convertWishForOpen() {
         Wish wish = getWish(OPEN);
         wish.setExecutor(null);
-        WishDto dto = convertor.convert(wish);
+
+        WishDto dto = wishToWishDtoConverter.convert(wish);
         assertAll(
                 () -> assertEquals(wish.getId(), dto.getId()),
-                () -> assertEquals(wish.getPatient().getId(), dto.getPatientId()),
+                () -> assertEquals(wish.getPatient().getId(), dto.getPatient().id()),
                 () -> assertEquals(wish.getDescription(), dto.getDescription()),
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), dto.getPlanExecuteDate()),
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
                 () -> assertEquals(dto.getCreatorId(), wish.getCreator().getId()),
-                () -> assertEquals(dto.getExecutorId(), wish.getExecutor()),
-                () -> assertNull(dto.getExecutorId()),
+                () -> assertEquals(dto.getExecutor(), wish.getExecutor()),
+                () -> assertNull(dto.getExecutor()),
                 () -> assertNull(wish.getExecutor())
         );
     }
@@ -40,17 +45,18 @@ class WishToWishDtoConverterTest {
     @Test
     void convertWishForInProgress() {
         Wish wish = getWish(IN_PROGRESS);
-        WishDto dto = convertor.convert(wish);
+
+        WishDto dto = wishToWishDtoConverter.convert(wish);
         assertAll(
                 () -> assertEquals(wish.getId(), dto.getId()),
-                () -> assertEquals(wish.getPatient().getId(), dto.getPatientId()),
+                () -> assertEquals(wish.getPatient().getId(), dto.getPatient().id()),
                 () -> assertEquals(wish.getDescription(), dto.getDescription()),
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), dto.getPlanExecuteDate()),
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
                 () -> assertEquals(dto.getCreatorId(), wish.getCreator().getId()),
-                () -> assertEquals(dto.getExecutorId(), wish.getExecutor().getId()),
-                () -> assertNotNull(dto.getExecutorId()),
+                () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
+                () -> assertNotNull(dto.getExecutor()),
                 () -> assertNotNull(wish.getExecutor())
         );
     }
