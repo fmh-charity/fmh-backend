@@ -39,9 +39,12 @@ public class NewsServiceImpl implements NewsService {
 
         User currentUser = RequestContext.getCurrentUser();
         Util util = new Util(userRepository);
-        NewsCategory newsCategory = Optional.ofNullable(newsCategoryId).map(newsCategoryRepository::findNewsCategoryById).orElse(null);
-        Instant instantValuePublishDateFrom = Optional.ofNullable(publishDateFrom).map(util::getInstantFromLocalDateAtStartOfDay).orElse(null);
-        Instant instantValuePublishDateTo = Optional.ofNullable(publishDateTo).map(util::getInstantFromLocalDateToEndOfDay).orElse(null);
+        NewsCategory newsCategory = Optional.ofNullable(newsCategoryId)
+                .map(newsCategoryRepository::findNewsCategoryById).orElse(null);
+        Instant instantValuePublishDateFrom = Optional.ofNullable(publishDateFrom)
+                .map(util::getInstantFromLocalDateAtStartOfDay).orElse(null);
+        Instant instantValuePublishDateTo = Optional.ofNullable(publishDateTo)
+                .map(util::getInstantFromLocalDateToEndOfDay).orElse(null);
 
         Pageable pageableList = publishDate
                 ? PageRequest.of(pages, elements, Sort.by("publishDate"))
