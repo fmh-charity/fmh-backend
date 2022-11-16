@@ -23,6 +23,7 @@ import ru.iteco.fmh.service.news.NewsService;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 import java.util.List;
 
 @Api(description = "новости")
@@ -38,13 +39,19 @@ public class NewsController {
     @ApiOperation(value = "реестр всех новостей")
     @GetMapping
     public ResponseEntity<NewsPaginationDto> getNews(
-            @ApiParam (required = false, name = "pages", value = "От 0")
+            @ApiParam(required = false, name = "pages", value = "От 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
-            @ApiParam (required = false, name = "elements", value = "От 1 до 200")
+            @ApiParam(required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean publishDate) {
-        return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate));
+            @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
+            @RequestParam(defaultValue = "true") boolean publishDate,
+            @ApiParam(required = false, name = "newsCategoryId", value = "Фильтрация по категории")
+            @RequestParam(required = false) Integer newsCategoryId,
+            @ApiParam(required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
+            @RequestParam(required = false) LocalDate publishDateFrom,
+            @ApiParam(required = false, name = "publishDateTo", value = "Выборка новостей до назначеной даты")
+            @RequestParam(required = false) LocalDate publishDateTo) {
+        return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

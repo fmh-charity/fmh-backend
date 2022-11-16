@@ -12,7 +12,6 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -57,15 +56,15 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-        when(newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(any(), any())).thenReturn(pageableResult);
+        when(newsRepository.findAllWithFiltersWhereDeletedIsFalse(any(), any(), any(), any())).thenReturn(pageableResult);
 
-        System.out.println("\n\n\n\n" + newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(Instant.now(), pageableList)
+        System.out.println("\n\n\n\n" + newsRepository.findAllWithFiltersWhereDeletedIsFalse(null, null, null,  pageableList)
                 .getContent().size() + "\n\n\n\n\n");
 
         when(userRepository.findUserByLogin(any())).thenReturn(userAdmin);
 
         RequestContext.setCurrentUser(userAdmin);
-        List<NewsDto> result = sut.getNews(0, 9, true).getElements();
+        List<NewsDto> result = sut.getNews(0, 9, true, null, null, null).getElements();
 
         assertEquals(expected, result);
     }
@@ -84,7 +83,7 @@ public class NewsServiceTest {
         when(userRepository.findUserById(any())).thenReturn(userMedic);
         when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
         when(newsRepository
-                .findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(any(), any()))
+                .getActualNewsInInterval(any(), any(), any(), any(), any()))
                 .thenReturn(
                         new PageImpl<>(pageableResult.stream()
                                 .filter(News::isPublishEnabled)
@@ -93,7 +92,7 @@ public class NewsServiceTest {
         RequestContext.setCurrentUser(userMedic);
         List<NewsDto> expected = newsList.stream().filter(News::isPublishEnabled)
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
-        List<NewsDto> result = sut.getNews(0, 9, true).getElements();
+        List<NewsDto> result = sut.getNews(0, 9, true, null, null, null).getElements();
 
         assertEquals(expected, result);
     }
