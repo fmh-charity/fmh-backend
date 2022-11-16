@@ -13,13 +13,10 @@ import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.claim.ClaimDto;
-import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -76,7 +73,7 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto createWish(WishDto wishDto) {
-        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
@@ -96,7 +93,7 @@ public class WishServiceImpl implements WishService {
         User userCreator = userRepository.findUserById(wishDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
-        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);

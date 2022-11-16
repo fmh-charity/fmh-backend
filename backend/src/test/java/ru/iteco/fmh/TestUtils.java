@@ -6,6 +6,7 @@ import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
@@ -145,12 +146,12 @@ public class TestUtils {
     public static WishDto getWishDto() {
 
         return WishDto.builder()
-                .patientId(3)
+                .patient(getPatientIdFio())
                 .description(getAlphabeticString())
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
-                .executorId(null)
+                .executor(null)
                 .creatorId(3)
                 .status(Status.OPEN)
                 .build();
@@ -165,6 +166,15 @@ public class TestUtils {
                 .admissions(new HashSet<>())
                 .build();
         return patientDto;
+    }
+
+    public static PatientDtoIdFio getPatientIdFio() {
+        return new PatientDtoIdFio(
+                1,
+                "Patient6-firstname",
+                "Patient6-middlename",
+                "Patient6-lastname"
+        );
     }
 
     public static Admission getAdmission() {
