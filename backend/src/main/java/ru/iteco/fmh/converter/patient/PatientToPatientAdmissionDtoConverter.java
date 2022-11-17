@@ -6,6 +6,8 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
+import java.time.temporal.ChronoField;
+
 /**
  * конвертер из {@link Patient} в {@link PatientAdmissionDto}//для «Пациенты» (Просмотр списка пациентов)
  */
@@ -21,7 +23,7 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
                 .middleName(patient.getMiddleName())
                 .admissionsStatus(patient.getStatus())
                 .build();
-        dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochMilli() : null);
+        dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochDay() : null);
         if (currentAdmission != null) {
             dto.setFactDateIn(currentAdmission.getFactDateIn() != null ? currentAdmission.getFactDateIn().toEpochMilli() : null);
             dto.setFactDateOut(currentAdmission.getFactDateOut() != null ? currentAdmission.getFactDateOut().toEpochMilli() : null);

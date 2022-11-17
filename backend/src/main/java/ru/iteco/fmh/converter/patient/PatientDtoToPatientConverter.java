@@ -10,6 +10,8 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 
 /**
  * конвертер из {@link PatientDto} в {@link Patient}
@@ -22,9 +24,7 @@ public class PatientDtoToPatientConverter implements Converter<PatientDto, Patie
     public Patient convert(@NonNull PatientDto dto) {
         Patient entity = new Patient();
         BeanUtils.copyProperties(dto, entity);
-
-        entity.setBirthDate(dto.getBirthDate() != null ? Instant.ofEpochMilli(dto.getBirthDate()) : null);
-
+        entity.setBirthDate(LocalDate.ofEpochDay(dto.getBirthDate() != null ? dto.getBirthDate() : null));
         return entity;
     }
 }

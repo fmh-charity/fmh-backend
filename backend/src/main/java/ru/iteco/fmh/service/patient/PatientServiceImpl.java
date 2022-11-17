@@ -8,10 +8,10 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
 
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -46,16 +46,20 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
-        Patient patient = patientRepository.findPatientById(patientDto.getId());
-
+    public PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto) {
+        Patient patient = patientRepository.findPatientById(id);
         patient.setFirstName(patientDto.getFirstName());
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
-
+        patient.setBirthDate(patientDto.getBirthDate());
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        PatientUpdateInfoDtoRs patientUpdateInfoDtoRs = PatientUpdateInfoDtoRs.builder().build();
+        patientUpdateInfoDtoRs.setId(id);
+        patientUpdateInfoDtoRs.setFirstName(patient.getFirstName());
+        patientUpdateInfoDtoRs.setMiddleName(patient.getMiddleName());
+        patientUpdateInfoDtoRs.setLastName(patient.getLastName());
+        patientUpdateInfoDtoRs.setBirthDate(patient.getBirthDate());
+        return patientUpdateInfoDtoRs;
     }
 
     @Transactional

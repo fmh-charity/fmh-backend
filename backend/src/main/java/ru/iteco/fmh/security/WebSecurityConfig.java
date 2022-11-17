@@ -79,7 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/authentication/login", "/authentication/check", "/authentication/refresh").permitAll()
+                .antMatchers("/authentication/login", "/authentication/check",
+                        "/authentication/refresh").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().disable()

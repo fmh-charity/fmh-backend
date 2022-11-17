@@ -14,6 +14,7 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class Patient {
     String firstName;
     String lastName;
     String middleName;
-    Instant birthDate;
+    LocalDate birthDate;
 
     @Where(clause = "deleted = false")
     @OneToOne
