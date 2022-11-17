@@ -3,6 +3,7 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.patient.PatientToPatientDtoIdFioConverter;
 import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
+import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -18,9 +19,11 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 
 class WishToWishDtoConverterTest {
 
-    PatientToPatientDtoIdFioConverter toPatientDtoIdFio = new PatientToPatientDtoIdFioConverter();
-    UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
-    WishToWishDtoConverter wishToWishDtoConverter = new WishToWishDtoConverter(toPatientDtoIdFio, toUserDtoIdFioConverter);
+    private final PatientToPatientDtoIdFioConverter toPatientDtoIdFio = new PatientToPatientDtoIdFioConverter();
+    private final UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
+    private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = new RoomEntityToRoomDtoRsConverter();
+    private final WishToWishDtoConverter wishToWishDtoConverter
+            = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter, toPatientDtoIdFio, toUserDtoIdFioConverter);
 
     @Test
     void convertWishForOpen() {
@@ -60,7 +63,6 @@ class WishToWishDtoConverterTest {
                 () -> assertNotNull(wish.getExecutor())
         );
     }
-
 }
 
 
