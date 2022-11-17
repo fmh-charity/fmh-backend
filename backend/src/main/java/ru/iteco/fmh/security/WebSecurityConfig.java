@@ -1,7 +1,5 @@
 package ru.iteco.fmh.security;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,11 +16,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties
-@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     private final AuthEntryPointJwt unauthorizedHandler;
+
+    public WebSecurityConfig(AuthEntryPointJwt unauthorizedHandler) {
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
