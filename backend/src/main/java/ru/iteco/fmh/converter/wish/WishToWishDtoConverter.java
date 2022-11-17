@@ -3,20 +3,15 @@ package ru.iteco.fmh.converter.wish;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.patient.PatientToPatientDtoIdFioConverter;
 import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
-import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.task.wish.Wish;
-
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

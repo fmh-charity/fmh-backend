@@ -19,10 +19,11 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 
 class WishToWishDtoConverterTest {
 
-    PatientToPatientDtoIdFioConverter toPatientDtoIdFio = new PatientToPatientDtoIdFioConverter();
-    UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
-    private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = mock(RoomEntityToRoomDtoRsConverter.class);
-    private final WishToWishDtoConverter convertor = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter);
+    private final PatientToPatientDtoIdFioConverter toPatientDtoIdFio = new PatientToPatientDtoIdFioConverter();
+    private final UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
+    private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = new RoomEntityToRoomDtoRsConverter();
+    private final WishToWishDtoConverter wishToWishDtoConverter
+            = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter, toPatientDtoIdFio, toUserDtoIdFioConverter);
 
     @Test
     void convertWishForOpen() {
@@ -62,7 +63,6 @@ class WishToWishDtoConverterTest {
                 () -> assertNotNull(wish.getExecutor())
         );
     }
-
 }
 
 
