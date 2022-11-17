@@ -42,7 +42,7 @@ public class NewsControllerTest {
                 .sorted().collect(Collectors.toList());
         RequestContext.setCurrentUser(User.builder()
                 .login("login1").build());
-        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
@@ -55,7 +55,7 @@ public class NewsControllerTest {
         RequestContext.setCurrentUser(User.builder()
                 .login("login3")
                 .build());
-        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
