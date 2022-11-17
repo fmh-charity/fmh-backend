@@ -17,8 +17,8 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 
 
 class WishToWishDtoConverterTest {
-    RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = mock(RoomEntityToRoomDtoRsConverter.class);
-    WishToWishDtoConverter convertor = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter);
+    private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = mock(RoomEntityToRoomDtoRsConverter.class);
+    private final WishToWishDtoConverter convertor = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter);
 
     @Test
     void convertWishForOpen() {

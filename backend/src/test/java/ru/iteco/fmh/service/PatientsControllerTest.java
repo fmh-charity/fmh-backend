@@ -134,7 +134,6 @@ public class PatientsControllerTest {
     }
 
     @Test
-    @Transactional
     public void getPatientOpenInProgressWishes() {
         //given
         int patientId = 1;
