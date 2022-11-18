@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,14 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 
@@ -32,15 +37,23 @@ public class PatientsController {
 
     private final PatientService patientService;
     private final AdmissionService admissionService;
+
     private final WishService wishService;
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех пациентов")
     @GetMapping
-    public List<PatientAdmissionDto> getAllPatientsByStatus(
-            @ApiParam(value = "список статусов для отображения") @RequestParam("statuses") List<String> statuses
-    ) {
-        return patientService.getAllPatientsByStatus(statuses);
+    public ResponseEntity<PatientAdmissionDto> getAllPatientsByStatus(
+            @ApiParam (required = false, name = "pages", value = "От 0")
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @ApiParam (required = false, name = "elements", value = "От 1 до 200")
+            @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
+            @ApiParam (required = false, name = "status", value = "[DISCHARGED, ACTIVE, EXPECTED]")
+            @RequestParam(name = "status", required = false) List<AdmissionsStatus>  status,
+            @ApiParam (required = false, name = "dateIn", value = "Автосортировка по фамилии, отображение по дате поступления")
+            @RequestParam(defaultValue = "true") boolean dateIn)
+    {
+        return  ResponseEntity.ok(patientService.getAllPatientsByStatus(status, pages, elements, dateIn));
     }
 
     @Secured("ROLE_ADMINISTRATOR")
@@ -92,3 +105,4 @@ public class PatientsController {
         return patientService.updatePatient(patientDto);
     }
 }
+

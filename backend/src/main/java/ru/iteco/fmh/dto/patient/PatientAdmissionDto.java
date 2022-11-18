@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
+import java.util.List;
+
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")
 @NoArgsConstructor
@@ -16,6 +18,9 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 @Builder
 @Data
 public class PatientAdmissionDto {
+    int pages;
+    List<PatientDto> elements;
+
     @ApiModelProperty("id пациента")
     private Integer id;
     @ApiModelProperty("имя пациента")

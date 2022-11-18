@@ -2,6 +2,10 @@ package ru.iteco.fmh.service.patient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -9,13 +13,16 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +32,31 @@ public class PatientServiceImpl implements PatientService {
     private final ConversionService conversionService;
 
     @Override
-    public List<PatientAdmissionDto> getAllPatientsByStatus(List<String> statusList) {
+    public PatientAdmissionDto getAllPatientsByStatus(
+            List<AdmissionsStatus> status, int pages, int elements, boolean dateIn) {
+        Page<Patient> list;
         List<Patient> patientList = patientRepository.findAll();
+        patientList.sort(Comparator.comparing(Patient::getLastName));
 
-        return patientList.stream()
-                .filter(patient -> statusList.contains(patient.getStatus().toString()))
-                .map(patient -> conversionService.convert(patient, PatientAdmissionDto.class))
-                .map(patientAdmissionDto -> patientAdmissionDto != null ? setAdmissionDates(patientAdmissionDto) : null)
-                .collect(Collectors.toList());
+        Pageable pageableList = dateIn
+                ? PageRequest.of(pages, elements, Sort.by("dateIn"))
+                : PageRequest.of(pages, elements, Sort.by("dateIn").descending());
+
+        if (status == null || status.isEmpty()) {
+            list = patientRepository.findAllWithActiveStatus(List.of(ACTIVE), pageableList);
+        } else if (status.contains(AdmissionsStatus.EXPECTED) || status.contains(AdmissionsStatus.DISCHARGED)) {
+            list = patientRepository.findAllWithInactiveStatus(List.of(EXPECTED, DISCHARGED), pageableList);
+        } else {
+            list = patientRepository.findAllWithAnyStatus(status, pageableList);
+        }
+
+        return PatientAdmissionDto.builder()
+                .pages(list.getTotalPages())
+                .elements(
+                        list.stream()
+                                .map(p -> conversionService.convert(p, PatientDto.class))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
     @Transactional
