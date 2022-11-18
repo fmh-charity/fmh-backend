@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
@@ -20,61 +20,83 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
-import static ru.iteco.fmh.TestUtils.getNumeric;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PatientServiceTest {
+    static final int pages = 8;
+    static final int elements = 8;
     @MockBean
     PatientRepository patientRepository;
     @MockBean
     AdmissionRepository admissionRepository;
-
     @Autowired
     PatientService sut;
-
     @Autowired
     ConversionService conversionService;
 
     @Test
+    public void getAllPatientsByActiveStatusShouldPassSuccess() {
+        List<Patient> patientList = List.of(getAdmissionPatient(AdmissionsStatus.ACTIVE));
+        Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
+        Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
+        when(patientRepository.findAllWithActiveStatus(List.of(ACTIVE), pageableList))
+                .thenReturn(pageableResult);
+
+        List<PatientDto> expected = patientList.stream()
+                .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
+        when(patientRepository.findAllWithAnyStatus(List.of(ACTIVE), any())).thenReturn(pageableResult);
+
+        List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
+                .getElements().stream().toList();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getAllPatientsWithInactiveStatusShouldPassSuccess() {
+        List<Patient> patientList = List.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED));
+        Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
+        Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
+        when(patientRepository.findAllWithActiveStatus(List.of(DISCHARGED, EXPECTED), pageableList))
+                .thenReturn(pageableResult);
+
+        List<PatientDto> expected = patientList.stream()
+                .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
+        when(patientRepository.findAllWithAnyStatus(List.of(DISCHARGED, EXPECTED), any())).thenReturn(pageableResult);
+
+        List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
+                .getElements().stream().toList();
+
+        assertEquals(expected, result);
+    }
+
+
+    @Test
     public void getAllPatientsByStatusShouldPassSuccess() {
-        when(patientRepository.findAll()).thenReturn(getPatientList());
+        List<Patient> patientList = List.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED), getAdmissionPatient(ACTIVE));
+        Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
+        Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
+        when(patientRepository.findAllWithActiveStatus(List.of(DISCHARGED, EXPECTED, ACTIVE), pageableList))
+                .thenReturn(pageableResult);
 
-        // given
-        List<String> statusListAll = List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name());
-        List<String> statusListDISCHARGED = List.of(DISCHARGED.name());
-        List<String> statusListACTIVE = List.of(ACTIVE.name());
-        List<String> statusListEXPECTED = List.of(EXPECTED.name());
-        List<String> statusListMIXED = List.of(EXPECTED.name(), DISCHARGED.name());
-        List<String> statusListEmpty = List.of();
+        List<PatientDto> expected = patientList.stream()
+                .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
+        when(patientRepository.findAllWithAnyStatus(List.of(DISCHARGED, EXPECTED, ACTIVE), any())).thenReturn(pageableResult);
 
-        // result
-        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(statusListAll);
-        List<PatientAdmissionDto> resultDISCHARGED = sut.getAllPatientsByStatus(statusListDISCHARGED);
-        List<PatientAdmissionDto> resultACTIVE = sut.getAllPatientsByStatus(statusListACTIVE);
-        List<PatientAdmissionDto> resultEXPECTED = sut.getAllPatientsByStatus(statusListEXPECTED);
-        List<PatientAdmissionDto> resultMIXED = sut.getAllPatientsByStatus(statusListMIXED);
-        List<PatientAdmissionDto> resultEmpty = sut.getAllPatientsByStatus(statusListEmpty);
+        List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
+                .getElements().stream().toList();
 
-        assertAll(
-                () -> assertEquals(4, resultAll.size()),
-                () -> assertEquals(1, resultDISCHARGED.size()),
-                () -> assertEquals(1, resultACTIVE.size()),
-                () -> assertEquals(2, resultEXPECTED.size()),
-                () -> assertEquals(3, resultMIXED.size()),
-                () -> assertEquals(0, resultEmpty.size())
-        );
+        assertEquals(expected, result);
+
+
     }
 
     @Test
@@ -97,6 +119,7 @@ public class PatientServiceTest {
         patient.setCurrentAdmission(null);
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
+        assert given != null;
         given.setFirstName("Test");
         given.setDeleted(true);
 
@@ -124,7 +147,7 @@ public class PatientServiceTest {
         assertEquals(expected, result);
     }
 
-    private List<Patient> getPatientList() {
+    private @org.jetbrains.annotations.NotNull List<Patient> getPatientList() {
         List<Patient> patientList = new ArrayList<>();
         patientList.add(getAdmissionPatient(DISCHARGED));
         patientList.add(getAdmissionPatient(ACTIVE));

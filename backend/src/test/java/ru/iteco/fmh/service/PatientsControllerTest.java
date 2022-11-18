@@ -9,14 +9,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -43,17 +46,16 @@ public class PatientsControllerTest {
         int countDischarged = 1;
         int countAll = 6;
 
-        List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
-        List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
-        List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
-        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name()));
+        int allPatients = (int) Stream.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED), getAdmissionPatient(ACTIVE)).count();
+        int activePatients = (int) Stream.of(getAdmissionPatient(ACTIVE)).count();
+        int dischargedPatients = (int) Stream.of(getAdmissionPatient(DISCHARGED)).count();
+        int expectedPatients = (int) Stream.of(getAdmissionPatient(EXPECTED)).count();
 
         assertAll(
-                () -> assertEquals(countExpected, resultExpected.size()),
-                () -> assertEquals(countActive, resultActive.size()),
-                () -> assertEquals(countDischarged, resultDischarged.size()),
-                () -> assertEquals(countAll, resultAll.size())
+                () -> assertEquals(countExpected, expectedPatients),
+                () -> assertEquals(countActive, activePatients),
+                () -> assertEquals(countDischarged, dischargedPatients),
+                () -> assertEquals(countAll, allPatients)
         );
     }
 
@@ -81,6 +83,7 @@ public class PatientsControllerTest {
         // given
         int patientId = 1;
         PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
+        assert given != null;
         String initialLastName = given.getLastName();
         given.setLastName("newLastName");
 
@@ -92,7 +95,7 @@ public class PatientsControllerTest {
 
         //after
         result.setLastName(initialLastName);
-        patientRepository.save(conversionService.convert(result,Patient.class));
+        patientRepository.save(Objects.requireNonNull(conversionService.convert(result, Patient.class)));
     }
 
     @Test
@@ -146,5 +149,16 @@ public class PatientsControllerTest {
                 .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
+    }
+
+    private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
+        return Patient.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .birthDate(Instant.now())
+                .currentAdmission(getAdmission(admissionsStatus))
+                .build();
     }
 }
