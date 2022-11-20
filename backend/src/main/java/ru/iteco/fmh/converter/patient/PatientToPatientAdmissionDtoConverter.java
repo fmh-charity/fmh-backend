@@ -19,6 +19,7 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .middleName(patient.getMiddleName())
+                .birthday(patient.getBirthDate())
                 .admissionsStatus(patient.getStatus())
                 .build();
         dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochDay() : null);

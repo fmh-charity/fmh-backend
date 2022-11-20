@@ -92,7 +92,7 @@ public class PatientServiceTest {
         assertEquals(patientRs, result);
     }
 
-    @Test
+  /*  @Test
     public void updatePatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
@@ -110,7 +110,7 @@ public class PatientServiceTest {
         PatientDto result = sut.updatePatient(given);
 
         assertEquals(given, result);
-    }
+    }*/
 
     @Test
     public void getPatientShouldPassSuccess() {

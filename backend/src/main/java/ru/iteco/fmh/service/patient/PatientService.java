@@ -5,6 +5,8 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 
 import java.util.List;
 
@@ -29,7 +31,8 @@ public interface PatientService {
      * @param patientDto информация по карточке пациента для обновления
      * @return сущность
      */
-    PatientDto updatePatient(PatientDto patientDto);
+    PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto);
+
 
     /**
      * возвращает полную инфу по конкретному пациенту

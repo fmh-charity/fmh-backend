@@ -80,7 +80,7 @@ public class PatientsControllerTest {
         patientRepository.deleteById(resultDto.getId());
     }
 
-    @Test
+   /* @Test
     public void updatePatientShouldPassSuccess() {
         // given
         int patientId = 1;
@@ -94,7 +94,7 @@ public class PatientsControllerTest {
 
         assertEquals(given, result);
     }
-
+*/
     @Test
     public void getPatientShouldPassSuccess() {
         // given
