@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -87,8 +90,8 @@ public class PatientsController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "изменение пациента")
-    @PutMapping
-    public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
-        return patientService.updatePatient(patientDto);
+    @PutMapping("/{id}")
+    public PatientUpdateInfoDtoRs updatePatient(@RequestBody @Valid PatientUpdateInfoDtoRq patientDto, @PathVariable("id") int id) {
+        return patientService.updatePatient(id, patientDto);
     }
 }

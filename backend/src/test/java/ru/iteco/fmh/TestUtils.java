@@ -27,6 +27,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -85,7 +86,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(Admission.builder().build())
                 .admissions(new HashSet<>())
                 .build();
