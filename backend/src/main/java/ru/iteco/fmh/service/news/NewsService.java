@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.news;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.news.NewsPaginationDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,7 +13,8 @@ public interface NewsService {
     /**
      * возвращает список всех новостей
      */
-    NewsPaginationDto getNews(int pages, int elements, boolean publishDate);
+    NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId,
+                              LocalDate publishDateFrom, LocalDate publishDateTo);
 
     /**
      * возвращает новость для просмотра

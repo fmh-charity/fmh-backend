@@ -19,7 +19,7 @@
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
-        <cucumber.version>7.8.1</cucumber.version>
+        <cucumber.version>7.9.0</cucumber.version>
     </properties>
 
     <dependencies>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.6.6</version>
+            <version>1.6.8</version>
         </dependency>
 
         <dependency>
