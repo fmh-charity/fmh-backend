@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -61,20 +63,21 @@ public class PatientsControllerTest {
     @Test
     public void createPatientShouldPassSuccess() {
         //given
-        PatientDto givenDto = getPatientDto();
-        givenDto.setId(0);
 
-        PatientDto resultDto = sut.createPatient(givenDto);
+        PatientCreateInfoDtoRq givenDto = getPatientCreateInfoDtoRq();
 
-        Integer resultId = resultDto.getId();
+        PatientCreateInfoDtoRs resultDto = sut.createPatient(givenDto);
 
-        assertNotNull(resultId);
-
-        givenDto.setId(resultId);
-        assertEquals(givenDto, resultDto);
+        assertAll(
+                () -> assertEquals(givenDto.getFirstName(), resultDto.getFirstName()),
+                () -> assertEquals(givenDto.getLastName(), resultDto.getLastName()),
+                () -> assertEquals(givenDto.getMiddleName(), resultDto.getMiddleName()),
+                () -> assertEquals(givenDto.getBirthDate(), resultDto.getBirthDate()),
+                () -> assertNotNull(resultDto.getId())
+        );
 
         // AFTER - deleting result entity
-        patientRepository.deleteById(resultId);
+        patientRepository.deleteById(resultDto.getId());
     }
 
     @Test

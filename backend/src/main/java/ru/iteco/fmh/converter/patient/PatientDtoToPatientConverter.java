@@ -9,8 +9,6 @@ import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.Instant;
-
 /**
  * конвертер из {@link PatientDto} в {@link Patient}
  */
@@ -22,8 +20,6 @@ public class PatientDtoToPatientConverter implements Converter<PatientDto, Patie
     public Patient convert(@NonNull PatientDto dto) {
         Patient entity = new Patient();
         BeanUtils.copyProperties(dto, entity);
-
-        entity.setBirthDate(dto.getBirthDate() != null ? Instant.ofEpochMilli(dto.getBirthDate()) : null);
 
         return entity;
     }

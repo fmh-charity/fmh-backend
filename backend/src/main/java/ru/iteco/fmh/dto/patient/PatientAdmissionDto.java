@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
+import java.time.LocalDate;
+
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")
 @NoArgsConstructor
@@ -25,7 +27,7 @@ public class PatientAdmissionDto {
     @ApiModelProperty("отчество пациента")
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
-    private Long birthday;
+    private LocalDate birthday;
 
     @ApiModelProperty(value = "статус госпитализации")
     private AdmissionsStatus admissionsStatus;
