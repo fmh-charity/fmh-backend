@@ -18,15 +18,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class PatientUpdateInfoDtoRq {
-    @NotBlank
     @ApiModelProperty("имя пациента")
-    @Pattern(regexp = "^[А-Яа-яA-Zz-z]*$")
+    @NotBlank
+    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z]+")
     private String firstName;
     @ApiModelProperty("фамилия пациента")
     @NotBlank
-    @Pattern(regexp = "^[А-Яа-яA-Za-z-]*$")
+    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z/-]+")
     private String lastName;
-    @Pattern(regexp = "^[А-Яа-яA-Za-z]*$")
+    @NotBlank
+    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z/-]+")
     @ApiModelProperty("отчество пациента")
     private String middleName;
     @NotNull
