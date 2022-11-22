@@ -21,6 +21,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@ToString
 @Table(name = "patient")
 public class Patient {
     @Id
@@ -47,16 +48,4 @@ public class Patient {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "createDate = " + createDate + ", " +
-                "firstName = " + firstName + ", " +
-                "lastName = " + lastName + ", " +
-                "middleName = " + middleName + ", " +
-                "birthDate = " + birthDate + ", " +
-                "currentAdmission = " + currentAdmission + ", " +
-                "deleted = " + deleted + ")";
-    }
 }
