@@ -11,6 +11,8 @@ import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
@@ -22,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getAlphabeticString;
@@ -91,25 +92,20 @@ public class PatientServiceTest {
         assertEquals(given, result);
     }
 
-  /*  @Test
+    @Test
     public void updatePatientShouldPassSuccess() {
         // given
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
+                .middleName("-").birthDate(LocalDate.now()).build();
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
-
-        given.setFirstName("Test");
-        given.setDeleted(true);
-
-        patient.setFirstName("Test");
-        patient.setDeleted(true);
-
+        patient.setFirstName("Test2");
         when(patientRepository.findPatientById(any())).thenReturn(patient);
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.updatePatient(given);
+        PatientUpdateInfoDtoRs result = sut.updatePatient(patient.getId(), given);
 
-        assertEquals(given, result);
-    }*/
+        assertEquals(given.getFirstName(), result.getFirstName());
+
+    }
 
     @Test
     public void getPatientShouldPassSuccess() {

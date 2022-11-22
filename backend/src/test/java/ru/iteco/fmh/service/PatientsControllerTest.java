@@ -10,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,40 +61,42 @@ public class PatientsControllerTest {
         );
     }
 
+    /*   @Test
+       public void createPatientShouldPassSuccess() {
+           //given
+           PatientDto givenDto = getPatientDto();
+           givenDto.setId(0);
+
+           PatientDto resultDto = sut.createPatient(givenDto);
+
+           Integer resultId = resultDto.getId();
+
+           assertNotNull(resultId);
+
+           givenDto.setId(resultId);
+           assertEquals(givenDto, resultDto);
+
+           // AFTER - deleting result entity
+           patientRepository.deleteById(resultId);
+       }
+   */
     @Test
-    public void createPatientShouldPassSuccess() {
-        //given
-        PatientDto givenDto = getPatientDto();
-        givenDto.setId(0);
-
-        PatientDto resultDto = sut.createPatient(givenDto);
-
-        Integer resultId = resultDto.getId();
-
-        assertNotNull(resultId);
-
-        givenDto.setId(resultId);
-        assertEquals(givenDto, resultDto);
-
-        // AFTER - deleting result entity
-        patientRepository.deleteById(resultId);
-    }
-
-   /* @Test
     public void updatePatientShouldPassSuccess() {
         // given
-        int patientId = 1;
-        PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
-        String initialLastName = given.getLastName();
-        given.setLastName("newLastName");
+        int patientId = 5;
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
+                .middleName("-").birthDate(LocalDate.now()).build();
+        PatientUpdateInfoDtoRs result = sut.updatePatient(given, patientId);
+        assertAll(
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
+                () -> assertEquals(patientId, result.getId())
+        );
 
-        PatientDto result = sut.updatePatient(given);
-        result.setCurrentAdmission(null);
-        result.setAdmissions(new HashSet<>());
-
-        assertEquals(given, result);
     }
-*/
+
     @Test
     public void getPatientShouldPassSuccess() {
         // given
