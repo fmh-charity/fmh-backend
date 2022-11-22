@@ -1,12 +1,6 @@
 package ru.iteco.fmh.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Where;
 import ru.iteco.fmh.model.admission.Admission;
@@ -27,13 +21,12 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@ToString
 @Table(name = "patient")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
+    Instant createDate;
     String firstName;
     String lastName;
     String middleName;
@@ -52,5 +45,18 @@ public class Patient {
 
     public AdmissionsStatus getStatus() {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "createDate = " + createDate + ", " +
+                "firstName = " + firstName + ", " +
+                "lastName = " + lastName + ", " +
+                "middleName = " + middleName + ", " +
+                "birthDate = " + birthDate + ", " +
+                "currentAdmission = " + currentAdmission + ", " +
+                "deleted = " + deleted + ")";
     }
 }

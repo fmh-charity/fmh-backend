@@ -13,11 +13,11 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Page<Patient> findAllWithActiveStatus(List<AdmissionsStatus> status, Pageable pageable);
 
-    Page<Patient> findAllWithInactiveStatus(List<AdmissionsStatus> status, Pageable pageableList);
+    Page<Patient> findAllWithInactiveStatus(List<AdmissionsStatus> status, Pageable pageable);
 
     Page<Patient> findAllWithAnyStatus(List<AdmissionsStatus> status, Pageable pageableList);
 
     Patient findPatientById(Integer id);
 
-    Patient findByAdmissionsId(Integer id);
+//    Patient findByAdmissionsId(Integer id);
 }

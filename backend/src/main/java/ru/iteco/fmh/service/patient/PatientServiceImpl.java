@@ -1,6 +1,8 @@
 package ru.iteco.fmh.service.patient;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +24,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
+import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +38,14 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientAdmissionDto getAllPatientsByStatus(
-            List<AdmissionsStatus> status, int pages, int elements, boolean dateIn) {
+            List<AdmissionsStatus> status, int pages, int elements, boolean createDate) {
         Page<Patient> list;
         List<Patient> patientList = patientRepository.findAll();
         patientList.sort(Comparator.comparing(Patient::getLastName));
 
-        Pageable pageableList = dateIn
-                ? PageRequest.of(pages, elements, Sort.by("dateIn"))
-                : PageRequest.of(pages, elements, Sort.by("dateIn").descending());
+        Pageable pageableList = createDate
+                ? PageRequest.of(pages, elements, Sort.by("createDate"))
+                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         if (status == null || status.isEmpty()) {
             list = patientRepository.findAllWithActiveStatus(List.of(ACTIVE), pageableList);
@@ -64,13 +69,14 @@ public class PatientServiceImpl implements PatientService {
     public PatientDto createPatient(PatientDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
 
+        assert patient != null;
         patient = patientRepository.save(patient);
         return getPatientDto(patient);
     }
 
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
+    public PatientDto updatePatient(@NotNull PatientDto patientDto) {
         Patient patient = patientRepository.findPatientById(patientDto.getId());
 
         patient.setFirstName(patientDto.getFirstName());
@@ -91,10 +97,11 @@ public class PatientServiceImpl implements PatientService {
         return getPatientDto(patient);
     }
 
-    private PatientDto getPatientDto(Patient patient) {
+    private @NotNull PatientDto getPatientDto(Patient patient) {
         PatientDto dto = conversionService.convert(patient, PatientDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 
+        assert dto != null;
         dto.setCurrentAdmission(patient.getCurrentAdmission() == null
                 ? null : conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
 
@@ -109,7 +116,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     // ставит верные dateIn, dateOut и флаги для отправки на фронт
-    private PatientAdmissionDto setAdmissionDates(PatientAdmissionDto patientAdmissionDto) {
+    @Contract("_ -> param1")
+    private @NotNull PatientAdmissionDto setAdmissionDates(@NotNull PatientAdmissionDto patientAdmissionDto) {
         Long factDateIn = patientAdmissionDto.getFactDateIn();
         Long factDateOut = patientAdmissionDto.getFactDateOut();
         Long planDateIn = patientAdmissionDto.getPlanDateIn();

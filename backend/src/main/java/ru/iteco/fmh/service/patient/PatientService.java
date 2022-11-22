@@ -13,7 +13,7 @@ public interface PatientService {
      * @param patientStatusList список значений для фильтра по госпитализации
      * @return список всех пациентов с любым статусом госпитализации
      */
-    PatientAdmissionDto getAllPatientsByStatus(List<AdmissionsStatus> patientStatusList, int pages, int elements, boolean isIn);
+    PatientAdmissionDto getAllPatientsByStatus(List<AdmissionsStatus> patientStatusList, int pages, int elements, boolean isActive);
 
     /**
      * создает новую карточку пациента
