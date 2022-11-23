@@ -33,4 +33,9 @@ public class PatientDto {
     private AdmissionDto currentAdmission;
     @ApiModelProperty("id всех госпитализаций")
     private Set<Integer> admissions = new HashSet<>();
+    /*
+
+
+    test_back_branch
+     */
 }
