@@ -12,6 +12,7 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setFirstName(patientDto.getFirstName());
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+        patient.setBirthDate(LocalDate.ofEpochDay(patientDto.getBirthDate()));
 
         patient = patientRepository.save(patient);
         return getPatientDto(patient);

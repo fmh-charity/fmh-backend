@@ -96,7 +96,7 @@ public class PatientsControllerTest {
     public void getPatientShouldPassSuccess() {
         // given
         int patientId = 1;
-        String patientFirstName = "Patient1-firstname";
+        String patientFirstName = "PatientOnefirstname";
 
         PatientDto result = sut.getPatient(patientId);
 
