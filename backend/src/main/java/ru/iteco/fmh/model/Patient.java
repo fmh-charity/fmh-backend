@@ -38,6 +38,8 @@ public class Patient {
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
+    AdmissionsStatus status = currentAdmission.getStatus();
+
     @Where(clause = "deleted = false")
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     Set<Admission> admissions = new HashSet<>();
