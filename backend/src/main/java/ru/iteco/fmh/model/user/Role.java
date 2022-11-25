@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 /**
  * Роли
@@ -32,6 +34,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String name;
+    @Enumerated(EnumType.STRING)
+    RoleName name;
     boolean deleted;
 }

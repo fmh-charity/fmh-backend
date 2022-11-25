@@ -10,6 +10,7 @@ import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.task.Status;
+import java.util.List;
 
 @ApiModel(description = "просьба")
 @NoArgsConstructor
@@ -23,7 +24,6 @@ public class WishDto {
     private PatientDtoIdFio patient;
     @ApiModelProperty("тема просьбы")
     private String title;
-
     @ApiModelProperty("описание записки")
     private String description;
     @ApiModelProperty("идентификатор создателя")
@@ -40,4 +40,6 @@ public class WishDto {
     private Status status;
     @ApiModelProperty("палата пациента")
     private RoomDtoRs room;
+    @ApiModelProperty("область видимости")
+    private List<String> wishVisibility;
 }
