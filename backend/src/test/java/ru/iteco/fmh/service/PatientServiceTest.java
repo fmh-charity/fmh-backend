@@ -17,7 +17,6 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,12 +46,12 @@ public class PatientServiceTest {
         List<Patient> patientList = List.of(getAdmissionPatient(AdmissionsStatus.ACTIVE));
         Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
         Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
-        when(patientRepository.findAllWithActiveStatus(List.of(ACTIVE), pageableList))
+        when(patientRepository.findAllByStatusIn(List.of(ACTIVE), pageableList))
                 .thenReturn(pageableResult);
 
         List<PatientDto> expected = patientList.stream()
                 .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
-        when(patientRepository.findAllWithAnyStatus(List.of(ACTIVE), any())).thenReturn(pageableResult);
+        when(patientRepository.findAllByStatusIn(List.of(ACTIVE), any())).thenReturn(pageableResult);
 
         List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
                 .getElements().stream().toList();
@@ -65,12 +64,12 @@ public class PatientServiceTest {
         List<Patient> patientList = List.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED));
         Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
         Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
-        when(patientRepository.findAllWithActiveStatus(List.of(DISCHARGED, EXPECTED), pageableList))
+        when(patientRepository.findAllByStatusIn(List.of(DISCHARGED, EXPECTED), pageableList))
                 .thenReturn(pageableResult);
 
         List<PatientDto> expected = patientList.stream()
                 .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
-        when(patientRepository.findAllWithAnyStatus(List.of(DISCHARGED, EXPECTED), any())).thenReturn(pageableResult);
+        when(patientRepository.findAllByStatusIn(List.of(DISCHARGED, EXPECTED), any())).thenReturn(pageableResult);
 
         List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
                 .getElements().stream().toList();
@@ -84,12 +83,12 @@ public class PatientServiceTest {
         List<Patient> patientList = List.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED), getAdmissionPatient(ACTIVE));
         Pageable pageableList = PageRequest.of(pages, elements, Sort.by("inDate"));
         Page<Patient> pageableResult = new PageImpl<>(patientList, pageableList, 8);
-        when(patientRepository.findAllWithActiveStatus(List.of(DISCHARGED, EXPECTED, ACTIVE), pageableList))
+        when(patientRepository.findAllByStatusIn(List.of(DISCHARGED, EXPECTED, ACTIVE), pageableList))
                 .thenReturn(pageableResult);
 
         List<PatientDto> expected = patientList.stream()
                 .map(patient -> conversionService.convert(patient, PatientDto.class)).collect(Collectors.toList());
-        when(patientRepository.findAllWithAnyStatus(List.of(DISCHARGED, EXPECTED, ACTIVE), any())).thenReturn(pageableResult);
+        when(patientRepository.findAllByStatusIn(List.of(DISCHARGED, EXPECTED, ACTIVE), any())).thenReturn(pageableResult);
 
         List<PatientDto> result = sut.getAllPatientsByStatus(null, pages, elements, true)
                 .getElements().stream().toList();
@@ -145,15 +144,6 @@ public class PatientServiceTest {
         PatientDto result = sut.getPatient(0);
 
         assertEquals(expected, result);
-    }
-
-    private @org.jetbrains.annotations.NotNull List<Patient> getPatientList() {
-        List<Patient> patientList = new ArrayList<>();
-        patientList.add(getAdmissionPatient(DISCHARGED));
-        patientList.add(getAdmissionPatient(ACTIVE));
-        patientList.add(getAdmissionPatient(EXPECTED));
-        patientList.add(getEmptyAdmissionPatient());
-        return patientList;
     }
 
     private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {

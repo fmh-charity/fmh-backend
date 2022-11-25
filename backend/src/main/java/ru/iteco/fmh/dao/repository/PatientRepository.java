@@ -11,13 +11,8 @@ import java.util.List;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
-    Page<Patient> findAllWithActiveStatus(List<AdmissionsStatus> status, Pageable pageable);
-
-    Page<Patient> findAllWithInactiveStatus(List<AdmissionsStatus> status, Pageable pageable);
-
-    Page<Patient> findAllWithAnyStatus(List<AdmissionsStatus> status, Pageable pageableList);
+    Page<Patient> findAllByStatusIn(List<AdmissionsStatus> status, Pageable pageable);
 
     Patient findPatientById(Integer id);
 
-//    Patient findByAdmissionsId(Integer id);
 }

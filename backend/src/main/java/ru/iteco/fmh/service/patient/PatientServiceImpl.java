@@ -48,11 +48,11 @@ public class PatientServiceImpl implements PatientService {
                 : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         if (status == null || status.isEmpty()) {
-            list = patientRepository.findAllWithActiveStatus(List.of(ACTIVE), pageableList);
+            list = patientRepository.findAllByStatusIn(List.of(ACTIVE), pageableList);
         } else if (status.contains(AdmissionsStatus.EXPECTED) || status.contains(AdmissionsStatus.DISCHARGED)) {
-            list = patientRepository.findAllWithInactiveStatus(List.of(EXPECTED, DISCHARGED), pageableList);
+            list = patientRepository.findAllByStatusIn(List.of(EXPECTED, DISCHARGED), pageableList);
         } else {
-            list = patientRepository.findAllWithAnyStatus(status, pageableList);
+            list = patientRepository.findAllByStatusIn(status, pageableList);
         }
 
         return PatientAdmissionDto.builder()
