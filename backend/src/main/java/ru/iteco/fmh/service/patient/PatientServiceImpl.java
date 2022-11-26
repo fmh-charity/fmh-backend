@@ -12,6 +12,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
@@ -66,15 +67,15 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto getPatient(Integer id) {
+    public PatientInfoDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Пациента с таким ID не существует"));
 
-        return getPatientDto(patient);
+        return getPatientInfoDto(patient);
     }
 
-    private PatientDto getPatientDto(Patient patient) {
-        PatientDto dto = conversionService.convert(patient, PatientDto.class);
+    private PatientInfoDto getPatientDto(Patient patient) {
+        PatientInfoDto dto = conversionService.convert(patient, PatientInfoDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 
         dto.setCurrentAdmission(patient.getCurrentAdmission() == null

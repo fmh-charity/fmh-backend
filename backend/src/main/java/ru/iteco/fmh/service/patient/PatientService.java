@@ -7,6 +7,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 
 import java.util.List;
 
@@ -39,6 +40,6 @@ public interface PatientService {
      * @param id ид пациента
      * @return полная инфа по конкретному пациенту
      */
-    PatientDto getPatient(Integer id);
+    PatientInfoDto getPatient(Integer id);
 
 }

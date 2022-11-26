@@ -20,6 +20,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
@@ -58,7 +59,7 @@ public class PatientsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")
-    public PatientDto getPatient(
+    public PatientInfoDto getPatient(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id) {
         return patientService.getPatient(id);
     }
