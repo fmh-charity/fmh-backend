@@ -15,6 +15,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
@@ -116,8 +117,8 @@ public class PatientServiceTest {
 
         when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 
-        PatientDto expected = conversionService.convert(patient, PatientDto.class);
-        PatientDto result = sut.getPatient(0);
+        PatientInfoDto expected = conversionService.convert(patient, PatientInfoDto.class);
+        PatientInfoDto result = sut.getPatient(0);
 
         assertEquals(expected, result);
     }
