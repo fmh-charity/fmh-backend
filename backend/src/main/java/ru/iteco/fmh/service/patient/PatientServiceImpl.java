@@ -67,7 +67,7 @@ public class PatientServiceImpl implements PatientService {
         return getPatientInfoDto(patient);
     }
 
-    private PatientInfoDto getPatientDto(Patient patient) {
+    private PatientInfoDto getPatientInfoDto(Patient patient) {
         PatientInfoDto dto = conversionService.convert(patient, PatientInfoDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 

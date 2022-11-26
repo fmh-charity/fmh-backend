@@ -12,7 +12,7 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 
 import java.util.HashSet;
@@ -61,10 +61,10 @@ public class PatientsControllerTest {
     @Test
     public void createPatientShouldPassSuccess() {
         //given
-        PatientDto givenDto = getPatientDto();
+        PatientInfoDto givenDto = getPatientInfoDto();
         givenDto.setId(0);
 
-        PatientDto resultDto = sut.createPatient(givenDto);
+        PatientInfoDto resultDto = sut.createPatient(givenDto);
 
         Integer resultId = resultDto.getId();
 
@@ -81,11 +81,11 @@ public class PatientsControllerTest {
     public void updatePatientShouldPassSuccess() {
         // given
         int patientId = 1;
-        PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
+        PatientInfoDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientInfoDto.class);
         String initialLastName = given.getLastName();
         given.setLastName("newLastName");
 
-        PatientDto result = sut.updatePatient(given);
+        PatientInfoDto result = sut.updatePatient(given);
         result.setCurrentAdmission(null);
         result.setAdmissions(new HashSet<>());
 
@@ -98,7 +98,7 @@ public class PatientsControllerTest {
         int patientId = 1;
         String patientFirstName = "Patient1-firstname";
 
-        PatientDto result = sut.getPatient(patientId);
+        PatientInfoDto result = sut.getPatient(patientId);
 
         assertEquals(patientFirstName, result.getFirstName());
     }

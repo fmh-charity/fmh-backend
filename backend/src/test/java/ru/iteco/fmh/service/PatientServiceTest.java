@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
@@ -82,10 +82,10 @@ public class PatientServiceTest {
         // given
         Patient patient = getPatient();
         patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
+        PatientInfoDto given = conversionService.convert(patient, PatientInfoDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.createPatient(given);
+        PatientInfoDto result = sut.createPatient(given);
 
         assertEquals(given, result);
     }
@@ -95,7 +95,7 @@ public class PatientServiceTest {
         // given
         Patient patient = getPatient();
         patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
+        PatientInfoDto given = conversionService.convert(patient, PatientInfoDto.class);
 
         given.setFirstName("Test");
         given.setDeleted(true);
@@ -105,7 +105,7 @@ public class PatientServiceTest {
 
         when(patientRepository.findPatientById(any())).thenReturn(patient);
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.updatePatient(given);
+        PatientInfoDto result = sut.updatePatient(given);
 
         assertEquals(given, result);
     }
@@ -118,8 +118,8 @@ public class PatientServiceTest {
 
         when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 
-        PatientDto expected = conversionService.convert(patient, PatientDto.class);
-        PatientDto result = sut.getPatient(0);
+        PatientInfoDto expected = conversionService.convert(patient, PatientInfoDto.class);
+        PatientInfoDto result = sut.getPatient(0);
 
         assertEquals(expected, result);
     }
