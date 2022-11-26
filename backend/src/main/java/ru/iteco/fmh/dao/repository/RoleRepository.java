@@ -6,10 +6,10 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.RoleName;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
     List<Role> findAllByNameIn(List<RoleName> roleNames);
-
 }

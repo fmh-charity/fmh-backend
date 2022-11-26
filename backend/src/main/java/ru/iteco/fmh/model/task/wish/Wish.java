@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.Task;
@@ -15,6 +17,7 @@ import ru.iteco.fmh.model.user.User;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 /**
  * просьба
@@ -24,7 +27,6 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
 @Entity
 @Table(name = "wish")
 public class Wish extends Task {
@@ -32,7 +34,8 @@ public class Wish extends Task {
     @JoinColumn(name = "patient_id")
     Patient patient;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "wish_visibility", joinColumns = @JoinColumn(name = "wish_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> wishVisibility;
@@ -48,5 +51,13 @@ public class Wish extends Task {
                 planExecuteDate, factExecuteDate, status, deleted);
         this.patient = patient;
         this.wishVisibility = wishVisibility;
+    }
+
+    @Override
+    public String toString() {
+        return "Wish{" +
+                "patient=" + patient +
+                ", wishVisibility=" + wishVisibility +
+                '}';
     }
 }

@@ -16,6 +16,7 @@ import ru.iteco.fmh.model.user.RoleName;
 import ru.iteco.fmh.model.user.User;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -28,8 +29,7 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
     public Wish convert(@NonNull WishDto dto) {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
-        List<RoleName> roleNamesList = dto.getWishVisibility().stream().map(RoleName::valueOf).toList();
-        List<Role> roleList = roleRepository.findAllByNameIn(roleNamesList);
+        List<Role> roleList = roleRepository.findAllByNameIn(dto.getWishVisibility());
 
         Patient patient = dto.getPatient() != null ? patientRepository.findPatientById(dto.getPatient().id()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
