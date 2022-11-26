@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
@@ -46,14 +46,14 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
-        return patientService.createPatient(patientDto);
+    public PatientInfoDto createPatient(@RequestBody PatientInfoDto patientInfoDto) {
+        return patientService.createPatient(patientInfoDto);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает общую информацию по пациенту")
     @GetMapping("/{id}")
-    public PatientDto getPatient(
+    public PatientInfoDto getPatient(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id) {
         return patientService.getPatient(id);
     }
@@ -88,7 +88,7 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "изменение пациента")
     @PutMapping
-    public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
-        return patientService.updatePatient(patientDto);
+    public PatientInfoDto updatePatient(@RequestBody PatientInfoDto patientInfoDto) {
+        return patientService.updatePatient(patientInfoDto);
     }
 }

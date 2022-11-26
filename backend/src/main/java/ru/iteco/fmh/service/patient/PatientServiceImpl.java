@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
@@ -37,16 +37,16 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto createPatient(PatientDto patientDto) {
-        Patient patient = conversionService.convert(patientDto, Patient.class);
+    public PatientInfoDto createPatient(PatientInfoDto patientInfoDto) {
+        Patient patient = conversionService.convert(patientInfoDto, Patient.class);
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return getPatientInfoDto(patient);
     }
 
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
+    public PatientInfoDto updatePatient(PatientInfoDto patientDto) {
         Patient patient = patientRepository.findPatientById(patientDto.getId());
 
         patient.setFirstName(patientDto.getFirstName());
@@ -55,20 +55,20 @@ public class PatientServiceImpl implements PatientService {
         patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return getPatientInfoDto(patient);
     }
 
     @Transactional
     @Override
-    public PatientDto getPatient(Integer id) {
+    public PatientInfoDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Пациента с таким ID не существует"));
 
-        return getPatientDto(patient);
+        return getPatientInfoDto(patient);
     }
 
-    private PatientDto getPatientDto(Patient patient) {
-        PatientDto dto = conversionService.convert(patient, PatientDto.class);
+    private PatientInfoDto getPatientDto(Patient patient) {
+        PatientInfoDto dto = conversionService.convert(patient, PatientInfoDto.class);
         Set<Integer> admissionIds = new HashSet<>();
 
         dto.setCurrentAdmission(patient.getCurrentAdmission() == null

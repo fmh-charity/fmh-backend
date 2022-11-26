@@ -1,4 +1,3 @@
-/*
 package ru.iteco.fmh.dto.patient;
 
 import io.swagger.annotations.ApiModel;
@@ -17,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PatientDto {
+public class PatientInfoDto {
     @ApiModelProperty("id пациента")
     private Integer id;
     @ApiModelProperty("имя пациента")
@@ -35,4 +34,3 @@ public class PatientDto {
     @ApiModelProperty("id всех госпитализаций")
     private Set<Integer> admissions = new HashSet<>();
 }
-*/
