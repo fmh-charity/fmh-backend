@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
@@ -82,9 +83,23 @@ public class NewsServiceImpl implements NewsService {
 
     @Transactional
     @Override
-    public NewsDto createOrUpdateNews(NewsDto newsDto) {
+    public NewsDto createNews(NewsDto newsDto) {
         News news = conversionService.convert(newsDto, News.class);
+
+        User authentication = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        news.setCreator(userRepository.findUserById(authentication.getId()));
+        news.setCreateDate(Instant.now());
         news = newsRepository.save(news);
+        return conversionService.convert(news, NewsDto.class);
+    }
+
+    @Transactional
+    @Override
+    public NewsDto updateNews(NewsDto newsDto) {
+        News news = conversionService.convert(newsDto, News.class);
+
+        news = newsRepository.save(news);
+
         return conversionService.convert(news, NewsDto.class);
     }
 

@@ -353,6 +353,17 @@ public class TestUtils {
     public static NewsDto getNewsDto() {
         return NewsDto.builder()
                 .id(Integer.parseInt(getNumeric(2)))
+                .newsCategoryId(Integer.parseInt(getNumeric(2)))
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .publishDate(Instant.now().toEpochMilli())
+                .publishEnabled(true)
+                .build();
+    }
+
+    public static NewsDto getNewsDtowithDateAndUser() {
+        return NewsDto.builder()
+                .id(Integer.parseInt(getNumeric(2)))
                 .creatorId(Integer.parseInt(getNumeric(2)))
                 .newsCategoryId(Integer.parseInt(getNumeric(2)))
                 .createDate(Instant.now().toEpochMilli())
