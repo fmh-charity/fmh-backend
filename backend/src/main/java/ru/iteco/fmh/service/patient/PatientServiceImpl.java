@@ -46,13 +46,13 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientInfoDto updatePatient(PatientInfoDto patientDto) {
-        Patient patient = patientRepository.findPatientById(patientDto.getId());
+    public PatientInfoDto updatePatient(PatientInfoDto patientInfoDto) {
+        Patient patient = patientRepository.findPatientById(patientInfoDto.getId());
 
-        patient.setFirstName(patientDto.getFirstName());
-        patient.setMiddleName(patientDto.getMiddleName());
-        patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+        patient.setFirstName(patientInfoDto.getFirstName());
+        patient.setMiddleName(patientInfoDto.getMiddleName());
+        patient.setLastName(patientInfoDto.getLastName());
+        patient.setBirthDate(Instant.ofEpochMilli(patientInfoDto.getBirthDate()));
 
         patient = patientRepository.save(patient);
         return getPatientInfoDto(patient);
