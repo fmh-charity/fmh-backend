@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
@@ -38,11 +40,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto createPatient(PatientDto patientDto) {
-        Patient patient = conversionService.convert(patientDto, Patient.class);
+    public PatientCreateInfoDtoRs createPatient(PatientCreateInfoDtoRq patientCreateInfoDtoRq) {
+        Patient patient = conversionService.convert(patientCreateInfoDtoRq, Patient.class);
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return conversionService.convert(patient, PatientCreateInfoDtoRs.class);
     }
 
     @Transactional

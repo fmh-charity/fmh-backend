@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
@@ -26,9 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
-import static ru.iteco.fmh.TestUtils.getNumeric;
-import static ru.iteco.fmh.TestUtils.getPatient;
+import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
@@ -81,14 +81,15 @@ public class PatientServiceTest {
     @Test
     public void createPatientShouldPassSuccess() {
         // given
-        Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
+        PatientCreateInfoDtoRq patientRq = getPatientCreateInfoDtoRq();
+        Patient patient = conversionService.convert(patientRq, Patient.class);
+        patient.setId(12);
+        PatientCreateInfoDtoRs patientRs = conversionService.convert(patient, PatientCreateInfoDtoRs.class  );
 
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.createPatient(given);
+        PatientCreateInfoDtoRs result = sut.createPatient(patientRq);
 
-        assertEquals(given, result);
+        assertEquals(patientRs, result);
     }
 
     @Test
