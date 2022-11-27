@@ -12,11 +12,9 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.RoleName;
 import ru.iteco.fmh.model.user.User;
 import java.time.Instant;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
         entity.setPatient(patient);
         entity.setCreator(creator);
         entity.setExecutor(executor);
-        entity.setWishVisibility(roleList);
+        entity.setWishRoles(roleList);
         return entity;
     }
 }

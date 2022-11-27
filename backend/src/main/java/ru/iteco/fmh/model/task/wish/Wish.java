@@ -3,7 +3,6 @@ package ru.iteco.fmh.model.task.wish;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
@@ -17,7 +16,6 @@ import ru.iteco.fmh.model.user.User;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
-import java.util.Set;
 
 /**
  * просьба
@@ -38,7 +36,7 @@ public class Wish extends Task {
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "wish_visibility", joinColumns = @JoinColumn(name = "wish_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    List<Role> wishVisibility;
+    List<Role> wishRoles;
 
     public Wish() {
         super();
@@ -46,18 +44,18 @@ public class Wish extends Task {
 
     public Wish(Integer id, String title, String description, User creator, User executor, Instant createDate,
                 Instant planExecuteDate, Instant factExecuteDate, Status status,
-                boolean deleted, Patient patient, List<Role> wishVisibility) {
+                boolean deleted, Patient patient, List<Role> wishRoles) {
         super(id, title, description, creator, executor, createDate,
                 planExecuteDate, factExecuteDate, status, deleted);
         this.patient = patient;
-        this.wishVisibility = wishVisibility;
+        this.wishRoles = wishRoles;
     }
 
     @Override
     public String toString() {
         return "Wish{" +
                 "patient=" + patient +
-                ", wishVisibility=" + wishVisibility +
+                ", wishVisibility=" + wishRoles +
                 '}';
     }
 }

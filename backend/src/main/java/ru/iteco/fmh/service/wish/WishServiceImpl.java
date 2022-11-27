@@ -2,11 +2,10 @@ package ru.iteco.fmh.service.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
@@ -19,9 +18,12 @@ import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.RoleName;
 import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
@@ -41,17 +43,19 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
         Page<Wish> list;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Util util = new Util(userRepository);
+        List<RoleName> currentUserRolesList = util.getRolesListFromAuthentication(authentication);
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
                 : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         if (status == null || status.isEmpty()) {
-            list = wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
+            list = wishRepository.findAllBy(List.of(OPEN, IN_PROGRESS), currentUserRolesList, pageableList);
         } else {
-            list = wishRepository.findAllByStatusInAndDeletedIsFalse(status, pageableList);
+            list = wishRepository.findAllBy(status, currentUserRolesList, pageableList);
         }
-
         return WishPaginationDto.builder()
                 .pages(list.getTotalPages() - 1)
                 .elements(

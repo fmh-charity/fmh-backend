@@ -40,7 +40,7 @@ public class WishesController {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"Администратор", "Медицинский работник"})
     @ApiOperation(value = "реестр всех просьб")
     @GetMapping()
     public ResponseEntity<WishPaginationDto> getWishes(

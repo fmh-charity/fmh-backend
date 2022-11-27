@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.RoleName;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Util {
     private final UserRepository userRepository;
+
     String administrator = "ROLE_ADMINISTRATOR";
 
     public String getCreatorName(Integer id) {
@@ -64,5 +66,7 @@ public class Util {
                 .contains("ROLE_ADMINISTRATOR");
     }
 
-
+    public List<RoleName> getRolesListFromAuthentication(Authentication authentication) {
+        return userRepository.findUserByLogin(authentication.getName()).getUserRoles().stream().map(Role::getName).toList();
+    }
 }

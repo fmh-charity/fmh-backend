@@ -28,7 +28,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     public WishDto convert(@NonNull Wish wish) {
         WishDto dto = new WishDto();
         BeanUtils.copyProperties(wish, dto);
-        List<RoleName> roleNameList = wish.getWishVisibility().stream().map(Role::getName).toList();
+        List<RoleName> roleNameList = wish.getWishRoles().stream().map(Role::getName).toList();
 
         dto.setPatient(wish.getPatient() != null
                 ? toPatientDtoIdFioConverter.convert(wish.getPatient()) : null);

@@ -133,3 +133,18 @@ values (1, 1, false),
        (3, 2, false),
        (4, 2, false),
        (5, 1, false);
+
+insert into wish_visibility (wish_id, role_id, deleted)
+values (1, 1, false),
+       (1, 2, false),
+       (2, 1, false),
+       (2, 2, false),
+       (3, 1, false),
+       (4, 1, false),
+       (5, 1, false),
+       (5, 2, false),
+       (6, 1, false),
+       (6, 2, false),
+       (7, 2, false),
+       (8, 1, false),
+       (8, 2, false);
