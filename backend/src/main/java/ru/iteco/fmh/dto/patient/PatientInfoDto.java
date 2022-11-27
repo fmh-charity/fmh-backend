@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,20 +19,38 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class PatientInfoDto {
+    /*
+    Вместо существующей PatientDto , создать новый класс PatientInfoDto с полями :
+     фамилия, имя, отчество, дата рождения(LocalDate), дата поступления(dateIn),
+     дата выписки(dateOut), статус(имя енама), имя палаты.
+Информацию по дата поступления(dateIn), дата выписки(dateOut), статус(имя енама),
+имя палаты берется из текущей госпитализации пациента(currentAdmission)
+     */
     @ApiModelProperty("id пациента")
     private Integer id;
-    @ApiModelProperty("имя пациента")
-    private String firstName;
     @ApiModelProperty("фамилия пациента")
     private String lastName;
+    @ApiModelProperty("имя пациента")
+    private String firstName;
     @ApiModelProperty("отчество пациента")
     private String middleName;
     @ApiModelProperty("дата рождения пациента")
-    private Long birthDate;
+    private LocalDate birthDate;
+    @ApiModelProperty("дата поступления пациента")
+    private LocalDate dateIn;
+    @ApiModelProperty("дата выписки пациента")
+    private LocalDate dateOut;
+    @ApiModelProperty("статус госпитализации")
+    private AdmissionsStatus status;
+    @ApiModelProperty("имя палаты")
+    private String chamberName;
+
     @ApiModelProperty("текущая госпитализация")
     private boolean deleted;
     @ApiModelProperty("текущая госпитализация")
     private AdmissionDto currentAdmission;
     @ApiModelProperty("id всех госпитализаций")
     private Set<Integer> admissions = new HashSet<>();
+
+
 }
