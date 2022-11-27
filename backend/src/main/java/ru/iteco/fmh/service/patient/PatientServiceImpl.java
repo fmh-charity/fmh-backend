@@ -40,8 +40,6 @@ public class PatientServiceImpl implements PatientService {
     public PatientAdmissionDto getAllPatientsByStatus(
             List<AdmissionsStatus> status, int pages, int elements, boolean createDate) {
         Page<Patient> list;
-        List<Patient> patientList = patientRepository.findAll();
-        patientList.sort(Comparator.comparing(Patient::getLastName));
 
         Pageable pageableList = createDate
                 ? PageRequest.of(pages, elements, Sort.by("createDate"))
@@ -49,8 +47,6 @@ public class PatientServiceImpl implements PatientService {
 
         if (status == null || status.isEmpty()) {
             list = patientRepository.findAllByStatusIn(List.of(ACTIVE), pageableList);
-        } else if (status.contains(AdmissionsStatus.EXPECTED) || status.contains(AdmissionsStatus.DISCHARGED)) {
-            list = patientRepository.findAllByStatusIn(List.of(EXPECTED, DISCHARGED), pageableList);
         } else {
             list = patientRepository.findAllByStatusIn(status, pageableList);
         }

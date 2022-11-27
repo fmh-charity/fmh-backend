@@ -38,10 +38,12 @@ public class Patient {
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
+    @Transient
     AdmissionsStatus status = currentAdmission.getStatus();
 
     @Where(clause = "deleted = false")
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @ToString.Exclude
     Set<Admission> admissions = new HashSet<>();
 
     boolean deleted;

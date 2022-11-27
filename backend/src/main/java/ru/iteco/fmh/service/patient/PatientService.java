@@ -11,7 +11,7 @@ public interface PatientService {
      * возвращает список всех пациентов с активной госпитализацией
      *
      * @param patientStatusList список значений для фильтра по госпитализации
-     * @return список всех пациентов с любым статусом госпитализации
+     * @return список всех пациентов в зависимости от статуса госпитализации
      */
     PatientAdmissionDto getAllPatientsByStatus(List<AdmissionsStatus> patientStatusList, int pages, int elements, boolean isActive);
 
