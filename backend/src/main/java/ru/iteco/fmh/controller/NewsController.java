@@ -42,8 +42,8 @@ public class NewsController {
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @ApiParam(required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean publishDate,
+            @ApiParam(required = false, name = "publishDate", value = "Сортировка по дате исполнения")
+            @RequestParam(required = true) boolean publishDate,
             @ApiParam(required = false, name = "newsCategoryId", value = "Фильтрация по категории")
             @RequestParam(required = false) Integer newsCategoryId,
             @ApiParam(required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
