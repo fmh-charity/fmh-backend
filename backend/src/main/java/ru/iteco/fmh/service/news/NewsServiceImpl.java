@@ -86,8 +86,7 @@ public class NewsServiceImpl implements NewsService {
     public NewsDto createNews(NewsDto newsDto) {
         News news = conversionService.convert(newsDto, News.class);
 
-        User authentication = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        news.setCreator(userRepository.findUserById(authentication.getId()));
+        news.setCreator((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         news.setCreateDate(Instant.now());
         news = newsRepository.save(news);
         return conversionService.convert(news, NewsDto.class);

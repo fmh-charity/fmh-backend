@@ -21,6 +21,7 @@ import ru.iteco.fmh.security.RequestContext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,10 +69,9 @@ public class NewsControllerTest {
     }
 
     @Test
-    public void createNewsShouldPassSuccess() {
+    public void createAndDeleteNewsShouldPassSuccess() {
         // given
         NewsDto givenDto = getNewsDto();
-        givenDto.setId(0);
         givenDto.setNewsCategoryId(1);
 
         Authentication authentication = mock(Authentication.class);
@@ -82,7 +82,6 @@ public class NewsControllerTest {
                 .thenReturn(User.builder().id(1).build());
 
         NewsDto resultDto = sut.createNews(givenDto);
-
         Integer resultId = resultDto.getId();
 
         assertNotNull(resultId);
@@ -95,6 +94,7 @@ public class NewsControllerTest {
 
         // AFTER - deleting result entity
         sut.deleteNews(resultId);
+        assertTrue(newsRepository.findById(resultId).orElseThrow().isDeleted());
     }
 
     @Test
