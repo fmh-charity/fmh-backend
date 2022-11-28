@@ -4,10 +4,9 @@ spring:
     driverClassName: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
-    platform: postgres
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    database-platform: org.hibernate.dialect.PostgresSQL95Dialect
     show-sql: true
     properties:
       hibernate:
@@ -16,11 +15,14 @@ spring:
         format_sql: true
   flyway:
     locations: classpath:db/migration/dev
+  sql:
+    init:
+      platform: postgres
 server:
   servlet:
     context-path: /fmh
 
-logging.level.ru.iteco.fmh: debug
+    logging.level.ru.iteco.fmh: debug
 
 swagger:
   host: ${SWAGGER_HOST}
