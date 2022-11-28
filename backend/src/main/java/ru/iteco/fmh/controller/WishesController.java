@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,7 @@ public class WishesController {
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
 
-    @Secured({"Администратор", "Медицинский работник"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех просьб")
     @GetMapping()
     public ResponseEntity<WishPaginationDto> getWishes(
@@ -52,32 +54,31 @@ public class WishesController {
                 @RequestParam(name = "status", required = false) List<Status>  status,
             @ApiParam (required = false, name = "planExecuteDate", value = "Сортировка по дате исполнения")
                 @RequestParam(defaultValue = "true") boolean planExecuteDate) {
-
         return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
     @GetMapping("/open-in-progress")
     public List<WishDto> getAllOpenInProgressWishes() {
         return wishService.getOpenInProgressWishes();
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Создание новой просьбы")
     @PostMapping
     public WishDto createWish(@RequestBody WishDto wishDto) {
         return wishService.createWish(wishDto);
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает полную информацию по просьбе")
     @GetMapping("/{id}")
     public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getWish(id);
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по просьбе")
     @PutMapping
     public WishDto updateWish(@RequestBody WishDto wishDto, Authentication authentication) {
@@ -85,7 +86,7 @@ public class WishesController {
     }
 
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обработка просьб по статусной модели")
     @PutMapping("{id}/status")
     public WishDto changeStatus(
@@ -96,25 +97,23 @@ public class WishesController {
         return wishService.changeStatus(id, status, executorId, wishCommentDto);
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
     public WishCommentDto getWishComment(
-            @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
-    ) {
+            @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id) {
         return wishService.getWishComment(id);
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
     public List<WishCommentDto> getAllWishComments(
-            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
-    ) {
+            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getAllWishComments(id);
     }
 
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
     public WishCommentDto createWishComment(
@@ -123,20 +122,10 @@ public class WishesController {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
-
-
-    @Secured({"Администратор", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по комментарию")
     @PutMapping("/comments")
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
-
-
-
 }
-
-
-
-
-

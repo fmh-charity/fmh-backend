@@ -10,7 +10,6 @@ import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.user.RoleName;
 
 import java.util.List;
 
@@ -43,5 +42,5 @@ public class WishDto {
     @ApiModelProperty("палата пациента")
     private RoomDtoRs room;
     @ApiModelProperty("область видимости")
-    private List<RoleName> wishVisibility;
+    private List<Integer> wishVisibility;
 }

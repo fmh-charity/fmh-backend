@@ -13,7 +13,6 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.RoleName;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
     public WishDto convert(@NonNull Wish wish) {
         WishDto dto = new WishDto();
         BeanUtils.copyProperties(wish, dto);
-        List<RoleName> roleNameList = wish.getWishRoles().stream().map(Role::getName).toList();
+        List<Integer> roleIdsList = wish.getWishRoles().stream().map(Role::getId).toList();
 
         dto.setPatient(wish.getPatient() != null
                 ? toPatientDtoIdFioConverter.convert(wish.getPatient()) : null);
@@ -42,7 +41,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setPlanExecuteDate(wish.getPlanExecuteDate() != null ? wish.getPlanExecuteDate().toEpochMilli() : null);
         dto.setFactExecuteDate(wish.getFactExecuteDate() != null ? wish.getFactExecuteDate().toEpochMilli() : null);
         dto.setRoom(roomDtoRs);
-        dto.setWishVisibility(roleNameList);
+        dto.setWishVisibility(roleIdsList);
 
         return dto;
     }

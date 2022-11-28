@@ -27,7 +27,7 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
     public Wish convert(@NonNull WishDto dto) {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
-        List<Role> roleList = roleRepository.findAllByNameIn(dto.getWishVisibility());
+        List<Role> roleList = roleRepository.findAllByIdIn(dto.getWishVisibility());
 
         Patient patient = dto.getPatient() != null ? patientRepository.findPatientById(dto.getPatient().id()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
