@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -66,7 +68,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Создание новой просьбы")
     @PostMapping
-    public WishDto createWish(@RequestBody WishDto wishDto) {
+    public WishDto createWish(@RequestBody WishCreationInfoDto wishDto) {
         return wishService.createWish(wishDto);
     }
 
@@ -79,9 +81,9 @@ public class WishesController {
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по просьбе")
-    @PutMapping
-    public WishDto updateWish(@RequestBody WishDto wishDto, Authentication authentication) {
-        return wishService.updateWish(wishDto, authentication);
+    @PutMapping("/{id}")
+    public WishDto updateWish(@RequestBody WishUpdateInfoDto wishDto, @PathVariable("id") int id) {
+        return wishService.updateWish(wishDto, id);
     }
 
 

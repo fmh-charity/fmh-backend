@@ -9,6 +9,7 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Block;
 import ru.iteco.fmh.model.NurseStation;
@@ -152,8 +153,21 @@ public class TestUtils {
                 .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
                 .executor(null)
-                .creatorId(3)
+                .creator(null)
                 .status(Status.OPEN)
+                .build();
+    }
+
+    public static WishCreationInfoDto getWishCreationInfoDto() {
+
+        return WishCreationInfoDto.builder()
+                .patientId(1)
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .planExecuteDate(Instant.now().toEpochMilli())
+                .createDate(Instant.now().toEpochMilli())
+                .executorId(1)
+                .creatorId(1)
                 .build();
     }
 
