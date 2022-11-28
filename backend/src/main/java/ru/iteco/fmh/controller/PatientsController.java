@@ -50,9 +50,9 @@ public class PatientsController {
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @ApiParam (required = false, name = "status", value = "[DISCHARGED, ACTIVE, EXPECTED]")
             @RequestParam(name = "status", required = false) List<AdmissionsStatus>  status,
-            @ApiParam (required = false, name = "createDate", value = "Автосортировка по фамилии, отображение по дате создания")
-            @RequestParam(defaultValue = "true") boolean createDate) {
-        return  ResponseEntity.ok(patientService.getAllPatientsByStatus(status, pages, elements, createDate));
+            @ApiParam (required = false, name = "lastName", value = "сортировка по фамилии")
+            @RequestParam(defaultValue = "true") boolean lastName) {
+        return  ResponseEntity.ok(patientService.getAllPatientsByStatus(status, pages, elements, lastName));
     }
 
     @Secured("ROLE_ADMINISTRATOR")
