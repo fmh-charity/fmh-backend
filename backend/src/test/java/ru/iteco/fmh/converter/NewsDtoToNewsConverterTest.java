@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getNewsCategory;
-import static ru.iteco.fmh.TestUtils.getNewsDto;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 public class NewsDtoToNewsConverterTest {
     UserRepository userRepository = mock(UserRepository.class);
@@ -27,7 +25,7 @@ public class NewsDtoToNewsConverterTest {
     @Test
     public void convertShouldPassSuccess() {
         // given
-        NewsDto newsDto = getNewsDto();
+        NewsDto newsDto = getNewsDtowithDateAndUser();
         newsDto.setNewsCategoryId(1);
         newsDto.setCreatorId(1);
         User user = getUser();

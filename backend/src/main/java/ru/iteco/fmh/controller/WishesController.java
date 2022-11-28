@@ -50,7 +50,7 @@ public class WishesController {
                 @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
                 @RequestParam(name = "status", required = false) List<Status>  status,
-            @ApiParam (required = false, name = "createDate", value = "Сортировка по дате исполнения")
+            @ApiParam (required = false, name = "planExecuteDate", value = "Сортировка по дате исполнения")
                 @RequestParam(defaultValue = "true") boolean planExecuteDate) {
 
         return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
