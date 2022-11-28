@@ -10,17 +10,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
+import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +41,8 @@ public class WishServiceImpl implements WishService {
     private final WishCommentRepository wishCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
+
+    private final PatientRepository patientRepository;
 
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
@@ -72,9 +78,8 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto createWish(WishDto wishDto) {
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
-        Wish wish = conversionService.convert(wishDto, Wish.class);
+    public WishDto createWish(WishCreationInfoDto wishCreationInfoDto) {
+        Wish wish = conversionService.convert(wishCreationInfoDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -89,12 +94,13 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto updateWish(WishDto wishDto, Authentication authentication) {
-        User userCreator = userRepository.findUserById(wishDto.getCreatorId());
-        Util util = new Util(userRepository);
-        util.checkUpdatePossibility(userCreator, authentication);
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
-        Wish wish = conversionService.convert(wishDto, Wish.class);
+    public WishDto updateWish(WishUpdateInfoDto wishUpdateDto, int id) {
+        Wish wish = wishRepository.findWishById(id);
+        wish.setPatient(patientRepository.findPatientById(wishUpdateDto.getPatientId()));
+        wish.setTitle(wishUpdateDto.getTitle());
+        wish.setExecutor(userRepository.findUserById(wishUpdateDto.getExecutorId()));
+        wish.setPlanExecuteDate(Instant.ofEpochSecond(wishUpdateDto.getPlanExecuteDate()));
+        wish.setDescription(wishUpdateDto.getDescription());
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }

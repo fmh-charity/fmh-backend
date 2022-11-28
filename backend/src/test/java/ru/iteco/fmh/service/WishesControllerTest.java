@@ -14,6 +14,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
@@ -25,8 +26,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.TestUtils.getWishDto;
+import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.task.Status.CANCELLED;
 import static ru.iteco.fmh.model.task.Status.EXECUTED;
 import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
@@ -80,43 +80,46 @@ public class WishesControllerTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    public void createInProgressWishShouldPassSuccess() {
-        //given
-        WishDto givenWishDto = getWishDto();
-
-        givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
-        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
-
-        WishDto result = sut.createWish(givenWishDto);
-        assertNotNull(result.getId());
-
-        Wish result2 = wishRepository.findById(result.getId()).get();
-
-        assertEquals(IN_PROGRESS, result2.getStatus());
-
-        // AFTER - deleting result entity
-        wishRepository.deleteById(result.getId());
-    }
+//    @Test
+//    public void createInProgressWishShouldPassSuccess() {
+//        //given TODO: новая просьба создается со статусом "OPEN"
+//        WishCreationInfoDto givenWishCreationInfoDto = getWishCreationInfoDto();
+//        WishDto givenWishDto = conversionService.convert(givenWishCreationInfoDto, WishDto.class);
+//
+//        givenWishDto.setCreator(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
+//        givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
+//        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+//
+//        WishDto result = sut.createWish(givenWishCreationInfoDto);
+//        assertNotNull(result.getId());
+//
+//        Wish result2 = wishRepository.findById(result.getId()).get();
+//
+//        assertEquals(IN_PROGRESS, result2.getStatus());
+//
+//        // AFTER - deleting result entity
+//        wishRepository.deleteById(result.getId());
+//    }
 
     @Test
     public void createOpenWishShouldPassSuccess() {
         //given
-        WishDto givenWishDto = getWishDto();
-        givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutor(null);
-        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+        WishCreationInfoDto givenWishCreationInfoDto = getWishCreationInfoDto();
+        Wish givenWishDto = conversionService.convert(givenWishCreationInfoDto, Wish.class);
 
-        WishDto resultId = sut.createWish(givenWishDto);
-        assertNotNull(resultId);
+        givenWishDto.setCreator(userRepository.findUserById(1));
+        givenWishDto.setExecutor(userRepository.findUserById(1));
+        givenWishDto.setPatient(patientRepository.findPatientById(1));
 
-        Wish result = wishRepository.findById(resultId.getId()).get();
+        WishDto result = sut.createWish(givenWishCreationInfoDto);
+        assertNotNull(result.getId());
 
-        assertEquals(OPEN, result.getStatus());
+        Wish result2 = wishRepository.findById(result.getId()).get();
+
+        assertEquals(OPEN, result2.getStatus());
 
         // AFTER - deleting result entity
-        wishRepository.deleteById(resultId.getId());
+        wishRepository.deleteById(result.getId());
     }
 
     @Test

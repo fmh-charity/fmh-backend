@@ -31,10 +31,10 @@ class WishDtoToWishConverterTest {
         User user = getUser();
         Patient patient = getPatient();
 
-        user.setId(wishDto.getCreatorId());
+        user.setId(wishDto.getCreator().id());
         patient.setId(wishDto.getPatient().id());
         when(patientRepository.findPatientById(wishDto.getPatient().id())).thenReturn(patient);
-        when(userRepository.findUserById(wishDto.getCreatorId())).thenReturn(user);
+        when(userRepository.findUserById(wishDto.getCreator().id())).thenReturn(user);
 
         Wish wish = convert.convert(wishDto);
         assertAll(
@@ -44,7 +44,7 @@ class WishDtoToWishConverterTest {
                 () -> assertEquals(wishDto.getPlanExecuteDate(), wish.getPlanExecuteDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getCreateDate(), wish.getCreateDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getStatus(), wish.getStatus()),
-                () -> assertEquals(wishDto.getCreatorId(), wish.getCreator().getId()),
+                () -> assertEquals(wishDto.getCreator(), wish.getCreator().getId()),
                 () -> assertEquals(wishDto.getExecutor(), wish.getExecutor()),
                 () -> assertNull(wishDto.getExecutor()),
                 () -> assertNull(wish.getExecutor())

@@ -2,8 +2,10 @@ package ru.iteco.fmh.service.wish;
 
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public interface WishService {
      * @param wishDto информация по новой просьбе
      * @return id просьбы
      */
-    WishDto createWish(WishDto wishDto);
+    WishDto createWish(WishCreationInfoDto wishDto);
 
     /**
      * обновляет просьбу
@@ -43,7 +45,7 @@ public interface WishService {
      * @param wishDto информация по просьбе для обновления
      * @return обновленная сущность просьбы
      */
-    WishDto updateWish(WishDto wishDto, Authentication authentication);
+    WishDto updateWish(WishUpdateInfoDto wishDto, int id);
 
     /**
      * возвращает список всех просьб по пациенту
