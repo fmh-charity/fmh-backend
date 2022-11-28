@@ -22,10 +22,6 @@ public class NewsDto {
     private Integer id;
     @ApiModelProperty("идентификатор категории новости")
     private Integer newsCategoryId;
-    @ApiModelProperty("фильтр даты от")
-    private LocalDate publishDateFrom;
-    @ApiModelProperty("фильтр даты до")
-    private LocalDate publishDateTo;
     @ApiModelProperty("заголовок новости")
     private String title;
     @ApiModelProperty("описание новости")
