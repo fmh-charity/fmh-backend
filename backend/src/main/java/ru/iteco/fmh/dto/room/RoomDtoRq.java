@@ -1,35 +1,34 @@
 package ru.iteco.fmh.dto.room;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(description = "Палаты")
+@Schema(name = "Палаты")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = PRIVATE)
 public class RoomDtoRq {
 
     @NotBlank
-    @ApiModelProperty("название палаты")
-    private String name;
+    @Schema(name = "name", description = "Название палаты")
+    String name;
 
-    @ApiModelProperty("пост")
-    private int nurseStationId;
+    @Schema(name = "nurseStationId", description = "Идентификатор поста")
+    Integer nurseStationId;
 
-    @ApiModelProperty("количество доступных мест")
-    private int maxOccupancy;
+    @Schema(name = "maxOccupancy", description = "Количество доступных мест")
+    Integer maxOccupancy;
 
-    @ApiModelProperty("комментарий")
-    private String comment;
-
+    @Schema(name = "comment", description = "Комментарий")
+    String comment;
 }

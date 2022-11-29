@@ -1,35 +1,46 @@
 package ru.iteco.fmh.dto.user;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-
-@ApiModel(description = "информация по пользователю")
+@Schema(name = "Информация по пользователю")
 @Builder
 @Data
 @AllArgsConstructor//generates a constructor with 1 parameter for each field in your class
 @NoArgsConstructor
+@FieldDefaults(level = PRIVATE)
 public class UserDto {
-    @ApiModelProperty("id пользователя")
-    private Integer id;
-    @ApiModelProperty("имя")
-    private String firstName;
-    @ApiModelProperty("фамилия")
-    private String lastName;
-    @ApiModelProperty("отчество")
-    private String middleName;
-    @ApiModelProperty("логин")
-    private String login;
-    @ApiModelProperty("пароль")
-    private String password;
-    @ApiModelProperty("телефон")
-    private String phoneNumber;
-    @ApiModelProperty("электронная почта")
-    private String email;
-    @ApiModelProperty("ФИО пользователя, в формате \"Кузнецова Н.П.\"")
-    private String shortUserName;
+
+    @Schema(name = "id", description = "Идентификатор пользователя")
+    Integer id;
+
+    @Schema(name = "firstName", description = "Имя")
+    String firstName;
+
+    @Schema(name = "lastName", description = "Фамилия")
+    String lastName;
+
+    @Schema(name = "middleName", description = "Отчество")
+    String middleName;
+
+    @Schema(name = "password", description = "Логин")
+    String login;
+
+    @Schema(name = "password", description = "Пароль")
+    String password;
+
+    @Schema(name = "phoneNumber", description = "Телефон")
+    String phoneNumber;
+
+    @Schema(name = "email", description = "Электронная почта")
+    String email;
+
+    @Schema(name = "shortUserName", description = "ФИО пользователя, в формате \"Кузнецова Н.П.\"")
+    String shortUserName;
 }
