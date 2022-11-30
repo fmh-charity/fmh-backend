@@ -48,7 +48,7 @@ public class PatientsController {
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @ApiParam (required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam (required = false, name = "status", value = "[DISCHARGED, ACTIVE, EXPECTED]")
+            @ApiParam(value = "статус пациента", required = true, allowableValues = "[DISCHARGED, ACTIVE, EXPECTED]")
             @RequestParam(name = "status", required = false) List<AdmissionsStatus>  status,
             @ApiParam (required = false, name = "lastName", value = "сортировка по фамилии")
             @RequestParam(defaultValue = "true") boolean lastName) {
