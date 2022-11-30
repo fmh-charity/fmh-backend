@@ -13,11 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
@@ -168,12 +171,16 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
+    public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        UserDtoIdFio userDtoIdFio = conversionService.convert(wishComment.getCreator(), UserDtoIdFio.class);
+        WishCommentInfoDto info = WishCommentInfoDto.builder().userDtoIdFio(userDtoIdFio)
+                .createTime(wishComment.getCreateDate().toEpochMilli()).description(wishComment.getDescription())
+                .id(wishComment.getId()).build();
+        return info;
     }
 
     @Transactional

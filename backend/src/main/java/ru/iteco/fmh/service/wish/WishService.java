@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.wish;
 
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
@@ -16,7 +17,7 @@ public interface WishService {
     /**
      * возвращает список всех просьб
      */
-    public WishPaginationDto getWishes(int pages, int elements, List<Status>  status, boolean planExecuteDate);
+    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate);
 
     /**
      * возвращает список всех просьб co статусом open/in_progress
@@ -25,6 +26,7 @@ public interface WishService {
 
     /**
      * возвращает просьбу для просмотра
+     *
      * @param id ид просьбы
      * @return просьба с полной информацией
      */
@@ -48,6 +50,7 @@ public interface WishService {
 
     /**
      * возвращает список всех просьб по пациенту
+     *
      * @param patientId ид пациента
      * @return список всех просьб по пациенту
      */
@@ -55,6 +58,7 @@ public interface WishService {
 
     /**
      * возвращает список всех просьб по пациенту co статусом open/in_progress
+     *
      * @param patientId ид пациента
      * @return список всех просьб по пациенту co статусом open/in_progress
      */
@@ -80,6 +84,7 @@ public interface WishService {
 
     /**
      * возвращает все комментарии просьбы для просмотра
+     *
      * @param wishId ид просьбы
      * @return список всех комментариев по просьбе
      */
@@ -92,7 +97,7 @@ public interface WishService {
      * @param wishCommentDto информация по комментарию
      * @return id комментария
      */
-    WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto);
+    WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto);
 
 
     /**
