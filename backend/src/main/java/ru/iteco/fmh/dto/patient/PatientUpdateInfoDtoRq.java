@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
@@ -24,13 +23,12 @@ public class PatientUpdateInfoDtoRq {
     private String firstName;
     @ApiModelProperty("фамилия пациента")
     @NotBlank
-    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z/-]+")
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     private String lastName;
     @NotBlank
     @Pattern(regexp = "[А-Яа-яЁёa-zA-Z/-]+")
     @ApiModelProperty("отчество пациента")
     private String middleName;
-    @NotNull
     @ApiModelProperty("дата рождения пациента")
     private LocalDate birthDate;
 }
