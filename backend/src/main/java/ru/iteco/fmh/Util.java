@@ -64,8 +64,4 @@ public class Util {
                 .collect(Collectors.toList())
                 .contains("ROLE_ADMINISTRATOR");
     }
-
-    public List<String> getRolesListFromAuthentication(Authentication authentication) {
-        return userRepository.findUserByLogin(authentication.getName()).getUserRoles().stream().map(Role::getName).toList();
-    }
 }

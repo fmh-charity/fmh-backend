@@ -64,6 +64,14 @@ public class TestUtils {
                 .toString();
     }
 
+    public static Role getRole(String roleName) {
+        return Role.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(roleName)
+                .deleted(false)
+                .build();
+    }
+
     public static Wish getWish(Status status) {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
@@ -75,6 +83,7 @@ public class TestUtils {
                 .planExecuteDate(Instant.now())
                 .factExecuteDate(Instant.now())
                 .status(status)
+                .wishRoles(List.of(getRole("ROLE_ADMINISTRATOR")))
                 .build();
     }
 

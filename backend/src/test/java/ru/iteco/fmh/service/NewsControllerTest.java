@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
@@ -24,6 +25,7 @@ import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class NewsControllerTest {
     @Autowired
     NewsController sut;

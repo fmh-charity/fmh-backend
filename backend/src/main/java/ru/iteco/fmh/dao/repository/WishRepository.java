@@ -19,9 +19,9 @@ import java.util.Optional;
 @Repository
 public interface WishRepository extends JpaRepository<Wish, Integer> {
 
-    @Query(value = "SELECT w from Wish w inner join w.wishRoles wr where w.deleted is false " +
-            "and w.status in :status and wr.name in :roleNames")
-    Page<Wish> findAllByCurrentRole(
+    @Query(value = "SELECT w from Wish w inner join w.wishRoles wr where w.deleted is false "
+            + "and w.status in :status and wr.name in :roleNames")
+    Page<Wish> findAllByCurrentRoles(
             @Param("status") List<Status> status,
             @Param("roleNames") List<String> roleNames,
             Pageable pageable);

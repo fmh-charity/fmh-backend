@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -36,6 +37,7 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class WishesControllerTest {
     @Autowired
     WishesController sut;
@@ -88,6 +90,7 @@ public class WishesControllerTest {
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
         givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+        givenWishDto.setWishVisibility(List.of(1,2));
 
         WishDto result = sut.createWish(givenWishDto);
         assertNotNull(result.getId());
@@ -107,6 +110,7 @@ public class WishesControllerTest {
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishDto.setExecutor(null);
         givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+        givenWishDto.setWishVisibility(List.of(1, 2));
 
         WishDto resultId = sut.createWish(givenWishDto);
         assertNotNull(resultId);
@@ -196,7 +200,7 @@ public class WishesControllerTest {
     @Test
     public void getWishCommentShouldPassSuccess() {
         // given
-        int commentId = 1;
+        int commentId = 2;
 
         WishCommentDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentDto.class);
 

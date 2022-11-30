@@ -3,6 +3,7 @@ package ru.iteco.fmh.model.task.wish;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
@@ -25,6 +26,7 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ToString(callSuper = true)
 @Entity
 @Table(name = "wish")
 public class Wish extends Task {
@@ -49,13 +51,5 @@ public class Wish extends Task {
                 planExecuteDate, factExecuteDate, status, deleted);
         this.patient = patient;
         this.wishRoles = wishRoles;
-    }
-
-    @Override
-    public String toString() {
-        return "Wish{" +
-                "patient=" + patient +
-                ", wishVisibility=" + wishRoles +
-                '}';
     }
 }

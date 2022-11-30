@@ -2,8 +2,13 @@ package ru.iteco.fmh.service.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.*;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,20 +43,18 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
-        Page<Wish> list;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Util util = new Util(userRepository);
-        List<String> currentUserRoleNamesList = util.getRolesListFromAuthentication(authentication);
+
+        List<String> currentUserRoleNamesList = SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
                 : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
-        if (status == null || status.isEmpty()) {
-            list = wishRepository.findAllByCurrentRole(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, pageableList);
-        } else {
-            list = wishRepository.findAllByCurrentRole(status, currentUserRoleNamesList, pageableList);
-        }
+        Page<Wish> list = (status == null || status.isEmpty())
+                ? wishRepository.findAllByCurrentRoles(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, pageableList)
+                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, pageableList);
+
         return WishPaginationDto.builder()
                 .pages(list.getTotalPages() - 1)
                 .elements(
@@ -141,7 +144,6 @@ public class WishServiceImpl implements WishService {
         return conversionService.convert(wish, WishDto.class);
     }
 
-
     @Override
     public WishCommentDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
@@ -155,7 +157,6 @@ public class WishServiceImpl implements WishService {
         return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentDto.class))
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
