@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -26,8 +28,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 import static ru.iteco.fmh.TestUtils.getNews;
 import static ru.iteco.fmh.TestUtils.getUser;
 
@@ -126,11 +128,23 @@ public class NewsServiceTest {
         User user = getUser();
         when(userRepository.findUserById(any())).thenReturn(user);
 
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .thenReturn(user);
+
         NewsDto givenDto = conversionService.convert(news, NewsDto.class);
 
         when(newsRepository.save(any())).thenReturn(news);
 
-        NewsDto result = sut.createOrUpdateNews(givenDto);
+        NewsDto result = sut.createNews(givenDto);
+
+        givenDto.setId(result.getId());
+        givenDto.setCreatorName(result.getCreatorName());
+        givenDto.setCreatorId(result.getCreatorId());
+        givenDto.setCreateDate(result.getCreateDate());
 
         assertEquals(givenDto, result);
     }

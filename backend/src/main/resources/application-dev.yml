@@ -8,7 +8,7 @@ spring:
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         jdbc:
