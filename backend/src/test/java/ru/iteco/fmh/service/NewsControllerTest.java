@@ -1,11 +1,16 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
@@ -16,10 +21,13 @@ import ru.iteco.fmh.security.RequestContext;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +50,7 @@ public class NewsControllerTest {
                 .sorted().collect(Collectors.toList());
         RequestContext.setCurrentUser(User.builder()
                 .login("login1").build());
-        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
@@ -55,31 +63,38 @@ public class NewsControllerTest {
         RequestContext.setCurrentUser(User.builder()
                 .login("login3")
                 .build());
-        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true)
+        List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
 
     @Test
-    public void createNewsShouldPassSuccess() {
+    public void createAndDeleteNewsShouldPassSuccess() {
         // given
         NewsDto givenDto = getNewsDto();
-        givenDto.setId(0);
         givenDto.setNewsCategoryId(1);
-        givenDto.setCreatorId(1);
-        givenDto.setCreatorName("Смирнов Николай Петрович");
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .thenReturn(User.builder().id(1).build());
 
         NewsDto resultDto = sut.createNews(givenDto);
-
         Integer resultId = resultDto.getId();
 
         assertNotNull(resultId);
 
         givenDto.setId(resultId);
+        givenDto.setCreatorName(resultDto.getCreatorName());
+        givenDto.setCreatorId(resultDto.getCreatorId());
+        givenDto.setCreateDate(resultDto.getCreateDate());
         assertEquals(givenDto, resultDto);
 
         // AFTER - deleting result entity
-        newsRepository.deleteById(resultId);
+        sut.deleteNews(resultId);
+        assertTrue(newsRepository.findById(resultId).orElseThrow().isDeleted());
     }
 
     @Test

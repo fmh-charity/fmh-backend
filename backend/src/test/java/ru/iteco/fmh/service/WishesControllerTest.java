@@ -11,12 +11,13 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,8 +86,8 @@ public class WishesControllerTest {
         WishDto givenWishDto = getWishDto();
 
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutorId(userRepository.findUserById(1).getId());
-        givenWishDto.setPatientId(patientRepository.findPatientById(1).getId());
+        givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
+        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
 
         WishDto result = sut.createWish(givenWishDto);
         assertNotNull(result.getId());
@@ -104,8 +105,8 @@ public class WishesControllerTest {
         //given
         WishDto givenWishDto = getWishDto();
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutorId(null);
-        givenWishDto.setPatientId(patientRepository.findPatientById(1).getId());
+        givenWishDto.setExecutor(null);
+        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
 
         WishDto resultId = sut.createWish(givenWishDto);
         assertNotNull(resultId);
@@ -182,7 +183,7 @@ public class WishesControllerTest {
         WishDto result = sut.changeStatus(wishInProgressId, OPEN, null, wishCommentDto);
         assertNotNull(wishCommentRepository.findById(wishCommentDto.getId()));
         assertEquals(OPEN, result.getStatus());
-        assertNull(result.getExecutorId());
+        assertNull(result.getExecutor());
 
         // after
         Wish wish = wishRepository.findById(wishInProgressId).get();
