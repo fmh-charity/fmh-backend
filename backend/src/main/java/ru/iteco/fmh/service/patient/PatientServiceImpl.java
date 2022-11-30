@@ -60,8 +60,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setBirthDate(patientDto.getBirthDate());
 
         patient = patientRepository.save(patient);
-        return PatientUpdateInfoDtoRs.builder().id(id).firstName(patient.getFirstName()).middleName(patient.getMiddleName())
-                .lastName(patient.getLastName()).birthDate(patient.getBirthDate()).build();
+        return conversionService.convert(patient, PatientUpdateInfoDtoRs.class);
 
     }
 

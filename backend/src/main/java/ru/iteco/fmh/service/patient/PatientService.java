@@ -28,7 +28,7 @@ public interface PatientService {
 
     /**
      * бновляет информацию о пациенте
-     * @param patientDto информация по карточке пациента для обновления
+     * @param patientDto информация которую необходимо обновить в карточке пациента
      * @return сущность
      */
     PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto);
