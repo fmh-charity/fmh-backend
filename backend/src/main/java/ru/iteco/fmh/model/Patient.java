@@ -42,10 +42,10 @@ public class Patient {
     String firstName;
 
     @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
 
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z/-]+$")
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
 
     LocalDate birthDate;

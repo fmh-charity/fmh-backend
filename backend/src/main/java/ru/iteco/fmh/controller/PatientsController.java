@@ -23,6 +23,7 @@ import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public PatientCreateInfoDtoRs createPatient(@RequestBody PatientCreateInfoDtoRq patientCreateInfoDtoRq) {
+    public PatientCreateInfoDtoRs createPatient(@RequestBody @Valid PatientCreateInfoDtoRq patientCreateInfoDtoRq) {
         return patientService.createPatient(patientCreateInfoDtoRq);
     }
 
