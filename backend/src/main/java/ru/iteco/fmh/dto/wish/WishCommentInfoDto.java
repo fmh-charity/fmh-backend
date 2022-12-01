@@ -23,5 +23,9 @@ public class WishCommentInfoDto {
     @ApiModelProperty("идентификатор комментария к просьбе")
     private Integer id;
 
-
+    public WishCommentInfoDto(Long createTime, String description, Integer id) {
+        this.createTime = createTime;
+        this.description = description;
+        this.id = id;
+    }
 }
