@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
@@ -117,7 +118,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public WishCommentDto createWishComment(
+    public WishCommentInfoDto createWishComment(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);

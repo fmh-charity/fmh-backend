@@ -177,10 +177,10 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
         UserDtoIdFio userDtoIdFio = conversionService.convert(wishComment.getCreator(), UserDtoIdFio.class);
-        WishCommentInfoDto info = WishCommentInfoDto.builder().userDtoIdFio(userDtoIdFio)
-                .createTime(wishComment.getCreateDate().toEpochMilli()).description(wishComment.getDescription())
-                .id(wishComment.getId()).build();
-        return info;
+        WishCommentInfoDto infoDto = conversionService.convert(wishComment, WishCommentInfoDto.class);
+        infoDto.setUserDtoIdFio(userDtoIdFio);
+        return infoDto;
+
     }
 
     @Transactional
