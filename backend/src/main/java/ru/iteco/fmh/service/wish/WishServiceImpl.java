@@ -157,10 +157,11 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishCommentDto getWishComment(int commentId) {
+    public WishCommentInfoDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        WishCommentInfoDto infoDto = conversionService.convert(wishComment, WishCommentInfoDto.class);
+        return infoDto;
     }
 
     @Override
@@ -176,9 +177,7 @@ public class WishServiceImpl implements WishService {
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        UserDtoIdFio userDtoIdFio = conversionService.convert(wishComment.getCreator(), UserDtoIdFio.class);
         WishCommentInfoDto infoDto = conversionService.convert(wishComment, WishCommentInfoDto.class);
-        infoDto.setUserDtoIdFio(userDtoIdFio);
         return infoDto;
 
     }
