@@ -57,7 +57,7 @@ public class NurseStationController {
     @GetMapping("/{id}")
     public NurseStationDto getNurseStation(
             @ApiParam(value = "Идентификатор поста", required = true)
-                @PathVariable("id") int id) {
+            @PathVariable("id") int id) {
         return nurseStationService.getNurseStation(id);
     }
 
@@ -66,7 +66,7 @@ public class NurseStationController {
     @DeleteMapping("/{id}")
     public void deletePost(
             @ApiParam(value = "Идентификатор поста", required = true)
-                @PathVariable("id") int id) {
+            @PathVariable("id") int id) {
         nurseStationService.deleteNurseStation(id);
     }
 
