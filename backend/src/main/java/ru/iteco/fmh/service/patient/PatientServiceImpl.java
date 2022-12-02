@@ -52,7 +52,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setFirstName(patientInfoDto.getFirstName());
         patient.setMiddleName(patientInfoDto.getMiddleName());
         patient.setLastName(patientInfoDto.getLastName());
-        patient.setBirthDate(Instant.ofEpochMilli(patientInfoDto.getBirthDate()));
+        patient.setBirthDate(patientInfoDto.getBirthDate());
 
         patient = patientRepository.save(patient);
         return getPatientInfoDto(patient);

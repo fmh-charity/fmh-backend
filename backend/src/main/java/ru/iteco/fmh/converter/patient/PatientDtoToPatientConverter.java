@@ -23,8 +23,6 @@ public class PatientDtoToPatientConverter implements Converter<PatientInfoDto, P
         Patient entity = new Patient();
         BeanUtils.copyProperties(dto, entity);
 
-        entity.setBirthDate(dto.getBirthDate() != null ? Instant.ofEpochMilli(dto.getBirthDate()) : null);
-
         return entity;
     }
 }

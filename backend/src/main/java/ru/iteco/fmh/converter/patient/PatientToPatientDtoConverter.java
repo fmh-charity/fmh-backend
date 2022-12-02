@@ -17,8 +17,6 @@ public class PatientToPatientDtoConverter implements Converter<Patient, PatientI
         PatientInfoDto dto = new PatientInfoDto();
         BeanUtils.copyProperties(patient, dto);
 
-        dto.setBirthDate(patient.getBirthDate() != null ? patient.getBirthDate().toEpochMilli() : null);
-
         return dto;
     }
 }
