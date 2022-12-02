@@ -61,12 +61,12 @@ public class PatientsControllerTest {
         );
     }
 
-    /*   @Test
+      @Test
        public void createPatientShouldPassSuccess() {
            //given
            PatientDto givenDto = getPatientDto();
            givenDto.setId(0);
-
+           givenDto.setBirthDate(null);
            PatientDto resultDto = sut.createPatient(givenDto);
 
            Integer resultId = resultDto.getId();
@@ -79,7 +79,7 @@ public class PatientsControllerTest {
            // AFTER - deleting result entity
            patientRepository.deleteById(resultId);
        }
-   */
+
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
