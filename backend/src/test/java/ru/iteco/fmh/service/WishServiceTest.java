@@ -76,7 +76,7 @@ public class WishServiceTest {
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
 
-        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate"));
+        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
         when(wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList))
                 .thenReturn(pageableResult);

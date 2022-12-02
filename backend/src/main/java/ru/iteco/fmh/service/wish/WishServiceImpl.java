@@ -43,8 +43,8 @@ public class WishServiceImpl implements WishService {
         Page<Wish> list;
 
         Pageable pageableList = planExecuteDate
-                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
-                : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
+                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         if (status == null || status.isEmpty()) {
             list = wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);

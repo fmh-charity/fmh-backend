@@ -1,10 +1,10 @@
 package ru.iteco.fmh.service.news;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.news.NewsPaginationDto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * сервис для работы с новостями
@@ -30,7 +30,10 @@ public interface NewsService {
      * @param newsDto информация по новости для обновления
      * @return сущность
      */
-    NewsDto createOrUpdateNews(NewsDto newsDto);
+    NewsDto createNews(NewsDto newsDto);
+
+    @Transactional
+    NewsDto updateNews(NewsDto newsDto);
 
     /**
      * удаление новости
