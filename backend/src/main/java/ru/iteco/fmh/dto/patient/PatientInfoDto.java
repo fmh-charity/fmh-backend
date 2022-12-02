@@ -19,13 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class PatientInfoDto {
-    /*
-    Вместо существующей PatientDto , создать новый класс PatientInfoDto с полями :
-     фамилия, имя, отчество, дата рождения(LocalDate), дата поступления(dateIn),
-     дата выписки(dateOut), статус(имя енама), имя палаты.
-Информацию по дата поступления(dateIn), дата выписки(dateOut), статус(имя енама),
-имя палаты берется из текущей госпитализации пациента(currentAdmission)
-     */
+
     @ApiModelProperty("id пациента")
     private Integer id;
     @ApiModelProperty("фамилия пациента")

@@ -5,11 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dto.patient.PatientInfoDto;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.Instant;
 
 /**
  * конвертер из {@link PatientInfoDto} в {@link Patient}
