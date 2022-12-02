@@ -79,7 +79,7 @@ public interface WishService {
      * @param commentId ид комментария
      * @return комментарий с полной информацией
      */
-    WishCommentDto getWishComment(int commentId);
+    WishCommentInfoDto getWishComment(int commentId);
 
     /**
      * возвращает все комментарии просьбы для просмотра

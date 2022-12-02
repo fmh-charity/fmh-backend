@@ -100,7 +100,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(
+    public WishCommentInfoDto getWishComment(
             @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
     ) {
         return wishService.getWishComment(id);
