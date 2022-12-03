@@ -9,6 +9,10 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +28,14 @@ public class Util {
                 + userById.getFirstName()
                 + " "
                 + userById.getMiddleName();
+    }
+
+    public Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
+        return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+    }
+
+    public Instant getInstantFromLocalDateToEndOfDay(LocalDate localDate) {
+        return localDate.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant();
     }
 
     public String getCreatorNameFromNews(NewsDto newsDto) {

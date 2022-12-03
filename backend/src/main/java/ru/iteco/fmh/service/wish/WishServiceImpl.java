@@ -41,8 +41,8 @@ public class WishServiceImpl implements WishService {
         Page<Wish> list;
 
         Pageable pageableList = planExecuteDate
-                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate"))
-                : PageRequest.of(pages, elements, Sort.by("planExecuteDate").descending());
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
+                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         if (status == null || status.isEmpty()) {
             list = wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
@@ -71,7 +71,7 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto createWish(WishDto wishDto) {
-        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
@@ -91,7 +91,7 @@ public class WishServiceImpl implements WishService {
         User userCreator = userRepository.findUserById(wishDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
-        wishDto.setStatus(wishDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);

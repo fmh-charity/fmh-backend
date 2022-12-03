@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
@@ -96,6 +97,7 @@ public class PatientsControllerTest {
         //after
         result.setLastName(initialLastName);
         patientRepository.save(Objects.requireNonNull(conversionService.convert(result, Patient.class)));
+
     }
 
     @Test

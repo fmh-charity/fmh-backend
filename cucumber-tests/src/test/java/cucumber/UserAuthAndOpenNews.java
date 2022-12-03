@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import ru.iteco.cucumber.model.NewsDto;
+import ru.iteco.cucumber.model.NewsPaginationDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +36,10 @@ public class UserAuthAndOpenNews {
                 .getRq(jwt, newsUrl)
                 .getBody();
         assertNotNull(responseBody);
-        List<NewsDto> news = objectMapper.readValue(responseBody, ArrayList.class);
+        NewsPaginationDto news = objectMapper.readValue(responseBody, NewsPaginationDto.class);
         assertNotNull(news);
-        log.info("SIZE: {}", news.size());
-        log.info("ALL NEWS: {}", news);
+        log.info("SIZE: {}", news.getElements().size());
+        log.info("ALL NEWS: {}", news.getElements());
     }
 
     @SneakyThrows

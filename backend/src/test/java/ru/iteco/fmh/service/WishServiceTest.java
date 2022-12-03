@@ -67,7 +67,7 @@ public class WishServiceTest {
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
 
-        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate"));
+        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
         when(wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList))
                 .thenReturn(pageableResult);
@@ -95,10 +95,10 @@ public class WishServiceTest {
                 () -> assertEquals(dto.getFactExecuteDate(), result.getFactExecuteDate()),
                 () -> assertEquals(dto.getCreateDate(), result.getCreateDate()),
                 () -> assertEquals(dto.getStatus(), result.getStatus()),
-                () -> assertEquals(dto.getExecutorId(), result.getExecutorId()),
+                () -> assertEquals(dto.getExecutor(), result.getExecutor()),
                 () -> assertEquals(dto.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(dto.getPatientId(), result.getPatientId()),
-                () -> assertNotNull(result.getExecutorId()),
+                () -> assertEquals(dto.getPatient(), result.getPatient()),
+                () -> assertNotNull(result.getExecutor()),
                 () -> assertNotNull(result.getCreatorId())
         );
 

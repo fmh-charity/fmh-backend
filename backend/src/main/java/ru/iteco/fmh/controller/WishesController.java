@@ -37,6 +37,7 @@ public class WishesController {
     @ApiOperation(value = "реестр всех просьб")
     @GetMapping()
     public ResponseEntity<WishPaginationDto> getWishes(
+
             @ApiParam(required = false, name = "pages", value = "От 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @ApiParam(required = false, name = "elements", value = "От 1 до 200")
