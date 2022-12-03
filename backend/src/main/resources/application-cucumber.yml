@@ -4,20 +4,18 @@ spring:
     driverClassName: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
+    platform: postgres
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         jdbc:
           lob.non_contextual_creation: true
         format_sql: true
   flyway:
-    locations: classpath:db/migration/dev, classpath:db/migration/cucumber
-  sql:
-    init:
-      platform: postgres
+    locations: classpath:db/migration/dev
 server:
   servlet:
     context-path: /fmh
