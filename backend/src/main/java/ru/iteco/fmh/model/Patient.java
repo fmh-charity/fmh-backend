@@ -39,7 +39,7 @@ public class Patient {
     Admission currentAdmission;
 
     @Transient
-    AdmissionsStatus status = currentAdmission.getStatus();
+    AdmissionsStatus status = getStatus();
 
     @Where(clause = "deleted = false")
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
