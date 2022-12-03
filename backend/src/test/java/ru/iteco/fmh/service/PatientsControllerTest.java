@@ -6,22 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.dto.wish.WishDto;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
+import static ru.iteco.fmh.TestUtils.getPatientDto;
+import static ru.iteco.fmh.model.PatientStatus.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -61,7 +57,7 @@ public class PatientsControllerTest {
     @Test
     public void createPatientShouldPassSuccess() {
         //given
-        PatientDto givenDto = getPatientDto();
+        PatientAdmissionDto givenDto = getPatientDto();
         givenDto.setId(0);
 
         PatientDto resultDto = sut.createPatient(givenDto);
@@ -86,8 +82,6 @@ public class PatientsControllerTest {
         given.setLastName("newLastName");
 
         PatientDto result = sut.updatePatient(given);
-        result.setCurrentAdmission(null);
-        result.setAdmissions(new HashSet<>());
 
         assertEquals(given, result);
     }
@@ -101,23 +95,6 @@ public class PatientsControllerTest {
         PatientDto result = sut.getPatient(patientId);
 
         assertEquals(patientFirstName, result.getFirstName());
-    }
-
-    @Test
-    public void getAdmissionsShouldPassSuccess() {
-        // given
-        int patientId = 6;
-        int admissionsCount = 2;
-        String admissionComment0 = "admission6-comment";
-        String admissionComment1 = "admission7-comment";
-
-        List<AdmissionDto> result = sut.getAdmissions(patientId);
-
-        assertAll(
-                () -> assertEquals(admissionsCount, result.size()),
-                () -> assertEquals(admissionComment0, result.get(0).getComment()),
-                () -> assertEquals(admissionComment1, result.get(1).getComment())
-        );
     }
 
     @Test

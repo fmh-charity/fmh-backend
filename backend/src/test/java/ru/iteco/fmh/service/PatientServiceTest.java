@@ -7,13 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.time.Instant;
@@ -25,20 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
-import static ru.iteco.fmh.TestUtils.getNumeric;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.PatientStatus.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PatientServiceTest {
     @MockBean
     PatientRepository patientRepository;
-    @MockBean
-    AdmissionRepository admissionRepository;
 
     @Autowired
     PatientService sut;
@@ -51,8 +43,7 @@ public class PatientServiceTest {
         when(patientRepository.findAll()).thenReturn(getPatientList());
 
         // given
-        List<String> statusListAll = List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name());
+        List<String> statusListAll = List.of(EXPECTED.name(), ACTIVE.name(), DISCHARGED.name());
         List<String> statusListDISCHARGED = List.of(DISCHARGED.name());
         List<String> statusListACTIVE = List.of(ACTIVE.name());
         List<String> statusListEXPECTED = List.of(EXPECTED.name());
@@ -81,7 +72,6 @@ public class PatientServiceTest {
     public void createPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
         when(patientRepository.save(any())).thenReturn(patient);
@@ -94,7 +84,6 @@ public class PatientServiceTest {
     public void updatePatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
         PatientDto given = conversionService.convert(patient, PatientDto.class);
 
         given.setFirstName("Test");
@@ -114,7 +103,6 @@ public class PatientServiceTest {
     public void getPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
 
         when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
 
@@ -133,14 +121,13 @@ public class PatientServiceTest {
         return patientList;
     }
 
-    private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
+    private Patient getAdmissionPatient(PatientStatus patientStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now())
-                .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
 
@@ -150,13 +137,6 @@ public class PatientServiceTest {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now())
-                .currentAdmission(null)
-                .build();
-    }
-
-    private Admission getAdmission(AdmissionsStatus admissionsStatus) {
-        return Admission.builder()
-                .status(admissionsStatus)
                 .build();
     }
 }

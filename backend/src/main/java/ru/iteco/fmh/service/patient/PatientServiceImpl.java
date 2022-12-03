@@ -5,16 +5,14 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dao.repository.RoomRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
+import ru.iteco.fmh.model.Room;
 
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +21,7 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final ConversionService conversionService;
+    private final RoomRepository roomRepository;
 
     @Override
     public List<PatientAdmissionDto> getAllPatientsByStatus(List<String> statusList) {
@@ -37,25 +36,36 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto createPatient(PatientDto patientDto) {
+    public PatientAdmissionDto createPatient(PatientAdmissionDto patientDto) {
         Patient patient = conversionService.convert(patientDto, Patient.class);
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return conversionService.convert(patient, PatientAdmissionDto.class);
     }
 
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
+    public PatientAdmissionDto updatePatient(PatientAdmissionDto patientDto) {
         Patient patient = patientRepository.findPatientById(patientDto.getId());
+        Room room = null;
+        if (patientDto.getRoomId() != null) {
+            room = roomRepository.findRoomById(patientDto.getRoomId());
+        }
+        setAdmissionDates(patientDto);
 
         patient.setFirstName(patientDto.getFirstName());
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
         patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+        patient.setStatus(patientDto.getPatientStatus());
+        patient.setRoom(room);
+        patient.setPlanDateIn(Instant.ofEpochMilli(patientDto.getPlanDateIn()));
+        patient.setPlanDateOut(Instant.ofEpochMilli(patientDto.getPlanDateOut()));
+        patient.setFactDateIn(Instant.ofEpochMilli(patientDto.getFactDateIn()));
+        patient.setFactDateOut(Instant.ofEpochMilli(patientDto.getFactDateOut()));
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return conversionService.convert(patient, PatientAdmissionDto.class);
     }
 
     @Transactional
@@ -68,20 +78,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     private PatientDto getPatientDto(Patient patient) {
-        PatientDto dto = conversionService.convert(patient, PatientDto.class);
-        Set<Integer> admissionIds = new HashSet<>();
-
-        dto.setCurrentAdmission(patient.getCurrentAdmission() == null
-                ? null : conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
-
-        if (patient.getAdmissions().size() > 0) {
-            patient.getAdmissions().forEach(a -> admissionIds.add(a.getId()));
-            dto.setCurrentAdmission(conversionService.convert(patient.getCurrentAdmission(), AdmissionDto.class));
-        }
-
-        dto.setAdmissions(admissionIds);
-
-        return dto;
+        return conversionService.convert(patient, PatientDto.class);
     }
 
     // ставит верные dateIn, dateOut и флаги для отправки на фронт

@@ -7,6 +7,4 @@ import ru.iteco.fmh.model.Patient;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Patient findPatientById(Integer id);
-
-    Patient findByAdmissionsId(Integer id);
 }

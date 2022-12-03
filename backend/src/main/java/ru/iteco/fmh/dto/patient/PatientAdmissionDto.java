@@ -7,28 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import lombok.experimental.SuperBuilder;
+import ru.iteco.fmh.model.PatientStatus;
 
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
-public class PatientAdmissionDto {
-    @ApiModelProperty("id пациента")
-    private Integer id;
-    @ApiModelProperty("имя пациента")
-    private String firstName;
-    @ApiModelProperty("фамилие пациента")
-    private String lastName;
-    @ApiModelProperty("отчество пациента")
-    private String middleName;
-    @ApiModelProperty("дата рождения пациента")
-    private Long birthday;
-
+public class PatientAdmissionDto extends PatientDto {
     @ApiModelProperty(value = "статус госпитализации")
-    private AdmissionsStatus admissionsStatus;
+    private PatientStatus patientStatus;
+    @ApiModelProperty(value = "идентификатор палаты")
+    private Integer roomId;
     @ApiModelProperty("фактическая/плановая дата поступления")
     private Long dateIn;
     @ApiModelProperty("фактическая/плановая дата выписки")
@@ -37,6 +29,7 @@ public class PatientAdmissionDto {
     private boolean dateInBoolean;
     @ApiModelProperty("признак для даты выписки")
     private boolean dateOutBoolean;
+    @ApiModelProperty("текущая госпитализация")
 
     // данные для формирования dateIn, dateOut
     @JsonIgnore

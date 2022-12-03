@@ -5,19 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
+import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -31,7 +22,6 @@ import java.util.List;
 public class PatientsController {
 
     private final PatientService patientService;
-    private final AdmissionService admissionService;
     private final WishService wishService;
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -46,7 +36,7 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
+    public PatientAdmissionDto createPatient(@RequestBody PatientAdmissionDto patientDto) {
         return patientService.createPatient(patientDto);
     }
 
@@ -56,15 +46,6 @@ public class PatientsController {
     public PatientDto getPatient(
             @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id) {
         return patientService.getPatient(id);
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "возвращает информацию по всем госпитализациям пациента")
-    @GetMapping("/{id}/admissions")
-    public List<AdmissionDto> getAdmissions(
-            @ApiParam(value = "идентификатор пациента", required = true) @PathVariable("id") Integer id
-    ) {
-        return admissionService.getPatientAdmissions(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -88,7 +69,7 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "изменение пациента")
     @PutMapping
-    public PatientDto updatePatient(@RequestBody PatientDto patientDto) {
+    public PatientAdmissionDto updatePatient(@RequestBody PatientAdmissionDto patientDto) {
         return patientService.updatePatient(patientDto);
     }
 }

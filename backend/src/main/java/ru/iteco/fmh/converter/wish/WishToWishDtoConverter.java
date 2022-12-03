@@ -6,8 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.patient.PatientToPatientDtoIdFioConverter;
-import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Room;
@@ -30,7 +30,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setCreatorId(wish.getCreator() != null ? wish.getCreator().getId() : null);
         dto.setExecutor(wish.getExecutor() != null
                 ? toUserDtoIdFioConverter.convert(wish.getExecutor()) : null);
-        Room patientRoom = wish.getPatient() != null ? wish.getPatient().getCurrentAdmission().getRoom() : null;
+        Room patientRoom = wish.getPatient() != null ? wish.getPatient().getRoom() : null;
         RoomDtoRs roomDtoRs = patientRoom != null ? roomEntityToRoomDtoRsConverter.convert(patientRoom) : null;
 
         dto.setCreateDate(wish.getCreateDate() != null ? wish.getCreateDate().toEpochMilli() : null);

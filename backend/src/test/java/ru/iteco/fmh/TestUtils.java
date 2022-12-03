@@ -1,6 +1,5 @@
 package ru.iteco.fmh;
 
-import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
@@ -14,8 +13,6 @@ import ru.iteco.fmh.model.Block;
 import ru.iteco.fmh.model.NurseStation;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
-import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.task.Status;
@@ -28,9 +25,9 @@ import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
-
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 
 public class TestUtils {
@@ -86,8 +83,6 @@ public class TestUtils {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now())
-                .currentAdmission(Admission.builder().build())
-                .admissions(new HashSet<>())
                 .build();
         return patient;
     }
@@ -163,7 +158,6 @@ public class TestUtils {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(Instant.now().toEpochMilli())
-                .admissions(new HashSet<>())
                 .build();
         return patientDto;
     }
@@ -175,43 +169,6 @@ public class TestUtils {
                 "Patient6-middlename",
                 "Patient6-lastname"
         );
-    }
-
-    public static Admission getAdmission() {
-        return getAdmission(ACTIVE);
-    }
-
-    public static Admission getAdmission(AdmissionsStatus status) {
-        return Admission.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .patient(getPatient())
-                .planDateIn(Instant.now())
-                .planDateOut(null)
-                .factDateIn(null)
-                .factDateOut(null)
-                .status(status)
-                .room(getRoom())
-                .comment(getAlphabeticString())
-                .deleted(false)
-                .build();
-    }
-
-    public static AdmissionDto getAdmissionDto() {
-        return getAdmissionDto(ACTIVE);
-    }
-
-    public static AdmissionDto getAdmissionDto(AdmissionsStatus status) {
-        return AdmissionDto.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .patientId(Integer.valueOf(getNumeric(2)))
-                .planDateIn(Instant.now().toEpochMilli())
-                .planDateOut(null)
-                .factDateIn(null)
-                .factDateOut(null)
-                .status(status)
-                .roomId(Integer.valueOf(getNumeric(2)))
-                .comment(getAlphabeticString())
-                .build();
     }
 
     public static Claim getClaimInProgress() {

@@ -14,40 +14,14 @@ values ('room1', 1, 1, 10, 'room1-comment', false),
        ('room3', 2, 2, 10, 'room3-comment', false),
        ('room4', 2, 2, 10, 'room4-comment', false);
 
-insert into patient (first_name, middle_name, last_name, birth_date, current_admission_id, deleted)
-values ('Patient1-firstname', 'Patient1-middlename', 'Patient1-lastname', now(), null, false),
-       ('Patient2-firstname', 'Patient2-middlename', 'Patient2-lastname', now(), null, false),
-       ('Patient3-firstname', 'Patient3-middlename', 'Patient3-lastname', now(), null, false),
-       ('Patient4-firstname', 'Patient4-middlename', 'Patient4-lastname', now(), null, false),
-       ('Patient5-firstname', 'Patient5-middlename', 'Patient5-lastname', now(), null, false),
-       ('Patient6-firstname', 'Patient6-middlename', 'Patient6-lastname', now(), null, false);
-
-insert into admission (patient_id, plan_date_in, plan_date_out, fact_date_in, fact_date_out, status, room_id,
-                       comment, deleted)
-values (1, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1, 'admission1-comment', false),
-       (2, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1, 'admission2-comment', false),
-       (3, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1, 'admission3-comment', false),
-       (4, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1, 'admission4-comment', false),
-       (5, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1, 'admission5-comment', false),
-       (6, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1, 'admission6-comment', false),
-       (6, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1, 'admission7-comment', false);
-
--- СЛОЖНО
-update patient
-set current_admission_id = 1
-where id = 1;
-update patient
-set current_admission_id = 2
-where id = 2;
-update patient
-set current_admission_id = 3
-where id = 3;
-update patient
-set current_admission_id = 4
-where id = 4;
-update patient
-set current_admission_id = 5
-where id = 5;
+insert into patient (first_name, middle_name, last_name, birth_date, deleted, plan_date_in,
+                     plan_date_out, fact_date_in, fact_date_out, status, room_id)
+values ('Patient1-firstname', 'Patient1-middlename', 'Patient1-lastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       ('Patient2-firstname', 'Patient2-middlename', 'Patient2-lastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       ('Patient3-firstname', 'Patient3-middlename', 'Patient3-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       ('Patient4-firstname', 'Patient4-middlename', 'Patient4-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       ('Patient5-firstname', 'Patient5-middlename', 'Patient5-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1),
+       ('Patient6-firstname', 'Patient6-middlename', 'Patient6-lastname', now(), false, null, null, null, null, 'EXPECTED', null);
 
 insert into users (login, password, first_name, last_name, middle_name, phone_number, email, deleted)
 values ('login1', '$2a$10$/qkdAUtfdxMs.V5iil9xNO0Laa1uwdqDlDbIi.9X5I5.ieJ9nxk8G', 'Николай', 'Смирнов', 'Петрович',
