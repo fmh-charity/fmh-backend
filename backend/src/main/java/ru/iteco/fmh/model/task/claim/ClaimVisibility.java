@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.Role;
 
-
 import javax.persistence.*;
 
 @Builder

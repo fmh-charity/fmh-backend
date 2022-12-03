@@ -16,9 +16,9 @@ Feature: Сценарии использования справочником «
     Then  Результат "<result>"
 
     Examples:
-      | login   | password  | name     | comment               | edited name | edited comment  | result  |
-      | login1  | password1 | Приемная | Прием новых пациентов | Приемная №1 | Прием пациентов | SUCCESS |
-      | login2  | password2 | Приемная | Прием новых пациентов | Приемная №2 | Прием пациентов | SUCCESS |
-      | login3  | password3 | Приемная | Прием новых пациентов | Приемная №3 | Прием пациентов | SUCCESS |
-      | login4  | password4 | Приемная | Прием новых пациентов | Приемная №4 | Прием пациентов | SUCCESS |
-      | login5  | password5 | Приемная | Прием новых пациентов | Приемная №5 | Прием пациентов | SUCCESS |
+      | login  | password  | name     | comment               | edited name | edited comment  | result  |
+      | login1 | password1 | Приемная | Прием новых пациентов | Приемная №1 | Прием пациентов | SUCCESS |
+      | login2 | password2 | Приемная | Прием новых пациентов | Приемная №2 | Прием пациентов | SUCCESS |
+      | login3 | password3 | Приемная | Прием новых пациентов | Приемная №3 | Прием пациентов | SUCCESS |
+      | login4 | password4 | Приемная | Прием новых пациентов | Приемная №4 | Прием пациентов | SUCCESS |
+      | login5 | password5 | Приемная | Прием новых пациентов | Приемная №5 | Прием пациентов | SUCCESS |

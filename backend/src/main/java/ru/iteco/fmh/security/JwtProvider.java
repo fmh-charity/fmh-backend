@@ -1,10 +1,6 @@
 package ru.iteco.fmh.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.TextCodec;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

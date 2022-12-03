@@ -21,18 +21,17 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest
 public class WishRepositoryTest {
 
+    static Patient patient;
+    static User author;
+    static User doer;
+    static Wish entity;
+    static Wish entity2;
     @Autowired
     WishRepository wishRepository;
     @Autowired
     PatientRepository patientRepository;
     @Autowired
     UserRepository userRepository;
-
-    static Patient patient;
-    static User author;
-    static User doer;
-    static Wish entity;
-    static Wish entity2;
 
     @Test
     public void testWriteSuccess() {

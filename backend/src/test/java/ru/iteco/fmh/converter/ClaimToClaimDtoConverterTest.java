@@ -8,15 +8,11 @@ import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.user.User;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getClaimInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimOpen;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 
 public class ClaimToClaimDtoConverterTest {

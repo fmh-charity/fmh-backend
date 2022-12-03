@@ -22,18 +22,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
-import static ru.iteco.fmh.TestUtils.getClaimDtoInProgress;
-import static ru.iteco.fmh.TestUtils.getClaimDtoOpen;
-import static ru.iteco.fmh.model.task.Status.EXECUTED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.task.Status.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!

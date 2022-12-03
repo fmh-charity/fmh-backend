@@ -13,10 +13,7 @@ import ru.iteco.fmh.service.AuthService;
 import java.util.Map;
 import java.util.Optional;
 
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.*;
 
 @ControllerAdvice
 public class AppAdvice {

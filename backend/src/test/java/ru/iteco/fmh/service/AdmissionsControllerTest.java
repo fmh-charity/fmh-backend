@@ -13,8 +13,9 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.service.admission.AdmissionService;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.iteco.fmh.TestUtils.getAdmissionDto;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)

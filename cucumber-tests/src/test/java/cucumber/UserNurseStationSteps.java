@@ -27,9 +27,8 @@ public class UserNurseStationSteps {
 
     private final UserCommonSteps userCommonSteps;
     private final ResultSteps resultSteps;
-    private String jwt;
-
     private final String nurseStationsUrl = BackendUrls.NURSE_STATIONS_BASE_URL;
+    private String jwt;
     private NurseStationDto nurseStationDto;
 
 

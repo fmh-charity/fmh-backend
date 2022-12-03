@@ -21,11 +21,10 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class WishCommentRepositoryTest {
-    @Autowired
-    WishCommentRepository sut;
-
     static WishComment testEntity1;
     static WishComment testEntity2;
+    @Autowired
+    WishCommentRepository sut;
 
     @Test
     public void saveToRepositoryTestShouldPassSuccess() {

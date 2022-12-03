@@ -3,8 +3,6 @@ package ru.iteco.fmh.service.news;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.news.NewsPaginationDto;
 
-import java.util.List;
-
 /**
  * сервис для работы с новостями
  */

@@ -2,6 +2,7 @@ package ru.iteco.fmh.dto.claim;
 
 import lombok.Builder;
 import lombok.Getter;
+
 import java.util.List;
 
 @Builder

@@ -13,7 +13,7 @@ import java.util.List;
 public interface RoomService {
 
     /**
-     *  Получить список всех палат
+     * Получить список всех палат
      */
     List<RoomDtoRs> getAllRooms();
 

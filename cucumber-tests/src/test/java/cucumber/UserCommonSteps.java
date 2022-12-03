@@ -14,9 +14,9 @@ import ru.iteco.cucumber.model.JwtResponse;
 import ru.iteco.cucumber.model.LoginRequest;
 import ru.iteco.cucumber.model.UserShortInfoDto;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @Slf4j

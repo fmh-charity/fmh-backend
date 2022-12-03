@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.utils.BackendUrls;
 import cucumber.utils.RestTemplateUtil;
 import io.cucumber.java.en.And;
-
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +24,8 @@ public class UserAuthAndOpenNews {
 
     private final UserCommonSteps userCommonSteps;
     private final ResultSteps resultSteps;
-    private String jwt;
-
     private final String newsUrl = BackendUrls.NEWS_BASE_URL;
+    private String jwt;
 
     @SneakyThrows
     @And("Пользователь просматривает список доступных новостей")

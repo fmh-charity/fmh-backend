@@ -15,25 +15,22 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdmissionDto {
+    @ApiModelProperty(value = "статус госпитализации")
+    AdmissionsStatus status;
     @ApiModelProperty("идентификатор госпитализации")
     private int id;
     @ApiModelProperty("идентификатор пациента")
     private Integer patientId;
-
     //для сценария "Запланировать госпитализацию пациента"
     @ApiModelProperty("плановая дата поступления")
     private Long planDateIn;
     @ApiModelProperty("плановая дата выписки")
     private Long planDateOut;
-
     //для сценария "Госпитализация пациента"
     @ApiModelProperty(value = "фактическая дата поступления")
     private Long factDateIn;
     @ApiModelProperty(value = "фактическая дата выписки")
     private Long factDateOut;
-
-    @ApiModelProperty(value = "статус госпитализации")
-    AdmissionsStatus status;
     @ApiModelProperty(value = "идентификатор палаты")
     private Integer roomId;
     @ApiModelProperty(value = "комментарий")

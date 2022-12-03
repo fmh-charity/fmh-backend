@@ -12,7 +12,6 @@ import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
-import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
@@ -103,7 +102,7 @@ public class NewsServiceTest {
         // given
         int newsId = 10;
         News news = getNews();
-        User user= getUser(Collections.singletonList(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
+        User user = getUser(Collections.singletonList(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
 
         when(userRepository.findUserById(any())).thenReturn(user);
 

@@ -9,14 +9,10 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.TestUtils.getUser;
-import static ru.iteco.fmh.TestUtils.getWishDto;
+import static ru.iteco.fmh.TestUtils.*;
 
 class WishDtoToWishConverterTest {
 

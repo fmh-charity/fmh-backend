@@ -32,7 +32,8 @@ public class RestTemplateUtil {
         RequestEntity<String> requestEntity = RequestEntity
                 .post(baseUrl + url)
                 .headers(headers)
-                .body(body);;
+                .body(body);
+        ;
         return restTemplate.exchange(Objects.requireNonNull(requestEntity), String.class);
 
     }
@@ -46,7 +47,8 @@ public class RestTemplateUtil {
         RequestEntity<String> requestEntity = RequestEntity
                 .post(baseUrl + url)
                 .headers(headers)
-                .body(body);;
+                .body(body);
+        ;
         return restTemplate.exchange(Objects.requireNonNull(requestEntity), String.class);
     }
 
@@ -59,7 +61,8 @@ public class RestTemplateUtil {
         RequestEntity<String> requestEntity = RequestEntity
                 .put(baseUrl + url)
                 .headers(headers)
-                .body(body);;
+                .body(body);
+        ;
         return restTemplate.exchange(Objects.requireNonNull(requestEntity), String.class);
     }
 

@@ -7,9 +7,7 @@ import ru.iteco.fmh.model.Patient;
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getPatient;
 
 public class PatientToPatientAdmissionDtoConverterTest {

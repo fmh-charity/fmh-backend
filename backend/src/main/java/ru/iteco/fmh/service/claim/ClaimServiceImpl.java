@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.ClaimCommentRepository;
 import ru.iteco.fmh.dao.repository.ClaimRepository;
@@ -25,9 +24,7 @@ import ru.iteco.fmh.model.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.model.task.Status.CANCELLED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.model.task.Status.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,12 +51,12 @@ public class ClaimServiceImpl implements ClaimService {
         }
 
         return ClaimPaginationDto.builder()
-            .pages(list.getTotalPages() - 1)
-            .elements(
-                list.stream()
-                    .map(i -> conversionService.convert(i, ClaimDto.class))
-                    .collect(Collectors.toList()))
-            .build();
+                .pages(list.getTotalPages() - 1)
+                .elements(
+                        list.stream()
+                                .map(i -> conversionService.convert(i, ClaimDto.class))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
     @Override

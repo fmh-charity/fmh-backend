@@ -19,7 +19,6 @@ import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +41,7 @@ public class NewsServiceImpl implements NewsService {
         Page<News> news = util.isAdmin(currentUser)
                 ? newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalse(Instant.now(), pageableList)
                 : newsRepository.findAllByPublishDateLessThanEqualAndDeletedIsFalseAndPublishEnabledIsTrue(
-                    Instant.now(), pageableList);
+                Instant.now(), pageableList);
 
         return NewsPaginationDto.builder()
                 .pages(news.getTotalPages())

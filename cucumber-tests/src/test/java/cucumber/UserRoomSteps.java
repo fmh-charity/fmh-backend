@@ -25,9 +25,8 @@ public class UserRoomSteps {
 
     private final UserCommonSteps userCommonSteps;
     private final ResultSteps resultSteps;
-    private String jwt;
-
     private final String roomsUrl = BackendUrls.ROOMS_BASE_URL;
+    private String jwt;
     private RoomDtoRs roomDtoRs;
 
 

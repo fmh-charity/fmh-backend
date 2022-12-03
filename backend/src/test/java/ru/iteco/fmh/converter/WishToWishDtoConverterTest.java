@@ -6,9 +6,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.Status.OPEN;

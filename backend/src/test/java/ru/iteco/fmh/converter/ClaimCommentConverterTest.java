@@ -15,10 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getClaimComment;
-import static ru.iteco.fmh.TestUtils.getClaimCommentDto;
-import static ru.iteco.fmh.TestUtils.getClaimOpen;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 public class ClaimCommentConverterTest {
     UserRepository userRepository1 = mock(UserRepository.class);

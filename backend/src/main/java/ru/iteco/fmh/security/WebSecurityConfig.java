@@ -15,15 +15,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.iteco.fmh.dao.repository.UserRepository;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity //позволяет Spring находить и автоматически применять класс к глобальной веб-безопасности.
@@ -32,9 +27,9 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
+    private final AuthEntryPointJwt unauthorizedHandler;
     UserDetailsServiceImpl userDetailsServiceImpl;
     UserRepository userRepository;
-    private final AuthEntryPointJwt unauthorizedHandler;
 
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, UserRepository userRepository,

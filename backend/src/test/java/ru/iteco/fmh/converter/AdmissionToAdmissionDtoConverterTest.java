@@ -5,9 +5,7 @@ import ru.iteco.fmh.converter.admission.AdmissionToAdmissionDtoConverter;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.admission.Admission;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getAdmission;
 
 

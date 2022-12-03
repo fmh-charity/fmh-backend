@@ -19,14 +19,11 @@ import java.io.IOException;
 
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
     @Autowired
     private JwtProvider tokenProvider;
-
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
-
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

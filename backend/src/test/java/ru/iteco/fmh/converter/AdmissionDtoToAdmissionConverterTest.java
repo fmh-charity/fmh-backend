@@ -9,15 +9,9 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getAdmissionDto;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.TestUtils.getRoom;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static ru.iteco.fmh.TestUtils.*;
 
 public class AdmissionDtoToAdmissionConverterTest {
     PatientRepository patientRepository = mock(PatientRepository.class);

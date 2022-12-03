@@ -1,1 +1,1 @@
-CREATE INDEX patient_idx ON admission(patient_id);
+CREATE INDEX patient_idx ON admission (patient_id);

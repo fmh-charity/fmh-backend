@@ -13,7 +13,6 @@ import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
@@ -23,20 +22,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getUser;
-import static ru.iteco.fmh.TestUtils.getWish;
-import static ru.iteco.fmh.TestUtils.getWishComment;
-import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.model.task.Status.CANCELLED;
-import static ru.iteco.fmh.model.task.Status.EXECUTED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.task.Status.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

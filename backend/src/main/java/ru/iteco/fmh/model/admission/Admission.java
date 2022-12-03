@@ -1,6 +1,5 @@
 package ru.iteco.fmh.model.admission;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.Patient;
@@ -8,7 +7,6 @@ import ru.iteco.fmh.model.Room;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 
 
 /**

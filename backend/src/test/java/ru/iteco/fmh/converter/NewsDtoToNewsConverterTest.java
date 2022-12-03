@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getNewsCategory;
-import static ru.iteco.fmh.TestUtils.getNewsDto;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 public class NewsDtoToNewsConverterTest {
     UserRepository userRepository = mock(UserRepository.class);
@@ -41,14 +39,14 @@ public class NewsDtoToNewsConverterTest {
         News result = sut.convert(newsDto);
 
         assertAll(
-                ()->assertEquals(newsDto.getId(), result.getId()),
-                ()->assertEquals(newsDto.getCreateDate(), result.getCreateDate().toEpochMilli()),
-                ()->assertEquals(newsDto.getCreatorId(), result.getCreator().getId()),
-                ()->assertEquals(newsDto.getDescription(), result.getDescription()),
-                ()->assertEquals(newsDto.getNewsCategoryId(), result.getNewsCategory().getId()),
-                ()->assertEquals(newsDto.getTitle(), result.getTitle()),
-                ()->assertEquals(newsDto.getPublishDate(), result.getPublishDate().toEpochMilli()),
-                ()->assertEquals(newsDto.isPublishEnabled(), result.isPublishEnabled())
+                () -> assertEquals(newsDto.getId(), result.getId()),
+                () -> assertEquals(newsDto.getCreateDate(), result.getCreateDate().toEpochMilli()),
+                () -> assertEquals(newsDto.getCreatorId(), result.getCreator().getId()),
+                () -> assertEquals(newsDto.getDescription(), result.getDescription()),
+                () -> assertEquals(newsDto.getNewsCategoryId(), result.getNewsCategory().getId()),
+                () -> assertEquals(newsDto.getTitle(), result.getTitle()),
+                () -> assertEquals(newsDto.getPublishDate(), result.getPublishDate().toEpochMilli()),
+                () -> assertEquals(newsDto.isPublishEnabled(), result.isPublishEnabled())
         );
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 public interface AdmissionService {
     /**
      * возвращает полную инфу по конкретной госпитализации
+     *
      * @param admissionId ид госпитализации
      * @return полная инфа по госпитализации
      */
@@ -17,6 +18,7 @@ public interface AdmissionService {
 
     /**
      * создает или обновляет запись о госпитализации
+     *
      * @param admissionDto информация по новой госпитализации
      * @return обновленная сущность
      */
@@ -31,6 +33,7 @@ public interface AdmissionService {
 
     /**
      * возвращает список всех госпитализаций пациента
+     *
      * @param patientId ид пациента
      * @return список с полной инфой по всем госпитализациям пациента
      */

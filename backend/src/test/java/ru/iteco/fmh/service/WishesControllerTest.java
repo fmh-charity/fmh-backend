@@ -16,7 +16,6 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,10 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.getWishCommentDto;
 import static ru.iteco.fmh.TestUtils.getWishDto;
-import static ru.iteco.fmh.model.task.Status.CANCELLED;
-import static ru.iteco.fmh.model.task.Status.EXECUTED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.model.task.Status.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -72,9 +68,9 @@ public class WishesControllerTest {
         List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
 
         List<String> result = Objects.requireNonNull(
-                sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
-                    .getBody()).getElements().stream()
-                    .map(WishDto::getTitle).collect(Collectors.toList());
+                        sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
+                                .getBody()).getElements().stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
     }

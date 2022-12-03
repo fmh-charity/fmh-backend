@@ -5,14 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.post.NurseStationDto;
 import ru.iteco.fmh.dto.post.NurseStationDtoRq;
 import ru.iteco.fmh.dto.post.NurseStationDtoRs;
@@ -57,7 +50,7 @@ public class NurseStationController {
     @GetMapping("/{id}")
     public NurseStationDto getNurseStation(
             @ApiParam(value = "Идентификатор поста", required = true)
-                @PathVariable("id") int id) {
+            @PathVariable("id") int id) {
         return nurseStationService.getNurseStation(id);
     }
 
@@ -66,7 +59,7 @@ public class NurseStationController {
     @DeleteMapping("/{id}")
     public void deletePost(
             @ApiParam(value = "Идентификатор поста", required = true)
-                @PathVariable("id") int id) {
+            @PathVariable("id") int id) {
         nurseStationService.deleteNurseStation(id);
     }
 

@@ -13,20 +13,18 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.RoomRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
 
-import java.time.Instant;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static ru.iteco.fmh.TestUtils.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static ru.iteco.fmh.TestUtils.getAdmission;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,11 +54,11 @@ public class AdmissionServiceTest {
         int patientId = 1;
 
         when(admissionRepository.findAllByPatient_IdAndDeletedIsFalse(any()))
-                .thenReturn(List.of(admission1,admission2));
+                .thenReturn(List.of(admission1, admission2));
 
         List<AdmissionDto> result = sut.getPatientAdmissions(patientId);
 
-        assertEquals(List.of(admissionDto1,admissionDto2), result);
+        assertEquals(List.of(admissionDto1, admissionDto2), result);
     }
 
     @Transactional
@@ -111,6 +109,6 @@ public class AdmissionServiceTest {
         sut.deleteAdmissionById(admissionActive.getId());
 
         assertEquals(admissionDeleted, admissionActive);
-        assertEquals(null, patient.getCurrentAdmission());
+        assertNull(patient.getCurrentAdmission());
     }
 }
