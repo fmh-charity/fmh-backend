@@ -10,6 +10,9 @@ import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
@@ -17,6 +20,8 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -101,14 +106,15 @@ public class PatientServiceTest {
     @Test
     public void createPatientShouldPassSuccess() {
         // given
-        Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
+        PatientCreateInfoDtoRq patientRq = getPatientCreateInfoDtoRq();
+        Patient patient = conversionService.convert(patientRq, Patient.class);
+        patient.setId(12);
+        PatientCreateInfoDtoRs patientRs = conversionService.convert(patient, PatientCreateInfoDtoRs.class  );
 
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.createPatient(given);
+        PatientCreateInfoDtoRs result = sut.createPatient(patientRq);
 
-        assertEquals(given, result);
+        assertEquals(patientRs, result);
     }
 
     @Test
@@ -152,7 +158,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
@@ -162,7 +168,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();
     }

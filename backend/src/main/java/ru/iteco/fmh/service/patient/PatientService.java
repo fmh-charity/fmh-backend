@@ -1,6 +1,8 @@
 package ru.iteco.fmh.service.patient;
 
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
@@ -17,11 +19,10 @@ public interface PatientService {
 
     /**
      * создает новую карточку пациента
-     *
-     * @param patientDto информация по карточке пациента для создания
+     * @param patientCreateInfoDtoRq информация по карточке пациента для создания
      * @return сущность
      */
-    PatientDto createPatient(PatientDto patientDto);
+    PatientCreateInfoDtoRs createPatient(PatientCreateInfoDtoRq patientCreateInfoDtoRq);
 
 
     /**

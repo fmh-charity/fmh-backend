@@ -13,6 +13,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertNotNull;
@@ -85,7 +86,7 @@ public class WishRepositoryTest {
                 .firstName(TestUtils.getAlphabeticString())
                 .lastName(TestUtils.getAlphabeticString())
                 .middleName(TestUtils.getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .build();
     }
 

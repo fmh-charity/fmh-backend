@@ -7,7 +7,10 @@ import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,10 +31,18 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     Instant createDate;
-    String firstName;
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
+
+
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
+
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
-    Instant birthDate;
+
+    LocalDate birthDate;
 
     @Where(clause = "deleted = false")
     @OneToOne
