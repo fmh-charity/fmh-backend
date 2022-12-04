@@ -83,7 +83,7 @@ public class PatientsControllerTest {
         patientRepository.deleteById(resultDto.getId());
     }
 
-   /* @Test
+    @Test
     public void updatePatientShouldPassSuccess() {
         // given
         int patientId = 5;
