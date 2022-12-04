@@ -4,5 +4,6 @@
       "name": "spring.flyway.baselineOnMigrate=true",
       "type": "java.lang.String",
       "description": "Description for spring.flyway.baselineOnMigrate=true."
-    }]
+    }
+  ]
 }
