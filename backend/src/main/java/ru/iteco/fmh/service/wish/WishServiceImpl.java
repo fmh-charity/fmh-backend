@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -22,6 +23,7 @@ import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
@@ -40,9 +42,11 @@ public class WishServiceImpl implements WishService {
     private final WishCommentRepository wishCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
 
         List<String> currentUserRoleNamesList = SecurityContextHolder.getContext().getAuthentication()
                 .getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
@@ -52,8 +56,8 @@ public class WishServiceImpl implements WishService {
                 : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
         Page<Wish> list = (status == null || status.isEmpty())
-                ? wishRepository.findAllByCurrentRoles(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, pageableList)
-                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, pageableList);
+                ? wishRepository.findAllByCurrentRoles(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, currentUserLogin, pageableList)
+                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, currentUserLogin, pageableList);
 
         return WishPaginationDto.builder()
                 .pages(list.getTotalPages() - 1)
@@ -76,8 +80,10 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto createWish(WishDto wishDto) {
+        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
         wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
+        wish.setWishRoles(roleList);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -93,11 +99,13 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishDto updateWish(WishDto wishDto, Authentication authentication) {
+        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
         User userCreator = userRepository.findUserById(wishDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
         wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
         Wish wish = conversionService.convert(wishDto, Wish.class);
+        wish.setWishRoles(roleList);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }

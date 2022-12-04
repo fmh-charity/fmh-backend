@@ -82,7 +82,7 @@ public class WishServiceTest {
         Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
 
-        doReturn(pageableResult).when(wishRepository).findAllByCurrentRoles(any(), any(), any());
+        doReturn(pageableResult).when(wishRepository).findAllByCurrentRoles(any(), any(), any(), any());
         List<WishDto> result = sut.getWishes(0, 8, null, true)
                 .getElements().stream().toList();
 
