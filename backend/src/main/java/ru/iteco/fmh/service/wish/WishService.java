@@ -34,18 +34,19 @@ public interface WishService {
     /**
      * создает новую просьбу
      *
-     * @param wishDto информация по новой просьбе
+     * @param wishCreationInfoDto информация по новой просьбе
      * @return id просьбы
      */
-    WishDto createWish(WishCreationInfoDto wishDto);
+    WishDto createWish(WishCreationInfoDto wishCreationInfoDto);
 
     /**
      * обновляет просьбу
      *
-     * @param wishDto информация по просьбе для обновления
+     * @param wishUpdateInfoDto информация по просьбе для обновления
+     * @param id id обновляемой просьбы
      * @return обновленная сущность просьбы
      */
-    WishDto updateWish(WishUpdateInfoDto wishDto, int id);
+    WishDto updateWish(WishUpdateInfoDto wishUpdateInfoDto, int id);
 
     /**
      * возвращает список всех просьб по пациенту
