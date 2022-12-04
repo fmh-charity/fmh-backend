@@ -21,7 +21,7 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
                 .middleName(patient.getMiddleName())
                 .admissionsStatus(patient.getStatus())
                 .build();
-        dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochMilli() : null);
+        dto.setBirthday(patient.getBirthDate() != null ? patient.getBirthDate().toEpochDay() : null);
         if (currentAdmission != null) {
             dto.setFactDateIn(currentAdmission.getFactDateIn() != null ? currentAdmission.getFactDateIn().toEpochMilli() : null);
             dto.setFactDateOut(currentAdmission.getFactDateOut() != null ? currentAdmission.getFactDateOut().toEpochMilli() : null);

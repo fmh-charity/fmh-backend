@@ -9,6 +9,7 @@ import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -26,7 +27,7 @@ public class PatientRepositoryTest {
                 .firstName(TestUtils.getAlphabeticString())
                 .lastName(TestUtils.getAlphabeticString())
                 .middleName(TestUtils.getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .build();
         entity = repository.save(entity);
         assertNotNull(entity.getId());

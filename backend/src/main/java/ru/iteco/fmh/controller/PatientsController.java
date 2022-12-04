@@ -15,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -46,8 +49,8 @@ public class PatientsController {
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "создание пациента")
     @PostMapping
-    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
-        return patientService.createPatient(patientDto);
+    public PatientCreateInfoDtoRs createPatient(@RequestBody @Valid PatientCreateInfoDtoRq patientCreateInfoDtoRq) {
+        return patientService.createPatient(patientCreateInfoDtoRq);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
