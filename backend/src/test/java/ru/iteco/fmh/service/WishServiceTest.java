@@ -111,7 +111,6 @@ public class WishServiceTest {
                 () -> assertNull(result.getExecutor()),
                 () -> assertNotNull(result.getCreator())
         );
-        System.out.println(result.getCreator() + "  !!  " + wish.getCreator());
 
     }
 

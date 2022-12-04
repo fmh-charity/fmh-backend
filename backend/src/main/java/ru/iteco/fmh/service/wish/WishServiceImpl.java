@@ -101,6 +101,7 @@ public class WishServiceImpl implements WishService {
         wish.setExecutor(userRepository.findUserById(wishUpdateDto.getExecutorId()));
         wish.setPlanExecuteDate(Instant.ofEpochSecond(wishUpdateDto.getPlanExecuteDate()));
         wish.setDescription(wishUpdateDto.getDescription());
+        wish.setStatus(wishUpdateDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
