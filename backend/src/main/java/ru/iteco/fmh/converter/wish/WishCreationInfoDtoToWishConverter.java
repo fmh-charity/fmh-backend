@@ -13,6 +13,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 
+import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.Status.OPEN;
 
 import java.time.Instant;
@@ -34,7 +35,7 @@ public class WishCreationInfoDtoToWishConverter implements Converter<WishCreatio
 
         wish.setCreateDate(dto.getCreateDate() != null ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
         wish.setPlanExecuteDate(dto.getPlanExecuteDate() != null ? Instant.ofEpochMilli(dto.getPlanExecuteDate()) : null);
-        wish.setStatus(OPEN);
+        wish.setStatus(dto.getExecutorId() != null ? IN_PROGRESS : OPEN);
 
         wish.setPatient(patient);
         wish.setCreator(creator);

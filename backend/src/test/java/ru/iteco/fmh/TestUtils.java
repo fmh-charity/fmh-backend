@@ -166,7 +166,7 @@ public class TestUtils {
                 .description(getAlphabeticString())
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
-                .executorId(1)
+                .executorId(null)
                 .creatorId(1)
                 .build();
     }
