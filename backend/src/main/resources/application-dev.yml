@@ -6,8 +6,8 @@ spring:
     password: ${DB_PASS}
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.PostgresSQL95Dialect
-    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: false
     properties:
       hibernate:
         jdbc:
@@ -22,7 +22,9 @@ server:
   servlet:
     context-path: /fmh
 
-    logging.level.ru.iteco.fmh: debug
+logging:
+  level:
+    ru.iteco.fmh: DEBUG
 
 swagger:
   host: ${SWAGGER_HOST}

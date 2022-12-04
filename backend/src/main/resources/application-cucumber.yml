@@ -22,7 +22,9 @@ server:
   servlet:
     context-path: /fmh
 
-    logging.level.ru.iteco.fmh: debug
+logging:
+  level:
+    ru.iteco.fmh: DEBUG
 
 swagger:
   host: ${SWAGGER_HOST}

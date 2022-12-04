@@ -7,7 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.news.NewsPaginationDto;
 import ru.iteco.fmh.service.news.NewsService;
@@ -15,6 +23,7 @@ import ru.iteco.fmh.service.news.NewsService;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDate;
 
 @Api(description = "новости")
 @RequiredArgsConstructor
@@ -33,9 +42,15 @@ public class NewsController {
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @ApiParam(required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean publishDate) {
-        return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate));
+            @ApiParam(required = false, name = "publishDate", value = "Сортировка по дате исполнения")
+            @RequestParam(required = true) boolean publishDate,
+            @ApiParam(required = false, name = "newsCategoryId", value = "Фильтрация по категории")
+            @RequestParam(required = false) Integer newsCategoryId,
+            @ApiParam(required = false, name = "publishDateFrom", value = "Выборка новостей от назначеной даты")
+            @RequestParam(required = false) LocalDate publishDateFrom,
+            @ApiParam(required = false, name = "publishDateTo", value = "Выборка новостей до назначеной даты")
+            @RequestParam(required = false) LocalDate publishDateTo) {
+        return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -49,14 +64,14 @@ public class NewsController {
     @ApiOperation(value = "cоздание новой новости")
     @PostMapping
     public NewsDto createNews(@RequestBody NewsDto dto) {
-        return newsService.createOrUpdateNews(dto);
+        return newsService.createNews(dto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @ApiOperation(value = "обновляет информацию по новости")
     @PutMapping
     public NewsDto updateNews(@RequestBody NewsDto dto) {
-        return newsService.createOrUpdateNews(dto);
+        return newsService.updateNews(dto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")

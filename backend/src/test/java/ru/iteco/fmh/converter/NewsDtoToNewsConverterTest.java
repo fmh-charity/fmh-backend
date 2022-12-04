@@ -25,7 +25,7 @@ public class NewsDtoToNewsConverterTest {
     @Test
     public void convertShouldPassSuccess() {
         // given
-        NewsDto newsDto = getNewsDto();
+        NewsDto newsDto = getNewsDtowithDateAndUser();
         newsDto.setNewsCategoryId(1);
         newsDto.setCreatorId(1);
         User user = getUser();

@@ -4,5 +4,5 @@ spring:
   main:
     allow-circular-references: true
   mvc:
-    path match:
+    pathmatch:
       matching-strategy: ANT_PATH_MATCHER

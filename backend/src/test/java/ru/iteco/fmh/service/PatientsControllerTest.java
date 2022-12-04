@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
@@ -46,10 +47,10 @@ public class PatientsControllerTest {
         int countDischarged = 1;
         int countAll = 6;
 
-        int allPatients = (int) Stream.of(getAdmissionPatient(DISCHARGED), getAdmissionPatient(EXPECTED), getAdmissionPatient(ACTIVE)).count();
-        int activePatients = (int) Stream.of(getAdmissionPatient(ACTIVE)).count();
-        int dischargedPatients = (int) Stream.of(getAdmissionPatient(DISCHARGED)).count();
-        int expectedPatients = (int) Stream.of(getAdmissionPatient(EXPECTED)).count();
+        int allPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(ACTIVE,EXPECTED,DISCHARGED), true)).count();
+        int activePatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(ACTIVE), true)).count();
+        int dischargedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(DISCHARGED), true)).count();
+        int expectedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(EXPECTED), true)).count();
 
         assertAll(
                 () -> assertEquals(countExpected, expectedPatients),
@@ -92,7 +93,6 @@ public class PatientsControllerTest {
         result.setAdmissions(new HashSet<>());
 
         assertEquals(given, result);
-
         //after
         result.setLastName(initialLastName);
         patientRepository.save(Objects.requireNonNull(conversionService.convert(result, Patient.class)));

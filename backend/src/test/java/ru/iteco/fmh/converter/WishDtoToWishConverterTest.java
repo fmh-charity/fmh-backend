@@ -28,22 +28,21 @@ class WishDtoToWishConverterTest {
         Patient patient = getPatient();
 
         user.setId(wishDto.getCreatorId());
-        patient.setId(wishDto.getPatientId());
-        when(patientRepository.findPatientById(wishDto.getPatientId())).thenReturn(patient);
+        patient.setId(wishDto.getPatient().id());
+        when(patientRepository.findPatientById(wishDto.getPatient().id())).thenReturn(patient);
         when(userRepository.findUserById(wishDto.getCreatorId())).thenReturn(user);
-        when(userRepository.findUserById(wishDto.getExecutorId())).thenReturn(null);
 
         Wish wish = convert.convert(wishDto);
         assertAll(
                 () -> assertEquals(wishDto.getId(), wish.getId()),
-                () -> assertEquals(wishDto.getPatientId(), wish.getPatient().getId()),
+                () -> assertEquals(wishDto.getPatient().id(), wish.getPatient().getId()),
                 () -> assertEquals(wishDto.getDescription(), wish.getDescription()),
                 () -> assertEquals(wishDto.getPlanExecuteDate(), wish.getPlanExecuteDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getCreateDate(), wish.getCreateDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getStatus(), wish.getStatus()),
                 () -> assertEquals(wishDto.getCreatorId(), wish.getCreator().getId()),
-                () -> assertEquals(wishDto.getExecutorId(), wish.getExecutor()),
-                () -> assertNull(wishDto.getExecutorId()),
+                () -> assertEquals(wishDto.getExecutor(), wish.getExecutor()),
+                () -> assertNull(wishDto.getExecutor()),
                 () -> assertNull(wish.getExecutor())
         );
     }

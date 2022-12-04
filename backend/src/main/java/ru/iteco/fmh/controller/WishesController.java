@@ -8,7 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
@@ -37,14 +44,14 @@ public class WishesController {
     @ApiOperation(value = "реестр всех просьб")
     @GetMapping()
     public ResponseEntity<WishPaginationDto> getWishes(
-            @ApiParam(required = false, name = "pages", value = "От 0")
-            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
-            @ApiParam(required = false, name = "elements", value = "От 1 до 200")
-            @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam(required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
-            @RequestParam(name = "status", required = false) List<Status> status,
-            @ApiParam(required = false, name = "createDate", value = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean planExecuteDate) {
+            @ApiParam (required = false, name = "pages", value = "От 0")
+                @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @ApiParam (required = false, name = "elements", value = "От 1 до 200")
+                @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
+            @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
+                @RequestParam(name = "status", required = false) List<Status>  status,
+            @ApiParam (required = false, name = "planExecuteDate", value = "Сортировка по дате исполнения")
+                @RequestParam(defaultValue = "true") boolean planExecuteDate) {
 
         return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
     }
@@ -117,12 +124,14 @@ public class WishesController {
     }
 
 
+
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по комментарию")
     @PutMapping("/comments")
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
+
 
 
 }
