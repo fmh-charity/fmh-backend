@@ -40,6 +40,9 @@ public class Patient {
     String lastName;
 
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
+    String firstName;
+
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
 
     LocalDate birthDate;
@@ -54,7 +57,6 @@ public class Patient {
 
     @Where(clause = "deleted = false")
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    @ToString.Exclude
     Set<Admission> admissions = new HashSet<>();
 
     boolean deleted;

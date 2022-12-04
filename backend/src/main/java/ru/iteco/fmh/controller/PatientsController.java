@@ -24,11 +24,12 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.admission.AdmissionService;
 import ru.iteco.fmh.service.patient.PatientService;
 import ru.iteco.fmh.service.wish.WishService;
+
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
-
-
+import java.util.List;
 
 
 @Api(description = "Информация по пациенту")
@@ -51,7 +52,7 @@ public class PatientsController {
             @ApiParam (required = false, name = "elements", value = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @ApiParam(value = "статус пациента", required = true, allowableValues = "[DISCHARGED, ACTIVE, EXPECTED]")
-            @RequestParam(defaultValue = "ACTIVE", name = "status", required = false) List<AdmissionsStatus>  status,
+            @RequestParam(defaultValue = "ACTIVE", name = "status", required = false) List<AdmissionsStatus> status,
             @ApiParam (required = false, name = "lastName", value = "сортировка по фамилии")
             @RequestParam(defaultValue = "true") boolean lastName) {
         return  ResponseEntity.ok(patientService.getAllPatientsByStatus(status, pages, elements, lastName));

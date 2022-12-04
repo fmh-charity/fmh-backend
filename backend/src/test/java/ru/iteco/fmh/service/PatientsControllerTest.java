@@ -12,13 +12,12 @@ import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -161,7 +160,7 @@ public class PatientsControllerTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
