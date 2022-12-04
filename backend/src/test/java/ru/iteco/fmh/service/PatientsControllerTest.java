@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
