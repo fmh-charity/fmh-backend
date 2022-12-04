@@ -5,4 +5,5 @@ public record UserDtoIdFio(
         String firstName,
         String middleName,
         String lastName
-) {}
+) {
+}

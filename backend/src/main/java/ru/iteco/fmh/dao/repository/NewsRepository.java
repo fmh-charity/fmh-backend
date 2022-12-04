@@ -24,8 +24,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     Page<News> getActualNewsInInterval(
             @Param("newsCategory") NewsCategory newsCategory,
             @Param("currentDate") Instant currentDate,
-            @Param("publishDateFrom")Instant publishDateFrom,
-            @Param("publishDateTo")Instant publishDateTo, Pageable pageableList
+            @Param("publishDateFrom") Instant publishDateFrom,
+            @Param("publishDateTo") Instant publishDateTo, Pageable pageableList
     );
 
     @Query(value = "SELECT n FROM News n WHERE "
@@ -35,8 +35,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
             + "and n.deleted is false")
     Page<News> findAllWithFiltersWhereDeletedIsFalse(
             @Param("newsCategory") NewsCategory newsCategory,
-            @Param("publishDateFrom")Instant publishDateFrom,
-            @Param("publishDateTo")Instant publishDateTo,
+            @Param("publishDateFrom") Instant publishDateFrom,
+            @Param("publishDateTo") Instant publishDateTo,
             Pageable pageableList
     );
 

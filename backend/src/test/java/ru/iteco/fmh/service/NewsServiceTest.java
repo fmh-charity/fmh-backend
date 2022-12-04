@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
 import static ru.iteco.fmh.TestUtils.getNews;
 import static ru.iteco.fmh.TestUtils.getUser;
 
@@ -61,7 +60,7 @@ public class NewsServiceTest {
                 .map(news -> conversionService.convert(news, NewsDto.class)).collect(Collectors.toList());
         when(newsRepository.findAllWithFiltersWhereDeletedIsFalse(any(), any(), any(), any())).thenReturn(pageableResult);
 
-        System.out.println("\n\n\n\n" + newsRepository.findAllWithFiltersWhereDeletedIsFalse(null, null, null,  pageableList)
+        System.out.println("\n\n\n\n" + newsRepository.findAllWithFiltersWhereDeletedIsFalse(null, null, null, pageableList)
                 .getContent().size() + "\n\n\n\n\n");
 
         when(userRepository.findUserByLogin(any())).thenReturn(userAdmin);

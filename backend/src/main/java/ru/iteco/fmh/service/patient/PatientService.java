@@ -19,6 +19,7 @@ public interface PatientService {
 
     /**
      * создает новую карточку пациента
+     *
      * @param patientCreateInfoDtoRq информация по карточке пациента для создания
      * @return сущность
      */

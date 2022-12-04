@@ -7,11 +7,7 @@ import io.cucumber.java.en.And;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ru.iteco.cucumber.model.NewsDto;
 import ru.iteco.cucumber.model.NewsPaginationDto;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

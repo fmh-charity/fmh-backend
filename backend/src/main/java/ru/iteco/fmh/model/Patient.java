@@ -9,7 +9,6 @@ import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,17 +29,14 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    Instant createDate;
+
     @NotBlank()
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
-
+    String firstName;
 
     @NotBlank()
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
-
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
-    String firstName;
 
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
@@ -52,9 +48,6 @@ public class Patient {
     @JoinColumn(name = "current_admission_id")
     Admission currentAdmission;
 
-    @Transient
-    AdmissionsStatus status = getStatus();
-
     @Where(clause = "deleted = false")
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     Set<Admission> admissions = new HashSet<>();
@@ -64,5 +57,4 @@ public class Patient {
     public AdmissionsStatus getStatus() {
         return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
     }
-
 }

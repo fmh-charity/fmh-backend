@@ -11,12 +11,11 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -49,10 +48,10 @@ public class PatientsControllerTest {
         int countDischarged = 1;
         int countAll = 6;
 
-        int allPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(ACTIVE,EXPECTED,DISCHARGED), true)).count();
-        int activePatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(ACTIVE), true)).count();
-        int dischargedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(DISCHARGED), true)).count();
-        int expectedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0,8, List.of(EXPECTED), true)).count();
+        int allPatients = (int) Stream.of(sut.getAllPatientsByStatus(0, 8, List.of(ACTIVE, EXPECTED, DISCHARGED), true)).count();
+        int activePatients = (int) Stream.of(sut.getAllPatientsByStatus(0, 8, List.of(ACTIVE), true)).count();
+        int dischargedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0, 8, List.of(DISCHARGED), true)).count();
+        int expectedPatients = (int) Stream.of(sut.getAllPatientsByStatus(0, 8, List.of(EXPECTED), true)).count();
 
         assertAll(
                 () -> assertEquals(countExpected, expectedPatients),

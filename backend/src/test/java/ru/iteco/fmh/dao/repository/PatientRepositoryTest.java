@@ -8,7 +8,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.Instant;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

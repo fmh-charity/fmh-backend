@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
 
-import java.time.LocalDate;
-
 /**
  * конвертер из {@link Patient} в {@link PatientDto}//для «Пациенты» ( Создание пациента, изменение пациента)
  */

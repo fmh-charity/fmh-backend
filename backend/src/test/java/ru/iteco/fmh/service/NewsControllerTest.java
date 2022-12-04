@@ -1,7 +1,6 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
@@ -21,7 +19,6 @@ import ru.iteco.fmh.security.RequestContext;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,12 +43,12 @@ public class NewsControllerTest {
     public void getAllNewsShouldPassSuccess() {
         //given
         List<String> expected = Stream.of("news-title1", "news-title8", "news-title7", "news-title6",
-                "news-title5", "news-title4", "news-title3", "news-title2", "news-title9")
+                        "news-title5", "news-title4", "news-title3", "news-title2", "news-title9")
                 .sorted().collect(Collectors.toList());
         RequestContext.setCurrentUser(User.builder()
                 .login("login1").build());
         List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
-                        .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
+                .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
 
@@ -64,7 +61,7 @@ public class NewsControllerTest {
                 .login("login3")
                 .build());
         List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
-                        .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
+                .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
     }
 

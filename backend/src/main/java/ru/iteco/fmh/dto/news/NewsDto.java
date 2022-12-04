@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-
 @ApiModel(description = "новости")
 @NoArgsConstructor
 @AllArgsConstructor

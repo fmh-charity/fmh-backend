@@ -2,8 +2,8 @@ package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.patient.PatientToPatientDtoIdFioConverter;
-import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;

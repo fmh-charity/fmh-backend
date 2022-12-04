@@ -5,4 +5,5 @@ public record PatientDtoIdFio(
         String firstName,
         String middleName,
         String lastName
-) {}
+) {
+}
