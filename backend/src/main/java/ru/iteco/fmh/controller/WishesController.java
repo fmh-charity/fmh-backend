@@ -111,7 +111,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(
+    public List<WishCommentInfoDto> getAllWishComments(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
     ) {
         return wishService.getAllWishComments(id);
@@ -129,7 +129,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по комментарию")
     @PutMapping("/comments")
-    public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
+    public WishCommentInfoDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 

@@ -160,14 +160,14 @@ public class WishServiceImpl implements WishService {
     public WishCommentInfoDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
-        WishCommentInfoDto infoDto = conversionService.convert(wishComment, WishCommentInfoDto.class);
-        return infoDto;
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
+
     }
 
     @Override
-    public List<WishCommentDto> getAllWishComments(int wishId) {
+    public List<WishCommentInfoDto> getAllWishComments(int wishId) {
         List<WishComment> wishCommentList = wishCommentRepository.findAllByWish_Id(wishId);
-        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentDto.class))
+        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -177,20 +177,19 @@ public class WishServiceImpl implements WishService {
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        WishCommentInfoDto infoDto = conversionService.convert(wishComment, WishCommentInfoDto.class);
-        return infoDto;
+        return  conversionService.convert(wishComment, WishCommentInfoDto.class);
 
     }
 
     @Transactional
     @Override
-    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
+    public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
     }
 
     @Override

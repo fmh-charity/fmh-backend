@@ -88,7 +88,7 @@ public interface WishService {
      * @param wishId ид просьбы
      * @return список всех комментариев по просьбе
      */
-    List<WishCommentDto> getAllWishComments(int wishId);
+    List<WishCommentInfoDto> getAllWishComments(int wishId);
 
     /**
      * создает новый комментарий просьбы
@@ -106,12 +106,5 @@ public interface WishService {
      * @param wishCommentDto информация по комментарию для обновления
      * @return обновленная сущность комментария
      */
-    WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
-
-    /**
-     * создает список видимости просьбы из Role
-     *
-     * @return список видимости просьбы
-     */
-    List<WishVisibilityDto> createWishVisibilityDtoList();
+    WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
 }
