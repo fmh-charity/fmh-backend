@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.patient;
 
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientInfoDto;
 
 import java.util.List;
@@ -16,24 +17,30 @@ public interface PatientService {
 
     /**
      * создает новую карточку пациента
-     * @param patientDto информация по карточке пациента для создания
+     * @param patientInfoDto информация по карточке пациента для создания
      * @return сущность
      */
-    PatientInfoDto createPatient(PatientInfoDto patientDto);
+    //PatientDto createPatient(PatientDto patientDto);
+
+    PatientInfoDto createPatient(PatientInfoDto patientInfoDto);
 
 
     /**
      * бновляет информацию о пациенте
-     * @param patientDto информация по карточке пациента для обновления
+     * @param patientInfoDto информация по карточке пациента для обновления
      * @return сущность
      */
-    PatientInfoDto updatePatient(PatientInfoDto patientDto);
+    //PatientDto updatePatient(PatientDto patientDto);
+
+    PatientInfoDto updatePatient(PatientInfoDto patientInfoDto);
 
     /**
      * возвращает полную инфу по конкретному пациенту
      * @param id ид пациента
      * @return полная инфа по конкретному пациенту
      */
+    // PatientDto getPatient(Integer id);
+
     PatientInfoDto getPatient(Integer id);
 
 }
