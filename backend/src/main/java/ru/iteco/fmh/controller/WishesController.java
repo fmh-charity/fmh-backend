@@ -23,6 +23,7 @@ import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -127,5 +128,11 @@ public class WishesController {
     @PutMapping("/comments")
     public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
+    }
+
+    @ApiOperation(value = "область видимости для просьбы")
+    @GetMapping("/visibility")
+    public List<WishVisibilityDto> getAvailableWishVisibility() {
+        return wishService.createWishVisibilityDtoList();
     }
 }

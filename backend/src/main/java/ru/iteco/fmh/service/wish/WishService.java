@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
@@ -101,4 +102,11 @@ public interface WishService {
      * @return обновленная сущность комментария
      */
     WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
+
+    /**
+     * создает список видимости просьбы из Role
+     *
+     * @return список видимости просьбы
+     */
+    List<WishVisibilityDto> createWishVisibilityDtoList();
 }

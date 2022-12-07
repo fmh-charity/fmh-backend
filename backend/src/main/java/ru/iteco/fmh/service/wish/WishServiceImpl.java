@@ -20,6 +20,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
@@ -184,5 +185,11 @@ public class WishServiceImpl implements WishService {
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentDto.class);
+    }
+
+    @Override
+    public List<WishVisibilityDto> createWishVisibilityDtoList() {
+        return roleRepository.findAll().stream().map(role -> WishVisibilityDto.builder()
+                .id(role.getId()).name(role.getName()).build()).toList();
     }
 }

@@ -20,8 +20,8 @@ import java.util.Optional;
 @Repository
 public interface WishRepository extends JpaRepository<Wish, Integer> {
 
-    @Query(value = "SELECT w from Wish w inner join w.wishRoles wr where w.deleted is false "
-            + "and w.status in :status and wr.name in :roleNames or w.creator.login = :creatorLogin")
+    @Query(value = "SELECT distinct w from Wish w inner join w.wishRoles wr where w.deleted is false "
+            + "and w.status in :status and (wr.name in :roleNames or w.creator.login = :creatorLogin)")
     Page<Wish> findAllByCurrentRoles(
             @Param("status") List<Status> status,
             @Param("roleNames") List<String> roleNames,
@@ -43,11 +43,11 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
     List<Wish> findAllByPatient_IdAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(Integer patientId);
 
     @PostAuthorize("@roleMatchesService.findMatchesByRoleList(returnObject.wishRoles, authentication)"
-            + "|| authentication.name.equals(filterObject.creator.login)")
+            + "|| authentication.name.equals(returnObject.creator.login)")
     Wish findWishById(int id);
 
     @NonNull
     @PostAuthorize("@roleMatchesService.findMatchesByRoleList(returnObject.get().wishRoles, authentication)"
-            + "|| authentication.name.equals(filterObject.creator.login)")
+            + "|| authentication.name.equals(returnObject.creator.login)")
     Optional<Wish> findById(Integer id);
 }
