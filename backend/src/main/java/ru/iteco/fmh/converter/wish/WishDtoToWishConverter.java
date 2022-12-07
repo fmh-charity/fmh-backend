@@ -21,13 +21,11 @@ import java.util.List;
 public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
-    private final RoleRepository roleRepository;
 
     @Override
     public Wish convert(@NonNull WishDto dto) {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
-        List<Role> roleList = roleRepository.findAllByIdIn(dto.getWishVisibility());
 
         Patient patient = dto.getPatient() != null ? patientRepository.findPatientById(dto.getPatient().id()) : null;
         User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
@@ -41,7 +39,6 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
         entity.setPatient(patient);
         entity.setCreator(creator);
         entity.setExecutor(executor);
-        entity.setWishRoles(roleList);
         return entity;
     }
 }

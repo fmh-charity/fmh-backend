@@ -23,9 +23,7 @@ class WishDtoToWishConverterTest {
 
     UserRepository userRepository = mock(UserRepository.class);
     PatientRepository patientRepository = mock(PatientRepository.class);
-
-    RoleRepository roleRepository = mock(RoleRepository.class);
-    WishDtoToWishConverter convert = new WishDtoToWishConverter(userRepository, patientRepository, roleRepository);
+    WishDtoToWishConverter convert = new WishDtoToWishConverter(userRepository, patientRepository);
 
 
     @Test
