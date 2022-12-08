@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.AdmissionsController;
@@ -19,6 +20,7 @@ import static ru.iteco.fmh.TestUtils.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class AdmissionsControllerTest {
     @Autowired
     AdmissionsController sut;
@@ -44,7 +46,6 @@ public class AdmissionsControllerTest {
         assertEquals(expected, result);
     }
 
-    @Transactional
     @Test
     public void createAdmissionShouldPassSuccess() {
         // given

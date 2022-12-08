@@ -1,18 +1,22 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
+import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.news.News;
@@ -32,6 +36,7 @@ import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class NewsControllerTest {
     @Autowired
     NewsController sut;
@@ -73,13 +78,6 @@ public class NewsControllerTest {
         // given
         NewsDto givenDto = getNewsDto();
         givenDto.setNewsCategoryId(1);
-
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .thenReturn(User.builder().id(1).build());
 
         NewsDto resultDto = sut.createNews(givenDto);
         Integer resultId = resultDto.getId();
