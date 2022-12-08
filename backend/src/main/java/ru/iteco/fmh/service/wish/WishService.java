@@ -107,4 +107,11 @@ public interface WishService {
      * @return обновленная сущность комментария
      */
     WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
+
+    /**
+     * создает список видимости просьбы из Role
+     *
+     * @return список видимости просьбы
+     */
+    List<WishVisibilityDto> createWishVisibilityDtoList();
 }
