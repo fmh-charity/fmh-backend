@@ -7,7 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -26,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.getUser;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.TestUtils.getWishComment;
@@ -70,16 +73,16 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
     public void getAllWishesShouldPassSuccess() {
         // given
         List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
-
         Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
-        when(wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList))
-                .thenReturn(pageableResult);
+
+        doReturn(pageableResult).when(wishRepository).findAllByCurrentRoles(any(), any(), any(), any());
         List<WishDto> result = sut.getWishes(0, 8, null, true)
                 .getElements().stream().toList();
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.NewsRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -36,6 +37,7 @@ import static ru.iteco.fmh.TestUtils.getUser;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class NewsServiceTest {
     @Autowired
     NewsService sut;
