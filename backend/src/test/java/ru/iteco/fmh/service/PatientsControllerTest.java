@@ -107,7 +107,7 @@ public class PatientsControllerTest {
         int patientId = 1;
         String patientFirstName = "PatientOnefirstname";
 
-        PatientDto result = sut.getPatient(patientId);
+        PatientInfoDto result = sut.getPatient(patientId);
 
         assertEquals(patientFirstName, result.getFirstName());
     }

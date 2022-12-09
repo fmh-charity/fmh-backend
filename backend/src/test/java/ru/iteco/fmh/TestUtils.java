@@ -184,7 +184,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now().toEpochDay())
+                .birthDate(LocalDate.now())
                 .admissions(new HashSet<>())
                 .build();
         return patientInfoDto;
