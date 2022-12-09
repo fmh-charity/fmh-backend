@@ -36,7 +36,6 @@ public class PatientInfoDto {
     private LocalDate dateOut;
     @ApiModelProperty("имя палаты")
     private String chamberName;
-
     @ApiModelProperty("текущая госпитализация")
     private boolean deleted;
     @ApiModelProperty("текущая госпитализация")
