@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.HashSet;
 import java.util.Set;
 
-@Schema(name = "Основная информация по пациенту")
+@Schema(description = "Основная информация по пациенту")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

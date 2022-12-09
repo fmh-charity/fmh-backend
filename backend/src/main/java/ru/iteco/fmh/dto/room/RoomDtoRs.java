@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Палаты")
+@Schema(description = "Палаты")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

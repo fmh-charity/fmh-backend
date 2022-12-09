@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Информация по госпитализации")
+@Schema(description = "Информация по госпитализации")
 @Builder
 @Data
 @AllArgsConstructor
