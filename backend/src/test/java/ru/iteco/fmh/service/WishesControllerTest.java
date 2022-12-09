@@ -17,6 +17,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -78,9 +79,9 @@ public class WishesControllerTest {
         List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
 
         List<String> result = Objects.requireNonNull(
-                sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
-                    .getBody()).getElements().stream()
-                    .map(WishDto::getTitle).collect(Collectors.toList());
+                        sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
+                                .getBody()).getElements().stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
     }
@@ -205,9 +206,9 @@ public class WishesControllerTest {
         // given
         int commentId = 2;
 
-        WishCommentDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentDto.class);
+        WishCommentInfoDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentInfoDto.class);
 
-        WishCommentDto result = sut.getWishComment(commentId);
+        WishCommentInfoDto result = sut.getWishComment(commentId);
 
         assertEquals(expected, result);
     }
@@ -216,11 +217,11 @@ public class WishesControllerTest {
     public void getAllWishCommentsShouldPassSuccess() {
         // given
         int wishId = 1;
-        List<WishCommentDto> expected = wishCommentRepository.findAllByWish_Id(wishId).stream()
-                .map(i -> conversionService.convert(i, WishCommentDto.class))
+        List<WishCommentInfoDto> expected = wishCommentRepository.findAllByWish_Id(wishId).stream()
+                .map(i -> conversionService.convert(i, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
 
-        List<WishCommentDto> result = sut.getAllWishComments(wishId);
+        List<WishCommentInfoDto> result = sut.getAllWishComments(wishId);
 
         assertEquals(expected, result);
     }
@@ -233,7 +234,7 @@ public class WishesControllerTest {
         givenWishCommentDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishCommentDto.setWishId(wishRepository.findWishById(1).getId());
 
-        WishCommentDto resultId = sut.createWishComment(1, givenWishCommentDto);
+        WishCommentInfoDto resultId = sut.createWishComment(1, givenWishCommentDto);
         assertNotNull(resultId);
 
         // AFTER - deleting result entity

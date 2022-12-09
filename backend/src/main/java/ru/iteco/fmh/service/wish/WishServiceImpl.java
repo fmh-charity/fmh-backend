@@ -13,11 +13,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dao.repository.RoleRepository;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
@@ -153,38 +157,42 @@ public class WishServiceImpl implements WishService {
         return conversionService.convert(wish, WishDto.class);
     }
 
+
     @Override
-    public WishCommentDto getWishComment(int commentId) {
+    public WishCommentInfoDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
+
     }
 
     @Override
-    public List<WishCommentDto> getAllWishComments(int wishId) {
+    public List<WishCommentInfoDto> getAllWishComments(int wishId) {
         List<WishComment> wishCommentList = wishCommentRepository.findAllByWish_Id(wishId);
-        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentDto.class))
+        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
     }
 
+
     @Override
-    public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
+    public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return  conversionService.convert(wishComment, WishCommentInfoDto.class);
+
     }
 
     @Transactional
     @Override
-    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
+    public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
     }
 
     @Override

@@ -1,28 +1,34 @@
 package ru.iteco.fmh.dto.user;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "общая информация по пользователю")
+@Schema(name = "Общая информация по пользователю")
 @Builder
 @Data
+@FieldDefaults(level = PRIVATE)
 public class UserShortInfoDto {
-    @ApiModelProperty("id пользователя")
-    private Integer id;
-    @ApiModelProperty("имя")
-    private String firstName;
-    @ApiModelProperty("фамилия")
-    private String lastName;
-    @ApiModelProperty("отчество")
-    private String middleName;
-    @ApiModelProperty("является ли администратором")
-    private boolean isAdmin;
 
+    @Schema(name = "id", description = "Идентификатор пользователя")
+    Integer id;
+
+    @Schema(name = "firstName", description = "Имя")
+    String firstName;
+
+    @Schema(name = "lastName", description = "Фамилия")
+    String lastName;
+
+    @Schema(name = "middleName", description = "Отчество")
+    String middleName;
+
+    @Schema(name = "isAdmin", description = "Признак администратора")
+    boolean isAdmin;
 }
