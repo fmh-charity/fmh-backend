@@ -1,31 +1,33 @@
 package ru.iteco.fmh.dto.wish;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
+import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "информация о комментарии к заявке")
+@Schema(description = "Информация о комментарии к заявке")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@FieldDefaults(level = PRIVATE)
 public class WishCommentInfoDto {
-    @ApiModelProperty("создатель комментария к просьбе")
-    private UserDtoIdFio userDtoIdFio;
-    @ApiModelProperty("время создания комментария к просьбе")
-    private Long createTime;
-    @ApiModelProperty("текст комментария к просьбе")
-    private String description;
-    @ApiModelProperty("идентификатор комментария к просьбе")
-    private Integer id;
 
-    public WishCommentInfoDto(Long createTime, String description, Integer id) {
-        this.createTime = createTime;
-        this.description = description;
-        this.id = id;
-    }
+    @Schema(name = "userDtoIdFio", description = "Создатель комментария к просьбе")
+    UserDtoIdFio userDtoIdFio;
+
+    @Schema(name = "createTime", description = "Время создания комментария к просьбе")
+    Long createTime;
+
+    @Schema(name = "description", description = "Текст комментария к просьбе")
+    String description;
+
+    @Schema(name = "id", description = "Идентификатор комментария к просьбе")
+    Integer id;
 }
