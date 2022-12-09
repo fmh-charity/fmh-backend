@@ -34,8 +34,6 @@ public class PatientInfoDto {
     private LocalDate dateIn;
     @ApiModelProperty("дата выписки пациента")
     private LocalDate dateOut;
-    @ApiModelProperty("статус госпитализации")
-    private AdmissionsStatus status;
     @ApiModelProperty("имя палаты")
     private String chamberName;
 
