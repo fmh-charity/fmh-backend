@@ -19,11 +19,11 @@ public class PatientToPatientAdmissionDtoConverter implements Converter<Patient,
             .middleName(patient.getMiddleName())
             .patientStatus(patient.getStatus())
             .roomId(patient.getRoom() != null ? patient.getRoom().getId() : null)
-            .birthDate(patient.getBirthDate() != null ? patient.getBirthDate().toEpochMilli() : null)
-            .factDateIn(patient.getFactDateIn() != null ? patient.getFactDateIn().toEpochMilli() : null)
-            .factDateOut(patient.getFactDateOut() != null ? patient.getFactDateOut().toEpochMilli() : null)
-            .planDateIn(patient.getPlanDateIn() != null ? patient.getPlanDateIn().toEpochMilli() : null)
-            .planDateOut(patient.getPlanDateOut() != null ? patient.getPlanDateOut().toEpochMilli() : null)
+            .birthDate(patient.getBirthDate() != null ? patient.getBirthDate().toEpochDay() : null)
+            .factDateIn(patient.getFactDateIn() != null ? patient.getFactDateIn().toEpochDay() : null)
+            .factDateOut(patient.getFactDateOut() != null ? patient.getFactDateOut().toEpochDay() : null)
+            .planDateIn(patient.getPlanDateIn() != null ? patient.getPlanDateIn().toEpochDay() : null)
+            .planDateOut(patient.getPlanDateOut() != null ? patient.getPlanDateOut().toEpochDay() : null)
             .build();
     }
 }
