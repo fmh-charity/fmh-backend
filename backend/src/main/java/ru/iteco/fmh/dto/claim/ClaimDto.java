@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Request claim")
+@Schema(name = "ClaimDto", description = "Request claim")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

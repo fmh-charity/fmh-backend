@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Schema(name = "Основная информация для создания пациента")
+@Schema(description = "Основная информация для создания пациента")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

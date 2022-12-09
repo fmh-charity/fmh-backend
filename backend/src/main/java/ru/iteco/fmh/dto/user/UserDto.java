@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Информация по пользователю")
+@Schema(description = "Информация по пользователю")
 @Builder
 @Data
 @AllArgsConstructor//generates a constructor with 1 parameter for each field in your class

@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Общая информация по пользователю")
+@Schema(description = "Общая информация по пользователю")
 @Builder
 @Data
 @FieldDefaults(level = PRIVATE)
