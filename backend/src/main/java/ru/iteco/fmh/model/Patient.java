@@ -4,7 +4,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.time.Instant;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 
 /**
  * Пациент
@@ -23,10 +25,18 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
     String firstName;
+
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
+
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
-    Instant birthDate;
+
+    LocalDate birthDate;
     boolean deleted;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -34,13 +44,13 @@ public class Patient {
     Room room;
 
     //Планируемая дата поступления
-    Instant planDateIn;
+    LocalDate planDateIn;
     //Планируемая дата выписки
-    Instant planDateOut;
+    LocalDate planDateOut;
     //Фактическая дата поступления
-    Instant factDateIn;
+    LocalDate factDateIn;
     //Фактическая дата выписки
-    Instant factDateOut;
+    LocalDate factDateOut;
 
     // Статус пациента
     @Enumerated(EnumType.STRING)

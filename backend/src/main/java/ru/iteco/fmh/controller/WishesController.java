@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -52,7 +56,6 @@ public class WishesController {
                 @RequestParam(name = "status", required = false) List<Status>  status,
             @ApiParam (required = false, name = "planExecuteDate", value = "Сортировка по дате исполнения")
                 @RequestParam(defaultValue = "true") boolean planExecuteDate) {
-
         return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
     }
 
@@ -99,7 +102,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
     @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(
+    public WishCommentInfoDto getWishComment(
             @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
     ) {
         return wishService.getWishComment(id);
@@ -108,7 +111,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(
+    public List<WishCommentInfoDto> getAllWishComments(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
     ) {
         return wishService.getAllWishComments(id);
@@ -117,26 +120,22 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public WishCommentDto createWishComment(
+    public WishCommentInfoDto createWishComment(
             @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
             @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
-
-
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @ApiOperation(value = "обновляет информацию по комментарию")
     @PutMapping("/comments")
-    public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
+    public WishCommentInfoDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 
-
-
+    @ApiOperation(value = "область видимости для просьбы")
+    @GetMapping("/visibility")
+    public List<WishVisibilityDto> getAvailableWishVisibility() {
+        return wishService.createWishVisibilityDtoList();
+    }
 }
-
-
-
-
-

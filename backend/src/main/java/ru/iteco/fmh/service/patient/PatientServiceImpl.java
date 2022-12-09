@@ -7,11 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.RoomRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.Room;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,27 +42,28 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientAdmissionDto createPatient(PatientAdmissionDto patientDto) {
-        Patient patient = conversionService.convert(patientDto, Patient.class);
+    public PatientCreateInfoDtoRs createPatient(PatientCreateInfoDtoRq patientCreateInfoDtoRq) {
+        Patient patient = conversionService.convert(patientCreateInfoDtoRq, Patient.class);
 
         patient = patientRepository.save(patient);
-        return conversionService.convert(patient, PatientAdmissionDto.class);
+        return conversionService.convert(patient, PatientCreateInfoDtoRs.class);
     }
 
     @Transactional
     @Override
-    public PatientAdmissionDto updatePatient(PatientAdmissionDto patientDto) {
-        Patient patient = patientRepository.findPatientById(patientDto.getId());
+    public PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto) {
+        Patient patient = patientRepository.findPatientById(id);
         Room room = null;
         if (patientDto.getRoomId() != null) {
             room = roomRepository.findRoomById(patientDto.getRoomId());
         }
         setAdmissionDates(patientDto);
 
+
         patient.setFirstName(patientDto.getFirstName());
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(Instant.ofEpochMilli(patientDto.getBirthDate()));
+        patient.setBirthDate(patientDto.getBirthDate());
         patient.setStatus(patientDto.getPatientStatus());
         patient.setRoom(room);
         patient.setPlanDateIn(Instant.ofEpochMilli(patientDto.getPlanDateIn()));
@@ -65,7 +72,8 @@ public class PatientServiceImpl implements PatientService {
         patient.setFactDateOut(Instant.ofEpochMilli(patientDto.getFactDateOut()));
 
         patient = patientRepository.save(patient);
-        return conversionService.convert(patient, PatientAdmissionDto.class);
+        return conversionService.convert(patient, PatientUpdateInfoDtoRs.class);
+
     }
 
     @Transactional

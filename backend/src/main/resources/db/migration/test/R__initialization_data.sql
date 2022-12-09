@@ -16,12 +16,12 @@ values ('room1', 1, 1, 10, 'room1-comment', false),
 
 insert into patient (first_name, middle_name, last_name, birth_date, deleted, plan_date_in,
                      plan_date_out, fact_date_in, fact_date_out, status, room_id)
-values ('Patient1-firstname', 'Patient1-middlename', 'Patient1-lastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
-       ('Patient2-firstname', 'Patient2-middlename', 'Patient2-lastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
-       ('Patient3-firstname', 'Patient3-middlename', 'Patient3-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
-       ('Patient4-firstname', 'Patient4-middlename', 'Patient4-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
-       ('Patient5-firstname', 'Patient5-middlename', 'Patient5-lastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1),
-       ('Patient6-firstname', 'Patient6-middlename', 'Patient6-lastname', now(), false, null, null, null, null, 'EXPECTED', null);
+values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       ('PatientFourfirstname', 'PatientFourmiddlename', 'PatientFourlastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       ('PatientFivefirstname', 'PatientFivemiddlename', 'PatientFivelastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1),
+       ('PatientSixfirstname', 'PatientSixmiddlename', 'PatientSixlastname', now(), false, null, null, null, null, 'EXPECTED', null);
 
 insert into users (login, password, first_name, last_name, middle_name, phone_number, email, deleted)
 values ('login1', '$2a$10$/qkdAUtfdxMs.V5iil9xNO0Laa1uwdqDlDbIi.9X5I5.ieJ9nxk8G', 'Николай', 'Смирнов', 'Петрович',
@@ -107,3 +107,17 @@ values (1, 1, false),
        (3, 2, false),
        (4, 2, false),
        (5, 1, false);
+
+insert into wish_visibility (wish_id, role_id, deleted)
+values (1, 1, false),
+       (1, 2, false),
+       (2, 1, false),
+       (2, 2, false),
+       (3, 1, false),
+       (4, 1, false),
+       (5, 1, false),
+       (6, 1, false),
+       (6, 2, false),
+       (7, 2, false),
+       (8, 1, false),
+       (8, 2, false);

@@ -5,13 +5,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
+import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +31,7 @@ import static ru.iteco.fmh.model.PatientStatus.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class PatientsControllerTest {
     @Autowired
     PatientsController sut;
@@ -57,40 +66,45 @@ public class PatientsControllerTest {
     @Test
     public void createPatientShouldPassSuccess() {
         //given
-        PatientAdmissionDto givenDto = getPatientDto();
-        givenDto.setId(0);
 
-        PatientDto resultDto = sut.createPatient(givenDto);
+        PatientCreateInfoDtoRq givenDto = getPatientCreateInfoDtoRq();
 
-        Integer resultId = resultDto.getId();
+        PatientCreateInfoDtoRs resultDto = sut.createPatient(givenDto);
 
-        assertNotNull(resultId);
-
-        givenDto.setId(resultId);
-        assertEquals(givenDto, resultDto);
+        assertAll(
+                () -> assertEquals(givenDto.getFirstName(), resultDto.getFirstName()),
+                () -> assertEquals(givenDto.getLastName(), resultDto.getLastName()),
+                () -> assertEquals(givenDto.getMiddleName(), resultDto.getMiddleName()),
+                () -> assertEquals(givenDto.getBirthDate(), resultDto.getBirthDate()),
+                () -> assertNotNull(resultDto.getId())
+        );
 
         // AFTER - deleting result entity
-        patientRepository.deleteById(resultId);
+        patientRepository.deleteById(resultDto.getId());
     }
 
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
-        int patientId = 1;
-        PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
-        String initialLastName = given.getLastName();
-        given.setLastName("newLastName");
+        int patientId = 5;
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
+                .middleName("-").birthDate(LocalDate.now()).build();
+        PatientUpdateInfoDtoRs result = sut.updatePatient(given, patientId);
+        assertAll(
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
+                () -> assertEquals(patientId, result.getId())
+        );
 
-        PatientDto result = sut.updatePatient(given);
-
-        assertEquals(given, result);
     }
 
     @Test
     public void getPatientShouldPassSuccess() {
         // given
         int patientId = 1;
-        String patientFirstName = "Patient1-firstname";
+        String patientFirstName = "PatientOnefirstname";
 
         PatientDto result = sut.getPatient(patientId);
 

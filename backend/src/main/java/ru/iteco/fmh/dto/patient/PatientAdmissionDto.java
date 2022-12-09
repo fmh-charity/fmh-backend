@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.iteco.fmh.model.PatientStatus;
 
+import java.time.LocalDate;
+
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
 @ApiModel(description = "пациент + госпитализации")
 @NoArgsConstructor
@@ -29,7 +31,6 @@ public class PatientAdmissionDto extends PatientDto {
     private boolean dateInBoolean;
     @ApiModelProperty("признак для даты выписки")
     private boolean dateOutBoolean;
-    @ApiModelProperty("текущая госпитализация")
 
     // данные для формирования dateIn, dateOut
     @JsonIgnore

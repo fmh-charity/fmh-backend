@@ -1,7 +1,11 @@
 package ru.iteco.fmh.service.patient;
 
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 
 import java.util.List;
 
@@ -15,18 +19,18 @@ public interface PatientService {
 
     /**
      * создает новую карточку пациента
-     * @param patientDto информация по карточке пациента для создания
+     * @param patientCreateInfoDtoRq информация по карточке пациента для создания
      * @return сущность
      */
-    PatientAdmissionDto createPatient(PatientAdmissionDto patientDto);
+    PatientCreateInfoDtoRs createPatient(PatientCreateInfoDtoRq patientCreateInfoDtoRq);
 
 
     /**
      * бновляет информацию о пациенте
-     * @param patientDto информация по карточке пациента для обновления
+     * @param patientDto информация которую необходимо обновить в карточке пациента
      * @return сущность
      */
-    PatientAdmissionDto updatePatient(PatientAdmissionDto patientDto);
+    PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto);
 
     /**
      * возвращает полную инфу по конкретному пациенту

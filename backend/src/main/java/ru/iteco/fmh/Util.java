@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Util {
     private final UserRepository userRepository;
+
     String administrator = "ROLE_ADMINISTRATOR";
 
     public String getCreatorName(Integer id) {
@@ -63,6 +64,4 @@ public class Util {
                 .collect(Collectors.toList())
                 .contains("ROLE_ADMINISTRATOR");
     }
-
-
 }

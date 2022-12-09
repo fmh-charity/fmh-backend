@@ -4,6 +4,7 @@ import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
@@ -24,6 +25,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
@@ -61,6 +63,14 @@ public class TestUtils {
                 .toString();
     }
 
+    public static Role getRole(String roleName) {
+        return Role.builder()
+                .id(Integer.valueOf(getNumeric(2)))
+                .name(roleName)
+                .deleted(false)
+                .build();
+    }
+
     public static Wish getWish(Status status) {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
@@ -72,6 +82,7 @@ public class TestUtils {
                 .planExecuteDate(Instant.now())
                 .factExecuteDate(Instant.now())
                 .status(status)
+                .wishRoles(List.of(getRole("ROLE_ADMINISTRATOR")))
                 .build();
     }
 
@@ -82,7 +93,17 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
+                .build();
+        return patient;
+    }
+
+    public static PatientCreateInfoDtoRq getPatientCreateInfoDtoRq() {
+        PatientCreateInfoDtoRq patient = PatientCreateInfoDtoRq.builder()
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .birthDate(LocalDate.now())
                 .build();
         return patient;
     }
@@ -157,7 +178,7 @@ public class TestUtils {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now().toEpochMilli())
+                .birthDate(LocalDate.now().toEpochDay())
                 .build();
         return patientDto;
     }

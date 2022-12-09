@@ -14,7 +14,7 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "wishVisibility")
+@Table(name = "wish_visibility")
 public class WishVisibility {
 
     @Id
@@ -22,7 +22,7 @@ public class WishVisibility {
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name = " wish_id")
+    @JoinColumn(name = "wish_id")
     Wish wish;
     @ManyToOne
     @JoinColumn(name = "role_id")

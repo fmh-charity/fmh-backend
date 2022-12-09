@@ -1,6 +1,5 @@
 package ru.iteco.fmh.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,9 +12,11 @@ import ru.iteco.fmh.model.user.User;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -23,6 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User Not Found with -> Login : " + login);
         }
-        return new User(user.getId(), user.getLogin(), user.getPassword(), user.getTokens());
+        return new User(user.getId(), user.getLogin(), user.getPassword(), user.getTokens(), user.getUserRoles());
     }
 }
