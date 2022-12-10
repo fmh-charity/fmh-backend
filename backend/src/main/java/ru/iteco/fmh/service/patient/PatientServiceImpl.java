@@ -10,6 +10,8 @@ import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 
@@ -49,16 +51,17 @@ public class PatientServiceImpl implements PatientService {
 
     @Transactional
     @Override
-    public PatientDto updatePatient(PatientDto patientDto) {
-        Patient patient = patientRepository.findPatientById(patientDto.getId());
+    public PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto) {
+        Patient patient = patientRepository.findPatientById(id);
 
         patient.setFirstName(patientDto.getFirstName());
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(LocalDate.ofEpochDay(patientDto.getBirthDate()));
+        patient.setBirthDate(patientDto.getBirthDate());
 
         patient = patientRepository.save(patient);
-        return getPatientDto(patient);
+        return conversionService.convert(patient, PatientUpdateInfoDtoRs.class);
+
     }
 
     @Transactional

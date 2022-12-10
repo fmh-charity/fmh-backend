@@ -5,19 +5,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.model.Patient;
 
-import java.util.HashSet;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class PatientsControllerTest {
     @Autowired
     PatientsController sut;
@@ -83,16 +85,18 @@ public class PatientsControllerTest {
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
-        int patientId = 1;
-        PatientDto given = conversionService.convert(patientRepository.findById(patientId).get(), PatientDto.class);
-        String initialLastName = given.getLastName();
-        given.setLastName("newLastName");
+        int patientId = 5;
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
+                .middleName("-").birthDate(LocalDate.now()).build();
+        PatientUpdateInfoDtoRs result = sut.updatePatient(given, patientId);
+        assertAll(
+                () -> assertEquals(given.getFirstName(), result.getFirstName()),
+                () -> assertEquals(given.getLastName(), result.getLastName()),
+                () -> assertEquals(given.getMiddleName(), result.getMiddleName()),
+                () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
+                () -> assertEquals(patientId, result.getId())
+        );
 
-        PatientDto result = sut.updatePatient(given);
-        result.setCurrentAdmission(null);
-        result.setAdmissions(new HashSet<>());
-
-        assertEquals(given, result);
     }
 
     @Test

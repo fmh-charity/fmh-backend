@@ -7,11 +7,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
@@ -26,8 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.getUser;
 import static ru.iteco.fmh.TestUtils.getWish;
 import static ru.iteco.fmh.TestUtils.getWishComment;
@@ -70,16 +74,16 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
     public void getAllWishesShouldPassSuccess() {
         // given
         List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
-
         Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
-        when(wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList))
-                .thenReturn(pageableResult);
+
+        doReturn(pageableResult).when(wishRepository).findAllByCurrentRoles(any(), any(), any(), any());
         List<WishDto> result = sut.getWishes(0, 8, null, true)
                 .getElements().stream().toList();
 
@@ -261,8 +265,8 @@ public class WishServiceTest {
         int wishCommentId = 1;
 
         when(wishCommentRepository.findById(any())).thenReturn(Optional.of(wishComment));
-        WishCommentDto expected = conversionService.convert(wishComment, WishCommentDto.class);
-        WishCommentDto result = sut.getWishComment(wishCommentId);
+        WishCommentInfoDto expected = conversionService.convert(wishComment, WishCommentInfoDto.class);
+        WishCommentInfoDto result = sut.getWishComment(wishCommentId);
 
         assertEquals(expected, result);
     }
@@ -271,13 +275,13 @@ public class WishServiceTest {
     public void getAllWishCommentsShouldPassSuccess() {
         // given
         List<WishComment> wishCommentList = List.of(getWishComment(OPEN), getWishComment(IN_PROGRESS));
-        List<WishCommentDto> expected = wishCommentList.stream()
-                .map(wishComment -> conversionService.convert(wishComment, WishCommentDto.class))
+        List<WishCommentInfoDto> expected = wishCommentList.stream()
+                .map(wishComment -> conversionService.convert(wishComment, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
         int wishId = 1;
 
         when(wishCommentRepository.findAllByWish_Id(any())).thenReturn(wishCommentList);
-        List<WishCommentDto> result = sut.getAllWishComments(wishId);
+        List<WishCommentInfoDto> result = sut.getAllWishComments(wishId);
 
         assertEquals(expected, result);
     }
@@ -295,14 +299,13 @@ public class WishServiceTest {
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
 
-        WishCommentDto result = sut.createWishComment(wishId, wishCommentDto);
+        WishCommentInfoDto result = sut.createWishComment(wishId, wishCommentDto);
 
         assertAll(
                 () -> assertEquals(wishCommentDto.getId(), result.getId()),
                 () -> assertEquals(wishCommentDto.getDescription(), result.getDescription()),
-                () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateDate()),
-                () -> assertEquals(wishCommentDto.getCreatorId(), result.getCreatorId()),
-                () -> assertEquals(wishCommentDto.getWishId(), result.getWishId())
+                () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateTime()),
+                () -> assertEquals(wishCommentDto.getCreatorId(), result.getUserDtoIdFio().id())
         );
     }
 }

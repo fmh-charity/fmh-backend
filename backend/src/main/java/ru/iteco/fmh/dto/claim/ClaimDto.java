@@ -1,40 +1,54 @@
 package ru.iteco.fmh.dto.claim;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import ru.iteco.fmh.model.task.Status;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.model.task.Status;
+import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "request claim")
+@Schema(name = "ClaimDto", description = "Request claim")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@FieldDefaults(level = PRIVATE)
 public class ClaimDto {
 
-    @ApiModelProperty("идентификатор заявки")
-    private Integer id;
-    @ApiModelProperty("тема заявки")
-    private String title;
-    @ApiModelProperty("описание заявки")
-    private String description;
-    @ApiModelProperty("идентификатор создателя")
-    private Integer creatorId;
-    @ApiModelProperty("идентификатор исполнителя")
-    private Integer executorId;
-    @ApiModelProperty("дата создания заявки")
-    private Long createDate;
-    @ApiModelProperty("плановая дата исполнения заявки")
-    private Long planExecuteDate;
-    @ApiModelProperty("фактическая дата исполнения заявки")
-    private Long factExecuteDate;
-    @ApiModelProperty("статус заявки")
-    private Status status;
-    @ApiModelProperty("ФИО создателя")
-    private String creatorName;
-    @ApiModelProperty("ФИО исполнителя")
-    private String executorName;
+    @Schema(name = "id", description = "Идентификатор заявки")
+    Integer id;
+
+    @Schema(name = "title", description = "Тема заявки")
+    String title;
+
+    @Schema(name = "description", description = "Описание заявки")
+    String description;
+
+    @Schema(name = "creatorId", description = "Идентификатор создателя")
+    Integer creatorId;
+
+    @Schema(name = "executorId", description = "Идентификатор исполнителя")
+    Integer executorId;
+
+    @Schema(name = "createDate", description = "Дата создания заявки")
+    Long createDate;
+
+    @Schema(name = "planExecuteDate", description = "Плановая дата исполнения заявки")
+    Long planExecuteDate;
+
+    @Schema(name = "factExecuteDate", description = "Фактическая дата исполнения заявки")
+    Long factExecuteDate;
+
+    @Schema(name = "status", description = "Статус заявки")
+    Status status;
+
+    @Schema(name = "creatorName", description = "ФИО создателя")
+    String creatorName;
+
+    @Schema(name = "executorName", description = "ФИО исполнителя")
+    String executorName;
 }

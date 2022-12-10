@@ -4,7 +4,6 @@ spring:
     driverClassName: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
-    platform: postgres
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
@@ -19,10 +18,21 @@ spring:
 server:
   servlet:
     context-path: /fmh
+  forward-headers-strategy: framework
 
 logging:
   level:
     ru.iteco.fmh: DEBUG
 
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
+    operations-sorter: method
+
 swagger:
-  host: ${SWAGGER_HOST}
+  info:
+    title: "API Мобильный хоспис"
+    description: "Backend сервис для приложения «Мобильный хоспис»"
+  security:
+    schemeName: "Authorization"
+    format: "JWT"

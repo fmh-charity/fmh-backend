@@ -1,36 +1,48 @@
 package ru.iteco.fmh.dto.patient;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import ru.iteco.fmh.dto.admission.AdmissionDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
+import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@ApiModel(description = "основная информация по пациенту")
+@Schema(description = "Основная информация по пациенту")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@FieldDefaults(level = PRIVATE)
 public class PatientDto {
-    @ApiModelProperty("id пациента")
-    private Integer id;
-    @ApiModelProperty("имя пациента")
-    private String firstName;
-    @ApiModelProperty("фамилия пациента")
-    private String lastName;
-    @ApiModelProperty("отчество пациента")
-    private String middleName;
-    @ApiModelProperty("дата рождения пациента")
-    private Long birthDate;
-    @ApiModelProperty("текущая госпитализация")
-    private boolean deleted;
-    @ApiModelProperty("текущая госпитализация")
-    private AdmissionDto currentAdmission;
-    @ApiModelProperty("id всех госпитализаций")
-    private Set<Integer> admissions = new HashSet<>();
+
+    @Schema(name = "id", description = "Идентификатор пациента")
+    Integer id;
+
+    @Schema(name = "firstName", description = "Имя пациента")
+    String firstName;
+
+    @Schema(name = "lastName", description = "Фамилия пациента")
+    String lastName;
+
+    @Schema(name = "middleName", description = "Отчество пациента")
+    String middleName;
+
+    @Schema(name = "birthDate", description = "Дата рождения пациента")
+    Long birthDate;
+
+    @Schema(name = "deleted", description = "Текущая госпитализация")
+    boolean deleted;
+
+    @Schema(name = "currentAdmission", description = "Текущая госпитализация")
+    AdmissionDto currentAdmission;
+
+    @Schema(name = "admissions", description = "Идентификаторы всех госпитализаций")
+    Set<Integer> admissions = new HashSet<>();
 }

@@ -1,29 +1,36 @@
 package ru.iteco.fmh.dto.patient;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@ApiModel(description = "основная информация для создания пациента")
+@Schema(description = "Основная информация для создания пациента")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@FieldDefaults(level = PRIVATE)
 public class PatientCreateInfoDtoRs {
-    @ApiModelProperty("id пациента")
-    private Integer id;
-    @ApiModelProperty("имя пациента")
-    private String firstName;
-    @ApiModelProperty("фамилия пациента")
-    private String lastName;
-    @ApiModelProperty("отчество пациента")
-    private String middleName;
-    @ApiModelProperty("дата рождения пациента")
-    private LocalDate birthDate;
-}
 
+    @Schema(name = "id", description = "id пациента")
+    Integer id;
+
+    @Schema(name = "firstName", description = "имя пациента")
+    String firstName;
+
+    @Schema(name = "lastName", description = "фамилия пациента")
+    String lastName;
+
+    @Schema(name = "middleName", description = "отчество пациента")
+    String middleName;
+
+    @Schema(name = "birthDate", description = "дата рождения пациента")
+    LocalDate birthDate;
+}

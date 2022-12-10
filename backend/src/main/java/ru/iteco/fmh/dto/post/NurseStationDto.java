@@ -1,24 +1,28 @@
 package ru.iteco.fmh.dto.post;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "Информация поста")
+@Schema(description = "Информация о посте")
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = PRIVATE)
 public class NurseStationDto {
 
-    @ApiModelProperty("id поста")
-    private Integer id;
-    @ApiModelProperty("название")
-    private String name;
-    @ApiModelProperty("комментарий")
-    private String comment;
+    @Schema(name = "id", description = "Идентификатор поста")
+    Integer id;
 
+    @Schema(name = "name", description = "Название поста")
+    String name;
+
+    @Schema(name = "comment", description = "Комментарий")
+    String comment;
 }

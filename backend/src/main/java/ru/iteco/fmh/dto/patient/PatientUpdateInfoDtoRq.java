@@ -13,25 +13,26 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-@Schema(description = "Основная информация для создания пациента")
+@Schema(description = "Основная информация по пациенту для запроса по редактированию")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = PRIVATE)
-public class PatientCreateInfoDtoRq {
+public class PatientUpdateInfoDtoRq {
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
     @Schema(name = "firstName", description = "Имя пациента")
+    @NotBlank
+    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z]+")
     String firstName;
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     @Schema(name = "lastName", description = "Фамилия пациента")
+    @NotBlank
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
 
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
+    @NotBlank
+    @Pattern(regexp = "[А-Яа-яЁёa-zA-Z/-]+")
     @Schema(name = "middleName", description = "Отчество пациента")
     String middleName;
 

@@ -21,22 +21,23 @@ Backend сервис для приложения «Мобильный хоспи
 POST http://localhost:8080/fmh/authentication/login
 Content-Type: application/json
 
+```
 {
-"login": "login1",
-"password": "password1"
+  "login": "login1",
+  "password": "password1"
 }
-
+```
 # Локальный запуск:
 
 ## Вариант 1, backend сервис и окружение в докере
 
 1. Собрать docker image: `docker build -t fmh_back:1.0`  
-1. Выполнить в корне `docker-compose up`
-1. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/#/` 
+2. Выполнить в корне `docker-compose up`
+3. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/index.html` 
 
 ## Вариант 2, backend запустить локально, а окружение в докере
 
 1. Выполнить в корне `docker-compose -f docker-compose-env-only.yml up`
-1. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123`
-1. Запустить backend сервис
-1. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/#/`
+2. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123`
+3. Запустить backend сервис
+4. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/index.html`

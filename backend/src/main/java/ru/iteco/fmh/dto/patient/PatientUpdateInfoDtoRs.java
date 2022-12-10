@@ -9,29 +9,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-@Schema(description = "Основная информация для создания пациента")
+@Schema(description = "Основная информация по пациенту для возврата отредактированного пациента")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = PRIVATE)
-public class PatientCreateInfoDtoRq {
+public class PatientUpdateInfoDtoRs {
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
+    @Schema(name = "id", description = "id пациента")
+    Integer id;
+
     @Schema(name = "firstName", description = "Имя пациента")
     String firstName;
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     @Schema(name = "lastName", description = "Фамилия пациента")
     String lastName;
 
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     @Schema(name = "middleName", description = "Отчество пациента")
     String middleName;
 

@@ -5,6 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -14,7 +17,9 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
@@ -36,6 +41,7 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
 @SpringBootTest()
+@WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class WishesControllerTest {
     @Autowired
     WishesController sut;
@@ -73,9 +79,9 @@ public class WishesControllerTest {
         List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
 
         List<String> result = Objects.requireNonNull(
-                sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
-                    .getBody()).getElements().stream()
-                    .map(WishDto::getTitle).collect(Collectors.toList());
+                        sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
+                                .getBody()).getElements().stream()
+                .map(WishDto::getTitle).collect(Collectors.toList());
 
         assertEquals(expected, result);
     }
@@ -88,6 +94,7 @@ public class WishesControllerTest {
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
         givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+        givenWishDto.setWishVisibility(List.of(1,2));
 
         WishDto result = sut.createWish(givenWishDto);
         assertNotNull(result.getId());
@@ -107,6 +114,7 @@ public class WishesControllerTest {
         givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishDto.setExecutor(null);
         givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
+        givenWishDto.setWishVisibility(List.of(1, 2));
 
         WishDto resultId = sut.createWish(givenWishDto);
         assertNotNull(resultId);
@@ -196,11 +204,11 @@ public class WishesControllerTest {
     @Test
     public void getWishCommentShouldPassSuccess() {
         // given
-        int commentId = 1;
+        int commentId = 2;
 
-        WishCommentDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentDto.class);
+        WishCommentInfoDto expected = conversionService.convert(wishCommentRepository.findById(commentId).get(), WishCommentInfoDto.class);
 
-        WishCommentDto result = sut.getWishComment(commentId);
+        WishCommentInfoDto result = sut.getWishComment(commentId);
 
         assertEquals(expected, result);
     }
@@ -209,11 +217,11 @@ public class WishesControllerTest {
     public void getAllWishCommentsShouldPassSuccess() {
         // given
         int wishId = 1;
-        List<WishCommentDto> expected = wishCommentRepository.findAllByWish_Id(wishId).stream()
-                .map(i -> conversionService.convert(i, WishCommentDto.class))
+        List<WishCommentInfoDto> expected = wishCommentRepository.findAllByWish_Id(wishId).stream()
+                .map(i -> conversionService.convert(i, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
 
-        List<WishCommentDto> result = sut.getAllWishComments(wishId);
+        List<WishCommentInfoDto> result = sut.getAllWishComments(wishId);
 
         assertEquals(expected, result);
     }
@@ -226,10 +234,53 @@ public class WishesControllerTest {
         givenWishCommentDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishCommentDto.setWishId(wishRepository.findWishById(1).getId());
 
-        WishCommentDto resultId = sut.createWishComment(1, givenWishCommentDto);
+        WishCommentInfoDto resultId = sut.createWishComment(1, givenWishCommentDto);
         assertNotNull(resultId);
 
         // AFTER - deleting result entity
         wishCommentRepository.deleteById(resultId.getId());
+    }
+
+    @Test
+    @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
+    public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
+        // given
+        WishDto givenWishDto = getWishDto();
+        givenWishDto.setCreatorId(3);
+        givenWishDto.setWishVisibility(List.of(1));
+
+        WishDto givenWish = sut.createWish(givenWishDto);
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
+
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+
+        assertEquals(givenWish, expectedWish);
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(wishId);
+
+    }
+
+    @Test
+    @WithMockUser(username = "login4", password = "password4", roles = "MEDICAL_WORKER")
+    public void getAllWishesByNecessaryRoleAndWishCreatorShouldPassSuccess() {
+        // given
+        WishPaginationDto response = sut.getWishes(0, 8, List.of(OPEN, IN_PROGRESS, EXECUTED), true).getBody();
+
+        assertNotNull(response);
+        assertEquals(6, response.getElements().size());
+    }
+
+    @Test
+    @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
+    public void getAllOpenInProgressWishesByNecessaryRoleAndWishCreatorShouldPassSuccess() {
+        // given
+        List<WishDto> list = sut.getAllOpenInProgressWishes();
+
+        assertNotNull(list);
+        assertEquals(5, list.size());
     }
 }

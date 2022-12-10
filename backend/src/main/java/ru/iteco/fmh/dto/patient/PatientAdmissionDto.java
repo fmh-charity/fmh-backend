@@ -1,42 +1,57 @@
 package ru.iteco.fmh.dto.patient;
 
+import static lombok.AccessLevel.PRIVATE;
+
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
 
 //форма для respons'a «Пациенты» (Просмотр списка пациентов)
-@ApiModel(description = "пациент + госпитализации")
+@Schema(description = "Пациент + госпитализации")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@FieldDefaults(level = PRIVATE)
 public class PatientAdmissionDto {
-    @ApiModelProperty("id пациента")
-    private Integer id;
-    @ApiModelProperty("имя пациента")
-    private String firstName;
-    @ApiModelProperty("фамилие пациента")
-    private String lastName;
-    @ApiModelProperty("отчество пациента")
-    private String middleName;
-    @ApiModelProperty("дата рождения пациента")
-    private Long birthday;
 
-    @ApiModelProperty(value = "статус госпитализации")
-    private AdmissionsStatus admissionsStatus;
-    @ApiModelProperty("фактическая/плановая дата поступления")
-    private Long dateIn;
-    @ApiModelProperty("фактическая/плановая дата выписки")
-    private Long dateOut;
-    @ApiModelProperty("признак для даты поступления")
-    private boolean dateInBoolean;
-    @ApiModelProperty("признак для даты выписки")
-    private boolean dateOutBoolean;
+    @Schema(name = "id", description = "id пациента")
+    Integer id;
+
+    @Schema(name = "firstName", description = "Имя пациента")
+    String firstName;
+
+    @Schema(name = "lastName", description = "Фамилия пациента")
+    String lastName;
+
+    @Schema(name = "middleName", description = "Отчество пациента")
+    String middleName;
+
+    @Schema(name = "birthday", description = "Дата рождения пациента")
+    LocalDate birthday;
+
+    @Schema(name = "admissionsStatus", description = "Статус госпитализации")
+    AdmissionsStatus admissionsStatus;
+
+    @Schema(name = "dateIn", description = "Фактическая/плановая дата поступления")
+    Long dateIn;
+
+    @Schema(name = "dateOut", description = "Фактическая/плановая дата выписки")
+    Long dateOut;
+
+    @Schema(name = "dateInBoolean", description = "Признак для даты поступления")
+    boolean dateInBoolean;
+
+    @Schema(name = "dateOutBoolean", description = "Признак для даты выписки")
+    boolean dateOutBoolean;
 
     // данные для формирования dateIn, dateOut
     @JsonIgnore
