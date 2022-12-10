@@ -40,24 +40,24 @@ public class NewsController {
     @GetMapping
     public ResponseEntity<NewsPaginationDto> getNews(
             @Parameter(name = "pages", description = "От 0")
-                @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
-                @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
+            @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @Parameter(name = "publishDate", description = "Сортировка по дате исполнения")
-                @RequestParam() boolean publishDate,
+            @RequestParam() boolean publishDate,
             @Parameter(name = "newsCategoryId", description = "Фильтрация по категории")
-                @RequestParam(required = false) Integer newsCategoryId,
+            @RequestParam(required = false) Integer newsCategoryId,
             @Parameter(name = "publishDateFrom", description = "Выборка новостей от назначенной даты")
-                @RequestParam(required = false) LocalDate publishDateFrom,
+            @RequestParam(required = false) LocalDate publishDateFrom,
             @Parameter(name = "publishDateTo", description = "Выборка новостей до назначенной даты")
-                @RequestParam(required = false) LocalDate publishDateTo) {
+            @RequestParam(required = false) LocalDate publishDateTo) {
         return ResponseEntity.ok(newsService.getNews(pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение полной информации по новости")
-    @GetMapping("/{id}")
-    public NewsDto getNews(@Parameter(name = "Идентификатор новости", required = true) @PathVariable("id") int id) {
+    @GetMapping("{id}")
+    public NewsDto getNews(@Parameter(description = "Идентификатор новости", required = true) @PathVariable("id") int id) {
         return newsService.getNews(id);
     }
 
@@ -77,8 +77,8 @@ public class NewsController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Удаление новости")
-    @DeleteMapping("/{id}")
-    public void deleteNews(@Parameter(name = "Идентификатор новости", required = true) @PathVariable("id") int id) {
+    @DeleteMapping("{id}")
+    public void deleteNews(@Parameter(description = "Идентификатор новости", required = true) @PathVariable("id") int id) {
         newsService.deleteNews(id);
     }
 }

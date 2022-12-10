@@ -37,8 +37,8 @@ public class RoomController {
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Просмотр карточки палаты")
-    @GetMapping("/{id}")
-    public RoomDtoRs getRoom(@Parameter(name = "Идентификатор палаты", required = true) @PathVariable("id") int id) {
+    @GetMapping("{id}")
+    public RoomDtoRs getRoom(@Parameter(description = "Идентификатор палаты", required = true) @PathVariable("id") int id) {
         return roomService.getRoom(id);
     }
 
@@ -51,15 +51,16 @@ public class RoomController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Редактирование палаты")
-    @PutMapping("/{id}")
-    public RoomDtoRs updateRoom(@PathVariable("id") int id, @RequestBody RoomDtoRq roomDto) {
+    @PutMapping("{id}")
+    public RoomDtoRs updateRoom(@Parameter(description = "Идентификатор палаты", required = true) @PathVariable("id") int id,
+                                @RequestBody RoomDtoRq roomDto) {
         return roomService.updateRoom(id, roomDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Удаление палату")
-    @DeleteMapping("/{id}")
-    public void deleteRoom(@Parameter(name = "Идентификатор палаты", required = true) @PathVariable("id") int id) {
+    @DeleteMapping("{id}")
+    public void deleteRoom(@Parameter(description = "Идентификатор палаты", required = true) @PathVariable("id") int id) {
         roomService.deleteRoom(id);
     }
 }
