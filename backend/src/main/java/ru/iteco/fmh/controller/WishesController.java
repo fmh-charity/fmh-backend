@@ -71,7 +71,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение полной информацию по просьбе")
     @GetMapping("/{id}")
-    public WishDto getWish(@Parameter(name = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
+    public WishDto getWish(@Parameter(description = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getWish(id);
     }
 
@@ -95,8 +95,8 @@ public class WishesController {
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение полной информацию по комментарию просьбы")
-    @GetMapping("/comments/{id}")
-    public WishCommentInfoDto getWishComment(@Parameter(name = "идентификатор комментария", required = true)
+    @GetMapping("comments/{id}")
+    public WishCommentInfoDto getWishComment(@Parameter(description = "Идентификатор комментария", required = true)
                                              @PathVariable("id") int id) {
         return wishService.getWishComment(id);
     }
@@ -104,7 +104,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentInfoDto> getAllWishComments(@Parameter(name = "идентификатор просьбы", required = true)
+    public List<WishCommentInfoDto> getAllWishComments(@Parameter(description = "Идентификатор просьбы", required = true)
                                                        @PathVariable("id") int id) {
         return wishService.getAllWishComments(id);
     }
@@ -112,20 +112,20 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public WishCommentInfoDto createWishComment(@Parameter(name = "идентификатор просьбы", required = true) @PathVariable("id") int id,
-                                                @RequestBody WishCommentDto wishCommentDto) {
+    public WishCommentInfoDto createWishComment(@Parameter(description = "Идентификатор просьбы", required = true)
+                                                    @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Обновление информации по комментарию")
-    @PutMapping("/comments")
+    @PutMapping("comments")
     public WishCommentInfoDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 
     @Operation(summary = "Область видимости для просьбы")
-    @GetMapping("/visibility")
+    @GetMapping("visibility")
     public List<WishVisibilityDto> getAvailableWishVisibility() {
         return wishService.createWishVisibilityDtoList();
     }
