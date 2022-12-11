@@ -42,7 +42,7 @@ public class PatientsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех пациентов")
     @GetMapping
-    public List<PatientAdmissionDto> getAllPatientsByStatus(@Parameter(name = "Список статусов для отображения")
+    public List<PatientAdmissionDto> getAllPatientsByStatus(@Parameter(description = "Список статусов для отображения")
                                                             @RequestParam("statuses") List<String> statuses) {
         return patientService.getAllPatientsByStatus(statuses);
     }
@@ -56,38 +56,39 @@ public class PatientsController {
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Возвращает общую информацию по пациенту")
-    @GetMapping("/{id}")
-    public PatientDto getPatient(@Parameter(name = "Идентификатор пациента", required = true)
+    @GetMapping("{id}")
+    public PatientDto getPatient(@Parameter(description = "Идентификатор пациента", required = true)
                                  @PathVariable("id") Integer id) {
         return patientService.getPatient(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Возвращает информацию по всем госпитализациям пациента")
-    @GetMapping("/{id}/admissions")
-    public List<AdmissionDto> getAdmissions(@Parameter(name = "Идентификатор пациента", required = true) @PathVariable("id") Integer id) {
+    @GetMapping("{id}/admissions")
+    public List<AdmissionDto> getAdmissions(@Parameter(description = "Идентификатор пациента", required = true)
+                                                @PathVariable("id") Integer id) {
         return admissionService.getPatientAdmissions(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "возвращает информацию по всем просьбам пациента")
-    @GetMapping("/{id}/wishes")
-    public List<WishDto> getAllWishes(@Parameter(name = "Идентификатор пациента", required = true)
+    @GetMapping("{id}/wishes")
+    public List<WishDto> getAllWishes(@Parameter(description = "Идентификатор пациента", required = true)
                                       @PathVariable("id") Integer id) {
         return wishService.getPatientAllWishes(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Возвращает информацию по всем просьбам пациента со статусом open/in progress")
-    @GetMapping("/{id}/wishes/open-in-progress")
-    public List<WishDto> getOpenInProgressWishes(@Parameter(name = "Идентификатор пациента", required = true)
+    @GetMapping("{id}/wishes/open-in-progress")
+    public List<WishDto> getOpenInProgressWishes(@Parameter(description = "Идентификатор пациента", required = true)
                                                  @PathVariable("id") int id) {
         return wishService.getPatientOpenInProgressWishes(id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Изменение пациента")
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public PatientUpdateInfoDtoRs updatePatient(@RequestBody @Valid PatientUpdateInfoDtoRq patientDto, @PathVariable("id") int id) {
         return patientService.updatePatient(id, patientDto);
     }

@@ -28,13 +28,13 @@ public class AuthController {
     private final JwtProvider tokenProvider;
 
     @Operation(summary = "Login")
-    @PostMapping("/login")
+    @PostMapping("login")
     public JwtResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
         return authService.authenticateUser(loginRequest);
     }
 
     @Operation(summary = "Обновление токенов")
-    @PostMapping("/refresh")
+    @PostMapping("refresh")
     public JwtResponse refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
         if (!tokenProvider.validateJwtToken(refreshToken.getRefreshToken())) {
             throw new InvalidTokenException();
@@ -44,7 +44,7 @@ public class AuthController {
 
     @Operation(summary = "Получение текущего авторизованного пользователя")
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @GetMapping("/userInfo")
+    @GetMapping("userInfo")
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
         return authService.getAuthorizedUser(authentication);
     }
