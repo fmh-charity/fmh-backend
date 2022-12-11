@@ -1,20 +1,19 @@
 package ru.iteco.fmh.dto.patient;
 
-import static lombok.AccessLevel.PRIVATE;
-
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.room.RoomDtoRs;
+import ru.iteco.fmh.model.PatientStatus;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
-@Schema(description = "Основная информация по пациенту")
+import static lombok.AccessLevel.PRIVATE;
+
+@Schema(description = "Информация по пациенту")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,24 +24,36 @@ public class PatientDto {
     @Schema(name = "id", description = "Идентификатор пациента")
     Integer id;
 
-    @Schema(name = "firstName", description = "Имя пациента")
+    @Schema(name = "firstName", description = "Имя пациента", pattern = "^[а-яА-ЯёЁa-zA-Z]+$")
     String firstName;
 
-    @Schema(name = "lastName", description = "Фамилия пациента")
+    @Schema(name = "lastName", description = "Фамилия пациента", pattern = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
 
-    @Schema(name = "middleName", description = "Отчество пациента")
+    @Schema(name = "middleName", description = "Отчество пациента", pattern = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
 
     @Schema(name = "birthDate", description = "Дата рождения пациента")
-    Long birthDate;
+    LocalDate birthDate;
 
-    @Schema(name = "deleted", description = "Текущая госпитализация")
+    @Schema(name = "deleted", description = "Признак удаления")
     boolean deleted;
 
-    @Schema(name = "currentAdmission", description = "Текущая госпитализация")
-    AdmissionDto currentAdmission;
+    @Schema(name = "dateIn", description = "Фактическая/плановая дата поступления")
+    LocalDate dateIn;
 
-    @Schema(name = "admissions", description = "Идентификаторы всех госпитализаций")
-    Set<Integer> admissions = new HashSet<>();
+    @Schema(name = "dateOut", description = "Фактическая/плановая дата выписки")
+    LocalDate dateOut;
+
+    @Schema(name = "dateInBoolean", description = "Признак для даты поступления")
+    boolean dateInBoolean;
+
+    @Schema(name = "dateOutBoolean", description = "Признак для даты выписки")
+    boolean dateOutBoolean;
+
+    @Schema(name = "status", description = "Статус госпитализации")
+    PatientStatus status;
+
+    @Schema(name = "room", description = "Информация о палате")
+    RoomDtoRs room;
 }

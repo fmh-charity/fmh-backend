@@ -1,0 +1,29 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit">
+    <module name="fmh-backend" />
+    <shortenClasspath name="ARGS_FILE" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="ru.iteco.fmh.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="PACKAGE_NAME" value="ru.iteco.fmh" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="package" />
+    <envs>
+      <env name="DB_PORT" value="5400" />
+      <env name="DB_HOST" value="localhost" />
+      <env name="DB_USER" value="postgres" />
+      <env name="DB_PASS" value="123" />
+      <env name="DB_NAME" value="FMH_DB" />
+      <env name="SWAGGER_HOST" value="" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

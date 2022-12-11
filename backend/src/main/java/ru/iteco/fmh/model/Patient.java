@@ -8,16 +8,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Where;
-import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Пациент
@@ -49,18 +53,18 @@ public class Patient {
 
     LocalDate birthDate;
 
-    @Where(clause = "deleted = false")
-    @OneToOne
-    @JoinColumn(name = "current_admission_id")
-    Admission currentAdmission;
-
-    @Where(clause = "deleted = false")
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    Set<Admission> admissions = new HashSet<>();
-
     boolean deleted;
 
-    public AdmissionsStatus getStatus() {
-        return currentAdmission != null ? currentAdmission.getStatus() : AdmissionsStatus.EXPECTED;
-    }
+    LocalDate planDateIn;
+    LocalDate planDateOut;
+    LocalDate factDateIn;
+    LocalDate factDateOut;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    PatientStatus status = PatientStatus.EXPECTED;
+
+    @JoinColumn(name = "room_id")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+    Room room;
 }

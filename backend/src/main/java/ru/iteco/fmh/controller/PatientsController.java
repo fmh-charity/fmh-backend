@@ -1,17 +1,5 @@
 package ru.iteco.fmh.controller;
 
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.service.admission.AdmissionService;
-import ru.iteco.fmh.service.patient.PatientService;
-import ru.iteco.fmh.service.wish.WishService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.patient.PatientByStatusRs;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.service.patient.PatientService;
+import ru.iteco.fmh.service.wish.WishService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,13 +33,12 @@ import java.util.List;
 public class PatientsController {
 
     private final PatientService patientService;
-    private final AdmissionService admissionService;
     private final WishService wishService;
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех пациентов")
     @GetMapping
-    public List<PatientAdmissionDto> getAllPatientsByStatus(@Parameter(description = "Список статусов для отображения")
+    public List<PatientByStatusRs> getAllPatientsByStatus(@Parameter(description = "Список статусов для отображения")
                                                             @RequestParam("statuses") List<String> statuses) {
         return patientService.getAllPatientsByStatus(statuses);
     }
@@ -60,14 +56,6 @@ public class PatientsController {
     public PatientDto getPatient(@Parameter(description = "Идентификатор пациента", required = true)
                                  @PathVariable("id") Integer id) {
         return patientService.getPatient(id);
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @Operation(summary = "Возвращает информацию по всем госпитализациям пациента")
-    @GetMapping("{id}/admissions")
-    public List<AdmissionDto> getAdmissions(@Parameter(description = "Идентификатор пациента", required = true)
-                                                @PathVariable("id") Integer id) {
-        return admissionService.getPatientAdmissions(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

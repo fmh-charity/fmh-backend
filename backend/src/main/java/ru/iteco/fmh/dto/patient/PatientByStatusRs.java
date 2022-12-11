@@ -6,38 +6,36 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.PatientStatus;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Data
-@Builder
+//форма для respons'a «Пациенты» (Просмотр списка пациентов)
+@Schema(description = "Пациент + госпитализации")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Data
 @FieldDefaults(level = PRIVATE)
-@Schema(description = "Основная информация для создания пациента")
-public class PatientCreateInfoDtoRq {
+public class PatientByStatusRs {
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
+    @Schema(name = "id", description = "id пациента")
+    Integer id;
+
     @Schema(name = "firstName", description = "Имя пациента", pattern = "^[а-яА-ЯёЁa-zA-Z]+$")
     String firstName;
 
-    @NotBlank()
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     @Schema(name = "lastName", description = "Фамилия пациента", pattern = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
 
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     @Schema(name = "middleName", description = "Отчество пациента", pattern = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
 
-    @Schema(name = "birthDate", description = "Дата рождения пациента")
-    LocalDate birthDate;
+    @Schema(name = "birthday", description = "Дата рождения пациента")
+    LocalDate birthday;
 
     @Schema(name = "dateIn", description = "Фактическая/плановая дата поступления")
     LocalDate dateIn;
@@ -55,5 +53,5 @@ public class PatientCreateInfoDtoRq {
     PatientStatus status;
 
     @Schema(name = "room", description = "Информация о палате")
-    Integer roomId;
+    RoomDtoRs room;
 }

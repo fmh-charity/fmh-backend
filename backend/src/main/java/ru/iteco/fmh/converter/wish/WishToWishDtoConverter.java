@@ -34,7 +34,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setCreatorId(wish.getCreator() != null ? wish.getCreator().getId() : null);
         dto.setExecutor(wish.getExecutor() != null
                 ? toUserDtoIdFioConverter.convert(wish.getExecutor()) : null);
-        Room patientRoom = wish.getPatient() != null ? wish.getPatient().getCurrentAdmission().getRoom() : null;
+        Room patientRoom = wish.getPatient() != null ? wish.getPatient().getRoom() : null;
         RoomDtoRs roomDtoRs = patientRoom != null ? roomEntityToRoomDtoRsConverter.convert(patientRoom) : null;
 
         dto.setCreateDate(wish.getCreateDate() != null ? wish.getCreateDate().toEpochMilli() : null);
