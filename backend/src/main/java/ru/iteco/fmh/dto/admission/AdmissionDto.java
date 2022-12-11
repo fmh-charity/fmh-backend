@@ -1,41 +1,48 @@
 package ru.iteco.fmh.dto.admission;
 
+import static lombok.AccessLevel.PRIVATE;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import ru.iteco.fmh.model.admission.AdmissionsStatus;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "информация по госпитализации")
+@Schema(description = "Информация по госпитализации")
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = PRIVATE)
 public class AdmissionDto {
-    @ApiModelProperty("идентификатор госпитализации")
-    private int id;
-    @ApiModelProperty("идентификатор пациента")
-    private Integer patientId;
+
+    @Schema(name = "id", description = "Идентификатор госпитализации")
+    Integer id;
+
+    @Schema(name = "patientId", description = "Идентификатор пациента")
+    Integer patientId;
 
     //для сценария "Запланировать госпитализацию пациента"
-    @ApiModelProperty("плановая дата поступления")
-    private Long planDateIn;
-    @ApiModelProperty("плановая дата выписки")
-    private Long planDateOut;
+    @Schema(name = "planDateIn", description = "Плановая дата поступления")
+    Long planDateIn;
+    @Schema(name = "planDateOut", description = "Плановая дата выписки")
+    Long planDateOut;
 
     //для сценария "Госпитализация пациента"
-    @ApiModelProperty(value = "фактическая дата поступления")
-    private Long factDateIn;
-    @ApiModelProperty(value = "фактическая дата выписки")
-    private Long factDateOut;
+    @Schema(name = "factDateIn", description = "Фактическая дата поступления")
+    Long factDateIn;
+    @Schema(name = "factDateOut", description = "Фактическая дата выписки")
+    Long factDateOut;
 
-    @ApiModelProperty(value = "статус госпитализации")
+    @Schema(name = "status", description = "Статус госпитализации")
     AdmissionsStatus status;
-    @ApiModelProperty(value = "идентификатор палаты")
-    private Integer roomId;
-    @ApiModelProperty(value = "комментарий")
-    private String comment;
+
+    @Schema(name = "roomId", description = "Идентификатор палаты")
+    Integer roomId;
+
+    @Schema(name = "comment", description = "Комментарий")
+    String comment;
 }

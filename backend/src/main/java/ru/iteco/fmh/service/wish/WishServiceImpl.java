@@ -2,29 +2,35 @@ package ru.iteco.fmh.service.wish;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
+import ru.iteco.fmh.dao.repository.RoleRepository;
+import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,22 +47,22 @@ public class WishServiceImpl implements WishService {
     private final WishCommentRepository wishCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
-
-    private final PatientRepository patientRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
-        Page<Wish> list;
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<String> currentUserRoleNamesList = SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
                 : PageRequest.of(pages, elements, Sort.by("createDate").descending());
 
-        if (status == null || status.isEmpty()) {
-            list = wishRepository.findAllByStatusInAndDeletedIsFalse(List.of(OPEN, IN_PROGRESS), pageableList);
-        } else {
-            list = wishRepository.findAllByStatusInAndDeletedIsFalse(status, pageableList);
-        }
+        Page<Wish> list = (status == null || status.isEmpty())
+                ? wishRepository.findAllByCurrentRoles(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, currentUserLogin, pageableList)
+                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, currentUserLogin, pageableList);
 
         return WishPaginationDto.builder()
                 .pages(list.getTotalPages() - 1)
@@ -78,8 +84,11 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto createWish(WishCreationInfoDto wishCreationInfoDto) {
-        Wish wish = conversionService.convert(wishCreationInfoDto, Wish.class);
+    public WishDto createWish(WishDto wishDto) {
+        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+        Wish wish = conversionService.convert(wishDto, Wish.class);
+        wish.setWishRoles(roleList);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -94,14 +103,14 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto updateWish(WishUpdateInfoDto wishUpdateDto, int id) {
-        Wish wish = wishRepository.findWishById(id);
-        wish.setPatient(patientRepository.findPatientById(wishUpdateDto.getPatientId()));
-        wish.setTitle(wishUpdateDto.getTitle());
-        wish.setExecutor(userRepository.findUserById(wishUpdateDto.getExecutorId()));
-        wish.setPlanExecuteDate(Instant.ofEpochSecond(wishUpdateDto.getPlanExecuteDate()));
-        wish.setDescription(wishUpdateDto.getDescription());
-        wish.setStatus(wishUpdateDto.getExecutorId() == null ? OPEN : IN_PROGRESS);
+    public WishDto updateWish(WishDto wishDto, Authentication authentication) {
+        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
+        User userCreator = userRepository.findUserById(wishDto.getCreatorId());
+        Util util = new Util(userRepository);
+        util.checkUpdatePossibility(userCreator, authentication);
+        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
+        Wish wish = conversionService.convert(wishDto, Wish.class);
+        wish.setWishRoles(roleList);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -150,37 +159,45 @@ public class WishServiceImpl implements WishService {
 
 
     @Override
-    public WishCommentDto getWishComment(int commentId) {
+    public WishCommentInfoDto getWishComment(int commentId) {
         WishComment wishComment = wishCommentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Комментария с таким ID не существует"));
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
+
     }
 
     @Override
-    public List<WishCommentDto> getAllWishComments(int wishId) {
+    public List<WishCommentInfoDto> getAllWishComments(int wishId) {
         List<WishComment> wishCommentList = wishCommentRepository.findAllByWish_Id(wishId);
-        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentDto.class))
+        return wishCommentList.stream().map(i -> conversionService.convert(i, WishCommentInfoDto.class))
                 .collect(Collectors.toList());
     }
 
 
     @Override
-    public WishCommentDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
+    public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return  conversionService.convert(wishComment, WishCommentInfoDto.class);
+
     }
 
     @Transactional
     @Override
-    public WishCommentDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
+    public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
-        return conversionService.convert(wishComment, WishCommentDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
+    }
+
+    @Override
+    public List<WishVisibilityDto> createWishVisibilityDtoList() {
+        return roleRepository.findAll().stream().map(role -> WishVisibilityDto.builder()
+                .id(role.getId()).name(role.getName()).build()).toList();
     }
 }

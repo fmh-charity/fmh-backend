@@ -10,24 +10,26 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.admission.Admission;
 import ru.iteco.fmh.model.admission.AdmissionsStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
-import static ru.iteco.fmh.TestUtils.getNumeric;
-import static ru.iteco.fmh.TestUtils.getPatient;
+import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
 import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
@@ -80,34 +82,30 @@ public class PatientServiceTest {
     @Test
     public void createPatientShouldPassSuccess() {
         // given
-        Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
+        PatientCreateInfoDtoRq patientRq = getPatientCreateInfoDtoRq();
+        Patient patient = conversionService.convert(patientRq, Patient.class);
+        patient.setId(12);
+        PatientCreateInfoDtoRs patientRs = conversionService.convert(patient, PatientCreateInfoDtoRs.class  );
 
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.createPatient(given);
+        PatientCreateInfoDtoRs result = sut.createPatient(patientRq);
 
-        assertEquals(given, result);
+        assertEquals(patientRs, result);
     }
 
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
+                .middleName("-").birthDate(LocalDate.now()).build();
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-        PatientDto given = conversionService.convert(patient, PatientDto.class);
-
-        given.setFirstName("Test");
-        given.setDeleted(true);
-
-        patient.setFirstName("Test");
-        patient.setDeleted(true);
-
+        patient.setFirstName("Test2");
         when(patientRepository.findPatientById(any())).thenReturn(patient);
         when(patientRepository.save(any())).thenReturn(patient);
-        PatientDto result = sut.updatePatient(given);
+        PatientUpdateInfoDtoRs result = sut.updatePatient(patient.getId(), given);
 
-        assertEquals(given, result);
+        assertEquals(given.getFirstName(), result.getFirstName());
+
     }
 
     @Test
@@ -139,7 +137,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(getAdmission(admissionsStatus))
                 .build();
     }
@@ -149,7 +147,7 @@ public class PatientServiceTest {
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .birthDate(Instant.now())
+                .birthDate(LocalDate.now())
                 .currentAdmission(null)
                 .build();
     }

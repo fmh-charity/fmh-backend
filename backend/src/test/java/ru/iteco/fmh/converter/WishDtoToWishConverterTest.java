@@ -3,6 +3,7 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.wish.WishDtoToWishConverter;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;

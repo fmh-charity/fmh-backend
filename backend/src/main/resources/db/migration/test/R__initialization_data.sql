@@ -15,12 +15,12 @@ values ('room1', 1, 1, 10, 'room1-comment', false),
        ('room4', 2, 2, 10, 'room4-comment', false);
 
 insert into patient (first_name, middle_name, last_name, birth_date, current_admission_id, deleted)
-values ('Patient1-firstname', 'Patient1-middlename', 'Patient1-lastname', now(), null, false),
-       ('Patient2-firstname', 'Patient2-middlename', 'Patient2-lastname', now(), null, false),
-       ('Patient3-firstname', 'Patient3-middlename', 'Patient3-lastname', now(), null, false),
-       ('Patient4-firstname', 'Patient4-middlename', 'Patient4-lastname', now(), null, false),
-       ('Patient5-firstname', 'Patient5-middlename', 'Patient5-lastname', now(), null, false),
-       ('Patient6-firstname', 'Patient6-middlename', 'Patient6-lastname', now(), null, false);
+values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now(), null, false),
+       ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now(), null, false),
+       ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now(), null, false),
+       ('PatientFourfirstname', 'PatientFourmiddlename', 'PatientFourlastname', now(), null, false),
+       ('PatientFivefirstname', 'PatientFivemiddlename', 'PatientFivelastname', now(), null, false),
+       ('PatientSixfirstname', 'PatientSixmiddlename', 'PatientSixlastname', now(), null, false);
 
 insert into admission (patient_id, plan_date_in, plan_date_out, fact_date_in, fact_date_out, status, room_id,
                        comment, deleted)
@@ -133,3 +133,17 @@ values (1, 1, false),
        (3, 2, false),
        (4, 2, false),
        (5, 1, false);
+
+insert into wish_visibility (wish_id, role_id, deleted)
+values (1, 1, false),
+       (1, 2, false),
+       (2, 1, false),
+       (2, 2, false),
+       (3, 1, false),
+       (4, 1, false),
+       (5, 1, false),
+       (6, 1, false),
+       (6, 2, false),
+       (7, 2, false),
+       (8, 1, false),
+       (8, 2, false);

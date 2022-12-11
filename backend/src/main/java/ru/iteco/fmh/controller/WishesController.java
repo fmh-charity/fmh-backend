@@ -1,8 +1,16 @@
 package ru.iteco.fmh.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.model.task.Status;
+import ru.iteco.fmh.service.wish.WishService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -16,22 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dao.repository.UserRoleRepository;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
-import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.service.wish.WishService;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-@Api(description = "Работа с просьбами")
+@Tag(name = "Работа с просьбами")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/wishes")
@@ -39,106 +38,95 @@ import java.util.List;
 public class WishesController {
 
     private final WishService wishService;
-    private final UserRoleRepository userRoleRepository;
-    private final UserRepository userRepository;
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "реестр всех просьб")
-    @GetMapping()
+    @Operation(summary = "Реестр всех просьб")
+    @GetMapping
     public ResponseEntity<WishPaginationDto> getWishes(
-            @ApiParam (required = false, name = "pages", value = "От 0")
-                @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
-            @ApiParam (required = false, name = "elements", value = "От 1 до 200")
-                @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @ApiParam (required = false, name = "status", value = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
-                @RequestParam(name = "status", required = false) List<Status>  status,
-            @ApiParam (required = false, name = "planExecuteDate", value = "Сортировка по дате исполнения")
-                @RequestParam(defaultValue = "true") boolean planExecuteDate) {
-
+            @Parameter(name = "pages", description = "От 0")
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @Parameter(name = "elements", description = "От 1 до 200")
+            @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
+            @Parameter(name = "status", description = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
+            @RequestParam(name = "status", required = false) List<Status> status,
+            @Parameter(name = "planExecuteDate", description = "Сортировка по дате исполнения")
+            @RequestParam(defaultValue = "true") boolean planExecuteDate) {
         return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "реестр всех просьб со статусом open/in_progress")
+    @Operation(summary = "Реестр всех просьб со статусом open/in_progress")
     @GetMapping("/open-in-progress")
     public List<WishDto> getAllOpenInProgressWishes() {
         return wishService.getOpenInProgressWishes();
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "Создание новой просьбы")
+    @Operation(summary = "Создание новой просьбы")
     @PostMapping
-    public WishDto createWish(@RequestBody WishCreationInfoDto wishDto) {
+    public WishDto createWish(@RequestBody WishDto wishDto) {
         return wishService.createWish(wishDto);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "возвращает полную информацию по просьбе")
+    @Operation(summary = "Получение полной информацию по просьбе")
     @GetMapping("/{id}")
-    public WishDto getWish(@ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
+    public WishDto getWish(@Parameter(description = "идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.getWish(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "обновляет информацию по просьбе")
-    @PutMapping("/{id}")
-    public WishDto updateWish(@RequestBody WishUpdateInfoDto wishDto, @PathVariable("id") int id) {
-        return wishService.updateWish(wishDto, id);
+    @Operation(summary = "Обновление информации по просьбе")
+    @PutMapping
+    public WishDto updateWish(@RequestBody WishDto wishDto, Authentication authentication) {
+        return wishService.updateWish(wishDto, authentication);
     }
 
-
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "обработка просьб по статусной модели")
+    @Operation(summary = "Обработка просьб по статусной модели")
     @PutMapping("{id}/status")
     public WishDto changeStatus(
-            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
-            @ApiParam(value = "новый статус для просьбы", required = true) @RequestParam("status") Status status,
-            @ApiParam(value = "исполнитель", required = true) @RequestParam("executorId") Integer executorId,
-            @ApiParam(value = "комментарий", required = true) @RequestBody WishCommentDto wishCommentDto) {
+            @Parameter(name = "идентификатор просьбы", required = true) @PathVariable("id") int id,
+            @Parameter(name = "новый статус для просьбы", required = true) @RequestParam("status") Status status,
+            @Parameter(name = "исполнитель", required = true) @RequestParam("executorId") Integer executorId,
+            @Parameter(name = "комментарий", required = true) @RequestBody WishCommentDto wishCommentDto) {
         return wishService.changeStatus(id, status, executorId, wishCommentDto);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "возвращает полную информацию по комментарию просьбы")
-    @GetMapping("/comments/{id}")
-    public WishCommentDto getWishComment(
-            @ApiParam(value = "идентификатор комментария", required = true) @PathVariable("id") int id
-    ) {
+    @Operation(summary = "Получение полной информацию по комментарию просьбы")
+    @GetMapping("comments/{id}")
+    public WishCommentInfoDto getWishComment(@Parameter(description = "Идентификатор комментария", required = true)
+                                             @PathVariable("id") int id) {
         return wishService.getWishComment(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "реестр всех комментариев просьбы")
+    @Operation(summary = "Реестр всех комментариев просьбы")
     @GetMapping("{id}/comments")
-    public List<WishCommentDto> getAllWishComments(
-            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id
-    ) {
+    public List<WishCommentInfoDto> getAllWishComments(@Parameter(description = "Идентификатор просьбы", required = true)
+                                                       @PathVariable("id") int id) {
         return wishService.getAllWishComments(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "Создание нового комментария")
+    @Operation(summary = "Создание нового комментария")
     @PostMapping("{id}/comments")
-    public WishCommentDto createWishComment(
-            @ApiParam(value = "идентификатор просьбы", required = true) @PathVariable("id") int id,
-            @RequestBody WishCommentDto wishCommentDto) {
+    public WishCommentInfoDto createWishComment(@Parameter(description = "Идентификатор просьбы", required = true)
+                                                    @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
-
-
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @ApiOperation(value = "обновляет информацию по комментарию")
-    @PutMapping("/comments")
-    public WishCommentDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
+    @Operation(summary = "Обновление информации по комментарию")
+    @PutMapping("comments")
+    public WishCommentInfoDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 
-
-
+    @Operation(summary = "Область видимости для просьбы")
+    @GetMapping("visibility")
+    public List<WishVisibilityDto> getAvailableWishVisibility() {
+        return wishService.createWishVisibilityDtoList();
+    }
 }
-
-
-
-
-

@@ -1,23 +1,25 @@
 package ru.iteco.fmh.dto.news;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
+import static lombok.AccessLevel.PRIVATE;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "категория новости")
+@Schema(description = "Категория новости")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = PRIVATE)
 public class NewsCategoryDto {
-    @ApiModelProperty("идентификатор категории новости")
-    private Integer id;
-    @ApiModelProperty("название категории новости")
-    private String name;
+
+    @Schema(name = "id", description = "Идентификатор категории новости")
+    Integer id;
+
+    @Schema(name = "id", description = "Название категории новости")
+    String name;
 }
