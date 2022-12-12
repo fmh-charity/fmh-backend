@@ -1,0 +1,13 @@
+#Postgres 
+PG_PASS=/home/shu/Documents/TEMP
+PG_VER=15.1
+
+#GitHub
+CR_NAME=shurupinh
+CR_PAT=ghp_Ewlxnv3rx3CZgd
+
+#DB
+DB_NAME=goose_db
+DB_HOST=localhost
+DB_PORT=5433
+DB_USER=shu

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.4">
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/claim/ClaimCommentDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/claim/ClaimDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/claim/ClaimPaginationDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/post/NurseStationDtoRs.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/post/NurseStationDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/post/NurseStationDtoRq.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/wish/WishDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/wish/WishPaginationDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/wish/WishCommentDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/room/RoomDtoRs.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/room/RoomDtoRq.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/news/NewsCategoryDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/news/NewsPaginationDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/news/NewsDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/patient/PatientDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/patient/PatientAdmissionDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/patient/PatientDtoIdFio.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/user/UserDtoIdFio.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/user/UserShortInfoDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/user/UserDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dto/admission/AdmissionDto.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/RoleRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/UserRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/AdvertisementRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/ClaimCommentRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/PatientRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/BlockRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/NewsRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/UserRoleRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/TokenRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/NewsCategoryRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/NurseStationRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/WishCommentRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/ClaimRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/RoomRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/WishRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/dao/repository/AdmissionRepository.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/claim/ClaimService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/claim/ClaimServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/post/NurseStationService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/post/NurseStationServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/wish/WishService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/wish/WishServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/room/RoomServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/room/RoomService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/news/NewsService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/news/NewsServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/AuthService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/patient/PatientService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/patient/PatientServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/user/UserServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/user/UserService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/admission/AdmissionService.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/service/admission/AdmissionServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/JwtResponse.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/AuthEntryPointJwt.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/JwtProvider.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/SecurityExceptionHandler.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/RefreshTokenRequest.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/UserDetailsServiceImpl.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/WebSecurityConfig.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/JwtAuthTokenFilter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/RequestContext.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/security/LoginRequest.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/Patient.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/news/NewsCategory.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/news/News.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/claim/ClaimVisibility.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/claim/ClaimComment.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/claim/Claim.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/wish/Wish.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/wish/WishVisibility.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/wish/WishComment.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/Status.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/task/Task.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/Block.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/user/UserRole.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/user/Role.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/user/User.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/Room.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/Token.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/NurseStation.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/admission/Admission.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/model/admission/AdmissionsStatus.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/Application.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/claim/ClaimCommentToClaimCommentDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/claim/ClaimToClaimDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/claim/ClaimDtoToClaimConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/claim/ClaimCommentDtoToClaimCommentConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/post/NurseStationConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/wish/WishCommentToWishCommentDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/wish/WishDtoToWishConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/wish/WishToWishDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/wish/WishCommentDtoToWishCommentConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/room/RoomEntityToRoomDtoRsConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/room/RoomDtoRqToRoomEntityConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/news/NewsCategoryDtoToNewsCategoryConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/news/NewsToNewsDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/news/NewsDtoToNewsConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/news/NewsCategoryToNewsCategoryDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/patient/PatientToPatientAdmissionDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/patient/PatientDtoToPatientConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/patient/PatientToPatientDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/patient/PatientToPatientDtoIdFioConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/user/UserToUserDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/user/UserToUserDtoIdFioConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/user/UserDtoToUserConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/user/UserToUserShortInfoDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/admission/AdmissionDtoToAdmissionConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/converter/admission/AdmissionToAdmissionDtoConverter.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/SwaggerConfig.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/ErrorUnauthorized.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/InvalidTokenException.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/InvalidLoginException.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/Response.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/NoRightsException.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/ErrorCodes.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/exceptions/AppAdvice.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/Util.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/PatientsController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/AdmissionsController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/AuthController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/NewsController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/RoomController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/WishesController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/UsersController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/ClaimsController.java">
+</file>
+<file name="/home/shu/IdeaProjects/fmh-backend/backend/src/main/java/ru/iteco/fmh/controller/NurseStationController.java">
+</file>
+</checkstyle>
