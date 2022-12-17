@@ -44,7 +44,7 @@ public class NewsController {
             @Parameter(name = "elements", description = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @Parameter(name = "publishDate", description = "Сортировка по дате исполнения")
-            @RequestParam() boolean publishDate,
+            @RequestParam(required = false, defaultValue = "true") boolean publishDate,
             @Parameter(name = "newsCategoryId", description = "Фильтрация по категории")
             @RequestParam(required = false) Integer newsCategoryId,
             @Parameter(name = "publishDateFrom", description = "Выборка новостей от назначенной даты")

@@ -31,11 +31,13 @@ public class UserAuthAndOpenNews {
     private final String newsUrl = BackendUrls.NEWS_BASE_URL;
 
     @SneakyThrows
-    @And("Пользователь просматривает список доступных новостей")
-    public void getAllNews() {
+    @And("Пользователь просматривает список доступных новостей {string} {string} {string} {string} {string} {string}")
+    public void getAllNews(String pages, String elements, String publishDate, String newsCategoryId,
+                           String publishDateFrom, String publishDateTo) {
         jwt = userCommonSteps.getJwt();
         String responseBody = rest
-                .getRq(jwt, newsUrl)
+                .getRq(jwt, newsUrl + String.format("?pages=%s&elements=%s&publishDate=%s&newsCategoryId=%s&" +
+                        "publishDateFrom=%s&publishDateTo=%s", pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo))
                 .getBody();
         assertNotNull(responseBody);
         NewsPaginationDto news = objectMapper.readValue(responseBody, NewsPaginationDto.class);
