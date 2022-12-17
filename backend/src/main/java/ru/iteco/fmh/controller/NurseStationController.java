@@ -45,22 +45,24 @@ public class NurseStationController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Редактирование поста")
-    @PutMapping("/{id}")
-    public NurseStationDtoRs updateNurseStation(@PathVariable(value = "id") int id, @RequestBody NurseStationDtoRq nurseStationDto) {
+    @PutMapping("{id}")
+    public NurseStationDtoRs updateNurseStation(@Parameter(description = "Идентификатор поста", required = true)
+                                                    @PathVariable(value = "id") int id,
+                                                @RequestBody NurseStationDtoRq nurseStationDto) {
         return nurseStationService.updateNurseStation(id, nurseStationDto);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Просмотр поста")
-    @GetMapping("/{id}")
-    public NurseStationDto getNurseStation(@Parameter(name = "Идентификатор поста", required = true) @PathVariable("id") int id) {
+    @GetMapping("{id}")
+    public NurseStationDto getNurseStation(@Parameter(description = "Идентификатор поста", required = true) @PathVariable("id") int id) {
         return nurseStationService.getNurseStation(id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Удаление поста")
-    @DeleteMapping("/{id}")
-    public void deletePost(@Parameter(name = "Идентификатор поста", required = true) @PathVariable("id") int id) {
+    @DeleteMapping("{id}")
+    public void deletePost(@Parameter(description = "Идентификатор поста", required = true) @PathVariable("id") int id) {
         nurseStationService.deleteNurseStation(id);
     }
 }

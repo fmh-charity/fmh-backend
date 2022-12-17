@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Новости")
+@Schema(description = "Новости")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

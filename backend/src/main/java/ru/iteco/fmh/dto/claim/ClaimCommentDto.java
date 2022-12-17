@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Schema(name = "Комментарий к заявке (request version)")
+@Schema(description = "Комментарий к заявке (request version)")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

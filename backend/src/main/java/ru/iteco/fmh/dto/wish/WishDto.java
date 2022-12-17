@@ -27,36 +27,36 @@ public class WishDto {
     @Schema(name = "id", description = "Идентификатор записки")
     Integer id;
 
-    @Schema(name = "id", description = "Идентификатор пациента")
+    @Schema(name = "patient", description = "Идентификатор пациента")
     PatientDtoIdFio patient;
 
-    @Schema(name = "id", description = "Тема просьбы")
+    @Schema(name = "title", description = "Тема просьбы")
     String title;
 
-    @Schema(name = "id", description = "Описание записки")
+    @Schema(name = "description", description = "Описание записки")
     String description;
 
-    @Schema(name = "id", description = "Идентификатор создателя")
+    @Schema(name = "creatorId", description = "Идентификатор создателя")
     Integer creatorId;
 
-    @Schema(name = "id", description = "Идентификатор исполнителя")
+    @Schema(name = "executor", description = "Идентификатор исполнителя")
     UserDtoIdFio executor;
 
-    @Schema(name = "id", description = "Дата создания")
+    @Schema(name = "createDate", description = "Дата создания")
     Long createDate;
 
-    @Schema(name = "id", description = "Плановая дата исполнения")
+    @Schema(name = "planExecuteDate", description = "Плановая дата исполнения")
     Long planExecuteDate;
 
-    @Schema(name = "id", description = "Фактическая дата исполнения")
+    @Schema(name = "factExecuteDate", description = "Фактическая дата исполнения")
     Long factExecuteDate;
 
-    @Schema(name = "id", description = "Статус записки")
+    @Schema(name = "status", description = "Статус записки")
     Status status;
 
-    @Schema(name = "id", description = "Палата пациента")
+    @Schema(name = "room", description = "Палата пациента")
     RoomDtoRs room;
 
-    @Schema(name = "id", description = "Область видимости")
+    @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;
 }
