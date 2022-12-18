@@ -30,12 +30,12 @@ import java.time.LocalDate;
  */
 @Getter
 @Setter
-@Entity
 @Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
 @Table(name = "patient")
 @Where(clause = "deleted=false")
 @SQLDelete(sql = "UPDATE patient SET deleted = true WHERE id=?")

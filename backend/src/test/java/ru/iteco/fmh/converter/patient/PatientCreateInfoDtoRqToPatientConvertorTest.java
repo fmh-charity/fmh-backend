@@ -12,6 +12,7 @@ import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,7 @@ class PatientCreateInfoDtoRqToPatientConvertorTest {
                 .build();
         Room room = getRoom();
         room.setId(1);
-        when(roomRepository.getReferenceById(anyInt())).thenReturn(room);
+        when(roomRepository.findByIdAndDeletedIsFalse(anyInt())).thenReturn(Optional.of(room));
         Patient patient = convertor.convert(dtoRq);
         assertAll(
                 () -> assertNotNull(patient),
@@ -78,7 +79,7 @@ class PatientCreateInfoDtoRqToPatientConvertorTest {
                 .build();
         Room room = getRoom();
         room.setId(1);
-        when(roomRepository.getReferenceById(anyInt())).thenReturn(room);
+        when(roomRepository.findByIdAndDeletedIsFalse(anyInt())).thenReturn(Optional.of(room));
         Patient patient = convertor.convert(dtoRq);
         assertAll(
                 () -> assertNotNull(patient),
