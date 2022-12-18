@@ -1,34 +1,42 @@
 package ru.iteco.fmh.dto.wish;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
-import ru.iteco.fmh.dto.room.RoomDtoRs;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
-import ru.iteco.fmh.model.task.Status;
+import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "создание просьбы")
+import java.util.List;
+
+import static lombok.AccessLevel.PRIVATE;
+
+@Schema(description = "Просьба")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@FieldDefaults(level = PRIVATE)
 public class WishCreationInfoDto {
-    @ApiModelProperty("идентификатор пациента")
-    private Integer patientId;
-    @ApiModelProperty("тема просьбы")
-    private String title;
-    @ApiModelProperty("идентификатор создателя")
-    private Integer creatorId;
-    @ApiModelProperty("идентификатор исполнителя")
-    private Integer executorId;
-    @ApiModelProperty("дата создания")
-    private Long createDate;
-    @ApiModelProperty("плановая дата исполнения")
-    private Long planExecuteDate;
-    @ApiModelProperty("описание просьбы")
-    private String description;
+
+    @Schema(name = "patientId", description = "Идентификатор пациента")
+    Integer patientId;
+
+    @Schema(name = "title", description = "Тема просьбы")
+    String title;
+
+    @Schema(name = "executorId", description = "Идентификатор исполнителя")
+    Integer executorId;
+
+    @Schema(name = "createDate", description = "Дата создания")
+    Long createDate;
+
+    @Schema(name = "planExecuteDate", description = "Плановая дата исполнения")
+    Long planExecuteDate;
+
+    @Schema(name = "description", description = "Описание записки")
+    String description;
+
+    @Schema(name = "wishVisibility", description = "Область видимости")
+    List<Integer> wishVisibility;
 }

@@ -188,7 +188,6 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
                 .executorId(null)
-                .creatorId(1)
                 .build();
     }
 

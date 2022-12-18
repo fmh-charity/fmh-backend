@@ -13,17 +13,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
-import ru.iteco.fmh.dao.repository.RoleRepository;
-import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
+import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
+import ru.iteco.fmh.dao.repository.RoleRepository;
+import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.wish.Wish;
@@ -31,6 +31,7 @@ import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,7 @@ public class WishServiceImpl implements WishService {
     private final WishCommentRepository wishCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
+    private final PatientRepository patientRepository;
     private final RoleRepository roleRepository;
 
     @Override
@@ -84,11 +86,12 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto createWish(WishDto wishDto) {
-        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
-        Wish wish = conversionService.convert(wishDto, Wish.class);
+    public WishDto createWish(WishCreationInfoDto wishCreationInfoDto) {
+        List<Role> roleList = roleRepository.findAllByIdIn(wishCreationInfoDto.getWishVisibility());
+        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Wish wish = conversionService.convert(wishCreationInfoDto, Wish.class);
         wish.setWishRoles(roleList);
+        wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -103,14 +106,18 @@ public class WishServiceImpl implements WishService {
 
     @Transactional
     @Override
-    public WishDto updateWish(WishDto wishDto, Authentication authentication) {
-        List<Role> roleList = roleRepository.findAllByIdIn(wishDto.getWishVisibility());
-        User userCreator = userRepository.findUserById(wishDto.getCreatorId());
+    public WishDto updateWish(WishUpdateInfoDto wishUpdateInfoDto, Authentication authentication, Integer id) {
+        Wish wish = wishRepository.findWishById(id);
+        User userCreator = wish.getCreator();
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);
-        wishDto.setStatus(wishDto.getExecutor() == null ? OPEN : IN_PROGRESS);
-        Wish wish = conversionService.convert(wishDto, Wish.class);
-        wish.setWishRoles(roleList);
+        wish.setPatient(patientRepository.findPatientById(wishUpdateInfoDto.getPatieentId()));
+        wish.setTitle(wishUpdateInfoDto.getTitle());
+        wish.setExecutor(userRepository.findUserById(wishUpdateInfoDto.getExecutorId()));
+        wish.setStatus(wish.getExecutor() != null ? IN_PROGRESS : OPEN);
+        wish.setDescription(wishUpdateInfoDto.getDescription());
+        wish.setPlanExecuteDate(Instant.ofEpochSecond(wishUpdateInfoDto.getPlanExecuteDate()));
+        wish.setWishRoles(roleRepository.findAllByIdIn(wishUpdateInfoDto.getWishVisibility()));
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -180,7 +187,7 @@ public class WishServiceImpl implements WishService {
         wishComment.setWish(wishRepository.findById(wishId)
                 .orElseThrow(() -> new IllegalArgumentException("Просьбы с таким ID не существует")));
         wishComment = wishCommentRepository.save(wishComment);
-        return  conversionService.convert(wishComment, WishCommentInfoDto.class);
+        return conversionService.convert(wishComment, WishCommentInfoDto.class);
 
     }
 

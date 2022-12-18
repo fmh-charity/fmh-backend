@@ -12,11 +12,10 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
+import java.time.Instant;
 
 import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.task.Status.OPEN;
-
-import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
@@ -25,20 +24,21 @@ public class WishCreationInfoDtoToWishConverter implements Converter<WishCreatio
     private final PatientRepository patientRepository;
 
     @Override
-    public Wish convert(@NonNull WishCreationInfoDto dto) {
+    public Wish convert(@NonNull WishCreationInfoDto wishCreationInfoDto) {
         Wish wish = new Wish();
-        BeanUtils.copyProperties(dto, wish);
+        BeanUtils.copyProperties(wishCreationInfoDto, wish);
 
-        Patient patient = dto.getPatientId() != null ? patientRepository.findPatientById(dto.getPatientId()) : null;
-        User creator = dto.getCreatorId() != null ? userRepository.findUserById(dto.getCreatorId()) : null;
-        User executor = dto.getExecutorId() != null ? userRepository.findUserById(dto.getExecutorId()) : null;
+        Patient patient = wishCreationInfoDto.getPatientId() != null ? patientRepository
+                .findPatientById(wishCreationInfoDto.getPatientId()) : null;
+        User executor = wishCreationInfoDto.getExecutorId() != null ? userRepository
+                .findUserById(wishCreationInfoDto.getExecutorId()) : null;
 
-        wish.setCreateDate(dto.getCreateDate() != null ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
-        wish.setPlanExecuteDate(dto.getPlanExecuteDate() != null ? Instant.ofEpochMilli(dto.getPlanExecuteDate()) : null);
-        wish.setStatus(dto.getExecutorId() != null ? IN_PROGRESS : OPEN);
-
+        wish.setCreateDate(wishCreationInfoDto.getCreateDate() != null
+                ? Instant.ofEpochMilli(wishCreationInfoDto.getCreateDate()) : null);
+        wish.setPlanExecuteDate(wishCreationInfoDto.getPlanExecuteDate() != null
+                ? Instant.ofEpochMilli(wishCreationInfoDto.getPlanExecuteDate()) : null);
+        wish.setStatus(wishCreationInfoDto.getExecutorId() != null ? IN_PROGRESS : OPEN);
         wish.setPatient(patient);
-        wish.setCreator(creator);
         wish.setExecutor(executor);
 
         return wish;

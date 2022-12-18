@@ -36,8 +36,8 @@ public class WishDto {
     @Schema(name = "description", description = "Описание записки")
     String description;
 
-    @Schema(name = "creatorId", description = "Идентификатор создателя")
-    Integer creatorId;
+    @Schema(name = "creator", description = "Идентификатор создателя")
+    UserDtoIdFio creator;
 
     @Schema(name = "executor", description = "Идентификатор исполнителя")
     UserDtoIdFio executor;
