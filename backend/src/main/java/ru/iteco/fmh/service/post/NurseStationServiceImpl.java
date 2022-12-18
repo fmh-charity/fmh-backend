@@ -7,10 +7,10 @@ import ru.iteco.fmh.dao.repository.NurseStationRepository;
 import ru.iteco.fmh.dto.post.NurseStationDto;
 import ru.iteco.fmh.dto.post.NurseStationDtoRq;
 import ru.iteco.fmh.dto.post.NurseStationDtoRs;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.NurseStation;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +30,7 @@ public class NurseStationServiceImpl implements NurseStationService {
     @Override
     public NurseStationDtoRs updateNurseStation(int id, NurseStationDtoRq nurseStationDto) {
         NurseStation nurseStation = nurseStationRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Не найдена сущность с id = " + id));
+                .orElseThrow(() -> new NotFoundException("Не найденост с id = " + id));
         updateEntity(nurseStation, nurseStationDto);
         NurseStation updatedNurseStation = nurseStationRepo.save(nurseStation);
         return nurseStationConverter.toRsDto(updatedNurseStation);
@@ -52,14 +52,14 @@ public class NurseStationServiceImpl implements NurseStationService {
     @Override
     public NurseStationDto getNurseStation(int id) {
         var ns = nurseStationRepo.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(() -> new IllegalArgumentException("Пост с таким ID не существует"));
+                .orElseThrow(() -> new NotFoundException("Пост с таким ID не существует"));
         return nurseStationConverter.toDto(ns);
     }
 
     @Override
     public void deleteNurseStation(int id) {
         var ns = nurseStationRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Пост с таким ID не существует"));
+                .orElseThrow(() -> new NotFoundException("Пост с таким ID не существует"));
         ns.setDeleted(true);
         nurseStationRepo.save(ns);
     }

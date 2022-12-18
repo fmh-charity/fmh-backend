@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.room;
 
 import ru.iteco.fmh.dto.room.RoomDtoRq;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
+import ru.iteco.fmh.model.Room;
 
 import java.util.List;
 
@@ -40,6 +41,14 @@ public interface RoomService {
      * @return - объект палаты
      */
     RoomDtoRs getRoom(int id);
+
+    /**
+     * Получение сущности палаты (Room)
+     *
+     * @param id - ИД палаты
+     * @return - сущность палаты
+     */
+    Room findByIdAndDeletedIsFalse(int id);
 
     /**
      * Удаление палаты

@@ -36,16 +36,13 @@ public class PatientDto {
     @Schema(name = "birthDate", description = "Дата рождения пациента")
     LocalDate birthDate;
 
-    @Schema(name = "deleted", description = "Признак удаления")
-    boolean deleted;
-
     @Schema(name = "dateIn", description = "Фактическая/плановая дата поступления")
     LocalDate dateIn;
 
     @Schema(name = "dateOut", description = "Фактическая/плановая дата выписки")
     LocalDate dateOut;
 
-    @Schema(name = "dateInBoolean", description = "Признак для даты поступления")
+    @Schema(name = "dateInBoolean", description = "Признак фактической даты поступления")
     boolean dateInBoolean;
 
     @Schema(name = "dateOutBoolean", description = "Признак для даты выписки")

@@ -43,7 +43,7 @@ public class PatientByStatusRs {
     @Schema(name = "dateOut", description = "Фактическая/плановая дата выписки")
     LocalDate dateOut;
 
-    @Schema(name = "dateInBoolean", description = "Признак для даты поступления")
+    @Schema(name = "dateInBoolean", description = "Признак фактической даты поступления")
     boolean dateInBoolean;
 
     @Schema(name = "dateOutBoolean", description = "Признак для даты выписки")

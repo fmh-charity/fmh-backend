@@ -15,8 +15,9 @@ import java.util.Optional;
 
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -26,7 +27,8 @@ public class AppAdvice {
     private static final Map<Class<? extends RuntimeException>, ErrorCodes> errors = Map.of(
             InvalidLoginException.class, ERR_INVALID_LOGIN,
             InvalidTokenException.class, ERR_INVALID_REFRESH,
-            NoRightsException.class, ERR_NO_RIGHTS
+            NoRightsException.class, ERR_NO_RIGHTS,
+            NotFoundException.class, ERR_NOT_FOUND
     );
 
     @ExceptionHandler(Exception.class)

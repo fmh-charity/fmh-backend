@@ -46,7 +46,7 @@ public class PatientUpdateInfoDtoRq {
     @Schema(name = "dateOut", description = "Фактическая/плановая дата выписки")
     LocalDate dateOut;
 
-    @Schema(name = "dateInBoolean", description = "Признак для даты поступления")
+    @Schema(name = "dateInBoolean", description = "Признак фактической даты поступления")
     boolean dateInBoolean;
 
     @Schema(name = "dateOutBoolean", description = "Признак для даты выписки")
@@ -57,7 +57,4 @@ public class PatientUpdateInfoDtoRq {
 
     @Schema(name = "room", description = "Идентификатор палаты")
     Integer roomId;
-
-    @Schema(name = "deleted", description = "Признак удаления")
-    boolean deleted;
 }

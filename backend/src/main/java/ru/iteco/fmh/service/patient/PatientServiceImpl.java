@@ -12,6 +12,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
@@ -54,7 +55,6 @@ public class PatientServiceImpl implements PatientService {
         patient.setMiddleName(patientDto.getMiddleName());
         patient.setLastName(patientDto.getLastName());
         patient.setBirthDate(patientDto.getBirthDate());
-        patient.setDeleted(patientDto.isDeleted());
         patient.setStatus(patientDto.getStatus());
         if (patientDto.getRoomId() != null) {
             Room room = roomRepository.getReferenceById(patientDto.getRoomId());
@@ -83,8 +83,13 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDto getPatient(Integer id) {
         Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Пациента с таким ID не существует"));
+                .orElseThrow(() -> new NotFoundException("Активный пациент с данным ID отсутствует"));
 
         return conversionService.convert(patient, PatientDto.class);
+    }
+
+    @Override
+    public void deletePatient(int id) {
+        patientRepository.deleteById(id);
     }
 }

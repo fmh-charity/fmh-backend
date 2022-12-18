@@ -98,7 +98,6 @@ public class PatientServiceTest {
                 .middleName(patient.getMiddleName())
                 .birthDate(patient.getBirthDate())
                 .status(patient.getStatus())
-                .deleted(patient.isDeleted())
                 .build();
         PatientUpdateInfoDtoRs result = sut.updatePatient(patient.getId(), given);
 

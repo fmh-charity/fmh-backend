@@ -40,4 +40,10 @@ public interface PatientService {
      */
     PatientDto getPatient(Integer id);
 
+
+    /**
+     * Удаление пациента
+     * @param id ид пациента
+     */
+    void deletePatient(int id);
 }
