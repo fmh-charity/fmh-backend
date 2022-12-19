@@ -1,15 +1,14 @@
 package ru.iteco.fmh.dto.admission;
 
-import static lombok.AccessLevel.PRIVATE;
-
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.PatientStatus;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Schema(description = "Информация по госпитализации")
 @Builder
@@ -38,7 +37,7 @@ public class AdmissionDto {
     Long factDateOut;
 
     @Schema(name = "status", description = "Статус госпитализации")
-    AdmissionsStatus status;
+    PatientStatus status;
 
     @Schema(name = "roomId", description = "Идентификатор палаты")
     Integer roomId;

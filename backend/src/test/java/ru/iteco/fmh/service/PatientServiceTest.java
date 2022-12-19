@@ -4,43 +4,41 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.dao.repository.AdmissionRepository;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientByStatusRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.admission.Admission;
-import ru.iteco.fmh.model.admission.AdmissionsStatus;
+import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.ACTIVE;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.DISCHARGED;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.EXPECTED;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.iteco.fmh.TestUtils.getAlphabeticString;
+import static ru.iteco.fmh.TestUtils.getNumeric;
+import static ru.iteco.fmh.TestUtils.getPatient;
+import static ru.iteco.fmh.TestUtils.getPatientCreateInfoDtoRq;
+import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
+import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
+import static ru.iteco.fmh.model.PatientStatus.EXPECTED;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PatientServiceTest {
-    @MockBean
+    @Autowired
     PatientRepository patientRepository;
-    @MockBean
-    AdmissionRepository admissionRepository;
 
     @Autowired
     PatientService sut;
@@ -50,8 +48,6 @@ public class PatientServiceTest {
 
     @Test
     public void getAllPatientsByStatusShouldPassSuccess() {
-        when(patientRepository.findAll()).thenReturn(getPatientList());
-
         // given
         List<String> statusListAll = List.of(EXPECTED.name(),
                 ACTIVE.name(), DISCHARGED.name());
@@ -62,64 +58,65 @@ public class PatientServiceTest {
         List<String> statusListEmpty = List.of();
 
         // result
-        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(statusListAll);
-        List<PatientAdmissionDto> resultDISCHARGED = sut.getAllPatientsByStatus(statusListDISCHARGED);
-        List<PatientAdmissionDto> resultACTIVE = sut.getAllPatientsByStatus(statusListACTIVE);
-        List<PatientAdmissionDto> resultEXPECTED = sut.getAllPatientsByStatus(statusListEXPECTED);
-        List<PatientAdmissionDto> resultMIXED = sut.getAllPatientsByStatus(statusListMIXED);
-        List<PatientAdmissionDto> resultEmpty = sut.getAllPatientsByStatus(statusListEmpty);
+        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(statusListAll);
+        List<PatientByStatusRs> resultDISCHARGED = sut.getAllPatientsByStatus(statusListDISCHARGED);
+        List<PatientByStatusRs> resultACTIVE = sut.getAllPatientsByStatus(statusListACTIVE);
+        List<PatientByStatusRs> resultEXPECTED = sut.getAllPatientsByStatus(statusListEXPECTED);
+        List<PatientByStatusRs> resultMIXED = sut.getAllPatientsByStatus(statusListMIXED);
+        List<PatientByStatusRs> resultEmpty = sut.getAllPatientsByStatus(statusListEmpty);
 
         assertAll(
-                () -> assertEquals(4, resultAll.size()),
+                () -> assertEquals(6, resultAll.size()),
                 () -> assertEquals(1, resultDISCHARGED.size()),
-                () -> assertEquals(1, resultACTIVE.size()),
-                () -> assertEquals(2, resultEXPECTED.size()),
-                () -> assertEquals(3, resultMIXED.size()),
+                () -> assertEquals(2, resultACTIVE.size()),
+                () -> assertEquals(3, resultEXPECTED.size()),
+                () -> assertEquals(4, resultMIXED.size()),
                 () -> assertEquals(0, resultEmpty.size())
         );
     }
 
     @Test
     public void createPatientShouldPassSuccess() {
-        // given
         PatientCreateInfoDtoRq patientRq = getPatientCreateInfoDtoRq();
-        Patient patient = conversionService.convert(patientRq, Patient.class);
-        patient.setId(12);
-        PatientCreateInfoDtoRs patientRs = conversionService.convert(patient, PatientCreateInfoDtoRs.class  );
 
-        when(patientRepository.save(any())).thenReturn(patient);
         PatientCreateInfoDtoRs result = sut.createPatient(patientRq);
 
-        assertEquals(patientRs, result);
+        assertNotNull(result.getId());
+
+        patientRepository.deleteById(result.getId());
     }
 
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
-        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
-                .middleName("-").birthDate(LocalDate.now()).build();
-        Patient patient = getPatient();
-        patient.setFirstName("Test2");
-        when(patientRepository.findPatientById(any())).thenReturn(patient);
-        when(patientRepository.save(any())).thenReturn(patient);
+        Patient patient = patientRepository.findOne(
+                Example.of(Patient.builder().firstName("PatientSixfirstname").build())
+        ).orElseThrow();
+        PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder()
+                .firstName("PatientSixFirstname")
+                .lastName(patient.getLastName())
+                .middleName(patient.getMiddleName())
+                .birthDate(patient.getBirthDate())
+                .status(patient.getStatus())
+                .build();
         PatientUpdateInfoDtoRs result = sut.updatePatient(patient.getId(), given);
 
         assertEquals(given.getFirstName(), result.getFirstName());
-
+        assertNotEquals(patient.getFirstName(), result.getFirstName());
     }
 
     @Test
     public void getPatientShouldPassSuccess() {
         // given
         Patient patient = getPatient();
-        patient.setCurrentAdmission(null);
-
-        when(patientRepository.findById(any())).thenReturn(Optional.of(patient));
-
+        patient = patientRepository.save(patient);
         PatientDto expected = conversionService.convert(patient, PatientDto.class);
-        PatientDto result = sut.getPatient(0);
+
+        PatientDto result = sut.getPatient(patient.getId());
 
         assertEquals(expected, result);
+
+        patientRepository.deleteById(patient.getId());
     }
 
     private List<Patient> getPatientList() {
@@ -131,14 +128,14 @@ public class PatientServiceTest {
         return patientList;
     }
 
-    private Patient getAdmissionPatient(AdmissionsStatus admissionsStatus) {
+    private Patient getAdmissionPatient(PatientStatus patientStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
-                .currentAdmission(getAdmission(admissionsStatus))
+                .status(patientStatus)
                 .build();
     }
 
@@ -148,13 +145,6 @@ public class PatientServiceTest {
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
                 .birthDate(LocalDate.now())
-                .currentAdmission(null)
-                .build();
-    }
-
-    private Admission getAdmission(AdmissionsStatus admissionsStatus) {
-        return Admission.builder()
-                .status(admissionsStatus)
                 .build();
     }
 }

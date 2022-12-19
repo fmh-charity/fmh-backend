@@ -1,7 +1,6 @@
 package ru.iteco.fmh.service.patient;
 
-import org.springframework.transaction.annotation.Transactional;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
+import ru.iteco.fmh.dto.patient.PatientByStatusRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
 import ru.iteco.fmh.dto.patient.PatientDto;
@@ -16,7 +15,7 @@ public interface PatientService {
      * @param patientStatusList список значений для фильтра по госпитализации
      * @return список всех пациентов с активной госпитализацией
      */
-    List<PatientAdmissionDto> getAllPatientsByStatus(List<String> patientStatusList);
+    List<PatientByStatusRs> getAllPatientsByStatus(List<String> patientStatusList);
 
     /**
      * создает новую карточку пациента
@@ -41,4 +40,10 @@ public interface PatientService {
      */
     PatientDto getPatient(Integer id);
 
+
+    /**
+     * Удаление пациента
+     * @param id ид пациента
+     */
+    void deletePatient(int id);
 }

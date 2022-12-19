@@ -49,3 +49,13 @@ Content-Type: application/json
 2. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123`
 3. Запустить backend сервис
 4. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/index.html`
+
+# Проверка локально всех тестов в модуле fmh-backend
+1. В папке _.run_ находится файл _AllTests.run.xml_, откройте его и нажмите **Open Run/Debug Configurations**
+2. В открывшемся диалоговом окне поправьте необходимые поля (предположительно версию java) и сохраните конфигурацию.
+3. Запускаете сохраненную конфигурацию AllTests.
+
+Для тестов в БД должна быть чистой с выполненным _R__initialization_data.sql_:
+1. В локальной БД удалить все таблицы из схемы public, используя cascade.
+2. Запустить Application с профилем dev, чтоб прошли все flyway-миграции.
+3. Выполнить все скрипты из файла _src/main/resources/db/migration/test/R__initialization_data.sql_.

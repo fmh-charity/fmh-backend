@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.RoomRepository;
 import ru.iteco.fmh.dto.room.RoomDtoRq;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.Room;
 
 import java.util.List;
@@ -48,15 +49,20 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDtoRs getRoom(int id) {
-        Room room = roomRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(() -> new IllegalArgumentException("Палаты с таким ID не существует"));
+        Room room = findByIdAndDeletedIsFalse(id);
         return conversionService.convert(room, RoomDtoRs.class);
+    }
+
+    @Override
+    public Room findByIdAndDeletedIsFalse(int id) {
+        return roomRepository.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new NotFoundException("Палаты с таким ID не существует"));
     }
 
     @Override
     public void deleteRoom(int id) {
         Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Палаты с таким ID не существует"));
+                .orElseThrow(() -> new NotFoundException("Палаты с таким ID не существует"));
         room.setDeleted(true);
         roomRepository.save(room);
     }

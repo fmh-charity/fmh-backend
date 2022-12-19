@@ -17,6 +17,7 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.claim.ClaimPaginationDto;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.model.task.claim.Claim;
 import ru.iteco.fmh.model.task.claim.ClaimComment;
@@ -37,7 +38,6 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimCommentRepository claimCommentRepository;
     private final ConversionService conversionService;
     private final UserRepository userRepository;
-    String administrator = "ROLE_ADMINISTRATOR";
 
     @Override
     public ClaimPaginationDto getClaims(int pages, int elements, List<Status> status, boolean planExecuteDate) {
@@ -83,7 +83,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto getClaim(int id) {
         Claim claim = claimRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Заявки с таким ID не существует"));
+                new NotFoundException("Заявки с таким ID не существует"));
         return conversionService.convert(claim, ClaimDto.class);
     }
 
@@ -103,7 +103,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimDto changeStatus(int claimId, Status status, Integer executorId, ClaimCommentDto claimCommentDto) {
         Claim claim = claimRepository.findById(claimId).orElseThrow(() ->
-                new IllegalArgumentException("Заявки с таким ID не существует"));
+                new NotFoundException("Заявки с таким ID не существует"));
         if (claim.getStatus() == IN_PROGRESS && status != CANCELLED) {
             if (!claimCommentDto.getDescription().equals("")) {
                 addComment(claimId, claimCommentDto);
@@ -114,7 +114,7 @@ public class ClaimServiceImpl implements ClaimService {
         User executor = new User();
         if (executorId != null) {
             executor = userRepository.findById(executorId).orElseThrow(() ->
-                    new IllegalArgumentException("User does not exist!"));
+                    new NotFoundException("User does not exist!"));
         }
         claim.changeStatus(status, executor);
         claim = claimRepository.save(claim);
@@ -124,7 +124,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public ClaimCommentDto getClaimComment(int claimCommentId) {
         ClaimComment claimComment = claimCommentRepository.findById(claimCommentId).orElseThrow(() ->
-                new IllegalArgumentException("Такого комментария не существует"));
+                new NotFoundException("Такого комментария не существует"));
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
 
@@ -141,7 +141,7 @@ public class ClaimServiceImpl implements ClaimService {
     public ClaimCommentDto addComment(int claimId, ClaimCommentDto claimCommentDto) {
         ClaimComment claimComment = conversionService.convert(claimCommentDto, ClaimComment.class);
         claimComment.setClaim(claimRepository.findById(claimId).orElseThrow(() ->
-                new IllegalArgumentException("Заявки с таким ID не существует")));
+                new NotFoundException("Заявки с таким ID не существует")));
         claimCommentRepository.save(claimComment);
         return conversionService.convert(claimComment, ClaimCommentDto.class);
     }
