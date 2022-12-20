@@ -9,7 +9,7 @@ alter table patient
 alter table patient
     add if not exists fact_date_out date;
 alter table patient
-    add if not exists status varchar not null default 'EXPECTED';
+    add if not exists status varchar;
 
 comment on column patient.room_id is 'id палаты';
 comment on column patient.plan_date_in is 'Планируемая дата поступления';
@@ -31,7 +31,7 @@ $$;
 
 update patient
 set (room_id, plan_date_in, plan_date_out, fact_date_in, fact_date_out, status) =
-        (select room_id, plan_date_in::date, plan_date_out::date, fact_date_in::date, fact_date_out::date, status::date
+        (select room_id, plan_date_in::date, plan_date_out::date, fact_date_in::date, fact_date_out::date, status
          from admission
          where admission.id = patient.current_admission_id);
 
