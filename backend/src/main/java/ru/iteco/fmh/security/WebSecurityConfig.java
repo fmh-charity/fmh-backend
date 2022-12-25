@@ -34,6 +34,15 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/authentication/login", "/authentication/check", "/authentication/refresh").permitAll()
+                .antMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/configuration/**",
+                        "/webjars/**",
+                        "/public",
+                        "/swagger-ui/**"
+                ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().disable()
@@ -42,17 +51,6 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/v3/api-docs/**")//
-                .antMatchers("/swagger-resources/**")//
-                .antMatchers("/swagger-ui.html")//
-                .antMatchers("/configuration/**")//
-                .antMatchers("/webjars/**")//
-                .antMatchers("/public")
-                .antMatchers("/swagger-ui/**");
     }
 
     @Bean

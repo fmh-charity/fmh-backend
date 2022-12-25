@@ -19,10 +19,6 @@ public class NewsDto {
     private Integer id;
     @JsonProperty("newsCategoryId")
     private Integer newsCategoryId;
-    @JsonProperty("publishDateFrom")
-    private LocalDate publishDateFrom;
-    @JsonProperty("publishDateTo")
-    private LocalDate publishDateTo;
     @JsonProperty("title")
     private String title;
     @JsonProperty("description")

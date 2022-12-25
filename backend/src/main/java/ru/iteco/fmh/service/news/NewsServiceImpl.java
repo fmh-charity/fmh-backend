@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +16,12 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.news.NewsPaginationDto;
 import ru.iteco.fmh.exceptions.NoRightsException;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -73,7 +74,7 @@ public class NewsServiceImpl implements NewsService {
         Util util = new Util(userRepository);
         if (util.isAdmin(currentUser)) {
             News news = newsRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
+                    .orElseThrow(() -> new NotFoundException("Новости с таким ID не существует"));
             return conversionService.convert(news, NewsDto.class);
         } else {
             News news = newsRepository.findByIdAndPublishEnabledIsTrue(id)
@@ -107,7 +108,7 @@ public class NewsServiceImpl implements NewsService {
     public void deleteNews(int id) {
         News news = newsRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Новости с таким ID не существует"));
+                .orElseThrow(() -> new NotFoundException("Новости с таким ID не существует"));
         news.setDeleted(true);
         newsRepository.save(news);
     }

@@ -4,50 +4,50 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientByStatusRs;
 import ru.iteco.fmh.model.Patient;
 
 import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
-public class PatientToPatientUpdateInfoDtoRs implements Converter<Patient, PatientUpdateInfoDtoRs> {
+public class PatientToPatientByStatusRsConverter implements Converter<Patient, PatientByStatusRs> {
     private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter;
 
     @Override
-    public PatientUpdateInfoDtoRs convert(Patient patient) {
+    public PatientByStatusRs convert(Patient patient) {
         LocalDate factDateIn = patient.getFactDateIn();
         LocalDate factDateOut = patient.getFactDateOut();
         LocalDate planDateIn = patient.getPlanDateIn();
         LocalDate planDateOut = patient.getPlanDateOut();
 
-        PatientUpdateInfoDtoRs patientUpdateInfoDtoRs = PatientUpdateInfoDtoRs.builder()
+        PatientByStatusRs patientByStatusRs = PatientByStatusRs.builder()
                 .id(patient.getId())
                 .firstName(patient.getFirstName())
                 .lastName(patient.getLastName())
                 .middleName(patient.getMiddleName())
-                .birthDate(patient.getBirthDate())
+                .birthday(patient.getBirthDate())
                 .status(patient.getStatus())
                 .build();
 
         if (factDateIn != null) {
-            patientUpdateInfoDtoRs.setDateIn(factDateIn);
-            patientUpdateInfoDtoRs.setDateInBoolean(true);
+            patientByStatusRs.setDateIn(factDateIn);
+            patientByStatusRs.setDateInBoolean(true);
         } else {
-            patientUpdateInfoDtoRs.setDateIn(planDateIn);
-            patientUpdateInfoDtoRs.setDateInBoolean(false);
+            patientByStatusRs.setDateIn(planDateIn);
+            patientByStatusRs.setDateInBoolean(false);
         }
 
         if (factDateOut != null) {
-            patientUpdateInfoDtoRs.setDateOut(factDateOut);
-            patientUpdateInfoDtoRs.setDateOutBoolean(true);
+            patientByStatusRs.setDateOut(factDateOut);
+            patientByStatusRs.setDateOutBoolean(true);
         } else {
-            patientUpdateInfoDtoRs.setDateOut(planDateOut);
-            patientUpdateInfoDtoRs.setDateInBoolean(false);
+            patientByStatusRs.setDateOut(planDateOut);
+            patientByStatusRs.setDateInBoolean(false);
         }
         if (patient.getRoom() != null) {
-            patientUpdateInfoDtoRs.setRoom(roomEntityToRoomDtoRsConverter.convert(patient.getRoom()));
+            patientByStatusRs.setRoom(roomEntityToRoomDtoRsConverter.convert(patient.getRoom()));
         }
-        return patientUpdateInfoDtoRs;
+        return patientByStatusRs;
     }
 }

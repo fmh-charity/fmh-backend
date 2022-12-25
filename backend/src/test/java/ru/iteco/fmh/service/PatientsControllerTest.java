@@ -9,22 +9,25 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.PatientByStatusRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.patient.PatientAdmissionDto;
 import ru.iteco.fmh.dto.patient.PatientDto;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
+import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.wish.WishDto;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.admission.AdmissionsStatus.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static ru.iteco.fmh.TestUtils.getPatientCreateInfoDtoRq;
+import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
+import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
+import static ru.iteco.fmh.model.PatientStatus.EXPECTED;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -48,10 +51,10 @@ public class PatientsControllerTest {
         int countDischarged = 1;
         int countAll = 6;
 
-        List<PatientAdmissionDto> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
-        List<PatientAdmissionDto> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
-        List<PatientAdmissionDto> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
-        List<PatientAdmissionDto> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
+        List<PatientByStatusRs> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
+        List<PatientByStatusRs> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
+        List<PatientByStatusRs> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
+        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
                 ACTIVE.name(), DISCHARGED.name()));
 
         assertAll(
@@ -77,17 +80,18 @@ public class PatientsControllerTest {
                 () -> assertEquals(givenDto.getBirthDate(), resultDto.getBirthDate()),
                 () -> assertNotNull(resultDto.getId())
         );
-
-        // AFTER - deleting result entity
         patientRepository.deleteById(resultDto.getId());
     }
 
     @Test
     public void updatePatientShouldPassSuccess() {
+        PatientCreateInfoDtoRq givenDto = getPatientCreateInfoDtoRq();
+
+        PatientCreateInfoDtoRs resultDto = sut.createPatient(givenDto);
         // given
-        int patientId = 5;
+        int patientId = resultDto.getId();
         PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder().firstName("Test").lastName("Test")
-                .middleName("-").birthDate(LocalDate.now()).build();
+                .middleName("-").birthDate(LocalDate.now()).status(DISCHARGED).build();
         PatientUpdateInfoDtoRs result = sut.updatePatient(given, patientId);
         assertAll(
                 () -> assertEquals(given.getFirstName(), result.getFirstName()),
@@ -96,7 +100,7 @@ public class PatientsControllerTest {
                 () -> assertEquals(given.getBirthDate(), result.getBirthDate()),
                 () -> assertEquals(patientId, result.getId())
         );
-
+        patientRepository.deleteById(patientId);
     }
 
     @Test
@@ -108,23 +112,6 @@ public class PatientsControllerTest {
         PatientDto result = sut.getPatient(patientId);
 
         assertEquals(patientFirstName, result.getFirstName());
-    }
-
-    @Test
-    public void getAdmissionsShouldPassSuccess() {
-        // given
-        int patientId = 6;
-        int admissionsCount = 2;
-        String admissionComment0 = "admission6-comment";
-        String admissionComment1 = "admission7-comment";
-
-        List<AdmissionDto> result = sut.getAdmissions(patientId);
-
-        assertAll(
-                () -> assertEquals(admissionsCount, result.size()),
-                () -> assertEquals(admissionComment0, result.get(0).getComment()),
-                () -> assertEquals(admissionComment1, result.get(1).getComment())
-        );
     }
 
     @Test

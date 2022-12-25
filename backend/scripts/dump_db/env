@@ -1,0 +1,13 @@
+#Postgres 
+PG_PASS=/home/user/path
+PG_VER=15.1
+
+#GitHub
+CR_NAME=user
+CR_PAT=token
+
+#DB
+DB_NAME=target_db
+DB_HOST=host
+DB_PORT=5432
+DB_USER=user

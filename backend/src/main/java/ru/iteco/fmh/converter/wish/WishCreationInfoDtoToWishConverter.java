@@ -33,11 +33,10 @@ public class WishCreationInfoDtoToWishConverter implements Converter<WishCreatio
         User executor = wishCreationInfoDto.getExecutorId() != null ? userRepository
                 .findUserById(wishCreationInfoDto.getExecutorId()) : null;
 
-        wish.setCreateDate(wishCreationInfoDto.getCreateDate() != null
-                ? Instant.ofEpochMilli(wishCreationInfoDto.getCreateDate()) : null);
+        wish.setCreateDate(Instant.now());
         wish.setPlanExecuteDate(wishCreationInfoDto.getPlanExecuteDate() != null
                 ? Instant.ofEpochMilli(wishCreationInfoDto.getPlanExecuteDate()) : null);
-        wish.setStatus(wishCreationInfoDto.getExecutorId() != null ? IN_PROGRESS : OPEN);
+        wish.setStatus(executor == null ? OPEN : IN_PROGRESS);
         wish.setPatient(patient);
         wish.setExecutor(executor);
 

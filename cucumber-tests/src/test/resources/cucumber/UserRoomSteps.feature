@@ -18,6 +18,6 @@ Feature: Сценарии использования справочником «
       | login   | password  | name     | nurse station | max occupancy   | comment  | edited name | edited nurse station | edited max occupancy | edited comment |
       | login1  | password1 | Палата 1 | 1             | 10              | Тест     | Палата №31  | 3                    | 15                   | Изменен        |
       | login2  | password2 | Палата 2 | 1             | 10              | Тест     | Палата №32  | 3                    | 15                   | Изменен        |
-      | login3  | password3 | Палата 3 | 2             | 8               | Тест     | Палата №21  | 2                    | 15                   | Изменен        |
-      | login4  | password4 | Палата 4 | 2             | 8               | Тест     | Палата №22  | 2                    | 15                   | Изменен        |
+      | login1  | password1 | Палата 3 | 2             | 8               | Тест     | Палата №21  | 2                    | 15                   | Изменен        |
+      | login2  | password2 | Палата 4 | 2             | 8               | Тест     | Палата №22  | 2                    | 15                   | Изменен        |
       | login5  | password5 | Палата 5 | 3             | 5               | Тест     | Палата №11  | 1                    | 15                   | Изменен        |

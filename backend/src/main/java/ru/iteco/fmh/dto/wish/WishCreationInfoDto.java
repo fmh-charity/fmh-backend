@@ -25,8 +25,8 @@ public class WishCreationInfoDto {
     @Schema(name = "title", description = "Тема просьбы")
     String title;
 
-    @Schema(name = "executorId", description = "Идентификатор исполнителя")
-    Integer executorId;
+    @Schema(name = "description", description = "Описание записки")
+    String description;
 
     @Schema(name = "createDate", description = "Дата создания")
     Long createDate;
@@ -34,8 +34,8 @@ public class WishCreationInfoDto {
     @Schema(name = "planExecuteDate", description = "Плановая дата исполнения")
     Long planExecuteDate;
 
-    @Schema(name = "description", description = "Описание записки")
-    String description;
+    @Schema(name = "executorId", description = "Идентификатор исполнителя")
+    Integer executorId;
 
     @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;
