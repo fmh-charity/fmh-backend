@@ -99,6 +99,7 @@ public class TestUtils {
                 .description(getAlphabeticString())
                 .createDate(Instant.now().getEpochSecond())
                 .planExecuteDate(Instant.now().getEpochSecond()+200)
+                .wishVisibility(List.of(1))
                 .build();
     }
 
@@ -200,12 +201,13 @@ public class TestUtils {
     public static WishCreationInfoDto getWishCreationInfoDto() {
 
         return WishCreationInfoDto.builder()
-                .patientId(1)
+                .patientId(2)
+                .executorId(null)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .planExecuteDate(Instant.now().toEpochMilli())
-                .createDate(Instant.now().toEpochMilli())
-                .executorId(null)
+                .createDate(Instant.now().getEpochSecond())
+                .planExecuteDate(Instant.now().getEpochSecond())
+                .wishVisibility(List.of(1))
                 .build();
     }
 

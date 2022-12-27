@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
@@ -80,29 +83,32 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
     public void createWishShouldPassSuccess() {
         // given
-        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto(IN_PROGRESS);
+        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
+
         Wish wish = conversionService.convert(wishCreationInfoDto, Wish.class);
         wish.setId(12);
         wish.setCreator(getUser());
-        wish.setPatient(getPatient());
+        wish.setWishRoles(List.of());
+        assertNotNull(wish);
 
         when(wishRepository.save(any())).thenReturn(wish);
         WishDto result = sut.createWish(wishCreationInfoDto);
 
-//        assertAll(
-//                () -> assertEquals(wish.getId(), result.getId()),
-//                () -> assertEquals(wish.getDescription(), result.getDescription()),
-//                () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), result.getPlanExecuteDate()),
-//                () -> assertEquals(wish.getCreateDate().toEpochMilli(), result.getCreateDate()),
-//                () -> assertEquals(wish.getStatus(), result.getStatus()),
-//                () -> assertEquals(conversionService.convert(wish.getExecutor(), UserDtoIdFio.class), result.getExecutor()),
-//                () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
-//                () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
-//                () -> assertNull(result.getExecutor()),
-//                () -> assertNotNull(result.getCreator())
-//        );
+        assertAll(
+                () -> assertEquals(wish.getId(), result.getId()),
+                () -> assertEquals(wish.getDescription(), result.getDescription()),
+                () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), result.getPlanExecuteDate()),
+                () -> assertEquals(wish.getCreateDate().toEpochMilli(), result.getCreateDate()),
+                () -> assertEquals(wish.getStatus(), result.getStatus()),
+                () -> assertEquals(conversionService.convert(wish.getExecutor(), UserDtoIdFio.class), result.getExecutor()),
+                () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
+                () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
+                () -> assertNull(result.getExecutor()),
+                () -> assertNotNull(result.getCreator())
+        );
     }
 
 
