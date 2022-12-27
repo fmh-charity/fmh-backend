@@ -23,8 +23,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.TestUtils.getWishCreationInfoDto;
+import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.task.Status.*;
 
 
@@ -78,38 +77,44 @@ public class WishesControllerTest {
 
     @Test
     public void createInProgressWishShouldPassSuccess() {
-        //given
-        WishCreationInfoDto givenWishCreationInfoDto = getWishCreationInfoDto();
-        givenWishCreationInfoDto.setExecutorId(1);
+        // given
+        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
+        wishCreationInfoDto.setExecutorId(1);
 
-//        WishDto result = sut.createWish(givenWishCreationInfoDto);
-//        assertNotNull(result.getId());
-//
-//        Wish result2 = wishRepository.findById(result.getId()).get();
-//        assertEquals(IN_PROGRESS, result2.getStatus());
-//        // AFTER - deleting result entity
-//        wishRepository.deleteById(result.getId());
+        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        assertEquals(IN_PROGRESS, givenWish.getStatus());
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
+
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+
+        assertEquals(givenWish, expectedWish);
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(wishId);
     }
 
-//    @Test
-//    public void createOpenWishShouldPassSuccess() {
-//        //given
-//        WishDto givenWishDto = getWishDto();
-//        givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-//        givenWishDto.setExecutor(null);
-//        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
-//        givenWishDto.setWishVisibility(List.of(1, 2));
-//
-//        WishDto resultId = sut.createWish(givenWishDto);
-//        assertNotNull(resultId);
-//
-//        Wish result = wishRepository.findById(resultId.getId()).get();
-//
-//        assertEquals(OPEN, result.getStatus());
-//
-//        // AFTER - deleting result entity
-//        wishRepository.deleteById(resultId.getId());
-//    }
+    @Test
+    public void createOpenWishShouldPassSuccess() {
+       // given
+        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
+
+        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        assertEquals(OPEN, givenWish.getStatus());
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
+
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+
+        assertEquals(givenWish, expectedWish);
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(wishId);
+    }
 
     @Test
     public void getWishShouldPassSuccess() {
@@ -225,28 +230,27 @@ public class WishesControllerTest {
         wishCommentRepository.deleteById(resultId.getId());
     }
 
-//    @Test
-//    @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
-//    public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
-//        // given
-//        WishDto givenWishDto = getWishDto();
-//        givenWishDto.setCreatorId(3);
-//        givenWishDto.setWishVisibility(List.of(1));
-//
-//        WishDto givenWish = sut.createWish(givenWishDto);
-//        Integer wishId = givenWish.getId();
-//        assertNotNull(givenWish);
-//
-//        Wish wishResult = wishRepository.findWishById(givenWish.getId());
-//        assertNotNull(wishResult);
-//        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
-//
-//        assertEquals(givenWish, expectedWish);
-//
-//        // AFTER - deleting result entity
-//        wishRepository.deleteById(wishId);
-//
-//    }
+    @Test
+    @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
+    public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
+        // given
+        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto(OPEN);
+        wishCreationInfoDto.setWishVisibility(List.of(1));
+
+        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
+
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+
+        assertEquals(givenWish, expectedWish);
+
+        // AFTER - deleting result entity
+        wishRepository.deleteById(wishId);
+
+    }
 
     @Test
     @WithMockUser(username = "login4", password = "password4", roles = "MEDICAL_WORKER")
