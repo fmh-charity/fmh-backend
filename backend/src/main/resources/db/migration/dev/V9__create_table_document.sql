@@ -1,10 +1,10 @@
 create table document
 (
     id                serial primary key,
-    name              varchar    not null,
+    name              varchar    not null unique,
     description       varchar,
     deleted           boolean,
-    status            varchar not null,
+    status            varchar not null default 'NEW',
     create_date       timestamp,
     file_path varchar not null,
     user_id int
