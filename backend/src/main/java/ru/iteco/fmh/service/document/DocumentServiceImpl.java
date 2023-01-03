@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 @Service
-public class DocumentServiceImpl implements DocumentService{
+public class DocumentServiceImpl implements DocumentService {
     @Value("${upload.path}")
     private String uploadPath;
     @Value("${upload.parentDir}")
@@ -23,10 +22,10 @@ public class DocumentServiceImpl implements DocumentService{
     @Override
     public String uploadDocument(MultipartFile multipartFile) {
 
-        String md5FileName = getMD5NameFromDocumentName(multipartFile.getOriginalFilename());
+        String md5FileName = getMd5NameFromDocumentName(multipartFile.getOriginalFilename());
         File pathToUploadDocument = new File(uploadPath);
 
-        if(!pathToUploadDocument.exists()) {
+        if (!pathToUploadDocument.exists()) {
             pathToUploadDocument.mkdirs();
         }
 
@@ -38,7 +37,7 @@ public class DocumentServiceImpl implements DocumentService{
         return uploadParentDir + md5FileName;
     }
 
-    private String getMD5NameFromDocumentName(String documentName) {
+    private String getMd5NameFromDocumentName(String documentName) {
         String cleanDocumentName = StringUtils.cleanPath(documentName);
         String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
         String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
