@@ -1,7 +1,6 @@
 package ru.iteco.fmh.converter.document;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;

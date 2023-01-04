@@ -22,7 +22,6 @@ public class DocumentCreationDtoRqToDocumentConverter implements Converter<Docum
         document.setCreateDate(Instant.now());
         document.setStatus(DocumentStatus.NEW);
         document.setDeleted(false);
-        System.out.println(document);
         return document;
     }
 }
