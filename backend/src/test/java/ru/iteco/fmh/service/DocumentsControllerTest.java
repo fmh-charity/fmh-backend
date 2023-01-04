@@ -30,12 +30,13 @@ public class DocumentsControllerTest {
 
     @Test
     public void documentUploadTestShouldPassSuccess() throws Exception {
+        final String urlSeparator = "/";
         String fileName = documentService.getMd5NameFromDocumentName("testFile.jpg");
         MockMultipartFile mockMultipartFile = new MockMultipartFile("postcard_image", "testFile.jpg", "image/jpg", "someBytes".getBytes());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/documents/upload")
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(content().string(File.separator + "documents" + File.separator + fileName));
+                .andExpect(content().string(urlSeparator + "documents" + urlSeparator + fileName));
     }
 }

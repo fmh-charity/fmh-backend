@@ -19,6 +19,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public String uploadDocument(MultipartFile multipartFile) {
+        final String urlSeparator = "/";
 
         String md5FileName = getMd5NameFromDocumentName(multipartFile.getOriginalFilename());
         File pathToUploadDocument = new File(uploadPath);
@@ -29,7 +30,8 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return File.separator + pathToUploadDocument.getName() + File.separator + md5FileName;
+
+        return urlSeparator + pathToUploadDocument.getName() + urlSeparator + md5FileName;
     }
 
     public String getMd5NameFromDocumentName(String documentName) {
