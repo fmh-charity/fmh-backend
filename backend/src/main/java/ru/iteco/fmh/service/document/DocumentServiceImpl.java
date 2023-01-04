@@ -8,7 +8,6 @@ import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.user.User;
 
