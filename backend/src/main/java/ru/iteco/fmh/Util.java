@@ -68,6 +68,7 @@ public class Util {
                 .collect(Collectors.toList())
                 .contains("ROLE_ADMINISTRATOR");
     }
+
     public static String getMd5NameFromDocumentName(String documentName) {
         String cleanDocumentName = StringUtils.cleanPath(documentName);
         String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
