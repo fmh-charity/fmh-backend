@@ -1,14 +1,18 @@
 package ru.iteco.fmh;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -63,5 +67,12 @@ public class Util {
                 .map(Role::getName)
                 .collect(Collectors.toList())
                 .contains("ROLE_ADMINISTRATOR");
+    }
+    public static String getMd5NameFromDocumentName(String documentName) {
+        String cleanDocumentName = StringUtils.cleanPath(documentName);
+        String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
+        String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
+        String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtension.getBytes(StandardCharsets.UTF_8));
+        return md5Name + "." + documentNameExtension;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import ru.iteco.fmh.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class DocumentServiceImpl implements DocumentService {
     public String uploadDocument(MultipartFile multipartFile) {
         final String urlSeparator = "/";
 
-        String md5FileName = getMd5NameFromDocumentName(multipartFile.getOriginalFilename());
+        String md5FileName = Util.getMd5NameFromDocumentName(multipartFile.getOriginalFilename());
         File pathToUploadDocument = new File(uploadPath);
         pathToUploadDocument.mkdirs();
 
@@ -32,13 +33,5 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         return urlSeparator + pathToUploadDocument.getName() + urlSeparator + md5FileName;
-    }
-
-    public String getMd5NameFromDocumentName(String documentName) {
-        String cleanDocumentName = StringUtils.cleanPath(documentName);
-        String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
-        String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
-        String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtension.getBytes(StandardCharsets.UTF_8));
-        return md5Name + "." + documentNameExtension;
     }
 }
