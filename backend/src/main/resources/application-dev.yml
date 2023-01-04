@@ -35,3 +35,6 @@ swagger:
   security:
     schemeName: "Authorization"
     format: "JWT"
+
+upload:
+  path: ./backend/target/fmh/static/documents/

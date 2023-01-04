@@ -3,6 +3,7 @@ package ru.iteco.fmh.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class DocumentsController {
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Загрузка документа")
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadDocument(@RequestPart(name = "postcard_image") MultipartFile multipartFile) {
         return documentService.uploadDocument(multipartFile);
     }

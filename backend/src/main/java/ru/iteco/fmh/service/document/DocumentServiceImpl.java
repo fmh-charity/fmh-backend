@@ -16,28 +16,23 @@ import java.nio.file.Path;
 public class DocumentServiceImpl implements DocumentService {
     @Value("${upload.path}")
     private String uploadPath;
-    @Value("${upload.parentDir}")
-    private String uploadParentDir;
 
     @Override
     public String uploadDocument(MultipartFile multipartFile) {
 
         String md5FileName = getMd5NameFromDocumentName(multipartFile.getOriginalFilename());
         File pathToUploadDocument = new File(uploadPath);
-
-        if (!pathToUploadDocument.exists()) {
-            pathToUploadDocument.mkdirs();
-        }
+        pathToUploadDocument.mkdirs();
 
         try {
             multipartFile.transferTo(Path.of(uploadPath + md5FileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return uploadParentDir + md5FileName;
+        return File.separator + pathToUploadDocument.getName() + File.separator + md5FileName;
     }
 
-    private String getMd5NameFromDocumentName(String documentName) {
+    public String getMd5NameFromDocumentName(String documentName) {
         String cleanDocumentName = StringUtils.cleanPath(documentName);
         String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
         String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);

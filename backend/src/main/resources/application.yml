@@ -11,4 +11,4 @@ spring:
 
 upload:
   path: ./backend/fmh/static/documents/
-  parentDir: /documents/
+
