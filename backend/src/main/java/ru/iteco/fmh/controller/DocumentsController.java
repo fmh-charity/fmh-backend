@@ -26,4 +26,10 @@ public class DocumentsController {
     public String uploadDocument(@RequestPart(name = "postcard_image") MultipartFile multipartFile) {
         return documentService.uploadDocument(multipartFile);
     }
+    private final DocumentService documentService;
+    @Operation(summary = "Создание документа")
+    @PostMapping
+    public DocumentCreationDtoRs createPatient(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
+        return documentService.createPatient(documentCreationDtoRqq);
+    }
 }
