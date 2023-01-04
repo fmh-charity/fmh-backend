@@ -24,6 +24,9 @@ public class DocumentCreationDtoRs {
     @Schema(name = "id", description = "id в системе")
     Integer id;
 
+    @Schema(name = "name", description = "Имя документа")
+    String name;
+
     @Schema(name = "description", description = "Описание документа")
     String description;
 
