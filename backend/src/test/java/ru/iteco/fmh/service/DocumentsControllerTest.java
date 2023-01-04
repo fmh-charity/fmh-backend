@@ -29,7 +29,7 @@ public class DocumentsControllerTest {
     private DocumentServiceImpl documentService;
 
     @Test
-    public void test() throws Exception {
+    public void documentUploadTestShouldPassSuccess() throws Exception {
         String fileName = documentService.getMd5NameFromDocumentName("testFile.jpg");
         MockMultipartFile mockMultipartFile = new MockMultipartFile("postcard_image", "testFile.jpg", "image/jpg", "someBytes".getBytes());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
