@@ -11,12 +11,12 @@ import ru.iteco.fmh.model.document.Document;
 @Component
 @RequiredArgsConstructor
 public class DocumentToDocumentCreationDtoRsConverter implements Converter<Document, DocumentCreationDtoRs> {
-     private final UserToUserDtoIdFioConverter conversionService;
+    private final UserToUserDtoIdFioConverter conversionService;
 
     @Override
     public DocumentCreationDtoRs convert(Document source) {
         UserDtoIdFio userDtoIdFio = conversionService.convert(source.getUser());
-        return  DocumentCreationDtoRs.builder()
+        return DocumentCreationDtoRs.builder()
                 .id(source.getId())
                 .name(source.getName())
                 .filePath(source.getFilePath())

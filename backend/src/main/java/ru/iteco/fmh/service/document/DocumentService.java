@@ -7,5 +7,5 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
  * сервис для работы с документами
  */
 public interface DocumentService {
-    DocumentCreationDtoRs createPatient(DocumentCreationDtoRq documentCreationDtoRqq);
+    DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
 }

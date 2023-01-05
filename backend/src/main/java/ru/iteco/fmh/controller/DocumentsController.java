@@ -12,6 +12,7 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.service.document.DocumentService;
 
 import javax.validation.Valid;
+
 @Tag(name = "Документы")
 @RequiredArgsConstructor
 @RestController
@@ -19,9 +20,10 @@ import javax.validation.Valid;
 
 public class DocumentsController {
     private final DocumentService documentService;
+
     @Operation(summary = "Создание документа")
     @PostMapping
-    public DocumentCreationDtoRs createPatient(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
-        return documentService.createPatient(documentCreationDtoRqq);
+    public DocumentCreationDtoRs createDocument(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
+        return documentService.createDocument(documentCreationDtoRqq);
     }
 }
