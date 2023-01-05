@@ -19,7 +19,6 @@ public class DocumentCreationDtoRqToDocumentConverter implements Converter<Docum
     public Document convert(@NonNull DocumentCreationDtoRq source) {
         Document document = new Document();
         BeanUtils.copyProperties(source, document);
-        document.setCreateDate(Instant.now());
         document.setStatus(DocumentStatus.NEW);
         document.setDeleted(false);
         return document;
