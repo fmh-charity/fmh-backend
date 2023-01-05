@@ -17,4 +17,5 @@ public interface DocumentService {
      */
     String uploadDocument(MultipartFile multipartFile);
     DocumentCreationDtoRs createPatient(DocumentCreationDtoRq documentCreationDtoRqq);
+    DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
 }

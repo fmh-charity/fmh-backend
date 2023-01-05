@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.service.document.DocumentService;
 
+import javax.validation.Valid;
+
 @Tag(name = "Документы")
 @RequiredArgsConstructor
 @RestController
@@ -27,9 +29,10 @@ public class DocumentsController {
         return documentService.uploadDocument(multipartFile);
     }
     private final DocumentService documentService;
+
     @Operation(summary = "Создание документа")
     @PostMapping
-    public DocumentCreationDtoRs createPatient(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
-        return documentService.createPatient(documentCreationDtoRqq);
+    public DocumentCreationDtoRs createDocument(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
+        return documentService.createDocument(documentCreationDtoRqq);
     }
 }
