@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service;
 
+import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.iteco.fmh.Util;
-import ru.iteco.fmh.service.document.DocumentServiceImpl;
-
-import java.io.File;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -29,13 +26,12 @@ public class DocumentsControllerTest {
 
     @Test
     public void documentUploadTestShouldPassSuccess() throws Exception {
-        final String urlSeparator = "/";
-        String fileName = Util.getMd5NameFromDocumentName("testFile.jpg");
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("postcard_image", "testFile.jpg", "image/jpg", "someBytes".getBytes());
+        MockMultipartFile mockMultipartFile
+                = new MockMultipartFile("postcard_image", "testFile.jpg", "image/jpg", "someBytes".getBytes());
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         mockMvc.perform(MockMvcRequestBuilders.multipart("/documents/upload")
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
-                .andExpect(content().string(urlSeparator + "documents" + urlSeparator + fileName));
+                .andExpect(content().string(StringStartsWith.startsWith("/documents/")));
     }
 }

@@ -72,8 +72,9 @@ public class Util {
     public static String getMd5NameFromDocumentName(String documentName) {
         String cleanDocumentName = StringUtils.cleanPath(documentName);
         String documentNameWithoutExtension = FilenameUtils.removeExtension(cleanDocumentName);
+        String documentNameWithoutExtensionWithCurrentTime = documentNameWithoutExtension + Instant.now().toString();
         String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
-        String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtension.getBytes(StandardCharsets.UTF_8));
+        String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtensionWithCurrentTime.getBytes(StandardCharsets.UTF_8));
         return md5Name + "." + documentNameExtension;
     }
 }
