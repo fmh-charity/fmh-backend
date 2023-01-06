@@ -14,7 +14,7 @@ import java.time.Instant;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Schema(description = "Основная информация для создания документа")
+@Schema(description = "Основная информация по созданному документу")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
