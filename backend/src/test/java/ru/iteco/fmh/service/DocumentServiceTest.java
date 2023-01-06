@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.dao.repository.DocumentsRepository;
+import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.model.document.DocumentStatus;
@@ -22,7 +22,7 @@ import static ru.iteco.fmh.TestUtils.getDocumentCreationDtoRq;
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class DocumentServiceTest {
     @Autowired
-    DocumentsRepository documentRepository;
+    DocumentRepository documentRepository;
 
     @Autowired
     DocumentService sut;
