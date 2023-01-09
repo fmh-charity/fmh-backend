@@ -10,7 +10,7 @@ import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
+import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Block;
 import ru.iteco.fmh.model.NurseStation;
@@ -91,8 +91,8 @@ public class TestUtils {
                 .build();
     }
 
-    public static WishCreationInfoDto getWishCreationInfoDto(Status status) {
-        return WishCreationInfoDto.builder()
+    public static WishCreationRequest getWishCreationInfoDto(Status status) {
+        return WishCreationRequest.builder()
                 .patientId(2)
                 .executorId(2)
                 .title(getAlphabeticString())
@@ -198,9 +198,9 @@ public class TestUtils {
                 .build();
     }
 
-    public static WishCreationInfoDto getWishCreationInfoDto() {
+    public static WishCreationRequest getWishCreationInfoDto() {
 
-        return WishCreationInfoDto.builder()
+        return WishCreationRequest.builder()
                 .patientId(2)
                 .executorId(null)
                 .title(getAlphabeticString())

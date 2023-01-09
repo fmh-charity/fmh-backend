@@ -1,20 +1,19 @@
 package ru.iteco.fmh.dto.wish;
 
-import static lombok.AccessLevel.PRIVATE;
-
-import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
-import ru.iteco.fmh.dto.room.RoomDtoRs;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
-import ru.iteco.fmh.model.task.Status;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
+import ru.iteco.fmh.dto.room.RoomDtoRs;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
+import ru.iteco.fmh.model.task.Status;
 
 import java.util.List;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Schema(description = "Просьба")
 @NoArgsConstructor
@@ -27,7 +26,7 @@ public class WishDto {
     @Schema(name = "id", description = "Идентификатор записки")
     Integer id;
 
-    @Schema(name = "patient", description = "Идентификатор пациента")
+    @Schema(name = "patient", description = "Пациент, инициатор просьбы")
     PatientDtoIdFio patient;
 
     @Schema(name = "title", description = "Тема просьбы")
@@ -36,10 +35,10 @@ public class WishDto {
     @Schema(name = "description", description = "Описание записки")
     String description;
 
-    @Schema(name = "creator", description = "Идентификатор создателя")
+    @Schema(name = "creator", description = "Создатель просьбы")
     UserDtoIdFio creator;
 
-    @Schema(name = "executor", description = "Идентификатор исполнителя")
+    @Schema(name = "executor", description = "Исполнитель просьбы")
     UserDtoIdFio executor;
 
     @Schema(name = "createDate", description = "Дата создания")

@@ -78,10 +78,10 @@ public class WishesControllerTest {
     @Test
     public void createInProgressWishShouldPassSuccess() {
         // given
-        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
-        wishCreationInfoDto.setExecutorId(1);
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
+        wishCreationRequest.setExecutorId(1);
 
-        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        WishDto givenWish = sut.createWish(wishCreationRequest);
         assertEquals(IN_PROGRESS, givenWish.getStatus());
         Integer wishId = givenWish.getId();
         assertNotNull(givenWish);
@@ -99,9 +99,9 @@ public class WishesControllerTest {
     @Test
     public void createOpenWishShouldPassSuccess() {
        // given
-        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
 
-        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        WishDto givenWish = sut.createWish(wishCreationRequest);
         assertEquals(OPEN, givenWish.getStatus());
         Integer wishId = givenWish.getId();
         assertNotNull(givenWish);
@@ -234,10 +234,10 @@ public class WishesControllerTest {
     @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
     public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
         // given
-        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto(OPEN);
-        wishCreationInfoDto.setWishVisibility(List.of(1));
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto(OPEN);
+        wishCreationRequest.setWishVisibility(List.of(1));
 
-        WishDto givenWish = sut.createWish(wishCreationInfoDto);
+        WishDto givenWish = sut.createWish(wishCreationRequest);
         Integer wishId = givenWish.getId();
         assertNotNull(givenWish);
 

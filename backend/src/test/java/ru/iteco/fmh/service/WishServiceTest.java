@@ -16,7 +16,7 @@ import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
+import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
@@ -86,16 +86,16 @@ public class WishServiceTest {
     @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
     public void createWishShouldPassSuccess() {
         // given
-        WishCreationInfoDto wishCreationInfoDto = getWishCreationInfoDto();
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
 
-        Wish wish = conversionService.convert(wishCreationInfoDto, Wish.class);
+        Wish wish = conversionService.convert(wishCreationRequest, Wish.class);
         wish.setId(12);
         wish.setCreator(getUser());
         wish.setWishRoles(List.of());
         assertNotNull(wish);
 
         when(wishRepository.save(any())).thenReturn(wish);
-        WishDto result = sut.createWish(wishCreationInfoDto);
+        WishDto result = sut.createWish(wishCreationRequest);
 
         assertAll(
                 () -> assertEquals(wish.getId(), result.getId()),

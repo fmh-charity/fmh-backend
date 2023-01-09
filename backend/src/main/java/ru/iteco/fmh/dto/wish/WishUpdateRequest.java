@@ -11,13 +11,13 @@ import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Schema(description = "Просьба")
+@Schema(description = "Объект запроса на обновление просьбы")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
 @FieldDefaults(level = PRIVATE)
-public class WishUpdateInfoDto {
+public class WishUpdateRequest {
 
     @Schema(name = "patientId", description = "Идентификатор пациента")
     Integer patientId;

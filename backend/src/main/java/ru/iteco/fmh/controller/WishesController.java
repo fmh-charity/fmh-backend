@@ -1,12 +1,12 @@
 package ru.iteco.fmh.controller;
 
-import ru.iteco.fmh.dto.wish.WishCreationInfoDto;
+import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateInfoDto;
+import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.model.task.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -66,8 +66,8 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Создание новой просьбы")
     @PostMapping
-    public WishDto createWish(@RequestBody WishCreationInfoDto wishCreationInfoDto) {
-        return wishService.createWish(wishCreationInfoDto);
+    public WishDto createWish(@RequestBody WishCreationRequest wishCreationRequest) {
+        return wishService.createWish(wishCreationRequest);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -80,8 +80,8 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Обновление информации по просьбе")
     @PutMapping("/{id}")
-    public WishDto updateWish(@RequestBody WishUpdateInfoDto wishUpdateInfoDto, Authentication authentication, @PathVariable("id") int id) {
-        return wishService.updateWish(wishUpdateInfoDto, authentication, id);
+    public WishDto updateWish(@RequestBody WishUpdateRequest wishUpdateRequest, Authentication authentication, @PathVariable("id") int id) {
+        return wishService.updateWish(wishUpdateRequest, authentication, id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
