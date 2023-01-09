@@ -7,18 +7,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@Schema(description = "Просьба")
+@Schema(description = "Объект запроса на создание просьбы")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
 @FieldDefaults(level = PRIVATE)
-public class WishCreationInfoDto {
+public class WishCreationRequest {
 
+    @NotBlank()
     @Schema(name = "patientId", description = "Идентификатор пациента")
     Integer patientId;
 
