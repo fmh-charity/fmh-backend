@@ -8,5 +8,3 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
   flyway:
     validate-migration-naming: true
-upload:
-  path: ./backend/fmh/static/documents/

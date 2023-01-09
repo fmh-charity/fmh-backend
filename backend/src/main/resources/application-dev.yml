@@ -37,4 +37,4 @@ swagger:
     format: "JWT"
 
 upload:
-  path: ./backend/target/fmh/static/documents/
+  path: ${DOCUMENTS_STATIC_PATH}
