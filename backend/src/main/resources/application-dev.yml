@@ -35,3 +35,6 @@ swagger:
   security:
     schemeName: "Authorization"
     format: "JWT"
+
+static-host:
+  host: ${STATIC_HOST}
