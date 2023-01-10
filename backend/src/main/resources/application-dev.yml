@@ -36,5 +36,8 @@ swagger:
     schemeName: "Authorization"
     format: "JWT"
 
+static-host:
+  host: ${STATIC_HOST}
+
 upload:
   path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}
