@@ -3,6 +3,7 @@ package ru.iteco.fmh.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,7 +23,8 @@ public class DocumentControllerTest {
     DocumentsController sut;
     @Autowired
     DocumentRepository documentRepository;
-
+    @Value("${static-host.host}")
+    private String staticHost;
     @Test
     public void createDocumentShouldPassSuccess() {
         //given
@@ -33,7 +35,7 @@ public class DocumentControllerTest {
 
         assertAll(
                 () -> assertEquals(givenDto.getName(), resultDto.getName()),
-                () -> assertEquals(givenDto.getFilePath(), resultDto.getFilePath()),
+                () -> assertEquals(staticHost+givenDto.getFilePath(), resultDto.getFilePath()),
                 () -> assertEquals(givenDto.getDescription(), resultDto.getDescription()),
                 () -> assertNotNull(resultDto.getId())
         );
