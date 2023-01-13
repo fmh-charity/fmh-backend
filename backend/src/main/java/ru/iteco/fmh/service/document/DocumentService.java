@@ -13,4 +13,11 @@ public interface DocumentService {
      * @return родительская деректория + имя файла
      */
     String uploadDocument(MultipartFile multipartFile);
+
+    /**
+     * удаление документа
+     *
+     * @param id документа
+     */
+    void deleteDocument(int id);
 }
