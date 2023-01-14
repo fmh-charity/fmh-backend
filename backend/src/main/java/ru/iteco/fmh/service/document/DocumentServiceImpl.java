@@ -2,13 +2,12 @@ package ru.iteco.fmh.service.document;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.model.document.Document;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -42,10 +41,10 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void deleteDocument(int id) {
-        Document document = documentRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("Документа с таким ID не существует"));
-        document.setDeleted(true);
-        documentRepository.save(document);
+        try {
+            documentRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("Документа с таким ID не существует");
+        }
     }
 }
