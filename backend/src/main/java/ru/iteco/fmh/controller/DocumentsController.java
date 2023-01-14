@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
+import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.service.document.DocumentService;
 
 import javax.validation.Valid;
@@ -33,7 +35,6 @@ public class DocumentsController {
     public String uploadDocument(@RequestPart(name = "postcard_image") MultipartFile multipartFile) {
         return documentService.uploadDocument(multipartFile);
     }
-    private final DocumentService documentService;
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Создание документа")

@@ -16,6 +16,6 @@ public interface DocumentService {
      * @return родительская деректория + имя файла
      */
     String uploadDocument(MultipartFile multipartFile);
-    DocumentCreationDtoRs createPatient(DocumentCreationDtoRq documentCreationDtoRqq);
+
     DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
 }

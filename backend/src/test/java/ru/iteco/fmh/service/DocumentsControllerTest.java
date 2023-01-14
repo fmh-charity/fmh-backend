@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.iteco.fmh.controller.DocumentsController;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
@@ -46,12 +45,15 @@ public class DocumentsControllerTest {
                         .file(mockMultipartFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(content().string(StringEndsWith.endsWith(".jpg")));
+    }
+
     @Autowired
     DocumentsController sut;
     @Autowired
     DocumentRepository documentRepository;
     @Value("${static-host.host}")
     private String staticHost;
+
     @Test
     public void createDocumentShouldPassSuccess() {
         //given
@@ -62,7 +64,7 @@ public class DocumentsControllerTest {
 
         assertAll(
                 () -> assertEquals(givenDto.getName(), resultDto.getName()),
-                () -> assertEquals(staticHost+givenDto.getFilePath(), resultDto.getFilePath()),
+                () -> assertEquals(staticHost + givenDto.getFilePath(), resultDto.getFilePath()),
                 () -> assertEquals(givenDto.getDescription(), resultDto.getDescription()),
                 () -> assertNotNull(resultDto.getId())
         );
