@@ -8,5 +8,3 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
   flyway:
     validate-migration-naming: true
-static-host:
-  host: ${STATIC_HOST}

@@ -37,7 +37,7 @@ swagger:
     format: "JWT"
 
 static-host:
-  host: ${STATIC_HOST}
+  host: ${STATIC_HOST:test.vhospice.org/}
 
 upload:
   path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}
