@@ -7,4 +7,4 @@ spring:
   flyway:
     locations: classpath:db/migration/dev, classpath:db/migration/test
 upload:
-  path: ./backend/target/fmh/static/documents/
+  path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}
