@@ -1,7 +1,6 @@
 package ru.iteco.fmh.service.document;
 
 import lombok.RequiredArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,13 +10,10 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.user.User;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.exceptions.NotFoundException;
 
 import java.io.File;
@@ -28,8 +24,6 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
-
-    private final DocumentRepository documentRepository;
 
     @Value("${upload.path}")
     private String uploadPath;
