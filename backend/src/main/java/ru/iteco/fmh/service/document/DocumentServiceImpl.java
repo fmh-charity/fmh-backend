@@ -39,15 +39,14 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
 
     @Override
-    public List<DocumentInfoDto> getDocumentInfo(String host, List<DocumentStatus> status) {
-        List<Document> documents = documentRepository.findAllByStatusInAndDeletedIsFalse(status);
+    public List<DocumentInfoDto> getDocumentInfo(List<DocumentStatus> statuses) {
+        List<Document> documents = documentRepository.findAllByStatusInAndDeletedIsFalse(statuses);
         List<DocumentInfoDto> listDocumentInfoDto = documents.stream()
                 .map(document -> conversionService.convert(document, DocumentInfoDto.class))
                 .collect(Collectors.toList());
-
-        listDocumentInfoDto.forEach(documentInfoDto -> documentInfoDto.setFilePath(host + "/" + documentInfoDto.getFilePath()));
         return listDocumentInfoDto;
     }
+
     @Override
     public DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRq) {
         Document document = conversionService.convert(documentCreationDtoRq, Document.class);

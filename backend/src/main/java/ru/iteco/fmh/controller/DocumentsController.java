@@ -3,12 +3,16 @@ package ru.iteco.fmh.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,10 +37,10 @@ public class DocumentsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение списка документов")
     @GetMapping
-    public List<DocumentInfoDto> getDocumentsInfo(@Value("${spring.fmh.documents.static-storage}") String host) {
+    public List<DocumentInfoDto> getDocumentsInfo() {
         List<DocumentStatus> documentStatuses = new ArrayList<>(){};
         documentStatuses.add(DocumentStatus.PUBLISHED);
-        return documentService.getDocumentInfo(host, documentStatuses);
+        return documentService.getDocumentInfo(documentStatuses);
     }
 
     @Secured("ROLE_ADMINISTRATOR")

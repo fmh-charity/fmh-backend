@@ -22,8 +22,7 @@ public class UserDocumentSteps {
     private final RestTemplateUtil restTemplateUtil = new RestTemplateUtil();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final UserCommonSteps userCommonSteps = new UserCommonSteps();
-    private final ResultSteps resultSteps = new ResultSteps();
+    private final UserCommonSteps userCommonSteps;
     private String jwt;
 
     private final String documentsUrl = BackendUrls.DOCUMENTS_BASE_URL;
