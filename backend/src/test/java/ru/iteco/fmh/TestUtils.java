@@ -3,6 +3,7 @@ package ru.iteco.fmh;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.claim.ClaimCommentDto;
 import ru.iteco.fmh.dto.claim.ClaimDto;
+import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
@@ -417,5 +418,12 @@ public class TestUtils {
                 .deleted(false)
                 .build();
     }
-
+    public static DocumentCreationDtoRq getDocumentCreationDtoRq() {
+        DocumentCreationDtoRq doc = DocumentCreationDtoRq.builder()
+                .name(getAlphabeticString())
+                .description(getAlphabeticString())
+                .filePath(getAlphabeticString())
+                .build();
+        return doc;
+    }
 }
