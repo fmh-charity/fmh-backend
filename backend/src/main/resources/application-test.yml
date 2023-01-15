@@ -7,7 +7,7 @@ spring:
   flyway:
     locations: classpath:db/migration/dev, classpath:db/migration/test
 static-host:
-  host: ${STATIC_HOST:test.vhospice.org/}
+  host: ${STATIC_HOST:test.vhospice.org}
 
 upload:
   path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}
