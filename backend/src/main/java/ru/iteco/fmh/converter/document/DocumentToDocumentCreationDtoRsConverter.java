@@ -26,7 +26,7 @@ public class DocumentToDocumentCreationDtoRsConverter implements Converter<Docum
         return DocumentCreationDtoRs.builder()
                 .id(source.getId())
                 .name(source.getName())
-                .filePath(new URI(staticHost+source.getFilePath()).normalize().toString())
+                .filePath(new URI(staticHost + source.getFilePath()).normalize().toString())
                 .description(source.getDescription())
                 .status(source.getStatus())
                 .createDate(source.getCreateDate())
