@@ -10,23 +10,21 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.user.User;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
+import ru.iteco.fmh.exceptions.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
+
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -60,5 +58,14 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         return urlSeparator + pathToUploadDocument.getName() + urlSeparator + md5FileName;
+    }
+
+    @Override
+    public void deleteDocument(int id) {
+        try {
+            documentRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException("Документа с таким ID не существует");
+        }
     }
 }
