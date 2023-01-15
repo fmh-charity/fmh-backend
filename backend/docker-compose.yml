@@ -23,6 +23,7 @@ services:
       DB_NAME: FMH_DB
       DB_PASS: 123
       SWAGGER_HOST: vhospice.org/api
+      STATIC_HOST: localhost
   nginx:
     container_name: nginx
     image: nginx:latest

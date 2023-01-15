@@ -8,3 +8,6 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
   flyway:
     validate-migration-naming: true
+  fmh:
+    documents:
+      static-storage: ${STATIC_HOST:localhost}
