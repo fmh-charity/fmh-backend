@@ -17,6 +17,12 @@ public interface DocumentService {
      */
     String uploadDocument(MultipartFile multipartFile);
 
+    /**
+     * создает новый документ
+     *
+     * @param documentCreationDtoRqq информация по документу для создания
+     * @return сущность
+     */
     DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
 
     /**
