@@ -32,4 +32,11 @@ public interface DocumentService {
     String uploadDocument(MultipartFile multipartFile);
 
     DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
+
+    /**
+     * удаление документа
+     *
+     * @param id документа
+     */
+    void deleteDocument(int id);
 }
