@@ -39,10 +39,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<DocumentInfoDto> getDocumentInfo(List<DocumentStatus> statuses) {
         List<Document> documents = documentRepository.findAllByStatusInAndDeletedIsFalse(statuses);
-        List<DocumentInfoDto> listDocumentInfoDto = documents.stream()
+        return documents.stream()
                 .map(document -> conversionService.convert(document, DocumentInfoDto.class))
                 .collect(Collectors.toList());
-        return listDocumentInfoDto;
     }
 
     @Override
