@@ -45,6 +45,7 @@ public class DocumentsController {
     public DocumentCreationDtoRs createDocument(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
         return documentService.createDocument(documentCreationDtoRqq);
     }
+
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Изменение документа")
     @PutMapping("{id}")
