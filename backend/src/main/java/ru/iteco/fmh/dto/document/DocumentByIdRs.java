@@ -31,8 +31,8 @@ public class DocumentByIdRs {
     @Schema(name = "description", description = "Описание документа")
     String description;
 
-    @Schema(name = "isDeleted", description = "Флаг удаления")
-    boolean isDeleted;
+    @Schema(name = "deleted", description = "Флаг удаления")
+    boolean deleted;
 
     @Schema(name = "status", description = "Статус документа")
     DocumentStatus status;
