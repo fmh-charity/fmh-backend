@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.user.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,5 +70,20 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("Документа с таким ID не существует");
         }
+    }
+
+    @Override
+    @Transactional
+    public UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq) {
+
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
+
+        document.setName(updateDocumentRq.getName());
+        document.setDescription(updateDocumentRq.getDescription());
+        document.setStatus(updateDocumentRq.getStatus());
+        document.setUser(userRepository.findUserById(updateDocumentRq.getUserId()));
+        documentRepository.save(document);
+        return conversionService.convert(document, UpdateDocumentRs.class);
     }
 }
