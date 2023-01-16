@@ -19,6 +19,8 @@ import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.service.document.DocumentService;
 
 import javax.validation.Valid;
@@ -44,6 +46,12 @@ public class DocumentsController {
     @PostMapping
     public DocumentCreationDtoRs createDocument(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
         return documentService.createDocument(documentCreationDtoRqq);
+    }
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Изменение документа")
+    @PutMapping("{id}")
+    public UpdateDocumentRs updateDocument(@RequestBody @Valid UpdateDocumentRq updateDocumentRq, @PathVariable("id") int id) {
+        return documentService.updateDocument(id, updateDocumentRq);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

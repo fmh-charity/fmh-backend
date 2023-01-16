@@ -6,11 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.model.document.DocumentStatus;
-import ru.iteco.fmh.model.user.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -44,6 +42,6 @@ public class UpdateDocumentRs {
     @Schema(name = "createDate", description = "Дата создания документа")
     Instant createDate;
 
-    @Schema(name = "user", description = "Информация по пользователю")
-    User user;
+    @Schema(name = "userDtoIdFio", description = "Информация по пользователю")
+    UserDtoIdFio user;
 }
