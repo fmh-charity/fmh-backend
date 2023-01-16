@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.model.document.Document;
@@ -58,6 +59,12 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         return urlSeparator + pathToUploadDocument.getName() + urlSeparator + md5FileName;
+    }
+
+    @Override
+    public DocumentByIdRs getDocument(int id) {
+        Document document = documentRepository.findById(id).orElseThrow(() -> new NotFoundException("Документа с таким ID не существует"));
+        return conversionService.convert(document, DocumentByIdRs.class);
     }
 
     @Override
