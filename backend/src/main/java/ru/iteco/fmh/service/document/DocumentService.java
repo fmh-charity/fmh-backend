@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.dto.news.NewsDto;
 
 /**
@@ -41,4 +43,13 @@ public interface DocumentService {
      * @param id документа
      */
     void deleteDocument(int id);
+
+    /**
+     * бновляет метаданные документа
+     *
+     * @param updateDocumentRq информация которую необходимо обновить в документе
+     * @param id               документа
+     * @return сущность
+     */
+    UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq);
 }

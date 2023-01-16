@@ -23,10 +23,6 @@ public class UpdateDocumentRq {
     @Schema(name = "name", description = "Имя документа")
     String name;
 
-    @NotNull
-    @Schema(name = "documentId", description = "Идентификатор документа")
-    Integer documentId;
-
     @Schema(name = "description", description = "Описание документа")
     String description;
 
