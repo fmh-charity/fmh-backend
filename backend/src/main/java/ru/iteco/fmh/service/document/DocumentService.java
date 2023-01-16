@@ -4,12 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
-import ru.iteco.fmh.dto.document.DocumentForAdminRs;
-
-import java.util.List;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
-import ru.iteco.fmh.dto.news.NewsDto;
 
 /**
  * сервис для работы с документами
