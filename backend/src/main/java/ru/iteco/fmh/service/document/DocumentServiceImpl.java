@@ -89,11 +89,9 @@ public class DocumentServiceImpl implements DocumentService {
         document.setName(updateDocumentRq.getName());
         document.setDescription(updateDocumentRq.getDescription());
         document.setStatus(updateDocumentRq.getStatus());
-        try {
-            document.setUser(userRepository.findUserById(updateDocumentRq.getUserId()));
-        } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует");
-        }
+        User user = userRepository.findById(updateDocumentRq.getUserId())
+                .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
+        document.setUser(user);
         documentRepository.save(document);
         return conversionService.convert(document, UpdateDocumentRs.class);
     }
