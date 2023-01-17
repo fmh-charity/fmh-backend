@@ -7,7 +7,6 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
-import ru.iteco.fmh.dto.news.NewsDto;
 
 /**
  * сервис для работы с документами
@@ -45,7 +44,7 @@ public interface DocumentService {
     void deleteDocument(int id);
 
     /**
-     * бновляет метаданные документа
+     * обновляет метаданные документа
      *
      * @param updateDocumentRq информация которую необходимо обновить в документе
      * @param id               документа
