@@ -37,6 +37,7 @@ services:
       - ./nginx/certbot/conf:/etc/letsencrypt
       - ./nginx/certbot/www:/var/www/certbot
       - ./build:/opt/front
+      - ./fmh/static/documents/:/var/www/fmh/static/documents/
     depends_on:
       - backend
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
