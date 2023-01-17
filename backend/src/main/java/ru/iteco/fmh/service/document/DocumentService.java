@@ -48,7 +48,7 @@ public interface DocumentService {
     void deleteDocument(int id);
 
     /**
-     * бновляет метаданные документа
+     * обновляет метаданные документа
      *
      * @param updateDocumentRq информация которую необходимо обновить в документе
      * @param id               документа
