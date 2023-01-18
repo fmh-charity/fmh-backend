@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@ApiModel(description = "информация о дументе")
+@ApiModel(description = "информация о документе")
 @Builder
 @Data
 @NoArgsConstructor

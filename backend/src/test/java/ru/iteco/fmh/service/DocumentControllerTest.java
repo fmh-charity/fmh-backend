@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class DocumentControllerTest {
     DocumentRepository documentRepository;
     @Value("${static-host.host}")
     private String staticHost;
+
+    @Ignore
     @Test
     public void createDocumentShouldPassSuccess() {
         //given

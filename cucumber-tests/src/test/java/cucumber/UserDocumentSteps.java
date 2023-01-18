@@ -25,14 +25,12 @@ public class UserDocumentSteps {
     private final UserCommonSteps userCommonSteps;
     private String jwt;
 
-    private final String documentsUrl = BackendUrls.DOCUMENTS_BASE_URL;
-
     @SneakyThrows
     @When("Просматривает список документов")
     public void getDocuments(){
         jwt = userCommonSteps.getJwt();
         String responseBody = restTemplateUtil
-                .getRq(jwt, documentsUrl)
+                .getRq(jwt, BackendUrls.DOCUMENTS_BASE_URL)
                 .getBody();
         assertNotNull(responseBody);
         List<DocumentInfoDto> documentInfoDtoList = objectMapper.readValue(responseBody, ArrayList.class);
