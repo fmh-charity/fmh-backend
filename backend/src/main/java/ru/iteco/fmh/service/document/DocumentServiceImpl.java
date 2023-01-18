@@ -72,7 +72,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<DocumentForAdminRs> getDocumentsForAdmin() {
-        return documentRepository.findAllByDeletedIsFalse().stream()
+        return documentRepository.findAll().stream()
                 .map(document -> conversionService.convert(document, DocumentForAdminRs.class)).collect(Collectors.toList());
     }
 
