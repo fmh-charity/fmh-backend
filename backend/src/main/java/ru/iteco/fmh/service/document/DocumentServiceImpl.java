@@ -1,23 +1,24 @@
 package ru.iteco.fmh.service.document;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
+import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.model.user.User;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.multipart.MultipartFile;
-import ru.iteco.fmh.Util;
-import ru.iteco.fmh.exceptions.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +78,12 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentByIdRs getDocument(int id) {
         Document document = documentRepository.findById(id).orElseThrow(() -> new NotFoundException("Документа с таким ID не существует"));
         return conversionService.convert(document, DocumentByIdRs.class);
+    }
+
+    @Override
+    public List<DocumentForAdminRs> getDocumentsForAdmin() {
+        return documentRepository.findAll().stream()
+                .map(document -> conversionService.convert(document, DocumentForAdminRs.class)).collect(Collectors.toList());
     }
 
     @Override

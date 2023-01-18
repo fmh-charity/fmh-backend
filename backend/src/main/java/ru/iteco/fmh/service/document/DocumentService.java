@@ -1,11 +1,12 @@
 package ru.iteco.fmh.service.document;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
-import ru.iteco.fmh.dto.news.NewsDto;
+import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+
+import java.util.List;
 
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.model.document.DocumentStatus;
@@ -42,6 +43,11 @@ public interface DocumentService {
      * @return документ с полной информацией
      */
     DocumentByIdRs getDocument(int id);
+
+    /**
+     * возвращает список документов для администратора
+     */
+    List<DocumentForAdminRs> getDocumentsForAdmin();
 
     /**
      * удаление документа
