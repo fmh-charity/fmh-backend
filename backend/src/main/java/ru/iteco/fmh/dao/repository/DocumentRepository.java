@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
-    List<Document> findAllByStatusInAndDeletedIsFalse(Collection<DocumentStatus> status);
+    List<Document> findAllByStatusInAndDeletedIsFalse(Collection<DocumentStatus> statuses);
 }
