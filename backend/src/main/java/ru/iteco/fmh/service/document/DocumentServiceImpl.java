@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
