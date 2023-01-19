@@ -5,15 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.patient.PatientByStatusRs;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.*;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.service.patient.PatientService;
@@ -23,16 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static ru.iteco.fmh.TestUtils.getAlphabeticString;
-import static ru.iteco.fmh.TestUtils.getNumeric;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.TestUtils.getPatientCreateInfoDtoRq;
-import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
-import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
-import static ru.iteco.fmh.model.PatientStatus.EXPECTED;
+import static org.junit.jupiter.api.Assertions.*;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.PatientStatus.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -89,9 +76,8 @@ public class PatientServiceTest {
     @Test
     public void updatePatientShouldPassSuccess() {
         // given
-        Patient patient = patientRepository.findOne(
-                Example.of(Patient.builder().firstName("PatientSixfirstname").build())
-        ).orElseThrow();
+        Patient patient = patientRepository.findPatientById(4);
+
         PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder()
                 .firstName("PatientSixFirstname")
                 .lastName(patient.getLastName())

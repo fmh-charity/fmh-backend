@@ -38,8 +38,8 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), dto.getPlanExecuteDate()),
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
-                () -> assertEquals(dto.getCreator(), wish.getCreator().getId()),
-                () -> assertEquals(dto.getExecutor(), wish.getExecutor()),
+                () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
+//                () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
                 () -> assertNull(dto.getExecutor()),
                 () -> assertNull(wish.getExecutor())
         );
@@ -57,7 +57,7 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), dto.getPlanExecuteDate()),
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
-                () -> assertEquals(dto.getCreator(), wish.getCreator().getId()),
+                () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
                 () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
                 () -> assertNotNull(dto.getExecutor()),
                 () -> assertNotNull(wish.getExecutor())
