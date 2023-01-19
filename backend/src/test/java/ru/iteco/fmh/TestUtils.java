@@ -10,6 +10,7 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
@@ -193,8 +194,10 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
-                .executor(null)
-                .creator(null)
+                .executor(new UserDtoIdFio(444, "ExecutorTestName",
+                        "ExecutorTestMiddleName", "ExecutorTestLastName"))
+                .creator(new UserDtoIdFio(555, "CreatorTestName",
+                        "CreatorTestMiddleName", "CreatorTestLastName"))
                 .status(Status.OPEN)
                 .build();
     }
