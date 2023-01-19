@@ -5,6 +5,8 @@ import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 
 import java.util.List;
 
@@ -21,10 +23,9 @@ public interface DocumentService {
     /**
      * возвращает список всех документов
      *
-     * @param statuses список статусов документов
      * @return список всех документов
      */
-    List<DocumentInfoDto> getDocumentInfo(List<DocumentStatus> statuses);
+    List<DocumentInfoDto> getAllDocumentInfo();
 
     /**
      * сохраняет документ в деректорию, возвращает путь хранения документа.
@@ -34,6 +35,12 @@ public interface DocumentService {
      */
     String uploadDocument(MultipartFile multipartFile);
 
+    /**
+     * создает новый документ
+     *
+     * @param documentCreationDtoRqq информация по документу для создания
+     * @return сущность
+     */
     DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRqq);
 
     /**
@@ -55,4 +62,13 @@ public interface DocumentService {
      * @param id документа
      */
     void deleteDocument(int id);
+
+    /**
+     * обновляет метаданные документа
+     *
+     * @param updateDocumentRq информация которую необходимо обновить в документе
+     * @param id               документа
+     * @return сущность
+     */
+    UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq);
 }

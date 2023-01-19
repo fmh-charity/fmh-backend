@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -24,6 +25,8 @@ import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.service.document.DocumentService;
@@ -45,9 +48,7 @@ public class DocumentsController {
     @Operation(summary = "Получение списка документов")
     @GetMapping
     public List<DocumentInfoDto> getDocumentsInfo() {
-        List<DocumentStatus> documentStatuses = new ArrayList<>(){};
-        documentStatuses.add(DocumentStatus.PUBLISHED);
-        return documentService.getDocumentInfo(documentStatuses);
+        return documentService.getAllDocumentInfo();
     }
 
     @Secured("ROLE_ADMINISTRATOR")
@@ -62,6 +63,13 @@ public class DocumentsController {
     @PostMapping
     public DocumentCreationDtoRs createDocument(@RequestBody @Valid DocumentCreationDtoRq documentCreationDtoRqq) {
         return documentService.createDocument(documentCreationDtoRqq);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Изменение документа")
+    @PutMapping("{id}")
+    public UpdateDocumentRs updateDocument(@RequestBody @Valid UpdateDocumentRq updateDocumentRq, @PathVariable("id") int id) {
+        return documentService.updateDocument(id, updateDocumentRq);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

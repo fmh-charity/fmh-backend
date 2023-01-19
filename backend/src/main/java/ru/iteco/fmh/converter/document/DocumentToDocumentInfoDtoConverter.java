@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.model.document.Document;
 
-
-import java.lang.annotation.Annotation;
+import java.net.URI;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class DocumentToDocumentInfoDtoConverter implements Converter<Document, D
         return DocumentInfoDto.builder()
                 .id(source.getId())
                 .description(source.getDescription())
-                .filePath(staticHost + source.getFilePath())
+                .filePath(new URI(staticHost + source.getFilePath()).normalize().toString())
                 .build();
     }
 }
