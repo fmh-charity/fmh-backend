@@ -42,6 +42,7 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
                 () -> assertNull(dto.getExecutor()),
                 () -> assertNull(wish.getExecutor())
+
         );
     }
 
