@@ -6,7 +6,7 @@ public enum DocumentStatus {
 
     PUBLISHED("ОПУБЛИКОВАН"),
 
-    DELETED("В АРХИВЕ");
+    ARCHIVED("В АРХИВЕ");
 
     private final String name;
 
