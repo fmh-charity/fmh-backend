@@ -3,16 +3,21 @@ package ru.iteco.fmh.converter;
 import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.wish.WishDtoToWishConverter;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.TestUtils.getPatient;
+import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.getWishDto;
 
 class WishDtoToWishConverterTest {
 
@@ -40,11 +45,8 @@ class WishDtoToWishConverterTest {
                 () -> assertEquals(wishDto.getPlanExecuteDate(), wish.getPlanExecuteDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getCreateDate(), wish.getCreateDate().toEpochMilli()),
                 () -> assertEquals(wishDto.getStatus(), wish.getStatus()),
-                () -> assertEquals(wishDto.getCreator().id(), wish.getCreator().getId())
-//                () -> {
-//                    assert wish != null;
-//                    assertEquals(wishDto.getExecutor().id(), wish.getExecutor().getId());
-//                }
+                () -> assertEquals(wishDto.getCreator().id(), wish.getCreator().getId()),
+                () -> assertEquals(wishDto.getExecutor().id(), wish.getExecutor().getId())
         );
     }
 }

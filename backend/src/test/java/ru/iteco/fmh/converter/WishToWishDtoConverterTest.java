@@ -39,9 +39,10 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
                 () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
-//                () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
+                () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
                 () -> assertNull(dto.getExecutor()),
                 () -> assertNull(wish.getExecutor())
+
         );
     }
 
