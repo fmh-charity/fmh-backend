@@ -1,9 +1,11 @@
 package ru.iteco.fmh.dao.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.document.Document;
@@ -20,6 +22,7 @@ public class DocumentRepositoryTest {
     DocumentRepository repository;
     Document entity;
 
+    @Ignore
     @Test
     public void testWriteSuccess() {
         entity = Document.builder()

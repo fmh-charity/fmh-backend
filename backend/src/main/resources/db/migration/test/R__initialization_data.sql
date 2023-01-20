@@ -121,3 +121,10 @@ values (1, 1, false),
        (7, 2, false),
        (8, 1, false),
        (8, 2, false);
+
+insert into document (id, name, description, deleted, status, create_date, file_path, user_id)
+values (1, 'document1', 'description1', false, 'NEW', '01/01/2023', '/documents/document1.doc', 1),
+       (2, 'document2', 'description2', true, 'PUBLISHED', '01/02/2023', '/documents/document2.doc', 1),
+       (3, 'document3', 'description3', false, 'PUBLISHED', '02/02/2023', '/documents/document3.doc', 2),
+       (4, 'document4', 'description4', false, 'ARCHIVED', '01/02/2023', '/documents/document4.doc', 3),
+       (5, 'document5', 'description5', false, 'PUBLISHED', '03/02/2023', '/documents/document5.doc', 4);

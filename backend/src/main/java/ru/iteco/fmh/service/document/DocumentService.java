@@ -10,10 +10,23 @@ import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 
 import java.util.List;
 
+import ru.iteco.fmh.dto.document.DocumentInfoDto;
+import ru.iteco.fmh.model.document.DocumentStatus;
+
+import java.util.List;
+
 /**
  * сервис для работы с документами
  */
 public interface DocumentService {
+
+    /**
+     * возвращает список всех документов
+     *
+     * @return список всех документов
+     */
+    List<DocumentInfoDto> getAllDocumentInfo();
+
     /**
      * сохраняет документ в деректорию, возвращает путь хранения документа.
      *

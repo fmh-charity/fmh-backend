@@ -14,17 +14,20 @@ import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
+import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.model.document.Document;
+import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.model.user.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +41,14 @@ public class DocumentServiceImpl implements DocumentService {
     private final ConversionService conversionService;
     private final UserRepository userRepository;
     private final DocumentRepository documentRepository;
+
+    @Override
+    public List<DocumentInfoDto> getAllDocumentInfo() {
+        List<Document> documents = documentRepository.findAllByStatusIn(List.of(DocumentStatus.PUBLISHED));
+        return documents.stream()
+                .map(document -> conversionService.convert(document, DocumentInfoDto.class))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRq) {

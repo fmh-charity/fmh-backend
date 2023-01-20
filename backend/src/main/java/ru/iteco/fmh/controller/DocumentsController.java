@@ -7,6 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +27,13 @@ import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
+import ru.iteco.fmh.dto.document.DocumentInfoDto;
+import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.service.document.DocumentService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Документы")
@@ -34,6 +43,13 @@ import java.util.List;
 public class DocumentsController {
 
     private final DocumentService documentService;
+
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Operation(summary = "Получение списка документов")
+    @GetMapping
+    public List<DocumentInfoDto> getDocumentsInfo() {
+        return documentService.getAllDocumentInfo();
+    }
 
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Загрузка документа")
