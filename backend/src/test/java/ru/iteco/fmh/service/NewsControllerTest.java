@@ -3,20 +3,12 @@ package ru.iteco.fmh.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
-import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.news.News;
@@ -25,13 +17,10 @@ import ru.iteco.fmh.security.RequestContext;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static ru.iteco.fmh.TestUtils.getNewsDto;
 
 @RunWith(SpringRunner.class)
@@ -50,8 +39,8 @@ public class NewsControllerTest {
     @Test
     public void getAllNewsShouldPassSuccess() {
         //given
-        List<String> expected = Stream.of("news-title1", "news-title8", "news-title7", "news-title6",
-                "news-title5", "news-title4", "news-title3", "news-title2", "news-title9")
+        List<String> expected = Stream.of("news-title1", "news-title8", "news-title7",
+                "news-title5", "news-title4", "news-title3", "news-title2", "news-title9", "news-title6")
                 .sorted().collect(Collectors.toList());
         RequestContext.setCurrentUser(User.builder()
                 .login("login1").build());

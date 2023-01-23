@@ -10,7 +10,9 @@ import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.user.UserDto;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Block;
 import ru.iteco.fmh.model.NurseStation;
@@ -88,6 +90,18 @@ public class TestUtils {
                 .factExecuteDate(Instant.now())
                 .status(status)
                 .wishRoles(List.of(getRole("ROLE_ADMINISTRATOR")))
+                .build();
+    }
+
+    public static WishCreationRequest getWishCreationInfoDto(Status status) {
+        return WishCreationRequest.builder()
+                .patientId(2)
+                .executorId(2)
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .createDate(Instant.now().getEpochSecond())
+                .planExecuteDate(Instant.now().getEpochSecond()+200)
+                .wishVisibility(List.of(1))
                 .build();
     }
 
@@ -180,9 +194,24 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
-                .executor(null)
-                .creatorId(3)
+                .executor(new UserDtoIdFio(444, "ExecutorTestName",
+                        "ExecutorTestMiddleName", "ExecutorTestLastName"))
+                .creator(new UserDtoIdFio(555, "CreatorTestName",
+                        "CreatorTestMiddleName", "CreatorTestLastName"))
                 .status(Status.OPEN)
+                .build();
+    }
+
+    public static WishCreationRequest getWishCreationInfoDto() {
+
+        return WishCreationRequest.builder()
+                .patientId(2)
+                .executorId(null)
+                .title(getAlphabeticString())
+                .description(getAlphabeticString())
+                .createDate(Instant.now().getEpochSecond())
+                .planExecuteDate(Instant.now().getEpochSecond())
+                .wishVisibility(List.of(1))
                 .build();
     }
 

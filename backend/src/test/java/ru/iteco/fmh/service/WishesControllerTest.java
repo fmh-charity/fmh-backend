@@ -5,8 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
@@ -14,12 +12,7 @@ import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
-import ru.iteco.fmh.dto.user.UserDtoIdFio;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.*;
 import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
 
@@ -30,12 +23,8 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static ru.iteco.fmh.TestUtils.getWishCommentDto;
-import static ru.iteco.fmh.TestUtils.getWishDto;
-import static ru.iteco.fmh.model.task.Status.CANCELLED;
-import static ru.iteco.fmh.model.task.Status.EXECUTED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.TestUtils.*;
+import static ru.iteco.fmh.model.task.Status.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
@@ -88,43 +77,43 @@ public class WishesControllerTest {
 
     @Test
     public void createInProgressWishShouldPassSuccess() {
-        //given
-        WishDto givenWishDto = getWishDto();
+        // given
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
+        wishCreationRequest.setExecutorId(1);
 
-        givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutor(conversionService.convert(userRepository.findUserById(1), UserDtoIdFio.class));
-        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
-        givenWishDto.setWishVisibility(List.of(1,2));
+        WishDto givenWish = sut.createWish(wishCreationRequest);
+        assertEquals(IN_PROGRESS, givenWish.getStatus());
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
 
-        WishDto result = sut.createWish(givenWishDto);
-        assertNotNull(result.getId());
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
 
-        Wish result2 = wishRepository.findById(result.getId()).get();
-
-        assertEquals(IN_PROGRESS, result2.getStatus());
+        assertEquals(givenWish, expectedWish);
 
         // AFTER - deleting result entity
-        wishRepository.deleteById(result.getId());
+        wishRepository.deleteById(wishId);
     }
 
     @Test
     public void createOpenWishShouldPassSuccess() {
-        //given
-        WishDto givenWishDto = getWishDto();
-        givenWishDto.setCreatorId(userRepository.findUserById(1).getId());
-        givenWishDto.setExecutor(null);
-        givenWishDto.setPatient(conversionService.convert(patientRepository.findPatientById(1), PatientDtoIdFio.class));
-        givenWishDto.setWishVisibility(List.of(1, 2));
+       // given
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
 
-        WishDto resultId = sut.createWish(givenWishDto);
-        assertNotNull(resultId);
+        WishDto givenWish = sut.createWish(wishCreationRequest);
+        assertEquals(OPEN, givenWish.getStatus());
+        Integer wishId = givenWish.getId();
+        assertNotNull(givenWish);
 
-        Wish result = wishRepository.findById(resultId.getId()).get();
+        Wish wishResult = wishRepository.findWishById(givenWish.getId());
+        assertNotNull(wishResult);
+        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
 
-        assertEquals(OPEN, result.getStatus());
+        assertEquals(givenWish, expectedWish);
 
         // AFTER - deleting result entity
-        wishRepository.deleteById(resultId.getId());
+        wishRepository.deleteById(wishId);
     }
 
     @Test
@@ -245,11 +234,10 @@ public class WishesControllerTest {
     @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
     public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
         // given
-        WishDto givenWishDto = getWishDto();
-        givenWishDto.setCreatorId(3);
-        givenWishDto.setWishVisibility(List.of(1));
+        WishCreationRequest wishCreationRequest = getWishCreationInfoDto(OPEN);
+        wishCreationRequest.setWishVisibility(List.of(1));
 
-        WishDto givenWish = sut.createWish(givenWishDto);
+        WishDto givenWish = sut.createWish(wishCreationRequest);
         Integer wishId = givenWish.getId();
         assertNotNull(givenWish);
 
