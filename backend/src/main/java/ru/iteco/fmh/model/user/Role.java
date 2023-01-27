@@ -9,11 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Роли
@@ -34,4 +30,8 @@ public class Role {
     Integer id;
     String name;
     boolean deleted;
+    @Column(name = "description")
+    String description;
+    @Column(name = "need_confirm")
+    Boolean needConfirm;
 }
