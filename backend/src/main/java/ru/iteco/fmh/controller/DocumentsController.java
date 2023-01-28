@@ -7,18 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
@@ -32,8 +28,9 @@ import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.service.document.DocumentService;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.ArrayList;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Tag(name = "Документы")
@@ -47,8 +44,23 @@ public class DocumentsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение списка документов")
     @GetMapping
-    public List<DocumentInfoDto> getDocumentsInfo() {
-        return documentService.getAllDocumentInfo();
+    public List<DocumentInfoDto> getDocumentsInfo(
+            @Parameter(name = "pages", description = "от 0")
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @Parameter(name = "elements", description = "От 1 до 200")
+            @RequestParam(defaultValue = "10") @Min(value = 1) @Max(value = 200) int elements,
+            @Parameter(name = "isAscendingNameSort", description = "Сортировка по имени")
+            @RequestParam(required = false, defaultValue = "true") boolean isAscendingNameSort,
+            @Parameter(name = "statuses", description = "[NEW, PUBLISHED, ARCHIVED]")
+            @RequestParam(name = "statuses", defaultValue = "PUBLISHED") List<DocumentStatus> statuses) {
+        return documentService.getAllDocumentInfo(pages, elements, isAscendingNameSort, statuses);
+    }
+
+    @Secured({"ROLE_ADMINISTRATOR"})
+    @Operation(summary = "Получение полной информации по документу")
+    @GetMapping("{id}")
+    public DocumentByIdRs getDocument(@Parameter(description = "Идентификатор документа", required = true) @PathVariable("id") int id) {
+        return documentService.getDocument(id);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
@@ -70,13 +82,6 @@ public class DocumentsController {
     @PutMapping("{id}")
     public UpdateDocumentRs updateDocument(@RequestBody @Valid UpdateDocumentRq updateDocumentRq, @PathVariable("id") int id) {
         return documentService.updateDocument(id, updateDocumentRq);
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
-    @Operation(summary = "Получение полной информации по документу")
-    @GetMapping("{id}")
-    public DocumentByIdRs getDocument(@Parameter(description = "Идентификатор документа", required = true) @PathVariable("id") int id) {
-        return documentService.getDocument(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR"})

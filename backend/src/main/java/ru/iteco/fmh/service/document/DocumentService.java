@@ -8,6 +8,7 @@ import ru.iteco.fmh.dto.document.DocumentForAdminRs;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 
+import java.util.Collection;
 import java.util.List;
 
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
@@ -23,9 +24,13 @@ public interface DocumentService {
     /**
      * возвращает список всех документов
      *
+     * @param pages страница
+     * @param elements количество элементов на странице
+     * @param isAscendingNameSort true = сортировать по имени в восходящем порядке, false = сортировать по имени в нисходящем порядке
+     * @param statuses статусы документов один или более
      * @return список всех документов
      */
-    List<DocumentInfoDto> getAllDocumentInfo();
+    List<DocumentInfoDto> getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort, Collection<DocumentStatus> statuses);
 
     /**
      * сохраняет документ в деректорию, возвращает путь хранения документа.

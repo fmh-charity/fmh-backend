@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +31,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +47,23 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
 
     @Override
-    public List<DocumentInfoDto> getAllDocumentInfo() {
-        List<Document> documents = documentRepository.findAllByStatusIn(List.of(DocumentStatus.PUBLISHED));
+    public List<DocumentInfoDto> getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort,
+                                                    Collection<DocumentStatus> statuses) {
+        List<Document> documents;
+
+        Pageable pageable = isAscendingNameSort
+                ? PageRequest.of(pages, elements, Sort.by("name"))
+                : PageRequest.of(pages, elements, Sort.by("name").descending());
+
+        if (statuses == null || statuses.isEmpty()) {
+            documents = documentRepository.findAllByStatusIn(List.of(DocumentStatus.PUBLISHED), pageable);
+        } else {
+            documents = documentRepository.findAllByStatusIn(statuses, pageable);
+        }
         return documents.stream()
                 .map(document -> conversionService.convert(document, DocumentInfoDto.class))
                 .collect(Collectors.toList());
+
     }
 
     @Override
