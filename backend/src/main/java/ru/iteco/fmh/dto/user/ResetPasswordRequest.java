@@ -20,7 +20,7 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class ResetPasswordRequest {
     String login;
-    @Size(min=6)
+    @Size(min = 6)
     @Pattern(regexp = "[a-zA-Z0-9!#$%&_-]+")
     String password;
 }

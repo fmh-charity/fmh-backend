@@ -119,7 +119,7 @@ public class User implements UserDetails {
                 + ", email='" + email + '\''
                 + ", deleted=" + deleted
                 + ", userRoles=" + userRoles
-                + ", emailConfirmed "+emailConfirmed
+                + ", emailConfirmed " + emailConfirmed
                 + '}';
     }
 }

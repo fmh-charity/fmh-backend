@@ -53,10 +53,11 @@ public class AuthController {
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
         return authService.getAuthorizedUser(authentication);
     }
+
     @PostMapping("resetPassword")
     @Operation(summary = "Обновление пароля")
-    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest){
-         authService.resetPassword(resetPasswordRequest);
-        return new ResponseEntity<>( HttpStatus.OK );
+    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        authService.resetPassword(resetPasswordRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
