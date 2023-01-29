@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="AllTests" type="JUnit" factoryName="JUnit">
-    <module name="fmh-backend" />
+    <module name="fmh-backend (1) (ru.i-teco.backend)" />
     <shortenClasspath name="ARGS_FILE" />
     <extension name="coverage">
       <pattern>
