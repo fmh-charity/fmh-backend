@@ -1,5 +1,8 @@
 package ru.iteco.fmh.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.security.JwtProvider;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @Tag(name = "Авторизация и аутентификация пользователя")
 @RequiredArgsConstructor
@@ -47,5 +52,11 @@ public class AuthController {
     @GetMapping("userInfo")
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
         return authService.getAuthorizedUser(authentication);
+    }
+    @PostMapping("resetPassword")
+    @Operation(summary = "Обновление пароля")
+    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest){
+         authService.resetPassword(resetPasswordRequest);
+        return new ResponseEntity<>( HttpStatus.OK );
     }
 }

@@ -4,15 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.Token;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.JwtProvider;
@@ -100,5 +104,19 @@ public class AuthService {
                 UserShortInfoDto.class);
     }
 
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        User user = userRepository.findUserByLogin(resetPasswordRequest.getLogin());
+        if (user == null) {
+            LOGGER.error("пользователь не найден");
+            throw new InvalidLoginException();
+        }
+        if (user.isEmailConfirmed() && !user.isDeleted()) {
+            String password = encoder.encode(resetPasswordRequest.getPassword());
+            user.setPassword(password);
+            userRepository.save(user);
+        } else {
+            throw new NotFoundException("Емайл не подтвержден или пользователь удален");
+        }
+    }
 }
 
