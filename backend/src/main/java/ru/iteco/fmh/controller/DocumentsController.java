@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -17,13 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ru.iteco.fmh.dto.document.DocumentByIdRs;
-import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
-import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
-import ru.iteco.fmh.dto.document.DocumentForAdminRs;
-import ru.iteco.fmh.dto.document.UpdateDocumentRq;
-import ru.iteco.fmh.dto.document.UpdateDocumentRs;
-import ru.iteco.fmh.dto.document.DocumentInfoDto;
+import ru.iteco.fmh.dto.document.*;
 import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.service.document.DocumentService;
 
@@ -44,7 +39,7 @@ public class DocumentsController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Получение списка документов")
     @GetMapping
-    public List<DocumentInfoDto> getDocumentsInfo(
+    public ResponseEntity<DocumentInfoPaginationDto> getDocumentsInfo(
             @Parameter(name = "pages", description = "от 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
@@ -53,7 +48,20 @@ public class DocumentsController {
             @RequestParam(required = false, defaultValue = "true") boolean isAscendingNameSort,
             @Parameter(name = "statuses", description = "[NEW, PUBLISHED, ARCHIVED]")
             @RequestParam(name = "statuses", defaultValue = "PUBLISHED") List<DocumentStatus> statuses) {
-        return documentService.getAllDocumentInfo(pages, elements, isAscendingNameSort, statuses);
+        return ResponseEntity.ok(documentService.getAllDocumentInfo(pages, elements, isAscendingNameSort, statuses));
+    }
+
+    @Secured({"ROLE_ADMINISTRATOR"})
+    @Operation(summary = "Получение списка всех файлов загруженных в систему для администратора, кроме удаленных")
+    @GetMapping("/admin")
+    public ResponseEntity<DocumentForAdminPaginationRs> getDocumentsForAdmin(
+            @Parameter(name = "pages", description = "от 0")
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @Parameter(name = "elements", description = "От 1 до 200")
+            @RequestParam(defaultValue = "10") @Min(value = 1) @Max(value = 200) int elements,
+            @Parameter(name = "isAscendingNameSort", description = "Сортировка по имени")
+            @RequestParam(required = false, defaultValue = "true") boolean isAscendingNameSort) {
+        return ResponseEntity.ok(documentService.getDocumentsForAdmin(pages, elements, isAscendingNameSort));
     }
 
     @Secured({"ROLE_ADMINISTRATOR"})
@@ -82,13 +90,6 @@ public class DocumentsController {
     @PutMapping("{id}")
     public UpdateDocumentRs updateDocument(@RequestBody @Valid UpdateDocumentRq updateDocumentRq, @PathVariable("id") int id) {
         return documentService.updateDocument(id, updateDocumentRq);
-    }
-
-    @Secured({"ROLE_ADMINISTRATOR"})
-    @Operation(summary = "Получение списка всех файлов загруженных в систему для администратора, кроме удаленных")
-    @GetMapping("/admin")
-    public List<DocumentForAdminRs> getDocumentsForAdmin() {
-        return documentService.getDocumentsForAdmin();
     }
 
     @Secured("ROLE_ADMINISTRATOR")
