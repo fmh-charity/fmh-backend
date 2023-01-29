@@ -18,7 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import ru.iteco.fmh.dto.document.*;
+import ru.iteco.fmh.dto.document.DocumentByIdRs;
+import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
+import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
+import ru.iteco.fmh.dto.document.DocumentForAdminPaginationRs;
+import ru.iteco.fmh.dto.document.DocumentInfoPaginationDto;
+import ru.iteco.fmh.dto.document.UpdateDocumentRq;
+import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.service.document.DocumentService;
 
