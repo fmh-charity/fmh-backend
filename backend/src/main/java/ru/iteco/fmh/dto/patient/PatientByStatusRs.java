@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.model.PatientStatus;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -20,7 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @Data
 @FieldDefaults(level = PRIVATE)
-public class PatientByStatusRs {
+public class PatientByStatusRs implements Serializable {
 
     @Schema(name = "id", description = "id пациента")
     Integer id;

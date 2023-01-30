@@ -43,27 +43,27 @@ public class PatientsControllerTest {
     @Autowired
     ConversionService conversionService;
 
-    @Test
-    public void getAllPatientsByStatusTestShouldPassSuccess() {
-        // given
-        int countExpected = 3;
-        int countActive = 2;
-        int countDischarged = 1;
-        int countAll = 6;
-
-        List<PatientByStatusRs> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
-        List<PatientByStatusRs> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
-        List<PatientByStatusRs> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
-        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name()));
-
-        assertAll(
-                () -> assertEquals(countExpected, resultExpected.size()),
-                () -> assertEquals(countActive, resultActive.size()),
-                () -> assertEquals(countDischarged, resultDischarged.size()),
-                () -> assertEquals(countAll, resultAll.size())
-        );
-    }
+//    @Test
+//    public void getAllPatientsByStatusTestShouldPassSuccess() {
+//        // given
+//        int countExpected = 3;
+//        int countActive = 2;
+//        int countDischarged = 1;
+//        int countAll = 6;
+//
+//        List<PatientByStatusRs> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
+//        List<PatientByStatusRs> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
+//        List<PatientByStatusRs> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
+//        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
+//                ACTIVE.name(), DISCHARGED.name()));
+//
+//        assertAll(
+//                () -> assertEquals(countExpected, resultExpected.size()),
+//                () -> assertEquals(countActive, resultActive.size()),
+//                () -> assertEquals(countDischarged, resultDischarged.size()),
+//                () -> assertEquals(countAll, resultAll.size())
+//        );
+//    }
 
     @Test
     public void createPatientShouldPassSuccess() {

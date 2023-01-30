@@ -1,15 +1,22 @@
 package ru.iteco.fmh.service.patient;
 
-import ru.iteco.fmh.dto.patient.PatientByStatusRs;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import org.springframework.data.domain.Pageable;
+import ru.iteco.fmh.dto.PageDto;
+import ru.iteco.fmh.dto.patient.*;
 
 import java.util.List;
 
 public interface PatientService {
+
+    /**
+     * Постраничный поиск по пациентам.
+     *
+     * @param pageable          атрибуты для страницы
+     * @param searchPositionDto атрибуты для поиска пациентов.
+     * @return {@link PageDto} со списком пациентов.
+     */
+    PageDto<PatientByStatusRs> getPage(Pageable pageable, SearchPatientsDto searchPositionDto);
+
     /**
      * возвращает список всех пациентов с активной госпитализацией
      * @param patientStatusList список значений для фильтра по госпитализации

@@ -2,22 +2,22 @@ package ru.iteco.fmh.service.patient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.RoomRepository;
-import ru.iteco.fmh.dto.patient.PatientByStatusRs;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.PageDto;
+import ru.iteco.fmh.dto.patient.*;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
+import ru.iteco.fmh.util.PatientsPageable;
+import ru.iteco.fmh.util.PatientsSpecification;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +27,19 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final ConversionService conversionService;
     private final RoomRepository roomRepository;
+    private final PatientsPageable patientPageable;
+    private final PatientsSpecification patientSpecification;
+
+    @Transactional(readOnly = true)
+    @Override
+    public PageDto<PatientByStatusRs> getPage(Pageable pageable, SearchPatientsDto searchPatientsDto) {
+        return Optional.of(patientRepository.findAll(patientSpecification.getSpecificationPatient(searchPatientsDto), patientPageable.getPageRequest(pageable)))
+                .map(page -> new PageDto<PatientByStatusRs>()
+                        .setData(page.map(patient -> conversionService.convert(patient, PatientByStatusRs.class)).getContent())
+                        .setTotal(page.getTotalElements())
+                        .setPage(page.getNumber()))
+                .orElse(null);
+    }
 
     @Override
     public List<PatientByStatusRs> getAllPatientsByStatus(List<String> statusList) {
