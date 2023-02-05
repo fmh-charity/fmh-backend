@@ -37,6 +37,6 @@ $ ./make_dump.bash home/user/docs/env
 #### Пример команды на запуск скрипта по расписанию CRON ####
 
 ```aidl
-# выполнять задание по пятницам в 1 час 0 минут ночи
-$ 15 1 * * 5 /home/user/make_dump.bash home/user/docs/env
+# выполнять задание по субботам в 1 час 0 минут ночи
+$ 0 1 * * 6 /home/user/make_dump.bash home/user/docs/env
 ```
