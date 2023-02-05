@@ -1,11 +1,13 @@
 package ru.iteco.fmh.controller;
 
+import ru.iteco.fmh.dto.role.RoleDtoRs;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
+import ru.iteco.fmh.security.RegistrationRequest;
 import ru.iteco.fmh.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "Авторизация и аутентификация пользователя")
 @RequiredArgsConstructor
@@ -47,5 +52,17 @@ public class AuthController {
     @GetMapping("userInfo")
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
         return authService.getAuthorizedUser(authentication);
+    }
+
+    @Operation(summary = "Регистрация пользователя")
+    @PostMapping("registration")
+    public String addUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+        return authService.userRegistration(registrationRequest);
+    }
+
+    @Operation(summary = "Список доступных ролей")
+    @GetMapping("roles")
+    public List<RoleDtoRs> getAvailableRoles() {
+        return authService.getAvailableRoles();
     }
 }

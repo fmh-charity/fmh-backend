@@ -11,7 +11,8 @@ public enum ErrorCodes {
     ERR_UNEXPECTED(HttpStatus.INTERNAL_SERVER_ERROR),
     ERR_INVALID_REFRESH(HttpStatus.UNAUTHORIZED),
     ERR_NOT_FOUND(HttpStatus.NOT_FOUND),
-    ERR_NO_RIGHTS(HttpStatus.FORBIDDEN);
+    ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
+    ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED);
 
     private final HttpStatus httpStatus;
 
