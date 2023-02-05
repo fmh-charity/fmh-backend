@@ -5,6 +5,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
+import ru.iteco.fmh.exceptions.InvalidLoginException;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.user.User;
 
 import java.util.List;
@@ -23,5 +25,16 @@ public class UserServiceImpl implements UserService {
         return list.stream()
                 .map(i -> conversionService.convert(i, UserShortInfoDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isUserExist(User user) {
+        if (user == null) {
+            throw new NotFoundException("Пользователь не найден");
+        }
+        if (user.isDeleted()) {
+            throw new InvalidLoginException();
+        }
+        return true;
     }
 }
