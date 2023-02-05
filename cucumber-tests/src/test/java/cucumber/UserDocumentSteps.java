@@ -55,6 +55,6 @@ public class UserDocumentSteps {
         DocumentForAdminPaginationRs documentForAdminPaginationRs = objectMapper.readValue(responseBody, DocumentForAdminPaginationRs.class);
         assertNotNull(documentForAdminPaginationRs);
         log.info("SIZE: {}", documentForAdminPaginationRs.getElements().size());
-        log.info("ALL NEWS: {}", documentForAdminPaginationRs.getElements());
+        log.info("ALL DOCUMENT INFO FOR ADMIN: {}", documentForAdminPaginationRs.getElements());
     }
 }

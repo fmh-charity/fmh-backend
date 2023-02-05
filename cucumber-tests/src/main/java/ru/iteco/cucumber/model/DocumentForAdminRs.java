@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 import java.util.Date;
 
 @ApiModel(description = "информация о документе для администратора")
@@ -28,5 +27,5 @@ public class DocumentForAdminRs {
     @ApiModelProperty("дата создания документа")
     Date createDate;
     @ApiModelProperty("id владельца документа")
-    UserDtoIdFio user;
+    UserDtoIdConcatFio user;
 }

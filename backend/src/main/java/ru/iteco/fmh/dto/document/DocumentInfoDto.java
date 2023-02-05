@@ -19,9 +19,9 @@ public class DocumentInfoDto {
     @Schema(name = "id", description = "Идентификатор документа")
     Integer id;
 
+    @Schema(name = "name", description = "Имя документа")
+    String name;
+
     @Schema(name = "filePath", description = "Полная ссылка на документ")
     String filePath;
-
-    @Schema(name = "description", description = "Описание")
-    String description;
 }
