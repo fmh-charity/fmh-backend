@@ -107,17 +107,15 @@ public class AuthService {
     }
 
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        User user = userRepository.findUserByLogin(resetPasswordRequest.getLogin());
-        if (userService.isUserExist(user)) {
-            if (!user.isEmailConfirmed()) {
-                throw new UnavailableOperationException("Email не подтверждён!");
-            }
-            String password = encoder.encode(resetPasswordRequest.getPassword());
-            user.setPassword(password);
-            userRepository.save(user);
-        } else {
-            throw new NotFoundException("Емайл не подтвержден или пользователь удален");
+        String login = resetPasswordRequest.getLogin();
+        User user = userService.getActiveUserByLogin(login);
+        if (!user.isEmailConfirmed()) {
+            throw new UnavailableOperationException("Email не подтверждён!");
         }
+        String password = encoder.encode(resetPasswordRequest.getPassword());
+        user.setPassword(password);
+        userRepository.save(user);
     }
 }
+
 

@@ -15,5 +15,9 @@ public interface UserService {
      */
     List<UserShortInfoDto> getAllUsers();
 
-    boolean isUserExist(User user);
+    /**
+     *
+     *  Возвращает активного пользователя, если он есть
+     */
+    public User getActiveUserByLogin(String login);
 }

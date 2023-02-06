@@ -28,13 +28,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExist(User user) {
+    public User getActiveUserByLogin(String login) {
+        User user = userRepository.findUserByLogin(login);
         if (user == null) {
             throw new NotFoundException("Пользователь не найден");
         }
         if (user.isDeleted()) {
-            throw new InvalidLoginException();
+            throw new InvalidLoginException("Пользователь удален, обратитесь к администратору!");
         }
-        return true;
+        return user;
     }
 }
