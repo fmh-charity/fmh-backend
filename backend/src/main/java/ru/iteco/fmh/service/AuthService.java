@@ -25,7 +25,7 @@ import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import ru.iteco.fmh.service.user.UserRoleClaimServiceImpl;
 
 import java.time.Instant;
@@ -111,7 +111,7 @@ public class AuthService {
                 UserShortInfoDto.class);
     }
 
-    public String userRegistration(RegistrationRequest registrationRequest) {
+    public void userRegistration(RegistrationRequest registrationRequest) {
         User foundedUser = userRepository.findUserByLogin(registrationRequest.getEmail());
         if (foundedUser != null) {
             throw new UserExistsException("Пользователь с данным email уже существует");
@@ -123,26 +123,25 @@ public class AuthService {
         user.setUserRoles(allowedRoles);
         User dbUser = userRepository.save(user);
         createRolesClaim(desiredRoles, dbUser);
-        return "Регистрация успешно завершена";
+        LOGGER.info(String.format("Пользователь с логином %s успешно зарегистрирован", dbUser.getEmail()));
     }
 
     public List<Role> getRolesListWithoutNeedConfirm(List<Role> roles) {
         Optional<Role> guestRole = roleRepository.findRoleByName("ROLE_GUEST");
-        List<Role> allowedRoles = roles.stream().filter(role -> role.getNeedConfirm().equals(false)).collect(Collectors.toList());
+        List<Role> allowedRoles = roles.stream().filter(role -> !role.getNeedConfirm()).collect(Collectors.toList());
         allowedRoles.add(guestRole.get());
         return allowedRoles;
     }
 
     public void createRolesClaim(List<Role> roles, User user) {
-        List<Role> rolesListWithNeedConfirm = roles.stream().filter(role -> role.getNeedConfirm().equals(true)).toList();
-        if (!rolesListWithNeedConfirm.isEmpty()) {
-            rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
-                    UserRoleClaimShort.builder()
-                            .roleId(role.getId())
-                            .userId(user.getId())
-                            .status(RoleClaimStatus.NEW)
-                            .build()));
-        }
+        List<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::getNeedConfirm).toList();
+        rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
+                UserRoleClaimShort.builder()
+                        .roleId(role.getId())
+                        .userId(user.getId())
+                        .status(RoleClaimStatus.NEW)
+                        .build()));
+
     }
 
     public List<RoleDtoRs> getAvailableRoles() {

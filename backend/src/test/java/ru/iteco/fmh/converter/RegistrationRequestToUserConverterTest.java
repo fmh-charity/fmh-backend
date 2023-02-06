@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter;
 import org.junit.Test;
 import ru.iteco.fmh.converter.user.RegistrationRequestToUserConverter;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.getRegistrationRequest;

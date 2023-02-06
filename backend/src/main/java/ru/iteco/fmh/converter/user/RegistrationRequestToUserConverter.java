@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.model.user.User;
 
 import org.springframework.core.convert.converter.Converter;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import javax.validation.constraints.NotNull;
 

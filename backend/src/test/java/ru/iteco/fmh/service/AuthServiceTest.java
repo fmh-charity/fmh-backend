@@ -12,7 +12,7 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,8 +42,6 @@ public class AuthServiceTest {
         Role role = getRole("ROLE_ANY");
         List<Role> roleList = List.of(role);
 
-        String expected = "Регистрация успешно завершена";
-
         doReturn(null).when(userRepository).findUserByLogin(registrationRequest.getEmail());
         doReturn(convertedRegistrationRequest).when(conversionService).convert(registrationRequest, User.class);
         doReturn(roleList).when(roleRepository).findAllByIdIn(registrationRequest.getRoleIds());
@@ -52,8 +50,6 @@ public class AuthServiceTest {
         doReturn(user).when(userRepository).save(convertedRegistrationRequest);
         doNothing().when(authService).createRolesClaim(roleList, user);
 
-        var actual = authService.userRegistration(registrationRequest);
-
-        assertEquals(actual, expected);
+        authService.userRegistration(registrationRequest);
     }
 }

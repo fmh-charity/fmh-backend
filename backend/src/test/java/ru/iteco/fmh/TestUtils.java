@@ -28,7 +28,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import java.time.Instant;
 import java.time.LocalDate;

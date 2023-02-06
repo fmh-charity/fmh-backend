@@ -7,7 +7,7 @@ import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
-import ru.iteco.fmh.security.RegistrationRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import ru.iteco.fmh.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,8 +56,8 @@ public class AuthController {
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("registration")
-    public String addUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        return authService.userRegistration(registrationRequest);
+    public void addUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+        authService.userRegistration(registrationRequest);
     }
 
     @Operation(summary = "Список доступных ролей")
