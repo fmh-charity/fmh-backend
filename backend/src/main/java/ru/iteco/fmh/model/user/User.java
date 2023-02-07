@@ -37,6 +37,7 @@ public class User implements UserDetails {
     String phoneNumber;
     String email;
     boolean deleted;
+    boolean emailConfirmed;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
@@ -118,6 +119,7 @@ public class User implements UserDetails {
                 + ", email='" + email + '\''
                 + ", deleted=" + deleted
                 + ", userRoles=" + userRoles
+                + ", emailConfirmed " + emailConfirmed
                 + '}';
     }
 }
