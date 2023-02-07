@@ -20,23 +20,30 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
+
 @ControllerAdvice
 public class AppAdvice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     private static final Map<Class<? extends RuntimeException>, ErrorCodes> errors = Map.of(
-            InvalidLoginException.class, ErrorCodes.ERR_INVALID_LOGIN,
-            InvalidTokenException.class, ErrorCodes.ERR_INVALID_REFRESH,
-            NoRightsException.class, ErrorCodes.ERR_NO_RIGHTS,
-            NotFoundException.class, ErrorCodes.ERR_NOT_FOUND,
-            DuplicateDataException.class, ErrorCodes.ERR_DUPLICATE_DATA
+            InvalidLoginException.class, ERR_INVALID_LOGIN,
+            InvalidTokenException.class, ERR_INVALID_REFRESH,
+            NoRightsException.class, ERR_NO_RIGHTS,
+            NotFoundException.class, ERR_NOT_FOUND,
+            DuplicateDataException.class, ERR_DUPLICATE_DATA
     );
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ErrorCodes.ERR_UNEXPECTED);
+        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ERR_UNEXPECTED);
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder().code(errorCode).message(e.getMessage()).build());

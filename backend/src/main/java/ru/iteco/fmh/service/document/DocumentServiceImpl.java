@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,7 +105,9 @@ public class DocumentServiceImpl implements DocumentService {
 
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
-        if (updateDocumentRq.getName().equals(document.getName())) {
+        String documentName = updateDocumentRq.getName();
+        Document duplicateDocument = documentRepository.findDuplicateDocumentByName(documentName, id);
+        if (duplicateDocument != null) {
             throw new DuplicateDataException("Документ с таким именем уже существует!");
         }
         document.setName(updateDocumentRq.getName());
