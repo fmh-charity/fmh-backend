@@ -10,15 +10,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
+import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.exceptions.UnavailableOperationException;
 import ru.iteco.fmh.model.Token;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
+import ru.iteco.fmh.service.user.UserService;
 
 import java.time.Instant;
 
@@ -33,6 +37,8 @@ public class AuthService {
     private final TokenRepository tokenRepository;
     private final ConversionService conversionService;
     private final PasswordEncoder encoder;
+
+    private final UserService userService;
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -100,5 +106,16 @@ public class AuthService {
                 UserShortInfoDto.class);
     }
 
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        String login = resetPasswordRequest.getLogin();
+        User user = userService.getActiveUserByLogin(login);
+        if (!user.isEmailConfirmed()) {
+            throw new UnavailableOperationException("Email не подтверждён!");
+        }
+        String password = encoder.encode(resetPasswordRequest.getPassword());
+        user.setPassword(password);
+        userRepository.save(user);
+    }
 }
+
 
