@@ -14,3 +14,12 @@ where name = 'ROLE_ADMINISTRATOR';
 update roles
 set description = 'Медицинский работник', need_confirm = true
 where name = 'ROLE_MEDICAL_WORKER';
+
+alter table roles
+    alter column name set not null;
+
+alter table roles
+    alter column description set not null;
+
+alter table roles
+    alter column need_confirm set not null;
