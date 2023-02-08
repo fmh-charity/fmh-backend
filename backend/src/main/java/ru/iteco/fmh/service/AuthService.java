@@ -135,13 +135,13 @@ public class AuthService {
 
     public List<Role> getRolesListWithoutNeedConfirm(List<Role> roles) {
         Optional<Role> guestRole = roleRepository.findRoleByName("ROLE_GUEST");
-        List<Role> allowedRoles = roles.stream().filter(role -> !role.getNeedConfirm()).collect(Collectors.toList());
+        List<Role> allowedRoles = roles.stream().filter(role -> !role.isNeedConfirm()).collect(Collectors.toList());
         allowedRoles.add(guestRole.get());
         return allowedRoles;
     }
 
     public void createRolesClaim(List<Role> roles, User user) {
-        List<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::getNeedConfirm).toList();
+        List<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::isNeedConfirm).toList();
         rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
                 UserRoleClaimShort.builder()
                         .roleId(role.getId())
@@ -150,6 +150,7 @@ public class AuthService {
                         .build()));
 
     }
+
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
         String login = resetPasswordRequest.getLogin();
         User user = userService.getActiveUserByLogin(login);
