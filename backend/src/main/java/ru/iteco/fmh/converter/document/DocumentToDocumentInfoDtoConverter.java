@@ -22,7 +22,7 @@ public class DocumentToDocumentInfoDtoConverter implements Converter<Document, D
     public DocumentInfoDto convert(Document source) {
         return DocumentInfoDto.builder()
                 .id(source.getId())
-                .description(source.getDescription())
+                .name(source.getName())
                 .filePath(new URI(staticHost + source.getFilePath()).normalize().toString())
                 .build();
     }
