@@ -1,5 +1,8 @@
 package ru.iteco.fmh.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.role.RoleDtoRs;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
@@ -64,5 +67,11 @@ public class AuthController {
     @GetMapping("roles")
     public List<RoleDtoRs> getAvailableRoles() {
         return authService.getAvailableRoles();
+    }
+
+    @PostMapping("resetPassword")
+    @Operation(summary = "Обновление пароля")
+    public void resetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+        authService.resetPassword(resetPasswordRequest);
     }
 }

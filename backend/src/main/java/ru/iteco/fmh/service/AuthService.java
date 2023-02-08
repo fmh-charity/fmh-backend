@@ -11,11 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.role.RoleDtoRs;
 import ru.iteco.fmh.dto.user.UserRoleClaimShort;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
+import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.exceptions.UnavailableOperationException;
 import ru.iteco.fmh.exceptions.UserExistsException;
 import ru.iteco.fmh.model.Token;
 import ru.iteco.fmh.model.user.Role;
@@ -25,6 +28,7 @@ import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
+import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import ru.iteco.fmh.service.user.UserRoleClaimServiceImpl;
 
@@ -46,6 +50,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
     private final UserRoleClaimServiceImpl userRoleClaimService;
+    private final UserService userService;
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -83,6 +88,7 @@ public class AuthService {
 
     }
 
+
     public JwtResponse refreshToken(RefreshTokenRequest refreshToken) {
         Token token = tokenRepository.findTokenByRefreshToken(refreshToken.getRefreshToken());
         if (token == null || token.isDisabled()) {
@@ -90,6 +96,7 @@ public class AuthService {
         }
         token.setDisabled(true);
         tokenRepository.save(token);
+
 
         User user = userRepository.findUserById(token.getUser().getId());
         String accessJwtToken = jwtProvider.generateAccessJwtToken(user);
@@ -142,6 +149,16 @@ public class AuthService {
                         .status(RoleClaimStatus.NEW)
                         .build()));
 
+    }
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        String login = resetPasswordRequest.getLogin();
+        User user = userService.getActiveUserByLogin(login);
+        if (!user.isEmailConfirmed()) {
+            throw new UnavailableOperationException("Email не подтверждён!");
+        }
+        String password = encoder.encode(resetPasswordRequest.getPassword());
+        user.setPassword(password);
+        userRepository.save(user);
     }
 
     public List<RoleDtoRs> getAvailableRoles() {

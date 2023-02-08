@@ -8,4 +8,8 @@ public class InvalidLoginException extends RuntimeException {
     public InvalidLoginException() {
         super("ERR_INVALID_LOGIN");
     }
+
+    public InvalidLoginException(String message) {
+        super(message);
+    }
 }

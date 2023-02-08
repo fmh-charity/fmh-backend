@@ -12,7 +12,8 @@ public enum ErrorCodes {
     ERR_INVALID_REFRESH(HttpStatus.UNAUTHORIZED),
     ERR_NOT_FOUND(HttpStatus.NOT_FOUND),
     ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
-    ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED);
+    ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED),
+    ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE);
 
     private final HttpStatus httpStatus;
 

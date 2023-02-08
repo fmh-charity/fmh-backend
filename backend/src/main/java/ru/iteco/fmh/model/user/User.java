@@ -40,6 +40,7 @@ public class User implements UserDetails {
     String phoneNumber;
     String email;
     boolean deleted;
+    boolean emailConfirmed;
     LocalDate dateOfBirth;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -33,5 +33,5 @@ public class Role {
     @Column(name = "description")
     String description;
     @Column(name = "need_confirm")
-    Boolean needConfirm;
+    boolean needConfirm;
 }

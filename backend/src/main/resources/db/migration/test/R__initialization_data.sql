@@ -127,4 +127,12 @@ values (1, 'document1', 'description1', false, 'NEW', '01/01/2023', '/documents/
        (2, 'document2', 'description2', true, 'PUBLISHED', '01/02/2023', '/documents/document2.doc', 1),
        (3, 'document3', 'description3', false, 'PUBLISHED', '02/02/2023', '/documents/document3.doc', 2),
        (4, 'document4', 'description4', false, 'ARCHIVED', '01/02/2023', '/documents/document4.doc', 3),
-       (5, 'document5', 'description5', false, 'PUBLISHED', '03/02/2023', '/documents/document5.doc', 4);
+       (5, 'document5', 'description5', false, 'PUBLISHED', '03/02/2023', '/documents/document5.doc', 4),
+       (6, 'document6', 'description6', false, 'PUBLISHED', '03/02/2023', '/documents/document6.doc', 4),
+       (7, 'document7', 'description7', false, 'PUBLISHED', '03/02/2023', '/documents/document7.doc', 4),
+       (8, 'document8', 'description8', false, 'PUBLISHED', '03/02/2023', '/documents/document8.doc', 4),
+       (9, 'document9', 'description9', false, 'PUBLISHED', '03/02/2023', '/documents/document9.doc', 4),
+       (10, 'document10', 'description10', false, 'PUBLISHED', '03/02/2023', '/documents/document10.doc', 4),
+       (11, 'document11', 'description11', false, 'PUBLISHED', '03/02/2023', '/documents/document11.doc', 4),
+       (12, 'document12', 'description12', false, 'PUBLISHED', '03/02/2023', '/documents/document12.doc', 4),
+       (13, 'document13', 'description13', false, 'PUBLISHED', '03/02/2023', '/documents/document13.doc', 4);
