@@ -10,15 +10,18 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.dto.registration.RegistrationRequest;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static ru.iteco.fmh.TestUtils.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static ru.iteco.fmh.TestUtils.getRegistrationRequest;
 import static ru.iteco.fmh.TestUtils.getRole;
+import static ru.iteco.fmh.TestUtils.getUser;
 
 @ExtendWith({MockitoExtension.class})
 public class AuthServiceTest {
@@ -51,5 +54,7 @@ public class AuthServiceTest {
         doNothing().when(authService).createRolesClaim(roleList, user);
 
         authService.userRegistration(registrationRequest);
+
+        verify(authService).userRegistration(registrationRequest);
     }
 }

@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dto.user.ResetPasswordRequest;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 import ru.iteco.fmh.dto.role.RoleDtoRs;
+import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.user.UserRoleClaimShort;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
-import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.exceptions.UnavailableOperationException;
 import ru.iteco.fmh.exceptions.UserExistsException;
 import ru.iteco.fmh.model.Token;
@@ -28,9 +28,8 @@ import ru.iteco.fmh.security.JwtProvider;
 import ru.iteco.fmh.security.JwtResponse;
 import ru.iteco.fmh.security.LoginRequest;
 import ru.iteco.fmh.security.RefreshTokenRequest;
+import ru.iteco.fmh.service.user.UserRoleClaimService;
 import ru.iteco.fmh.service.user.UserService;
-import ru.iteco.fmh.dto.registration.RegistrationRequest;
-import ru.iteco.fmh.service.user.UserRoleClaimServiceImpl;
 
 import java.time.Instant;
 import java.util.List;
@@ -49,7 +48,7 @@ public class AuthService {
     private final ConversionService conversionService;
     private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
-    private final UserRoleClaimServiceImpl userRoleClaimService;
+    private final UserRoleClaimService userRoleClaimService;
     private final UserService userService;
 
     @Transactional
