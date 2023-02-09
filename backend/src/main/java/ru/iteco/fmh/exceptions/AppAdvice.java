@@ -30,6 +30,7 @@ import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -42,7 +43,8 @@ public class AppAdvice {
             InvalidLoginException.class, ERR_INVALID_LOGIN,
             InvalidTokenException.class, ERR_INVALID_REFRESH,
             NoRightsException.class, ERR_NO_RIGHTS,
-            NotFoundException.class, ERR_NOT_FOUND
+            NotFoundException.class, ERR_NOT_FOUND,
+            UserExistsException.class, ERR_USER_EXISTS
     );
 
     @ExceptionHandler(Exception.class)

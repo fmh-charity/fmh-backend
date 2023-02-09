@@ -33,7 +33,8 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/authentication/login", "/authentication/check", "/authentication/refresh").permitAll()
+                .antMatchers("/authentication/login", "/authentication/check", "/authentication/refresh",
+                        "/authentication/registration", "/authentication/roles").permitAll()
                 .antMatchers(
                         "/v3/api-docs/**",
                         "/swagger-resources/**",

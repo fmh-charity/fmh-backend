@@ -5,8 +5,13 @@ import org.springframework.stereotype.Repository;
 import ru.iteco.fmh.model.user.Role;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
     List<Role> findAllByIdIn(List<Integer> roleIds);
+
+    Optional<Role> findRoleByName(String roleName);
+
+    List<Role> findAllByDeletedIsFalse();
 }

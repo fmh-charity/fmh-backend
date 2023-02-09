@@ -28,6 +28,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -454,5 +455,17 @@ public class TestUtils {
                 .filePath(getAlphabeticString())
                 .build();
         return doc;
+    }
+
+    public static RegistrationRequest getRegistrationRequest() {
+        return RegistrationRequest.builder()
+                .firstName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .dateOfBirth(LocalDate.now())
+                .roleIds(List.of(2))
+                .email(getAlphabeticString())
+                .password(getAlphabeticString())
+                .build();
     }
 }

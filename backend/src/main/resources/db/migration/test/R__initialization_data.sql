@@ -100,13 +100,13 @@ values (1, 'news-title1', 'news-description1', 1, now() - INTERVAL '8 DAY', now(
        (8, 'news-title9', 'news-description9', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 HOUR', false, false);
 
 
-insert into user_role (user_id, role_id, deleted)
-values (1, 1, false),
-       (1, 2, false),
-       (2, 1, false),
-       (3, 2, false),
-       (4, 2, false),
-       (5, 1, false);
+insert into user_role (user_id, role_id)
+values (1, 1),
+       (1, 2),
+       (2, 1),
+       (3, 2),
+       (4, 2),
+       (5, 1);
 
 insert into wish_visibility (wish_id, role_id, deleted)
 values (1, 1, false),
