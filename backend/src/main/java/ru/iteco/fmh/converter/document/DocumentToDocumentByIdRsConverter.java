@@ -9,13 +9,14 @@ import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.model.document.Document;
+
 import java.net.URI;
 
 @Component
 @RequiredArgsConstructor
 public class DocumentToDocumentByIdRsConverter implements Converter<Document, DocumentByIdRs> {
     private final UserToUserDtoIdFioConverter userToUserDtoIdFioConverter;
-    @Value("${static-host.host}")
+    @Value("${vhospise-app.static-host}")
     private String staticHost;
 
     @SneakyThrows

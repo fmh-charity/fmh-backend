@@ -14,7 +14,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class DocumentToDocumentInfoDtoConverter implements Converter<Document, DocumentInfoDto> {
 
-    @Value("${static-host.host}")
+    @Value("${vhospise-app.static-host}")
     private String staticHost;
 
     @SneakyThrows

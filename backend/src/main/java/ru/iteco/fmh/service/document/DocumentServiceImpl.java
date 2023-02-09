@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
 
-    @Value("${upload.path}")
+    @Value("${vhospise-app.upload-path}")
     private String uploadPath;
 
     private final ConversionService conversionService;

@@ -16,7 +16,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class DocumentToDocumentCreationDtoRsConverter implements Converter<Document, DocumentCreationDtoRs> {
     private final UserToUserDtoIdFioConverter conversionService;
-    @Value("${static-host.host}")
+    @Value("${vhospise-app.static-host}")
     private String staticHost;
 
     @SneakyThrows
