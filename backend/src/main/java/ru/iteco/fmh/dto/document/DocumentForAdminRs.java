@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.user.UserDtoIdConcatFio;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.model.document.DocumentStatus;
 
@@ -32,6 +33,6 @@ public class DocumentForAdminRs {
     DocumentStatus status;
     @Schema(name = "createDate", description = "Дата создания")
     Instant createDate;
-    @Schema(name = "userDtoIdFio", description = "Создатель документа")
-    UserDtoIdFio user;
+    @Schema(name = "userDtoIdConcatFio", description = "Создатель документа")
+    UserDtoIdConcatFio user;
 }
