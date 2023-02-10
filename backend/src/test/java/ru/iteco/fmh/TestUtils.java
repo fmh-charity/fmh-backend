@@ -28,6 +28,7 @@ import ru.iteco.fmh.model.task.wish.Wish;
 import ru.iteco.fmh.model.task.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -35,6 +36,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
 
@@ -153,7 +155,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static User getUser(Collection<Role> roles) {
+    public static User getUser(Set<Role> roles) {
         return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
@@ -163,7 +165,7 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .phoneNumber(getAlphabeticString())
                 .email(getAlphabeticString())
-                .userRoles((List<Role>) roles)
+                .userRoles(roles)
                 .build();
     }
 
@@ -454,5 +456,17 @@ public class TestUtils {
                 .filePath(getAlphabeticString())
                 .build();
         return doc;
+    }
+
+    public static RegistrationRequest getRegistrationRequest() {
+        return RegistrationRequest.builder()
+                .firstName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .dateOfBirth(LocalDate.now())
+                .roleIds(List.of(2))
+                .email(getAlphabeticString())
+                .password(getAlphabeticString())
+                .build();
     }
 }

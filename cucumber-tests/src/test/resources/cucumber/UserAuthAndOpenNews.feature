@@ -15,8 +15,8 @@ Feature: Действия пользователя.
 
      Examples:
       | login   | password  | token  | news | result   | pages | elements| publishDate | newsCategoryId | publishDateFrom | publishDateTo |
-      | login1  | password1 | TOKEN  | 1    | SUCCESS  | 0     | 1       | true        | 1              | 01/12/22        | 01/11/22      |
-      | login2  | password2 | TOKEN  | 2    | SUCCESS  | 1     | 2       | false       | 2              | 01/12/22        | 08/12/22      |
-      | login3  | password3 | TOKEN  | 3    | SUCCESS  | 2     | 10      | true        | 3              | 01/12/22        | 01/12/22      |
-      | login4  | password4 | TOKEN  | 2    | SUCCESS  | 3     | 100     | false       | 4              | 08/12/22        | 01/12/22      |
-      | login5  | password5 | TOKEN  | 1    | SUCCESS  | 4     | 200     | true        | 5              | 01/12/22        | 01/12/22      |
+      | login1  | password1 | TOKEN  | 1    | SUCCESS  | 0     | 1       | true        | 1              | 2023-01-27      | 2023-01-28    |
+      | login3  | password3 | TOKEN  | 3    | SUCCESS  | 2     | 10      | true        | 3              | 2023-01-26      | 2023-01-28    |
+      | login2  | password2 | TOKEN  | 2    | SUCCESS  | 1     | 2       | false       | 2              | 2023-01-27      | 2023-01-28    |
+      | login4  | password4 | TOKEN  | 2    | SUCCESS  | 3     | 100     | false       | 4              | 2023-01-28      | 2023-01-28    |
+      | login5  | password5 | TOKEN  | 1    | SUCCESS  | 4     | 200     | true        | 5              | 2023-01-24      | 2023-01-28    |

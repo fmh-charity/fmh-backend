@@ -17,7 +17,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -53,7 +53,7 @@ public class Util {
     }
 
     public void checkUpdatePossibility(User userCreator, Authentication authentication) {
-        List<Role> userRoles = userCreator.getUserRoles();
+        Set<Role> userRoles = userCreator.getUserRoles();
 
         boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
 

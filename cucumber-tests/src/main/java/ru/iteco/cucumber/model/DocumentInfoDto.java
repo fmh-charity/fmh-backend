@@ -16,9 +16,9 @@ public class DocumentInfoDto {
     @ApiModelProperty("id документа")
     Integer id;
 
+    @ApiModelProperty("имя документа")
+    String name;
+
     @ApiModelProperty("полный путь документа")
     String filePath;
-
-    @ApiModelProperty("описание")
-    String description;
 }

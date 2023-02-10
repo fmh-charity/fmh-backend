@@ -3,8 +3,10 @@ package ru.iteco.fmh.exceptions;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,11 +14,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import ru.iteco.fmh.service.AuthService;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,9 +30,12 @@ import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
 
 @ControllerAdvice
 public class AppAdvice {
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
@@ -35,7 +43,8 @@ public class AppAdvice {
             InvalidLoginException.class, ERR_INVALID_LOGIN,
             InvalidTokenException.class, ERR_INVALID_REFRESH,
             NoRightsException.class, ERR_NO_RIGHTS,
-            NotFoundException.class, ERR_NOT_FOUND
+            NotFoundException.class, ERR_NOT_FOUND,
+            UserExistsException.class, ERR_USER_EXISTS
     );
 
     @ExceptionHandler(Exception.class)
@@ -45,6 +54,20 @@ public class AppAdvice {
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder().code(errorCode).message(e.getMessage()).build());
+    }
+
+    @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+    @ExceptionHandler(value = { MaxUploadSizeExceededException.class })
+    protected ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(Exception ex, WebRequest request) {
+        MaxUploadSizeExceededException musee = (MaxUploadSizeExceededException) ex;
+        SizeLimitExceededException slee = musee.getCause() instanceof SizeLimitExceededException
+                ? (SizeLimitExceededException) musee.getCause() : null;
+        long actualSize = slee == null ? Long.parseLong(Objects.requireNonNull(request.getHeader("Content-Length"))) : slee.getActualSize();
+        int currentFileMb = (int) (actualSize / 1000 / 1000);
+        String message = String.format("Превышен максимальный размер файла %s, текущий размер %dMB", maxFileSize, currentFileMb);
+        return ResponseEntity
+                .status(HttpStatus.PAYLOAD_TOO_LARGE)
+                .body(ErrorResponse.builder().code(ErrorCodes.ERR_MAX_UPLOAD).message(message).build());
     }
 
     @ResponseBody

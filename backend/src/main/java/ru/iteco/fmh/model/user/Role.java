@@ -1,15 +1,11 @@
 package ru.iteco.fmh.model.user;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Роли
@@ -33,5 +29,22 @@ public class Role {
     @Column(name = "description")
     String description;
     @Column(name = "need_confirm")
-    Boolean needConfirm;
+    boolean needConfirm;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Role role = (Role) o;
+        return Objects.equals(id, role.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, deleted, description, needConfirm);
+    }
 }

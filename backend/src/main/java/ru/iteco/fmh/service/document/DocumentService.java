@@ -1,19 +1,17 @@
 package ru.iteco.fmh.service.document;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collection;
+
 import ru.iteco.fmh.dto.document.DocumentByIdRs;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRs;
-import ru.iteco.fmh.dto.document.DocumentForAdminRs;
+import ru.iteco.fmh.dto.document.DocumentForAdminPaginationRs;
+import ru.iteco.fmh.dto.document.DocumentInfoPaginationDto;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
-
-import java.util.List;
-
-import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.model.document.DocumentStatus;
-
-import java.util.List;
 
 /**
  * сервис для работы с документами
@@ -23,9 +21,23 @@ public interface DocumentService {
     /**
      * возвращает список всех документов
      *
-     * @return список всех документов
+     * @param pages страница
+     * @param elements количество элементов на странице
+     * @param isAscendingNameSort true = сортировать по имени в восходящем порядке, false = сортировать по имени в нисходящем порядке
+     * @param statuses статусы документов один или более
+     * @return список информации о документах постранично
      */
-    List<DocumentInfoDto> getAllDocumentInfo();
+    DocumentInfoPaginationDto getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort, Collection<DocumentStatus> statuses);
+
+    /**
+     * возвращает список информации документов (расширенной) для администратора
+     *
+     * @param pages страница
+     * @param elements количество элементов на странице
+     * @param isAscendingNameSort true = сортировать по имени в восходящем порядке, false = сортировать по имени в нисходящем порядке
+     * @return список информации по документам для администратора постранично
+     */
+    DocumentForAdminPaginationRs getDocumentsForAdmin(int pages, int elements, boolean isAscendingNameSort);
 
     /**
      * сохраняет документ в деректорию, возвращает путь хранения документа.
@@ -50,11 +62,6 @@ public interface DocumentService {
      * @return документ с полной информацией
      */
     DocumentByIdRs getDocument(int id);
-
-    /**
-     * возвращает список документов для администратора
-     */
-    List<DocumentForAdminRs> getDocumentsForAdmin();
 
     /**
      * удаление документа
