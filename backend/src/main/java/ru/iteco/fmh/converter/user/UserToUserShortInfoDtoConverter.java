@@ -9,7 +9,7 @@ import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class UserToUserShortInfoDtoConverter implements Converter<User, UserShor
         UserShortInfoDto dto = new UserShortInfoDto();
         BeanUtils.copyProperties(user, dto);
 
-        List<Role> userRoles = user.getUserRoles();
+        Set<Role> userRoles = user.getUserRoles();
 
         boolean isAdmin = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
         dto.setAdmin(isAdmin);

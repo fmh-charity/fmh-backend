@@ -34,6 +34,7 @@ import ru.iteco.fmh.service.user.UserService;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,21 +54,24 @@ public class AuthService {
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
+        String notNullMessage = "Логин и пароль не могут ровняться null";
+        String userNotFoundMessage = "Пользователь с логином %s не найден";
+        String wrongPasswordMessage = "Введен неверный пароль";
 
         if (loginRequest.getLogin() == null || loginRequest.getPassword() == null) {
-            LOGGER.error("Логин и пароль не могут ровняться null");
-            throw new InvalidLoginException();
+            LOGGER.error(notNullMessage);
+            throw new InvalidLoginException(notNullMessage);
         }
         User user = userRepository.findUserByLogin(loginRequest.getLogin());
 
         if (user == null) {
-            LOGGER.error("пользователь не найден");
-            throw new InvalidLoginException();
+            LOGGER.error(String.format(userNotFoundMessage, loginRequest.getLogin()));
+            throw new InvalidLoginException(String.format(userNotFoundMessage, loginRequest.getLogin()));
         }
 
         if (!encoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            LOGGER.error("Неверный пароль");
-            throw new InvalidLoginException();
+            LOGGER.error(wrongPasswordMessage);
+            throw new InvalidLoginException(wrongPasswordMessage);
         }
         //get token
         String accessJwtToken = jwtProvider.generateAccessJwtToken(user);
@@ -124,7 +128,7 @@ public class AuthService {
         }
         User user = conversionService.convert(registrationRequest, User.class);
         List<Role> desiredRoles = roleRepository.findAllByIdIn(registrationRequest.getRoleIds());
-        List<Role> allowedRoles = getRolesListWithoutNeedConfirm(desiredRoles);
+        Set<Role> allowedRoles = getRolesListWithoutNeedConfirm(desiredRoles);
         user.setPassword(encoder.encode(registrationRequest.getPassword()));
         user.setUserRoles(allowedRoles);
         User dbUser = userRepository.save(user);
@@ -132,15 +136,15 @@ public class AuthService {
         LOGGER.info(String.format("Пользователь с логином %s успешно зарегистрирован", dbUser.getEmail()));
     }
 
-    public List<Role> getRolesListWithoutNeedConfirm(List<Role> roles) {
+    public Set<Role> getRolesListWithoutNeedConfirm(List<Role> roles) {
         Optional<Role> guestRole = roleRepository.findRoleByName("ROLE_GUEST");
-        List<Role> allowedRoles = roles.stream().filter(role -> !role.isNeedConfirm()).collect(Collectors.toList());
+        Set<Role> allowedRoles = roles.stream().filter(role -> !role.isNeedConfirm()).collect(Collectors.toSet());
         allowedRoles.add(guestRole.get());
         return allowedRoles;
     }
 
     public void createRolesClaim(List<Role> roles, User user) {
-        List<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::isNeedConfirm).toList();
+        Set<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::isNeedConfirm).collect(Collectors.toSet());
         rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
                 UserRoleClaimShort.builder()
                         .roleId(role.getId())
