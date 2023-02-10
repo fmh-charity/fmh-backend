@@ -135,7 +135,6 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq) {
-
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
         String documentName = updateDocumentRq.getName();
