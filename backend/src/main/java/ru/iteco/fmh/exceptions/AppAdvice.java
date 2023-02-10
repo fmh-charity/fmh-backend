@@ -45,8 +45,7 @@ public class AppAdvice {
             InvalidTokenException.class, ERR_INVALID_REFRESH,
             NoRightsException.class, ERR_NO_RIGHTS,
             NotFoundException.class, ERR_NOT_FOUND,
-            UserExistsException.class, ERR_USER_EXISTS
-            NotFoundException.class, ERR_NOT_FOUND,
+            UserExistsException.class, ERR_USER_EXISTS,
             DuplicateDataException.class, ERR_DUPLICATE_DATA
     );
 

@@ -52,7 +52,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentInfoPaginationDto getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort,
-                                                              Collection<DocumentStatus> statuses) {
+                                                        Collection<DocumentStatus> statuses) {
         Page<Document> documents;
 
         Pageable pageable = isAscendingNameSort
@@ -65,11 +65,11 @@ public class DocumentServiceImpl implements DocumentService {
             documents = documentRepository.findAllByStatusIn(statuses, pageable);
         }
         return DocumentInfoPaginationDto.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -82,11 +82,11 @@ public class DocumentServiceImpl implements DocumentService {
         Page<Document> documents = documentRepository.findAll(pageable);
 
         return DocumentForAdminPaginationRs.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
