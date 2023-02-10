@@ -14,6 +14,12 @@ public enum ErrorCodes {
     ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
     ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED),
     ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE);
+    ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
+    ERR_DUPLICATE_DATA(HttpStatus.BAD_REQUEST);
+
+
+
+
 
     private final HttpStatus httpStatus;
 

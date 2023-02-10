@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
@@ -45,6 +46,8 @@ public class AppAdvice {
             NoRightsException.class, ERR_NO_RIGHTS,
             NotFoundException.class, ERR_NOT_FOUND,
             UserExistsException.class, ERR_USER_EXISTS
+            NotFoundException.class, ERR_NOT_FOUND,
+            DuplicateDataException.class, ERR_DUPLICATE_DATA
     );
 
     @ExceptionHandler(Exception.class)

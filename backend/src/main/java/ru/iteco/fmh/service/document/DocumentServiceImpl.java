@@ -22,6 +22,8 @@ import ru.iteco.fmh.dto.document.DocumentForAdminPaginationRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.dto.document.DocumentInfoPaginationDto;
+import ru.iteco.fmh.exceptions.DuplicateDataException;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.exceptions.NotFoundException;
@@ -136,7 +138,11 @@ public class DocumentServiceImpl implements DocumentService {
 
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
-
+        String documentName = updateDocumentRq.getName();
+        Document duplicateDocument = documentRepository.findDuplicateDocumentByName(documentName, id);
+        if (duplicateDocument != null) {
+            throw new DuplicateDataException("Документ с таким именем уже существует!");
+        }
         document.setName(updateDocumentRq.getName());
         document.setDescription(updateDocumentRq.getDescription());
         document.setStatus(updateDocumentRq.getStatus());
