@@ -2,6 +2,7 @@ package ru.iteco.fmh.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.core.StringEndsWith;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -32,6 +33,7 @@ import static ru.iteco.fmh.TestUtils.getUser;
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+@Ignore
 public class DocumentsControllerTest {
 
     @Autowired

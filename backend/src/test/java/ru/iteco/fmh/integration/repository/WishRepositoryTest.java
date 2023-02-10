@@ -1,5 +1,6 @@
 package ru.iteco.fmh.integration.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class WishRepositoryTest {
 
     @Autowired

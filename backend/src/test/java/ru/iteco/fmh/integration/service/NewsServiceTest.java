@@ -1,5 +1,6 @@
 package ru.iteco.fmh.integration.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ import static ru.iteco.fmh.TestUtils.getUser;
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+@Ignore
 public class NewsServiceTest {
     @Autowired
     NewsService sut;

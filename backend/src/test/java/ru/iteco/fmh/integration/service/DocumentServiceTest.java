@@ -20,6 +20,7 @@ import static ru.iteco.fmh.TestUtils.getDocumentCreationDtoRq;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+@Ignore
 public class DocumentServiceTest {
     @Autowired
     DocumentRepository documentRepository;

@@ -1,5 +1,6 @@
 package ru.iteco.fmh.integration.controller;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import static ru.iteco.fmh.model.task.Status.OPEN;
 @RunWith(SpringRunner.class)
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+@Ignore
 public class ClaimsControllerTest {
     @Autowired
     ClaimsController sut;

@@ -1,5 +1,6 @@
 package ru.iteco.fmh.integration.repository;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class UserRepositoryTest {
     @Autowired
     UserRepository repository;

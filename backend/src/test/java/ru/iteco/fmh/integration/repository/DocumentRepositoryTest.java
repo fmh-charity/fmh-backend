@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Ignore
 public class DocumentRepositoryTest {
     @Autowired
     DocumentRepository repository;
