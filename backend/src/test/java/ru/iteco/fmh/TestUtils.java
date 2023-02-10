@@ -36,6 +36,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
 
@@ -154,7 +155,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static User getUser(Collection<Role> roles) {
+    public static User getUser(Set<Role> roles) {
         return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
@@ -164,7 +165,7 @@ public class TestUtils {
                 .middleName(getAlphabeticString())
                 .phoneNumber(getAlphabeticString())
                 .email(getAlphabeticString())
-                .userRoles((List<Role>) roles)
+                .userRoles(roles)
                 .build();
     }
 

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -46,14 +47,14 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    List<Role> userRoles;
+    Set<Role> userRoles;
     //к одному юзеру несколько токенов
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
     List<Token> tokens;
 
 
-    public User(Integer id, String login, String password, List<Token> tokens, List<Role> userRoles) {
+    public User(Integer id, String login, String password, List<Token> tokens, Set<Role> userRoles) {
         this.id = id;
         this.login = login;
         this.password = password;

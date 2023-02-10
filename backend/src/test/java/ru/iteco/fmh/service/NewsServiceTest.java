@@ -25,6 +25,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +56,7 @@ public class NewsServiceTest {
         List<News> newsList = List.of(getNews(Instant.now()), getNews(Instant.now().minusSeconds(1000)));
         Pageable pageableList = PageRequest.of(0, 9, Sort.by("publishDate"));
         Page<News> pageableResult = new PageImpl<>(newsList, pageableList, 8);
-        User userAdmin = getUser(Collections.singletonList(Role.builder().id(1)
+        User userAdmin = getUser(Set.of(Role.builder().id(1)
                 .name("ROLE_ADMINISTRATOR").deleted(false).build()));
 
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
@@ -82,7 +83,7 @@ public class NewsServiceTest {
                 getNews(Instant.now().minusSeconds(5000), false));
         Pageable pageableList = PageRequest.of(0, 9, Sort.by("publishDate"));
         Page<News> pageableResult = new PageImpl<>(newsList, pageableList, 8);
-        User userMedic = getUser(Collections.singletonList(Role.builder().id(2)
+        User userMedic = getUser(Set.of(Role.builder().id(2)
                 .name("ROLE_MEDICAL_WORKER").deleted(false).build()));
 
         when(userRepository.findUserById(any())).thenReturn(userMedic);
@@ -107,7 +108,7 @@ public class NewsServiceTest {
         // given
         int newsId = 10;
         News news = getNews();
-        User user= getUser(Collections.singletonList(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
+        User user= getUser(Set.of(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
 
         when(userRepository.findUserById(any())).thenReturn(user);
 
