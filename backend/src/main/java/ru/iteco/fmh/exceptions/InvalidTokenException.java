@@ -8,4 +8,8 @@ public class InvalidTokenException extends RuntimeException {
     public InvalidTokenException() {
         super("ERR_INVALID_REFRESH");
     }
+
+    public InvalidTokenException(String message) {
+        super(message);
+    }
 }
