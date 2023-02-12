@@ -10,7 +10,6 @@ import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.VerificationToken;
 import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.service.AuthService;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserRepository userRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(VerificationTokenService.class);
 
     public void verifyEmail(String token) {
         final String tokenNotFoundMessage = "Токен для подтверждения email не найден!";
