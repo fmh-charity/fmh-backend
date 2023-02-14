@@ -21,21 +21,17 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     private final UserRepository userRepository;
 
     public void verifyEmail(String token) {
-        final String tokenNotFoundMessage = "Токен для подтверждения email не найден!";
-        final String tokenHasExpireMessage = "Истёк срок действия токена. Повторите процесс подтверждения email!";
-        final String emailConfirmMessage = "Email пользователя %s подтвержден.";
-
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new NotFoundException(tokenNotFoundMessage));
+                .orElseThrow(() -> new NotFoundException("Токен для подтверждения email не найден!"));
 
         if (verificationToken.getExpiryDate().compareTo(Instant.now()) < 0) {
-            throw new InvalidTokenException(tokenHasExpireMessage);
+            throw new InvalidTokenException("Истёк срок действия токена. Повторите процесс подтверждения email!");
         }
 
         User userOnConfirmation = verificationToken.getUser();
         userOnConfirmation.setEmailConfirmed(true);
         userRepository.save(userOnConfirmation);
 
-        log.info(String.format(emailConfirmMessage, userOnConfirmation.getEmail()));
+        log.info(String.format("Email пользователя %s подтвержден.", userOnConfirmation.getEmail()));
     }
 }
