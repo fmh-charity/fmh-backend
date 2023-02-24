@@ -2,8 +2,6 @@ package ru.iteco.fmh.model.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.Objects;
 
