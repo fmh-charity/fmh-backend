@@ -18,8 +18,8 @@ spring:
       max-request-size: 15MB
   mail:
     host: smtp.mail.ru
-    username: ${APP_MAIL_USERNAME}
-    password: ${APP_MAIL_PASSWORD}
+    username: ${APP_MAIL_USERNAME:username}
+    password: ${APP_MAIL_PASSWORD:password}
     properties:
       mail:
         debug : true
