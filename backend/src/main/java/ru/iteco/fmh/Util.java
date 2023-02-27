@@ -13,10 +13,12 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,5 +78,13 @@ public class Util {
         String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
         String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtensionWithCurrentTime.getBytes(StandardCharsets.UTF_8));
         return md5Name + "." + documentNameExtension;
+    }
+
+    public static String generateNewToken() {
+        SecureRandom secureRandom = new SecureRandom();
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+        byte[] randomBytes = new byte[12];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
     }
 }

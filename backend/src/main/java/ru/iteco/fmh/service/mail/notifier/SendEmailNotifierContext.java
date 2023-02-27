@@ -1,8 +1,10 @@
 package ru.iteco.fmh.service.mail.notifier;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class SendEmailNotifierContext extends NotifierAbstractContext {
 
     private String toAddress; //кому

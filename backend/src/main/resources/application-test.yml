@@ -11,3 +11,6 @@ static-host:
 
 upload:
   path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}
+
+vhospice-app:
+  email-verification-life-in-hours: 3
