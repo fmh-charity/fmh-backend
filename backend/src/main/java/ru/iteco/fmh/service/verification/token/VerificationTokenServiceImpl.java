@@ -51,8 +51,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     public void generateAndSendVerificationEmail() {
-        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentLoggedInUser = userRepository.findUserById(principal.getId());
+        int principalId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        User currentLoggedInUser = userRepository.findUserById(principalId);
 
         if (currentLoggedInUser.isEmailConfirmed()) {
             throw new UnavailableOperationException("Данный Email уже подтвержден");

@@ -34,3 +34,6 @@ spring:
           starttls:
             enable: true
             required: true
+
+vhospice-app:
+  email-verification-life-in-hours: 3
