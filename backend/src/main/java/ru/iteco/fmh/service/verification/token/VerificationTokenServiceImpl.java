@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.VerificationTokenRepository;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
@@ -18,6 +17,7 @@ import ru.iteco.fmh.service.mail.notifier.SendEmailNotifierContext;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         userOnConfirmation.setEmailConfirmed(true);
         userRepository.save(userOnConfirmation);
 
-        log.info(String.format("Email пользователя %s подтвержден.", userOnConfirmation.getEmail()));
+        log.info("Email пользователя {} подтвержден.", userOnConfirmation.getEmail());
     }
 
     public void generateAndSendVerificationEmail() {
@@ -60,9 +60,10 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
         String verificationToken = createVerificationToken(currentLoggedInUser);
         String verificationUri = "https://" + staticHost + "/users/verify/email?token=" + verificationToken;
-        String content = String.format("Уважаемый пользователь!\n"
-                + "Для подтверждения вашей электронной почты в системе перейдите, пожалуйста, по ссылке: %s \n"
-                + "Если это письмо пришло вам по ошибке, просто проигнорируйте его.", verificationUri);
+        String content = """
+            Уважаемый пользователь!
+            Для подтверждения вашей электронной почты в системе перейдите, пожалуйста, по ссылке: %s"
+            Если это письмо пришло вам по ошибке, просто проигнорируйте его.""".formatted(verificationUri);
 
         SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
                 .toAddress(currentLoggedInUser.getEmail())
@@ -73,19 +74,19 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
                 .build();
 
         sendEmailNotifier.send(sendEmailNotifierContext);
-        log.info(String.format("Ссылка для подтверждения Email пользователя %s успешно отправлена", currentLoggedInUser.getLogin()));
+        log.info("Ссылка для подтверждения Email пользователя {} успешно отправлена", currentLoggedInUser.getLogin());
     }
 
     private String createVerificationToken(User currentLoggedInUser) {
         Instant tokenExpiredTime = Instant.now().plus(tokenLifeTime, ChronoUnit.HOURS);
-        String token = Util.generateNewToken();
+        String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = VerificationToken.builder()
                 .token(token)
                 .user(currentLoggedInUser)
                 .expiryDate(tokenExpiredTime)
                 .build();
         verificationTokenRepository.save(verificationToken);
-        log.info(String.format("Токен для подтверждения Email пользователя %s создан", currentLoggedInUser.getLogin()));
+        log.info("Токен для подтверждения Email пользователя {} создан", currentLoggedInUser.getLogin());
         return token;
     }
 }

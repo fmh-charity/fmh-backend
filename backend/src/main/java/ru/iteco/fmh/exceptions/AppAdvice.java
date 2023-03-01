@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +32,7 @@ import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -44,7 +46,8 @@ public class AppAdvice {
             InvalidTokenException.class, ERR_INVALID_REFRESH,
             NoRightsException.class, ERR_NO_RIGHTS,
             NotFoundException.class, ERR_NOT_FOUND,
-            UserExistsException.class, ERR_USER_EXISTS
+            UserExistsException.class, ERR_USER_EXISTS,
+            MailException.class, ERR_SEND_MAIL
     );
 
     @ExceptionHandler(Exception.class)
