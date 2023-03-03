@@ -26,13 +26,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -47,20 +47,21 @@ public class AppAdvice {
             NoRightsException.class, ERR_NO_RIGHTS,
             NotFoundException.class, ERR_NOT_FOUND,
             UserExistsException.class, ERR_USER_EXISTS,
-            MailException.class, ERR_SEND_MAIL
+            MailException.class, ERR_SEND_MAIL,
+            DuplicateDataException.class, ERR_DUPLICATE_DATA
     );
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ERR_UNEXPECTED);
+        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ErrorCodes.ERR_UNEXPECTED);
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder().code(errorCode).message(e.getMessage()).build());
     }
 
     @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
-    @ExceptionHandler(value = { MaxUploadSizeExceededException.class })
+    @ExceptionHandler(value = {MaxUploadSizeExceededException.class})
     protected ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(Exception ex, WebRequest request) {
         MaxUploadSizeExceededException musee = (MaxUploadSizeExceededException) ex;
         SizeLimitExceededException slee = musee.getCause() instanceof SizeLimitExceededException

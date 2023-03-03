@@ -52,7 +52,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentInfoPaginationDto getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort,
-                                                              Collection<DocumentStatus> statuses) {
+                                                        Collection<DocumentStatus> statuses) {
         Page<Document> documents;
 
         Pageable pageable = isAscendingNameSort
@@ -65,11 +65,11 @@ public class DocumentServiceImpl implements DocumentService {
             documents = documentRepository.findAllByStatusIn(statuses, pageable);
         }
         return DocumentInfoPaginationDto.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -82,11 +82,11 @@ public class DocumentServiceImpl implements DocumentService {
         Page<Document> documents = documentRepository.findAll(pageable);
 
         return DocumentForAdminPaginationRs.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -135,20 +135,21 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq) {
-
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
         String documentName = updateDocumentRq.getName();
-        Document duplicateDocument = documentRepository.findDuplicateDocumentByName(documentName, id);
-        if (duplicateDocument != null) {
+        if (!document.getName().equals(documentName)
+                && documentRepository.existsByName(documentName)) {
             throw new DuplicateDataException("Документ с таким именем уже существует!");
         }
         document.setName(updateDocumentRq.getName());
         document.setDescription(updateDocumentRq.getDescription());
         document.setStatus(updateDocumentRq.getStatus());
-        User user = userRepository.findById(updateDocumentRq.getUserId())
-                .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
-        document.setUser(user);
+        if (updateDocumentRq.getUserId() != document.getUser().getId()) {
+            User user = userRepository.findById(updateDocumentRq.getUserId())
+                    .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
+            document.setUser(user);
+        }
         documentRepository.save(document);
         return conversionService.convert(document, UpdateDocumentRs.class);
     }
