@@ -18,6 +18,5 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     List<Document> findAllByStatusIn(Collection<DocumentStatus> statuses);
 
-    @Query("select p from Document p where p.name = :name and p.id <> :id")
-    Document findDuplicateDocumentByName(@Param("name") String name, @Param("id") int id);
+    boolean existsByName(String name);
 }

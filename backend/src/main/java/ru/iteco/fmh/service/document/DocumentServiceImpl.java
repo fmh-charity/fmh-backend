@@ -138,16 +138,18 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
         String documentName = updateDocumentRq.getName();
-        Document duplicateDocument = documentRepository.findDuplicateDocumentByName(documentName, id);
-        if (duplicateDocument != null) {
+        if (!document.getName().equals(documentName)
+                && documentRepository.existsByName(documentName)) {
             throw new DuplicateDataException("Документ с таким именем уже существует!");
         }
         document.setName(updateDocumentRq.getName());
         document.setDescription(updateDocumentRq.getDescription());
         document.setStatus(updateDocumentRq.getStatus());
-        User user = userRepository.findById(updateDocumentRq.getUserId())
-                .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
-        document.setUser(user);
+        if (updateDocumentRq.getUserId() != document.getUser().getId()) {
+            User user = userRepository.findById(updateDocumentRq.getUserId())
+                    .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
+            document.setUser(user);
+        }
         documentRepository.save(document);
         return conversionService.convert(document, UpdateDocumentRs.class);
     }
