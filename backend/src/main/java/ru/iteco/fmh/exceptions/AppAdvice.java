@@ -26,13 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.*;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -54,7 +48,7 @@ public class AppAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         LOGGER.error(e.getMessage(), e);
-        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ErrorCodes.ERR_UNEXPECTED);
+        ErrorCodes errorCode = Optional.ofNullable(errors.get(e.getClass())).orElse(ERR_UNEXPECTED);
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(ErrorResponse.builder().code(errorCode).message(e.getMessage()).build());
@@ -71,7 +65,7 @@ public class AppAdvice {
         String message = String.format("Превышен максимальный размер файла %s, текущий размер %dMB", maxFileSize, currentFileMb);
         return ResponseEntity
                 .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .body(ErrorResponse.builder().code(ErrorCodes.ERR_MAX_UPLOAD).message(message).build());
+                .body(ErrorResponse.builder().code(ERR_MAX_UPLOAD).message(message).build());
     }
 
     @ResponseBody
