@@ -13,13 +13,8 @@ public enum ErrorCodes {
     ERR_NOT_FOUND(HttpStatus.NOT_FOUND),
     ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
     ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED),
-    ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE);
-    ERR_NO_RIGHTS(HttpStatus.FORBIDDEN),
-    ERR_DUPLICATE_DATA(HttpStatus.BAD_REQUEST);
-
-
-
-
+    ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE),
+    ERR_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final HttpStatus httpStatus;
 
