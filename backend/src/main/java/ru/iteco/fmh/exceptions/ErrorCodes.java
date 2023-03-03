@@ -15,9 +15,7 @@ public enum ErrorCodes {
     ERR_USER_EXISTS(HttpStatus.UNAUTHORIZED),
     ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE),
     ERR_DUPLICATE_DATA(HttpStatus.BAD_REQUEST);
-
-
-
+    ERR_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR);
 
 
     private final HttpStatus httpStatus;
