@@ -35,8 +35,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Value("${static-host.host}")
     private String staticHost;
 
-    public void verifyEmail(String token) {
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+    public void verifyEmail(String tokenId) {
+        VerificationToken verificationToken = verificationTokenRepository.findById(tokenId)
                 .orElseThrow(() -> new NotFoundException("Токен для подтверждения email не найден!"));
 
         if (verificationToken.getExpiryDate().compareTo(Instant.now()) < 0) {
@@ -79,14 +79,14 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     private String createVerificationToken(User currentLoggedInUser) {
         Instant tokenExpiredTime = Instant.now().plus(tokenLifeTime, ChronoUnit.HOURS);
-        String token = UUID.randomUUID().toString();
+        String tokenId = UUID.randomUUID().toString();
         VerificationToken verificationToken = VerificationToken.builder()
-                .token(token)
+                .id(tokenId)
                 .user(currentLoggedInUser)
                 .expiryDate(tokenExpiredTime)
                 .build();
         verificationTokenRepository.save(verificationToken);
         log.info("Токен для подтверждения Email пользователя {} создан", currentLoggedInUser.getLogin());
-        return token;
+        return tokenId;
     }
 }
