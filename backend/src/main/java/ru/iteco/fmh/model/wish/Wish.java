@@ -1,34 +1,30 @@
-package ru.iteco.fmh.model.task;
+package ru.iteco.fmh.model.wish;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
+/**
+ * просьба
+ */
+
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
-@MappedSuperclass
-public class Task {
+@Entity
+@Table(name = "wish")
+public class Wish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -51,6 +47,16 @@ public class Task {
     Status status;
 
     boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    Patient patient;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "wish_visibility", joinColumns = @JoinColumn(name = "wish_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    List<Role> wishRoles;
 
     public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);

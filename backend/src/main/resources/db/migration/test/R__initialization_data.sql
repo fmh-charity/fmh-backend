@@ -71,23 +71,6 @@ values (1, 'wishComment1-description', 1, now()),
        (3, 'wishComment9-description', 3, now()),
        (4, 'wishComment10-description', 4, now());
 
-insert into claim (title, description, creator_id, executor_id, create_date, plan_execute_date, fact_execute_date,
-                   status, deleted)
-values ('title1', 'claim1-description', 1, null, now(), now() + INTERVAL '4 DAYS', null, 'OPEN', false),
-       ('title2', 'claim2-description', 2, 2, now() - INTERVAL '1 DAY', now() + INTERVAL '2 DAY', null, 'IN_PROGRESS',
-        false),
-       ('title3', 'claim3-description', 3, 3, now(), now(), now(), 'EXECUTED', false),
-       ('title4', 'claim4-description', 4, 4, now(), now() + INTERVAL '2 DAYS', null, 'IN_PROGRESS', false),
-       ('title5', 'claim5-description', 5, 5, now(), now() + INTERVAL '3 DAYS', null, 'IN_PROGRESS', false);
-
-insert into claim_comment (claim_id, description, creator_id, create_date)
-values (1, 'claim1-description', 1, now() - INTERVAL '4 DAYS'),
-       (1, 'claim2-description', 2, now() - INTERVAL '1 DAY'),
-       (2, 'claim3-description', 3, now()),
-       (3, 'claim4-description', 5, now() - INTERVAL '2 DAYS'),
-       (3, 'claim5-description', 5, now());
-
-
 insert into news (news_category_id, title, description, creator_id, create_date, publish_date, publish_enabled, deleted)
 values (1, 'news-title1', 'news-description1', 1, now() - INTERVAL '8 DAY', now(), true, false),
        (2, 'news-title2', 'news-description2', 1, now() - INTERVAL '7 DAY', now() - INTERVAL '7 DAY', true, false),
@@ -98,7 +81,6 @@ values (1, 'news-title1', 'news-description1', 1, now() - INTERVAL '8 DAY', now(
        (7, 'news-title7', 'news-description7', 1, now() - INTERVAL '2 DAY', now() - INTERVAL '2 DAY', true, false),
        (8, 'news-title8', 'news-description8', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 DAY', true, false),
        (8, 'news-title9', 'news-description9', 1, now() - INTERVAL '1 DAY', now() - INTERVAL '1 HOUR', false, false);
-
 
 insert into user_role (user_id, role_id)
 values (1, 1),

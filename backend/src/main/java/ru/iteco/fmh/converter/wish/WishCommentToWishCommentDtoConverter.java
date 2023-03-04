@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.WishComment;
 
 @Component
 @RequiredArgsConstructor

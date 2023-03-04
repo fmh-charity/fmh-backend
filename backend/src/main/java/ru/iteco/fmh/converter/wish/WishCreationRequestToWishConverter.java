@@ -6,12 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
-import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.wish.Wish;
 
 import java.time.Instant;
 
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 @Component
 @RequiredArgsConstructor

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
