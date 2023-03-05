@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.converter.user.UserToUserShortInfoDtoConverter;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -43,12 +44,15 @@ public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
-    private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
-    private final ConversionService conversionService;
-    private final PasswordEncoder encoder;
     private final RoleRepository roleRepository;
+
+    private final ConversionService conversionService;
+    private final UserToUserShortInfoDtoConverter userToUserShortInfoDtoConverter;
+
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder encoder;
     private final UserRoleClaimService userRoleClaimService;
     private final UserService userService;
 
@@ -117,8 +121,8 @@ public class AuthService {
     }
 
     public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
-        return conversionService.convert(userRepository.findUserByLogin(authentication.getName()),
-                UserShortInfoDto.class);
+        User user = userRepository.findUserByLogin(authentication.getName());
+        return userToUserShortInfoDtoConverter.convert(user);
     }
 
     public void userRegistration(RegistrationRequest registrationRequest) {
