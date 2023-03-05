@@ -20,9 +20,6 @@ public enum Status {
             if (EXECUTED == newStatus) {
                 wish.setFactExecuteDate(Instant.now());
             }
-            if (OPEN == newStatus) {
-                wish.setExecutor(null);
-            }
             wish.setStatus(newStatus);
         }
     },
@@ -43,10 +40,6 @@ public enum Status {
                         + " в статус "
                         + newStatus.getName());
             }
-            if (IN_PROGRESS == newStatus) {
-                wish.setExecutor(executor);
-            }
-
             wish.setStatus(newStatus);
         }
     },

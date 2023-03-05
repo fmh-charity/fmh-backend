@@ -103,7 +103,6 @@ public class WishServiceTest {
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), result.getPlanExecuteDate()),
                 () -> assertEquals(wish.getCreateDate().toEpochMilli(), result.getCreateDate()),
                 () -> assertEquals(wish.getStatus(), result.getStatus()),
-                () -> assertEquals(conversionService.convert(wish.getExecutor(), UserDtoIdFio.class), result.getExecutor()),
                 () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
                 () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
                 () -> assertNull(result.getExecutor()),
@@ -116,7 +115,6 @@ public class WishServiceTest {
     public void getWishShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
-        wish.setExecutor(null);
         int wishId = 1;
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));

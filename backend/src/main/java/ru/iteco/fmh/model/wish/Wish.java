@@ -29,15 +29,16 @@ public class Wish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    Patient patient;
+
     String title;
     String description;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
     User creator;
-    @ManyToOne
-    @JoinColumn(name = "executor_id")
-    User executor;
 
     Instant createDate;
     Instant planExecuteDate;
@@ -47,16 +48,16 @@ public class Wish {
     Status status;
 
     boolean deleted;
-
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    Patient patient;
+    boolean helpRequest;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "wish_visibility", joinColumns = @JoinColumn(name = "wish_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> wishRoles;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wish")
+    List<WishExecutor> executors;
 
     public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);

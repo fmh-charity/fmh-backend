@@ -75,7 +75,6 @@ public class TestUtils {
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
                 .creator(getUser())
-                .executor(getUser())
                 .description(getAlphabeticString())
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())

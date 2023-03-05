@@ -93,8 +93,6 @@ public class WishServiceImpl implements WishService {
         wish.setWishRoles(roleList);
         wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
         wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
-        wish.setExecutor(wishCreationRequest.getExecutorId() != null
-                ? userRepository.findUserById(wishCreationRequest.getExecutorId()) : null);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -116,9 +114,6 @@ public class WishServiceImpl implements WishService {
         util.checkUpdatePossibility(userCreator, authentication);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
-        wish.setExecutor(wishUpdateRequest == null
-                ? null : userRepository.findUserById(wishUpdateRequest.getExecutorId()));
-        wish.setStatus(wish.getExecutor() == null ? OPEN : IN_PROGRESS);
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
                 ? null : Instant.ofEpochSecond(wishUpdateRequest.getPlanExecuteDate()));
