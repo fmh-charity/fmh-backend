@@ -91,6 +91,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRq) {
+        if (documentRepository.existsByName(documentCreationDtoRq.getName())) {
+            throw new DuplicateDataException("Документ с таким именем уже существует!");
+        }
         Document document = conversionService.convert(documentCreationDtoRq, Document.class);
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByLogin(currentUserLogin);
