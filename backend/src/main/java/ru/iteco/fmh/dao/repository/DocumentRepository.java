@@ -8,8 +8,13 @@ import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.document.DocumentStatus;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
     Page<Document> findAllByStatusIn(Collection<DocumentStatus> statuses, Pageable pageable);
+
+    List<Document> findAllByStatusIn(Collection<DocumentStatus> statuses);
+
+    boolean existsByName(String name);
 }
