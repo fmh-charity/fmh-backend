@@ -19,16 +19,12 @@ import java.time.Instant;
 @Table(name = "verification_token")
 public class VerificationToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String id;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
-
-    @NotBlank
-    String token;
 
     @NotNull
     Instant expiryDate;
