@@ -7,54 +7,34 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
-import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Base64;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class Util {
-    private final UserRepository userRepository;
 
-    String administrator = "ROLE_ADMINISTRATOR";
+    static String administrator = "ROLE_ADMINISTRATOR";
 
-    public String getCreatorName(Integer id) {
-        User userById = userRepository.findUserById(id);
-        return userById.getLastName()
-                + " "
-                + userById.getFirstName()
-                + " "
-                + userById.getMiddleName();
-    }
-
-    public Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
+    public static Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
         return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
     }
 
-    public Instant getInstantFromLocalDateToEndOfDay(LocalDate localDate) {
+    public static Instant getInstantFromLocalDateToEndOfDay(LocalDate localDate) {
         return localDate.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant();
     }
 
-    public String getCreatorNameFromNews(NewsDto newsDto) {
-        User creator = userRepository.findUserById(newsDto.getCreatorId());
-        return creator.getLastName()
-                + " "
-                + creator.getFirstName()
-                + " "
-                + creator.getMiddleName();
+    public static String getCreatorName(User user) {
+        return user.getLastName() + " " + user.getFirstName() + " " + user.getMiddleName();
     }
 
-    public void checkUpdatePossibility(User userCreator, Authentication authentication) {
+    public static void checkUpdatePossibility(User userCreator, Authentication authentication) {
         Set<Role> userRoles = userCreator.getUserRoles();
 
         boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
@@ -64,11 +44,8 @@ public class Util {
         }
     }
 
-    public boolean isAdmin(User user) {
-        return userRepository.findUserByLogin(user.getLogin()).getUserRoles().stream()
-                .map(Role::getName)
-                .collect(Collectors.toList())
-                .contains("ROLE_ADMINISTRATOR");
+    public static boolean isAdmin(User user) {
+        return user.getUserRoles().stream().map(Role::getName).toList().contains(administrator);
     }
 
     public static String getMd5NameFromDocumentName(String documentName) {

@@ -41,19 +41,18 @@ public class NewsServiceImpl implements NewsService {
                                      LocalDate publishDateFrom, LocalDate publishDateTo) {
 
         User currentUser = RequestContext.getCurrentUser();
-        Util util = new Util(userRepository);
         NewsCategory newsCategory = Optional.ofNullable(newsCategoryId)
                 .map(newsCategoryRepository::findNewsCategoryById).orElse(null);
         Instant instantValuePublishDateFrom = Optional.ofNullable(publishDateFrom)
-                .map(util::getInstantFromLocalDateAtStartOfDay).orElse(null);
+                .map(Util::getInstantFromLocalDateAtStartOfDay).orElse(null);
         Instant instantValuePublishDateTo = Optional.ofNullable(publishDateTo)
-                .map(util::getInstantFromLocalDateToEndOfDay).orElse(null);
+                .map(Util::getInstantFromLocalDateToEndOfDay).orElse(null);
 
         Pageable pageableList = publishDate
                 ? PageRequest.of(pages, elements, Sort.by("publishDate"))
                 : PageRequest.of(pages, elements, Sort.by("publishDate").descending());
 
-        Page<News> news = util.isAdmin(currentUser)
+        Page<News> news = Util.isAdmin(currentUser)
                 ? newsRepository.findAllWithFiltersWhereDeletedIsFalse(newsCategory,
                 instantValuePublishDateFrom, instantValuePublishDateTo, pageableList)
                 : newsRepository.getActualNewsInInterval(
@@ -71,8 +70,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto getNews(int id) {
         User currentUser = RequestContext.getCurrentUser();
-        Util util = new Util(userRepository);
-        if (util.isAdmin(currentUser)) {
+        if (Util.isAdmin(currentUser)) {
             News news = newsRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Новости с таким ID не существует"));
             return conversionService.convert(news, NewsDto.class);
