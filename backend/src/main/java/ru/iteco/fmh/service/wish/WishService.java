@@ -8,7 +8,7 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.model.task.Status;
+import ru.iteco.fmh.model.wish.Status;
 
 import java.util.List;
 

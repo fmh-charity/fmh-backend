@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.WishComment;
 
 @Component
 @RequiredArgsConstructor

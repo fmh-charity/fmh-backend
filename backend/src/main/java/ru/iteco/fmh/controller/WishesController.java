@@ -7,7 +7,7 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
-import ru.iteco.fmh.model.task.Status;
+import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -6,15 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 import java.time.Instant;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

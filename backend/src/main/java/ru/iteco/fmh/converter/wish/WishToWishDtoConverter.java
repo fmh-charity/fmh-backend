@@ -11,7 +11,7 @@ import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.Room;
-import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.user.Role;
 
 import java.util.List;
