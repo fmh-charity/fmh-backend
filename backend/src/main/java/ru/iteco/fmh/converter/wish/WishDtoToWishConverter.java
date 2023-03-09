@@ -35,7 +35,6 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
 
         entity.setPatient(patient);
         entity.setCreator(creator);
-        entity.setExecutor(executor);
         return entity;
     }
 }

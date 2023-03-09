@@ -31,7 +31,6 @@ public class WishCommentRepositoryTest {
     public void saveToRepositoryTestShouldPassSuccess() {
         Wish wish = getWish(OPEN);
         wish.setId(1);
-        wish.setExecutor(null);
         User user = getUser();
         user.setId(1);
 
