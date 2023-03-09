@@ -40,6 +40,6 @@ public class WishExecutor {
 
     @NotNull
     Instant joinDate;
-    @NotNull
+
     Instant finishDate;
 }

@@ -22,6 +22,8 @@ import ru.iteco.fmh.dto.document.DocumentForAdminPaginationRs;
 import ru.iteco.fmh.dto.document.DocumentForAdminRs;
 import ru.iteco.fmh.dto.document.DocumentInfoDto;
 import ru.iteco.fmh.dto.document.DocumentInfoPaginationDto;
+import ru.iteco.fmh.exceptions.DuplicateDataException;
+import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
 import ru.iteco.fmh.exceptions.NotFoundException;
@@ -50,7 +52,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentInfoPaginationDto getAllDocumentInfo(int pages, int elements, boolean isAscendingNameSort,
-                                                              Collection<DocumentStatus> statuses) {
+                                                        Collection<DocumentStatus> statuses) {
         Page<Document> documents;
 
         Pageable pageable = isAscendingNameSort
@@ -63,11 +65,11 @@ public class DocumentServiceImpl implements DocumentService {
             documents = documentRepository.findAllByStatusIn(statuses, pageable);
         }
         return DocumentInfoPaginationDto.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentInfoDto.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -80,15 +82,18 @@ public class DocumentServiceImpl implements DocumentService {
         Page<Document> documents = documentRepository.findAll(pageable);
 
         return DocumentForAdminPaginationRs.builder()
-                        .pages(documents.getTotalPages())
-                                .elements(documents.stream()
-                                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
-                                        .collect(Collectors.toList()))
-                                        .build();
+                .pages(documents.getTotalPages())
+                .elements(documents.stream()
+                        .map(document -> conversionService.convert(document, DocumentForAdminRs.class))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     @Override
     public DocumentCreationDtoRs createDocument(DocumentCreationDtoRq documentCreationDtoRq) {
+        if (documentRepository.existsByName(documentCreationDtoRq.getName())) {
+            throw new DuplicateDataException("Документ с таким именем уже существует!");
+        }
         Document document = conversionService.convert(documentCreationDtoRq, Document.class);
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByLogin(currentUserLogin);
@@ -133,16 +138,21 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public UpdateDocumentRs updateDocument(int id, UpdateDocumentRq updateDocumentRq) {
-
         Document document = documentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ с данным ID отсутствует"));
-
+        String documentName = updateDocumentRq.getName();
+        if (!document.getName().equals(documentName)
+                && documentRepository.existsByName(documentName)) {
+            throw new DuplicateDataException("Документ с таким именем уже существует!");
+        }
         document.setName(updateDocumentRq.getName());
         document.setDescription(updateDocumentRq.getDescription());
         document.setStatus(updateDocumentRq.getStatus());
-        User user = userRepository.findById(updateDocumentRq.getUserId())
-                .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
-        document.setUser(user);
+        if (updateDocumentRq.getUserId() != document.getUser().getId()) {
+            User user = userRepository.findById(updateDocumentRq.getUserId())
+                    .orElseThrow(() -> new NotFoundException("Не удалось обновить информацию.Пользователя с таким ID не существует"));
+            document.setUser(user);
+        }
         documentRepository.save(document);
         return conversionService.convert(document, UpdateDocumentRs.class);
     }
