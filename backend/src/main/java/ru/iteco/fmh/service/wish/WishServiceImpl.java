@@ -120,7 +120,7 @@ public class WishServiceImpl implements WishService {
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
-                ? null : Instant.ofEpochSecond(wishUpdateRequest.getPlanExecuteDate()));
+                ? null : wishUpdateRequest.getPlanExecuteDate());
         wish.setWishRoles(roleRepository.findAllByIdIn(wishUpdateRequest.getWishVisibility()));
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
