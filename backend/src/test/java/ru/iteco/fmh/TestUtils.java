@@ -87,10 +87,8 @@ public class TestUtils {
     public static WishCreationRequest getWishCreationInfoDto(Status status) {
         return WishCreationRequest.builder()
                 .patientId(2)
-                .executorId(2)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .createDate(Instant.now().getEpochSecond())
                 .planExecuteDate(Instant.now().getEpochSecond()+200)
                 .wishVisibility(List.of(1))
                 .build();
@@ -190,10 +188,8 @@ public class TestUtils {
 
         return WishCreationRequest.builder()
                 .patientId(2)
-                .executorId(null)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .createDate(Instant.now().getEpochSecond())
                 .planExecuteDate(Instant.now().getEpochSecond())
                 .wishVisibility(List.of(1))
                 .build();

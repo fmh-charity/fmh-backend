@@ -20,24 +20,18 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class WishCreationRequest {
 
-    @NotBlank()
     @Schema(name = "patientId", description = "Идентификатор пациента")
     Integer patientId;
 
+    @NotBlank()
     @Schema(name = "title", description = "Тема просьбы")
     String title;
 
     @Schema(name = "description", description = "Описание записки")
     String description;
 
-    @Schema(name = "createDate", description = "Дата создания")
-    Long createDate;
-
     @Schema(name = "planExecuteDate", description = "Плановая дата исполнения")
     Long planExecuteDate;
-
-    @Schema(name = "executorId", description = "Идентификатор исполнителя")
-    Integer executorId;
 
     @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;

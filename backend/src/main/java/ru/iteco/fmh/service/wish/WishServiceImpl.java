@@ -32,6 +32,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,6 +94,9 @@ public class WishServiceImpl implements WishService {
         wish.setWishRoles(roleList);
         wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
         wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
+        wish.setCreateDate(Instant.now());
+        wish.setHelpRequest(false);
+        wish.setExecutors(Collections.emptyList());
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }

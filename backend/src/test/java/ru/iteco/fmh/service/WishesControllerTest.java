@@ -79,8 +79,6 @@ public class WishesControllerTest {
     public void createInProgressWishShouldPassSuccess() {
         // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
-        wishCreationRequest.setExecutorId(1);
-
         WishDto givenWish = sut.createWish(wishCreationRequest);
         assertEquals(IN_PROGRESS, givenWish.getStatus());
         Integer wishId = givenWish.getId();
