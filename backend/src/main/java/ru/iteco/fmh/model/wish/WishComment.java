@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model.task.wish;
+package ru.iteco.fmh.model.wish;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "wishComment")
+@Table(name = "wish_comment")
 public class WishComment {
 
     @Id

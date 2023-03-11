@@ -8,10 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
-import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.model.wish.Wish;
 
 import java.util.Collection;
 import java.util.List;

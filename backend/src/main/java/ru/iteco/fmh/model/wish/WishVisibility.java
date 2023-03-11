@@ -1,9 +1,8 @@
-package ru.iteco.fmh.model.task.claim;
+package ru.iteco.fmh.model.wish;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.Role;
-
 
 import javax.persistence.*;
 
@@ -15,16 +14,16 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @ToString
-@Table(name = "claimVisibility")
-public class ClaimVisibility {
+@Table(name = "wish_visibility")
+public class WishVisibility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "claim_id")
-    Claim claim;
+    @JoinColumn(name = "wish_id")
+    Wish wish;
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;

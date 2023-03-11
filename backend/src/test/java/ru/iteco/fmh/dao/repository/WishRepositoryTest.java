@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
@@ -47,7 +47,6 @@ public class WishRepositoryTest {
                 .description(TestUtils.getAlphabeticString())
                 .patient(patient)
                 .creator(author)
-                .executor(null)
                 .createDate(Instant.now())
                 .factExecuteDate(null)
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
@@ -60,7 +59,6 @@ public class WishRepositoryTest {
                 .description(TestUtils.getAlphabeticString())
                 .patient(patient)
                 .creator(author)
-                .executor(doer)
                 .createDate(Instant.now().minus(1, ChronoUnit.DAYS))
                 .factExecuteDate(Instant.now())
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))

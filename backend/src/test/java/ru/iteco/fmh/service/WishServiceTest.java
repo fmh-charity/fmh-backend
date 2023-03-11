@@ -18,8 +18,8 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
-import static ru.iteco.fmh.model.task.Status.*;
+import static ru.iteco.fmh.model.wish.Status.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -103,7 +103,6 @@ public class WishServiceTest {
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), result.getPlanExecuteDate()),
                 () -> assertEquals(wish.getCreateDate().toEpochMilli(), result.getCreateDate()),
                 () -> assertEquals(wish.getStatus(), result.getStatus()),
-                () -> assertEquals(conversionService.convert(wish.getExecutor(), UserDtoIdFio.class), result.getExecutor()),
                 () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
                 () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
                 () -> assertNull(result.getExecutor()),
@@ -116,7 +115,6 @@ public class WishServiceTest {
     public void getWishShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
-        wish.setExecutor(null);
         int wishId = 1;
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(wish));

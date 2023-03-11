@@ -1,4 +1,4 @@
-package ru.iteco.fmh.model.task;
+package ru.iteco.fmh.model.wish;
 
 import ru.iteco.fmh.model.user.User;
 
@@ -10,7 +10,7 @@ import java.time.Instant;
 public enum Status {
     IN_PROGRESS("В РАБОТЕ") {
         @Override
-        public void changeStatus(Task task, Status newStatus, User executor) {
+        public void changeStatus(Wish wish, Status newStatus, User executor) {
             if (CANCELLED == newStatus) {
                 throw new IllegalArgumentException("нельзя перевести из статуса "
                         + this.getName()
@@ -18,42 +18,35 @@ public enum Status {
                         + newStatus.getName());
             }
             if (EXECUTED == newStatus) {
-                task.setFactExecuteDate(Instant.now());
+                wish.setFactExecuteDate(Instant.now());
             }
-            if (OPEN == newStatus) {
-                task.setExecutor(null);
-            }
-            task.setStatus(newStatus);
+            wish.setStatus(newStatus);
         }
     },
 
     CANCELLED("ОТМЕНЕНО") {
         @Override
-        public void changeStatus(Task task, Status newStatus, User executor) {
+        public void changeStatus(Wish wish, Status newStatus, User executor) {
             throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в иной статус");
         }
     },
 
     OPEN("ОТКРЫТО") {
         @Override
-        public void changeStatus(Task task, Status newStatus, User executor) {
+        public void changeStatus(Wish wish, Status newStatus, User executor) {
             if (EXECUTED == newStatus) {
                 throw new IllegalArgumentException("нельзя перевести из статуса "
                         + this.getName()
                         + " в статус "
                         + newStatus.getName());
             }
-            if (IN_PROGRESS == newStatus) {
-                task.setExecutor(executor);
-            }
-
-            task.setStatus(newStatus);
+            wish.setStatus(newStatus);
         }
     },
 
     EXECUTED("ИСПОЛНЕНО") {
         @Override
-        public void changeStatus(Task task, Status newStatus, User executor) {
+        public void changeStatus(Wish task, Status newStatus, User executor) {
             throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в иной статус");
         }
     };
@@ -64,7 +57,7 @@ public enum Status {
         this.name = name;
     }
 
-    public abstract void changeStatus(Task task, Status newStatus, User executor);
+    public abstract void changeStatus(Wish wish, Status newStatus, User executor);
 
     public String getName() {
         return name;

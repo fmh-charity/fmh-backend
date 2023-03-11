@@ -25,9 +25,9 @@ import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.task.Status.CANCELLED;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.CANCELLED;
+import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 @Service
 @RequiredArgsConstructor
@@ -93,8 +93,6 @@ public class WishServiceImpl implements WishService {
         wish.setWishRoles(roleList);
         wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
         wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
-        wish.setExecutor(wishCreationRequest.getExecutorId() != null
-                ? userRepository.findUserById(wishCreationRequest.getExecutorId()) : null);
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -116,9 +114,6 @@ public class WishServiceImpl implements WishService {
         util.checkUpdatePossibility(userCreator, authentication);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
-        wish.setExecutor(wishUpdateRequest == null
-                ? null : userRepository.findUserById(wishUpdateRequest.getExecutorId()));
-        wish.setStatus(wish.getExecutor() == null ? OPEN : IN_PROGRESS);
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
                 ? null : Instant.ofEpochSecond(wishUpdateRequest.getPlanExecuteDate()));

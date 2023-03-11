@@ -1,8 +1,6 @@
 package ru.iteco.fmh;
 
 import ru.iteco.fmh.dto.admission.AdmissionDto;
-import ru.iteco.fmh.dto.claim.ClaimCommentDto;
-import ru.iteco.fmh.dto.claim.ClaimDto;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
 import ru.iteco.fmh.dto.news.NewsDto;
@@ -21,19 +19,15 @@ import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
-import ru.iteco.fmh.model.task.Status;
-import ru.iteco.fmh.model.task.claim.Claim;
-import ru.iteco.fmh.model.task.claim.ClaimComment;
-import ru.iteco.fmh.model.task.wish.Wish;
-import ru.iteco.fmh.model.task.wish.WishComment;
+import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.model.wish.Wish;
+import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -55,10 +49,6 @@ public class TestUtils {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-    }
-
-    public static String getNumeric() {
-        return getNumeric(10);
     }
 
     public static String getNumeric(int targetStringLength) {
@@ -85,7 +75,6 @@ public class TestUtils {
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
                 .creator(getUser())
-                .executor(getUser())
                 .description(getAlphabeticString())
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())
@@ -106,7 +95,6 @@ public class TestUtils {
                 .wishVisibility(List.of(1))
                 .build();
     }
-
 
     public static Patient getPatient() {
         Patient patient = Patient.builder()
@@ -135,12 +123,6 @@ public class TestUtils {
                 .status(ACTIVE)
                 .build();
         return patient;
-    }
-
-    public static String getShortName(String firstName, String lastname, String middleName) {
-        String firstLetterOfName = Character.toString(firstName.charAt(0));
-        String firstLetterOfMiddleName = Character.toString(middleName.charAt(0));
-        return String.format("%s %s.%s.", lastname, firstLetterOfName, firstLetterOfMiddleName);
     }
 
     public static UserDto getUserDto() {
@@ -254,88 +236,6 @@ public class TestUtils {
                 .build();
     }
 
-    public static Claim getClaimInProgress() {
-
-        return Claim.builder()
-                // TODO: убрать hardcode
-                .id(27)
-                .title("title")
-                .description("description")
-                .creator(getUser())
-                .executor(getUser())
-                .createDate(Instant.now())
-                .planExecuteDate(Instant.now())
-                .factExecuteDate(null)
-                .status(Status.IN_PROGRESS)
-                .build();
-    }
-
-    public static Claim getClaimOpen() {
-
-        return Claim.builder()
-                // TODO: убрать hardcode
-                .id(27)
-                .title("title")
-                .description("description")
-                .creator(getUser())
-                .executor(null)
-                .createDate(Instant.now())
-                .planExecuteDate(Instant.now())
-                .factExecuteDate(null)
-                .status(Status.OPEN)
-                .build();
-    }
-
-    public static ClaimDto getClaimDtoOpen() {
-
-        return ClaimDto.builder()
-                // TODO: убрать hardcode
-                .title("Title")
-                .description("description")
-                .creatorId(3)
-                .executorId(null)
-                .planExecuteDate(Instant.now().toEpochMilli())
-                .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
-                .factExecuteDate(null)
-                .status(Status.OPEN)
-                .build();
-    }
-
-    public static ClaimDto getClaimDtoInProgress() {
-
-        return ClaimDto.builder()
-                // TODO: убрать hardcode
-                .title("Title")
-                .description("description")
-                .creatorId(3)
-                .executorId(3)
-                .planExecuteDate(Instant.now().toEpochMilli())
-                .createDate(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli())
-                .factExecuteDate(null)
-                .status(Status.IN_PROGRESS)
-                .build();
-    }
-
-
-    public static ClaimCommentDto getClaimCommentDto() {
-        return ClaimCommentDto.builder()
-                .claimId(2)
-                .creatorId(2)
-                .description("description")
-                .createDate(Instant.now().toEpochMilli())
-                .build();
-    }
-
-    public static ClaimComment getClaimComment(Claim claim) {
-        return ClaimComment.builder()
-                .claim(claim)
-                .creator(getUser())
-                .description("description")
-                .createDate(Instant.now())
-                .build();
-    }
-
-
     public static WishComment getWishComment(Status wishStatus) {
         return WishComment.builder()
                 .id(Integer.valueOf(getNumeric(2)))
@@ -355,7 +255,6 @@ public class TestUtils {
                 .createDate(Instant.now().toEpochMilli())
                 .build();
     }
-
 
     public static News getNews() {
         return News.builder()

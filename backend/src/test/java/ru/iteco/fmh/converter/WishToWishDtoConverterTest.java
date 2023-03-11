@@ -6,15 +6,15 @@ import ru.iteco.fmh.converter.user.UserToUserDtoIdFioConverter;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.converter.wish.WishToWishDtoConverter;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.task.wish.Wish;
+import ru.iteco.fmh.model.wish.Wish;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.getWish;
-import static ru.iteco.fmh.model.task.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.task.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 
 class WishToWishDtoConverterTest {
@@ -28,7 +28,7 @@ class WishToWishDtoConverterTest {
     @Test
     void convertWishForOpen() {
         Wish wish = getWish(OPEN);
-        wish.setExecutor(null);
+
 
         WishDto dto = wishToWishDtoConverter.convert(wish);
         assertAll(
@@ -39,9 +39,7 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
                 () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
-                //     () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
-                () -> assertNull(dto.getExecutor()),
-                () -> assertNull(wish.getExecutor())
+                () -> assertNull(dto.getExecutor())
 
         );
     }
@@ -58,10 +56,7 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(wish.getPlanExecuteDate().toEpochMilli(), dto.getPlanExecuteDate()),
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
-                () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
-                () -> assertEquals(dto.getExecutor().id(), wish.getExecutor().getId()),
-                () -> assertNotNull(dto.getExecutor()),
-                () -> assertNotNull(wish.getExecutor())
+                () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId())
         );
     }
 }

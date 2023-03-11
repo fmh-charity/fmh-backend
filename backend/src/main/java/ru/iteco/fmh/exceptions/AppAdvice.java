@@ -26,13 +26,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_MAX_UPLOAD;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
 
 @ControllerAdvice
 public class AppAdvice {
@@ -47,7 +49,8 @@ public class AppAdvice {
             NoRightsException.class, ERR_NO_RIGHTS,
             NotFoundException.class, ERR_NOT_FOUND,
             UserExistsException.class, ERR_USER_EXISTS,
-            MailException.class, ERR_SEND_MAIL
+            MailException.class, ERR_SEND_MAIL,
+            DuplicateDataException.class, ERR_DUPLICATE_DATA
     );
 
     @ExceptionHandler(Exception.class)
