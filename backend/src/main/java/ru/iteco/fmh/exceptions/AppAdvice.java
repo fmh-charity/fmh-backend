@@ -62,18 +62,17 @@ public class AppAdvice {
                 .body(ErrorResponse.builder().code(errorCode).message(e.getMessage()).build());
     }
 
+    @ResponseBody
     @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
-    @ExceptionHandler(value = {MaxUploadSizeExceededException.class})
-    protected ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(Exception ex, WebRequest request) {
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    protected ErrorResponse handleMaxUploadSizeExceededException(Exception ex, WebRequest request) {
         MaxUploadSizeExceededException musee = (MaxUploadSizeExceededException) ex;
         SizeLimitExceededException slee = musee.getCause() instanceof SizeLimitExceededException
                 ? (SizeLimitExceededException) musee.getCause() : null;
         long actualSize = slee == null ? Long.parseLong(Objects.requireNonNull(request.getHeader("Content-Length"))) : slee.getActualSize();
         int currentFileMb = (int) (actualSize / 1000 / 1000);
         String message = String.format("Превышен максимальный размер файла %s, текущий размер %dMB", maxFileSize, currentFileMb);
-        return ResponseEntity
-                .status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .body(ErrorResponse.builder().code(ERR_MAX_UPLOAD).message(message).build());
+        return ErrorResponse.builder().code(ErrorCodes.ERR_MAX_UPLOAD).message(message).build();
     }
 
     @ResponseBody

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,5 +24,9 @@ public class UserShortInfoDto {
     private String middleName;
     @JsonProperty("admin")
     private boolean isAdmin;
+    @JsonProperty("roles")
+    private Set<String> roles;
+    @JsonProperty("email")
+    private UserEmailDto email;
 
 }
