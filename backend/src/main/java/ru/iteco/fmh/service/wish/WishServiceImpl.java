@@ -24,6 +24,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
@@ -109,6 +110,9 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer id) {
         Wish wish = wishRepository.findWishById(id);
+        if (!wish.getStatus().equals(OPEN)) {
+            throw new IncorrectDataException("Редактировать просьбу можно только в статусе Открыта");
+        }
         User userCreator = wish.getCreator();
         Util util = new Util(userRepository);
         util.checkUpdatePossibility(userCreator, authentication);

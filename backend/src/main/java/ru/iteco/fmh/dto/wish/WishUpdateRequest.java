@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -23,6 +24,7 @@ public class WishUpdateRequest {
     Integer patientId;
 
     @Schema(name = "title", description = "Тема просьбы")
+    @NotBlank
     String title;
 
     @Schema(name = "executorId", description = "Идентификатор исполнителя")

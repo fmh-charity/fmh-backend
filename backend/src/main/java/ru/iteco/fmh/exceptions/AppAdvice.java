@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INCORRECT_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_MAX_UPLOAD;
@@ -50,7 +51,8 @@ public class AppAdvice {
             NotFoundException.class, ERR_NOT_FOUND,
             UserExistsException.class, ERR_USER_EXISTS,
             MailException.class, ERR_SEND_MAIL,
-            DuplicateDataException.class, ERR_DUPLICATE_DATA
+            DuplicateDataException.class, ERR_DUPLICATE_DATA,
+            IncorrectDataException.class, ERR_INCORRECT_DATA
     );
 
     @ExceptionHandler(Exception.class)
