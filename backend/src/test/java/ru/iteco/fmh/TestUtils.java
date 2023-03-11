@@ -89,7 +89,7 @@ public class TestUtils {
                 .patientId(2)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .planExecuteDate(Instant.now().getEpochSecond()+200)
+                .planExecuteDate(Instant.now())
                 .wishVisibility(List.of(1))
                 .build();
     }
@@ -190,7 +190,7 @@ public class TestUtils {
                 .patientId(2)
                 .title(getAlphabeticString())
                 .description(getAlphabeticString())
-                .planExecuteDate(Instant.now().getEpochSecond())
+                .planExecuteDate(Instant.now())
                 .wishVisibility(List.of(1))
                 .build();
     }

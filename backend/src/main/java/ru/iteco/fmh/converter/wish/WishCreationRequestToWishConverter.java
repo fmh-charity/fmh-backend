@@ -22,7 +22,7 @@ public class WishCreationRequestToWishConverter implements Converter<WishCreatio
         BeanUtils.copyProperties(wishCreationRequest, wish);
         wish.setCreateDate(Instant.now());
         wish.setPlanExecuteDate(wishCreationRequest.getPlanExecuteDate() != null
-                ? Instant.ofEpochMilli(wishCreationRequest.getPlanExecuteDate()) : null);
+                ? wishCreationRequest.getPlanExecuteDate() : null);
         wish.setStatus(OPEN);
 
         return wish;
