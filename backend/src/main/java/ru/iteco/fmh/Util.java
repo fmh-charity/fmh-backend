@@ -20,7 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Util {
 
-    static String administrator = "ROLE_ADMINISTRATOR";
+    private final static String ADMIN_ROLE = "ROLE_ADMINISTRATOR";
 
     public static Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
         return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
@@ -37,7 +37,7 @@ public class Util {
     public static void checkUpdatePossibility(User userCreator, Authentication authentication) {
         Set<Role> userRoles = userCreator.getUserRoles();
 
-        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(administrator)));
+        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(ADMIN_ROLE)));
 
         if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
@@ -45,7 +45,7 @@ public class Util {
     }
 
     public static boolean isAdmin(User user) {
-        return user.getUserRoles().stream().map(Role::getName).toList().contains(administrator);
+        return user.getUserRoles().stream().map(Role::getName).toList().contains(ADMIN_ROLE);
     }
 
     public static String getMd5NameFromDocumentName(String documentName) {
