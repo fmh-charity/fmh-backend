@@ -20,7 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class Util {
 
-    private final static String ADMIN_ROLE = "ROLE_ADMINISTRATOR";
+    private static final String ADMIN_ROLE = "ROLE_ADMINISTRATOR";
 
     public static Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
         return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
