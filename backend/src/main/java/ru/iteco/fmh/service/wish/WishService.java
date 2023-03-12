@@ -46,7 +46,7 @@ public interface WishService {
      * обновляет просьбу
      *
      * @param wishUpdateRequest информация по просьбе для обновления
-     * @param wishId индентификатор просьбы которую нужно обновить
+     * @param wishId            индентификатор просьбы которую нужно обновить
      * @return обновленная сущность просьбы
      */
     WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer wishId);
@@ -118,4 +118,12 @@ public interface WishService {
      * @return список видимости просьбы
      */
     List<WishVisibilityDto> createWishVisibilityDtoList();
+
+    /**
+     * меняет статус просьбы на canceled
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto cancelWish(int wishId);
 }

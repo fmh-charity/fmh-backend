@@ -24,6 +24,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
@@ -206,5 +207,19 @@ public class WishServiceImpl implements WishService {
     public List<WishVisibilityDto> createWishVisibilityDtoList() {
         return roleRepository.findAll().stream().map(role -> WishVisibilityDto.builder()
                 .id(role.getId()).name(role.getName()).build()).toList();
+    }
+
+    @Override
+    public WishDto cancelWish(int wishId) {
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (wish.getCreator().equals(currentUser)) {
+            wish.setStatus(CANCELLED);
+        } else {
+            throw new NoRightsException("Отменить просьбу может только создаль просьбы или администратор");
+        }
+        wishRepository.save(wish);
+        return conversionService.convert(wish, WishDto.class);
     }
 }
