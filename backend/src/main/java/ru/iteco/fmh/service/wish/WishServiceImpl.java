@@ -110,8 +110,7 @@ public class WishServiceImpl implements WishService {
     public WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer id) {
         Wish wish = wishRepository.findWishById(id);
         User userCreator = wish.getCreator();
-        Util util = new Util(userRepository);
-        util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator, authentication);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
@@ -195,8 +194,7 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
-        Util util = new Util(userRepository);
-        util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);

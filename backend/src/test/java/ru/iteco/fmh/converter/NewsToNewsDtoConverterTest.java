@@ -18,7 +18,7 @@ import static ru.iteco.fmh.TestUtils.getUser;
 
 public class NewsToNewsDtoConverterTest {
     UserRepository userRepository = mock(UserRepository.class);
-    NewsToNewsDtoConverter sut = new NewsToNewsDtoConverter(userRepository);
+    NewsToNewsDtoConverter sut = new NewsToNewsDtoConverter();
 
     @Test
     public void convertShouldPassSuccess() {
