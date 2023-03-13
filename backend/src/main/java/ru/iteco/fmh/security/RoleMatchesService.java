@@ -18,6 +18,6 @@ public class RoleMatchesService {
         if (!roleList.isEmpty()) {
             return roleList.stream().map(Role::getName).anyMatch(authorities::contains);
         }
-        return false;
+        return true;
     }
 }
