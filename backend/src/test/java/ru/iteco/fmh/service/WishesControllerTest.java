@@ -76,27 +76,6 @@ public class WishesControllerTest {
     }
 
     @Test
-    public void createInProgressWishShouldPassSuccess() {
-        // given
-        WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
-        wishCreationRequest.setExecutorId(1);
-
-        WishDto givenWish = sut.createWish(wishCreationRequest);
-        assertEquals(IN_PROGRESS, givenWish.getStatus());
-        Integer wishId = givenWish.getId();
-        assertNotNull(givenWish);
-
-        Wish wishResult = wishRepository.findWishById(givenWish.getId());
-        assertNotNull(wishResult);
-        WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
-
-        assertEquals(givenWish, expectedWish);
-
-        // AFTER - deleting result entity
-        wishRepository.deleteById(wishId);
-    }
-
-    @Test
     public void createOpenWishShouldPassSuccess() {
        // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();

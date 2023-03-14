@@ -6,14 +6,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.model.news.News;
 
 @Component
 @RequiredArgsConstructor
 public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
-    private final UserRepository userRepository;
 
     @Override
     public NewsDto convert(@NonNull News news) {
@@ -23,10 +21,7 @@ public class NewsToNewsDtoConverter implements Converter<News, NewsDto> {
         newsDto.setCreatorId(news.getCreator().getId());
         newsDto.setCreateDate(news.getCreateDate().toEpochMilli());
         newsDto.setPublishDate(news.getPublishDate().toEpochMilli());
-        Util util = new Util(userRepository);
-        newsDto.setCreatorName(util.getCreatorNameFromNews(newsDto));
+        newsDto.setCreatorName(Util.getCreatorName(news.getCreator()));
         return newsDto;
     }
-
-
 }

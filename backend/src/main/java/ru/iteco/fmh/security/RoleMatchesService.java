@@ -15,6 +15,9 @@ public class RoleMatchesService {
         if (authorities.contains("ROLE_ADMINISTRATOR")) {
             return true;
         }
-        return roleList.stream().map(Role::getName).anyMatch(authorities::contains);
+        if (!roleList.isEmpty()) {
+            return roleList.stream().map(Role::getName).anyMatch(authorities::contains);
+        }
+        return true;
     }
 }

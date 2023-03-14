@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.model.user.Role;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +34,10 @@ public class UserShortInfoDto {
 
     @Schema(name = "isAdmin", description = "Признак администратора")
     boolean isAdmin;
+
+    @Schema(name = "roles", description = "Множество ролей")
+    Set<String> roles;
+
+    @Schema(name = "email", description = "Электронная почта")
+    UserEmailDto email;
 }
