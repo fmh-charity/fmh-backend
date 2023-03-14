@@ -10,7 +10,6 @@ import ru.iteco.fmh.model.wish.Wish;
 
 import java.time.Instant;
 
-import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 @Component
@@ -23,8 +22,8 @@ public class WishCreationRequestToWishConverter implements Converter<WishCreatio
         BeanUtils.copyProperties(wishCreationRequest, wish);
         wish.setCreateDate(Instant.now());
         wish.setPlanExecuteDate(wishCreationRequest.getPlanExecuteDate() != null
-                ? Instant.ofEpochMilli(wishCreationRequest.getPlanExecuteDate()) : null);
-        wish.setStatus(wishCreationRequest.getExecutorId() == null ? OPEN : IN_PROGRESS);
+                ? wishCreationRequest.getPlanExecuteDate() : null);
+        wish.setStatus(OPEN);
 
         return wish;
     }
