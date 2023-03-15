@@ -24,7 +24,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
-import ru.iteco.fmh.exceptions.NoRightsException;
+import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
@@ -33,6 +33,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,6 +95,9 @@ public class WishServiceImpl implements WishService {
         wish.setWishRoles(roleList);
         wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
         wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
+        wish.setCreateDate(Instant.now());
+        wish.setHelpRequest(false);
+        wish.setExecutors(Collections.emptyList());
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -110,14 +114,16 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer id) {
         Wish wish = wishRepository.findWishById(id);
+        if (!wish.getStatus().equals(OPEN)) {
+            throw new IncorrectDataException("Редактировать просьбу можно только в статусе Открыта");
+        }
         User userCreator = wish.getCreator();
-        Util util = new Util(userRepository);
-        util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator, authentication);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
-                ? null : Instant.ofEpochSecond(wishUpdateRequest.getPlanExecuteDate()));
+                ? null : wishUpdateRequest.getPlanExecuteDate());
         wish.setWishRoles(roleRepository.findAllByIdIn(wishUpdateRequest.getWishVisibility()));
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
@@ -196,8 +202,7 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
-        Util util = new Util(userRepository);
-        util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator, authentication);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
