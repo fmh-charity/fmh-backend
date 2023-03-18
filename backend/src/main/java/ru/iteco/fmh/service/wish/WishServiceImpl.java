@@ -219,7 +219,7 @@ public class WishServiceImpl implements WishService {
     public WishDto cancelWish(int wishId) {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = Util.getCurrentLoggedInUser();
         if (foundWish.getCreator().equals(currentUser) || Util.isAdmin(currentUser)) {
             foundWish.setStatus(CANCELLED);
         } else {
