@@ -3,8 +3,8 @@ package ru.iteco.fmh.service.verification.token;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.VerificationTokenRepository;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
@@ -51,8 +51,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     public void generateAndSendVerificationEmail() {
-        int principalId = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        User currentLoggedInUser = userRepository.findUserById(principalId);
+        User currentLoggedInUser = Util.getCurrentLoggedInUser();
 
         if (currentLoggedInUser.isEmailConfirmed()) {
             throw new UnavailableOperationException("Данный Email уже подтвержден");

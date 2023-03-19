@@ -53,15 +53,6 @@ public class User implements UserDetails {
     @ToString.Exclude
     List<Token> tokens;
 
-
-    public User(Integer id, String login, String password, List<Token> tokens, Set<Role> userRoles) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.tokens = tokens;
-        this.userRoles = userRoles;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return userRoles.stream().map(role -> new SimpleGrantedAuthority(role.getName()))

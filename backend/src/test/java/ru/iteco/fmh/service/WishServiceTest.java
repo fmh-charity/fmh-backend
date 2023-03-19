@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
@@ -34,7 +34,7 @@ import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest()
 public class WishServiceTest {
     @Autowired
     WishService sut;
@@ -66,7 +66,7 @@ public class WishServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+    @WithUserDetails()
     public void getAllWishesShouldPassSuccess() {
         // given
         List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
@@ -83,7 +83,7 @@ public class WishServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
+    @WithUserDetails()
     public void createWishShouldPassSuccess() {
         // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
