@@ -8,4 +8,8 @@ public class NoRightsException extends RuntimeException {
     public NoRightsException() {
         super("Недостаточно прав");
     }
+
+    public NoRightsException(String message) {
+        super(message);
+    }
 }

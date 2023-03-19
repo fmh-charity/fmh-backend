@@ -96,7 +96,7 @@ public interface WishService {
     /**
      * создает новый комментарий просьбы
      *
-     * @param wishId         ид просьбы
+     * @param wishId ид просьбы
      * @param wishCommentDto информация по комментарию
      * @return id комментария
      */
@@ -118,4 +118,12 @@ public interface WishService {
      * @return список видимости просьбы
      */
     List<WishVisibilityDto> createWishVisibilityDtoList();
+
+    /**
+     * меняет статус просьбы на canceled
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto cancelWish(int wishId);
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,5 +56,9 @@ public class Util {
         String documentNameExtension = FilenameUtils.getExtension(cleanDocumentName);
         String md5Name = DigestUtils.md5DigestAsHex(documentNameWithoutExtensionWithCurrentTime.getBytes(StandardCharsets.UTF_8));
         return md5Name + "." + documentNameExtension;
+    }
+
+    public static User getCurrentLoggedInUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
