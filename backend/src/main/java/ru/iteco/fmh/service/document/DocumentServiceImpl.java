@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.iteco.fmh.Util;
@@ -26,7 +25,6 @@ import ru.iteco.fmh.exceptions.DuplicateDataException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.dto.document.UpdateDocumentRq;
 import ru.iteco.fmh.dto.document.UpdateDocumentRs;
-import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.document.Document;
 import ru.iteco.fmh.model.document.DocumentStatus;
 import ru.iteco.fmh.model.user.User;
@@ -95,10 +93,8 @@ public class DocumentServiceImpl implements DocumentService {
             throw new DuplicateDataException("Документ с таким именем уже существует!");
         }
         Document document = conversionService.convert(documentCreationDtoRq, Document.class);
-        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findUserByLogin(currentUserLogin);
         document.setCreateDate(Instant.now());
-        document.setUser(user);
+        document.setUser(Util.getCurrentLoggedInUser());
         document = documentRepository.save(document);
         return conversionService.convert(document, DocumentCreationDtoRs.class);
     }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -40,6 +41,7 @@ public class DocumentsControllerTest {
     DocumentRepository documentRepository;
 
     @Test
+    @WithUserDetails()
     public void createDocumentShouldPassSuccess() throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
