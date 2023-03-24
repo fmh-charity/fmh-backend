@@ -33,7 +33,6 @@ public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
     private final ConversionService conversionService;
-    private final UserRepository userRepository;
     private final NewsCategoryRepository newsCategoryRepository;
 
     @Override
@@ -85,8 +84,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto createNews(NewsDto newsDto) {
         News news = conversionService.convert(newsDto, News.class);
-        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        news.setCreator(userRepository.findUserByLogin(authenticatedUserName));
+        news.setCreator(Util.getCurrentLoggedInUser());
         news.setCreateDate(Instant.now());
         news = newsRepository.save(news);
         return conversionService.convert(news, NewsDto.class);

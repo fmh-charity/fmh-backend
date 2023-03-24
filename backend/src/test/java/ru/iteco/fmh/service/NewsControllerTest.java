@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.NewsController;
 import ru.iteco.fmh.dao.repository.NewsRepository;
@@ -61,6 +62,7 @@ public class NewsControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void createAndDeleteNewsShouldPassSuccess() {
         // given
         NewsDto givenDto = getNewsDto();
@@ -134,4 +136,3 @@ public class NewsControllerTest {
         newsRepository.save(result);
     }
 }
-

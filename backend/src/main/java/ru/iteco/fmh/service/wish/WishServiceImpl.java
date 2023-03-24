@@ -7,8 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
@@ -58,10 +56,10 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
-        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentLoggedInUser = Util.getCurrentLoggedInUser();
+        String currentUserLogin = currentLoggedInUser.getLogin();
 
-        List<String> currentUserRoleNamesList = SecurityContextHolder.getContext().getAuthentication()
-                .getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        List<String> currentUserRoleNamesList = currentLoggedInUser.getUserRoles().stream().map(Role::getName).toList();
 
         Pageable pageableList = planExecuteDate
                 ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
@@ -93,11 +91,10 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto createWish(WishCreationRequest wishCreationRequest) {
         List<Role> roleList = roleRepository.findAllByIdIn(wishCreationRequest.getWishVisibility());
-        String authenticatedUserName = SecurityContextHolder.getContext().getAuthentication().getName();
         Wish wish = conversionService.convert(wishCreationRequest, Wish.class);
         wish.setWishRoles(roleList);
         wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
-        wish.setCreator(userRepository.findUserByLogin(authenticatedUserName));
+        wish.setCreator(Util.getCurrentLoggedInUser());
         wish.setCreateDate(Instant.now());
         wish.setHelpRequest(false);
         wish.setExecutors(Collections.emptySet());

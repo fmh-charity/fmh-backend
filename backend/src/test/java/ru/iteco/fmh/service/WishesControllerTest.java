@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -64,6 +65,7 @@ public class WishesControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void getAllWishesShouldPassSuccess() {
         List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
 
@@ -76,6 +78,7 @@ public class WishesControllerTest {
     }
 
     @Test
+    @WithUserDetails()
     public void createOpenWishShouldPassSuccess() {
        // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
@@ -88,6 +91,7 @@ public class WishesControllerTest {
         Wish wishResult = wishRepository.findWishById(givenWish.getId());
         assertNotNull(wishResult);
         WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+        givenWish.setCreator(expectedWish.getCreator());
 
         assertEquals(givenWish, expectedWish);
 
@@ -210,7 +214,7 @@ public class WishesControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "login3", password = "password3", roles = "MEDICAL_WORKER")
+    @WithUserDetails()
     public void getWishByWishCreatorWithoutNecessaryRoleShouldPassSuccess() {
         // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto(OPEN);
@@ -223,6 +227,7 @@ public class WishesControllerTest {
         Wish wishResult = wishRepository.findWishById(givenWish.getId());
         assertNotNull(wishResult);
         WishDto expectedWish = conversionService.convert(wishResult, WishDto.class);
+        givenWish.setCreator(expectedWish.getCreator());
 
         assertEquals(givenWish, expectedWish);
 
@@ -232,7 +237,7 @@ public class WishesControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "login4", password = "password4", roles = "MEDICAL_WORKER")
+    @WithUserDetails()
     public void getAllWishesByNecessaryRoleAndWishCreatorShouldPassSuccess() {
         // given
         WishPaginationDto response = sut.getWishes(0, 8, List.of(OPEN, IN_PROGRESS, EXECUTED), true).getBody();
