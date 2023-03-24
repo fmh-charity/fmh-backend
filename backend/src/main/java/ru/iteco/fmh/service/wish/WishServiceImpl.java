@@ -232,9 +232,8 @@ public class WishServiceImpl implements WishService {
     public WishDto joinWish(int wishId) {
         User currentUser = Util.getCurrentLoggedInUser();
 
-        Wish wish = wishRepository
-                .findById(wishId)
-                .orElseThrow(() -> new NotFoundException("Просьбы с таким ID не существует"));
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
 
         boolean isUserExecutor = wish.getExecutors().stream().anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser));
 
