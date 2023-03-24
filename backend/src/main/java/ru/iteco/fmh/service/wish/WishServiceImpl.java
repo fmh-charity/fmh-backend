@@ -118,7 +118,7 @@ public class WishServiceImpl implements WishService {
             throw new IncorrectDataException("Редактировать просьбу можно только в статусе Открыта");
         }
         User userCreator = wish.getCreator();
-        Util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
@@ -202,10 +202,18 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
-        Util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator);
         WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
+    }
+
+    @Override
+    public void deleteWishComment(int commentId) {
+        WishComment wishComment = wishCommentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Комментарий с указанным идентификатором отсутствует"));
+        Util.checkUpdatePossibility(wishComment.getCreator());
+        wishCommentRepository.deleteById(commentId);
     }
 
     @Override
