@@ -2,12 +2,12 @@ package ru.iteco.fmh.service.wish;
 
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateRequest;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.wish.Status;
 
 import java.util.List;
@@ -126,4 +126,12 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto cancelWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с назначенным исполнителем
+     */
+    WishDto joinWish(int wishId);
 }
