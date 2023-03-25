@@ -188,20 +188,25 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
-        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
-        wishComment.setWish(wishRepository.findById(wishId)
-                .orElseThrow(() -> new NotFoundException("Просьбы с таким ID не существует")));
+        Wish wish = wishRepository.findWishById(wishId);
+        if (wish == null) {
+            throw new NotFoundException("Просьбы с таким ID не существует");
+        }
+        User user = Util.getCurrentLoggedInUser();
+        WishComment wishComment = WishComment.builder().wish(wish)
+                .creator(user).createDate(Instant.now()).description(wishCommentDto.getDescription()).build();
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
-
     }
 
     @Transactional
     @Override
     public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
+        WishComment wishComment = wishCommentRepository.findById(wishCommentDto.getId())
+                .orElseThrow(() -> new NotFoundException("Комментария с таким id не существует"));
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
         Util.checkUpdatePossibility(userCreator, authentication);
-        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
+        wishComment.setDescription(wishCommentDto.getDescription());
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
     }

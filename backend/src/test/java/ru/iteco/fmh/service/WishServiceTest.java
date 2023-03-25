@@ -154,6 +154,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
         // given
         int wishId = 1;
@@ -162,6 +163,7 @@ public class WishServiceTest {
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
+        when(wishRepository.findWishById(anyInt())).thenReturn(givenWish);
 
         WishDto result = sut.changeStatus(wishId, EXECUTED, null, getWishCommentDto(EXECUTED));
         assertEquals(EXECUTED, result.getStatus());
@@ -279,6 +281,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void createWishCommentShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
@@ -289,7 +292,7 @@ public class WishServiceTest {
         WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
-        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
+        when(wishRepository.findWishById(anyInt())).thenReturn(wish);
 
         WishCommentInfoDto result = sut.createWishComment(wishId, wishCommentDto);
 
