@@ -232,10 +232,8 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishDto executeWish(int wishId) {
-        Wish wish = wishRepository.findWishById(wishId);
-        if (wish == null) {
-            throw new NotFoundException("Просьбы с таким ID не существует");
-        }
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
+                new NotFoundException("Просьбы с таким ID не существует"));
         User executionInitiator = Util.getCurrentLoggedInUser();
         List<WishExecutor> executorsList = wish.getExecutors().stream()
                 .filter(el -> Objects.equals(el.getExecutor().getId(), executionInitiator.getId())).toList();

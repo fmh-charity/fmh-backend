@@ -311,7 +311,7 @@ public class WishServiceTest {
     public void executeWishShouldPassSuccess() {
         Wish wish = getWish(OPEN);
         wish.setExecutors(List.of(WishExecutor.builder().executor(Util.getCurrentLoggedInUser()).build()));
-        Mockito.when(wishRepository.findWishById(anyInt())).thenReturn(wish);
+        Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
         Mockito.when(wishRepository.save(any())).thenReturn(wish);
         WishDto wishDto = sut.executeWish(wish.getId());
         assertEquals(wishDto.getStatus(), READY_CHECK);
@@ -323,7 +323,7 @@ public class WishServiceTest {
         PermissionDeniedException thrown = Assertions.assertThrows(PermissionDeniedException.class, () -> {
             Wish wish = getWish(OPEN);
             wish.setExecutors(List.of(WishExecutor.builder().executor(getUser()).build()));
-            Mockito.when(wishRepository.findWishById(anyInt())).thenReturn(wish);
+            Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
             Mockito.when(wishRepository.save(any())).thenReturn(wish);
             WishDto wishDto = sut.executeWish(wish.getId());
         });
