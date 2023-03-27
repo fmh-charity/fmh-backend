@@ -188,10 +188,7 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
-        Wish wish = wishRepository.findWishById(wishId);
-        if (wish == null) {
-            throw new NotFoundException("Просьбы с таким ID не существует");
-        }
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new NotFoundException("Просьбы с таким ID не существует"));
         User user = Util.getCurrentLoggedInUser();
         WishComment wishComment = WishComment.builder().wish(wish)
                 .creator(user).createDate(Instant.now()).description(wishCommentDto.getDescription()).build();

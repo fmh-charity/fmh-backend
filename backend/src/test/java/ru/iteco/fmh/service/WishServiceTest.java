@@ -163,7 +163,6 @@ public class WishServiceTest {
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
-        when(wishRepository.findWishById(anyInt())).thenReturn(givenWish);
 
         WishDto result = sut.changeStatus(wishId, EXECUTED, null, getWishCommentDto(EXECUTED));
         assertEquals(EXECUTED, result.getStatus());
@@ -292,7 +291,7 @@ public class WishServiceTest {
         WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
-        when(wishRepository.findWishById(anyInt())).thenReturn(wish);
+        when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
 
         WishCommentInfoDto result = sut.createWishComment(wishId, wishCommentDto);
 
