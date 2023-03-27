@@ -21,6 +21,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishPriority;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -299,5 +300,16 @@ public class WishServiceTest {
                 () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateTime()),
                 () -> assertEquals(wishCommentDto.getCreatorId(), result.getUserDtoIdFio().id())
         );
+    }
+
+    @Test
+    public void getWishPriorityShouldPassSuccess(){
+        Wish wish = getWish(OPEN);
+        WishPriority result = Wish.getWishPriority(wish);
+        assertAll(
+                () -> assertNotNull(result),
+                () -> assertEquals(WishPriority.RED, result)
+        );
+
     }
 }
