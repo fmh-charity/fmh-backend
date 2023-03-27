@@ -1,7 +1,9 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -9,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -18,9 +21,11 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.exceptions.PermissionDeniedException;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
-import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.util.List;
@@ -299,5 +304,30 @@ public class WishServiceTest {
                 () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateTime()),
                 () -> assertEquals(wishCommentDto.getCreatorId(), result.getUserDtoIdFio().id())
         );
+    }
+
+    @Test
+    @WithUserDetails
+    public void executeWishShouldPassSuccess() {
+        Wish wish = getWish(OPEN);
+        wish.setExecutors(List.of(WishExecutor.builder().executor(Util.getCurrentLoggedInUser()).build()));
+        Mockito.when(wishRepository.findWishById(anyInt())).thenReturn(wish);
+        Mockito.when(wishRepository.save(any())).thenReturn(wish);
+        WishDto wishDto = sut.executeWish(wish.getId());
+        assertEquals(wishDto.getStatus(), READY_CHECK);
+    }
+
+    @Test
+    @WithUserDetails
+    public void executeWishShouldThrowsException() {
+        PermissionDeniedException thrown = Assertions.assertThrows(PermissionDeniedException.class, () -> {
+            Wish wish = getWish(OPEN);
+            wish.setExecutors(List.of(WishExecutor.builder().executor(getUser()).build()));
+            Mockito.when(wishRepository.findWishById(anyInt())).thenReturn(wish);
+            Mockito.when(wishRepository.save(any())).thenReturn(wish);
+            WishDto wishDto = sut.executeWish(wish.getId());
+        });
+
+        Assertions.assertEquals("Текущий пользователь отсутствует в списке исполнителей просьбы", thrown.getMessage());
     }
 }

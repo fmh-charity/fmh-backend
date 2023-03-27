@@ -46,7 +46,7 @@ public interface WishService {
      * обновляет просьбу
      *
      * @param wishUpdateRequest информация по просьбе для обновления
-     * @param wishId индентификатор просьбы которую нужно обновить
+     * @param wishId            индентификатор просьбы которую нужно обновить
      * @return обновленная сущность просьбы
      */
     WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer wishId);
@@ -96,7 +96,7 @@ public interface WishService {
     /**
      * создает новый комментарий просьбы
      *
-     * @param wishId ид просьбы
+     * @param wishId         ид просьбы
      * @param wishCommentDto информация по комментарию
      * @return id комментария
      */
@@ -126,4 +126,12 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto cancelWish(int wishId);
+
+    /**
+     * после исполнения просьбы менят статус на READY_CHECK
+     *
+     * @param wishId идентификатор просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto executeWish(int wishId);
 }

@@ -25,21 +25,25 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.exceptions.PermissionDeniedException;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
 import static ru.iteco.fmh.model.wish.Status.CANCELLED;
 import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.READY_CHECK;
 
 @Service
 @RequiredArgsConstructor
@@ -223,6 +227,24 @@ public class WishServiceImpl implements WishService {
             throw new NoRightsException("Отменить просьбу может только создатель просьбы или администратор");
         }
         Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto executeWish(int wishId) {
+        Wish wish = wishRepository.findWishById(wishId);
+        if (wish == null) {
+            throw new NotFoundException("Просьбы с таким ID не существует");
+        }
+        User executionInitiator = Util.getCurrentLoggedInUser();
+        List<WishExecutor> executorsList = wish.getExecutors().stream()
+                .filter(el -> Objects.equals(el.getExecutor().getId(), executionInitiator.getId())).toList();
+        if (executorsList.isEmpty()) {
+            throw new PermissionDeniedException("Текущий пользователь отсутствует в списке исполнителей просьбы");
+        }
+        wish.setExecutionInitiator(executionInitiator);
+        wish.setStatus(READY_CHECK);
+        Wish updatedWish = wishRepository.save(wish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
 }

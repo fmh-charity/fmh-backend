@@ -59,6 +59,10 @@ public class Wish {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "wish")
     List<WishExecutor> executors;
 
+    @ManyToOne
+    @JoinColumn(name = "execution_initiator_id")
+    User executionInitiator;
+
     public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);
     }
