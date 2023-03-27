@@ -26,6 +26,7 @@ import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.exceptions.UserExistsException;
+import ru.iteco.fmh.exceptions.UnavailableOperationException;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
@@ -235,10 +236,15 @@ public class WishServiceImpl implements WishService {
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
 
-        boolean isUserExecutor = wish.getExecutors().stream().anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser));
+        boolean isUserExecutorAndFinishDateNull = wish.getExecutors().stream()
+                .anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser) && wishExecutor.getFinishDate() == null);
 
-        if (isUserExecutor && wish.getFactExecuteDate() == null) {
+        if (isUserExecutorAndFinishDateNull) {
             throw new UserExistsException("Пользователь уже является испольнителем этой просьбы");
+        }
+
+        if (wish.getFactExecuteDate() != null) {
+            throw new UnavailableOperationException("Невозможно присоедениться к выполненной просьбе");
         }
 
         wish.getExecutors().add(createExecutor(currentUser, wish));

@@ -23,7 +23,7 @@ class WishToWishDtoConverterTest {
     private final UserToUserDtoIdFioConverter toUserDtoIdFioConverter = new UserToUserDtoIdFioConverter();
     private final RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter = new RoomEntityToRoomDtoRsConverter();
     private final WishExecutorToWishExecutorDtoRsConverter wishExecutorToWishExecutorDtoRsConverter
-            = new WishExecutorToWishExecutorDtoRsConverter();
+            = new WishExecutorToWishExecutorDtoRsConverter(toUserDtoIdFioConverter);
     private final WishToWishDtoConverter wishToWishDtoConverter
             = new WishToWishDtoConverter(roomEntityToRoomDtoRsConverter, toPatientDtoIdFio, toUserDtoIdFioConverter, wishExecutorToWishExecutorDtoRsConverter);
 

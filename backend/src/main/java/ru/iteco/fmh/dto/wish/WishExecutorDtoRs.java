@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.dto.user.UserDtoIdFio;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -16,8 +17,8 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WishExecutorDtoRs {
-    @Schema(name = "executorId", description = "Идентификатор исполнителя просьбы")
-    Integer executorId;
+    @Schema(name = "executor", description = "ФИО Исполнителя просьбы")
+    UserDtoIdFio executor;
     @Schema(name = "joinDate", description = "Дата присоединения к просьбе")
     Long joinDate;
     @Schema(name = "finishDate", description = "Фактическая дата выполнения просьбы")
