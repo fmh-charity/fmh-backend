@@ -144,4 +144,12 @@ public class WishesController {
     public WishDto joinWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.joinWish(id);
     }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Подтверждение исполнения просьбы")
+    @PostMapping("/{wishId}/confirmation")
+    public WishDto confirmWishExecution(@Parameter(description = "Идентификатор просьбы", required = true)
+                                            @PathVariable("wishId") int wishId) {
+        return wishService.confirmWishExecution(wishId);
+    }
 }
