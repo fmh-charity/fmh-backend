@@ -140,7 +140,7 @@ public class WishesController {
     }
 
     @Operation(summary = "Исполнение просьбы")
-    @PostMapping("executed/{id}")
+    @PostMapping("/{id}/executed")
     public WishDto executeWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.executeWish(id);
     }
