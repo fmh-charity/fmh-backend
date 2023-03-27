@@ -139,6 +139,7 @@ public class WishesController {
         return wishService.cancelWish(id);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Исполнение просьбы")
     @PostMapping("/{id}/executed")
     public WishDto executeWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {

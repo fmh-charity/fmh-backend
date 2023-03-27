@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -26,12 +26,11 @@ import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.exceptions.PermissionDeniedException;
+import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
-import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.User;
-import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -235,9 +234,8 @@ public class WishServiceImpl implements WishService {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new NotFoundException("Просьбы с таким ID не существует"));
         User executionInitiator = Util.getCurrentLoggedInUser();
-        List<WishExecutor> executorsList = wish.getExecutors().stream()
-                .filter(el -> Objects.equals(el.getExecutor().getId(), executionInitiator.getId())).toList();
-        if (executorsList.isEmpty()) {
+        if (wish.getExecutors().stream()
+                .noneMatch(el -> Objects.equals(el.getExecutor().getId(), executionInitiator.getId()))) {
             throw new PermissionDeniedException("Текущий пользователь отсутствует в списке исполнителей просьбы");
         }
         wish.setExecutionInitiator(executionInitiator);
