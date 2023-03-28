@@ -2,12 +2,10 @@ package ru.iteco.fmh;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ResponseStatusException;
+import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
@@ -16,7 +14,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Set;
 
 @RequiredArgsConstructor
 public class Util {
@@ -35,14 +32,13 @@ public class Util {
         return user.getLastName() + " " + user.getFirstName() + " " + user.getMiddleName();
     }
 
-    public static void checkUpdatePossibility(User userCreator, Authentication authentication) {
-        Set<Role> userRoles = userCreator.getUserRoles();
+    public static boolean checkUpdatePossibility(User userCreator) {
+        User currentLoggedInUser = getCurrentLoggedInUser();
 
-        boolean isAdministratorRole = userRoles.stream().anyMatch(n -> (n.getName().equals(ADMIN_ROLE)));
-
-        if (!isAdministratorRole && !authentication.getName().equals(userCreator.getLogin())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа!");
+        if (!isAdmin(currentLoggedInUser) && !currentLoggedInUser.equals(userCreator)) {
+            throw new NoRightsException("Нет доступа!");
         }
+        return true;
     }
 
     public static boolean isAdmin(User user) {

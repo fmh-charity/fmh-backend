@@ -15,6 +15,7 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -44,6 +45,7 @@ import static java.util.List.of;
 import static ru.iteco.fmh.model.wish.Status.CANCELLED;
 import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.READY;
 
 @Service
 @RequiredArgsConstructor
@@ -120,7 +122,7 @@ public class WishServiceImpl implements WishService {
             throw new IncorrectDataException("Редактировать просьбу можно только в статусе Открыта");
         }
         User userCreator = wish.getCreator();
-        Util.checkUpdatePossibility(userCreator, authentication);
+        Util.checkUpdatePossibility(userCreator);
         wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
@@ -203,13 +205,19 @@ public class WishServiceImpl implements WishService {
     @Transactional
     @Override
     public WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication) {
-        WishComment wishComment = wishCommentRepository.findById(wishCommentDto.getId())
-                .orElseThrow(() -> new NotFoundException("Комментария с таким id не существует"));
         User userCreator = userRepository.findUserById(wishCommentDto.getCreatorId());
-        Util.checkUpdatePossibility(userCreator, authentication);
-        wishComment.setDescription(wishCommentDto.getDescription());
+        Util.checkUpdatePossibility(userCreator);
+        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
+    }
+
+    @Override
+    public void deleteWishComment(int commentId) {
+        WishComment wishComment = wishCommentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Комментарий с указанным идентификатором отсутствует"));
+        Util.checkUpdatePossibility(wishComment.getCreator());
+        wishCommentRepository.deleteById(commentId);
     }
 
     @Override
@@ -259,6 +267,27 @@ public class WishServiceImpl implements WishService {
 
     private WishExecutor createExecutor(User executor, Wish wish) {
         return WishExecutor.builder().wish(wish).executor(executor).joinDate(Instant.now()).build();
+    }
+
+    @Override
+    public WishDto confirmWishExecution(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+
+        foundWish.getExecutors().forEach(wishExecutor -> wishExecutor.setFinishDate(Instant.now()));
+        foundWish.setStatus(READY);
+        Wish updatedWish = wishRepository.save(foundWish);
+
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto declineWishExecution(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        foundWish.setStatus(IN_PROGRESS);
+        Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
     }
 
     @Override
