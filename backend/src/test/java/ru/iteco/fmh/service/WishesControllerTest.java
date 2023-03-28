@@ -140,6 +140,7 @@ public class WishesControllerTest {
 
 
     @Test
+    @WithUserDetails
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
         // given
         int wishInProgressId = 2;
@@ -156,6 +157,7 @@ public class WishesControllerTest {
     }
 
     @Test
+    @WithUserDetails
     public void changeStatusInProgressToOpenShouldPassSuccess() {
         // given
         int wishInProgressId = 2;
@@ -199,6 +201,7 @@ public class WishesControllerTest {
     }
 
     @Test
+    @WithUserDetails
     public void createWishCommentShouldPassSuccess() {
         // given
         WishCommentDto givenWishCommentDto = getWishCommentDto(OPEN);
