@@ -111,6 +111,12 @@ public interface WishService {
      */
     WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
 
+    /**
+     * удаляет комментарий просьбы
+     *
+     * @param commentId идентификатор комментария
+     */
+    void deleteWishComment(int commentId);
 
     /**
      * создает список видимости просьбы из Role
@@ -126,6 +132,22 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto cancelWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с назначенным исполнителем
+     */
+    WishDto joinWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу со статусом Ready
+     */
+    WishDto confirmWishExecution(int wishId);
 
     /**
      * меняет статус просьбы на IN_PROGRESS

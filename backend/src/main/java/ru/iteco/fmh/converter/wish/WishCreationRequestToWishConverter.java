@@ -9,6 +9,7 @@ import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.model.wish.Wish;
 
 import java.time.Instant;
+import java.util.Collections;
 
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 
@@ -24,6 +25,7 @@ public class WishCreationRequestToWishConverter implements Converter<WishCreatio
         wish.setPlanExecuteDate(wishCreationRequest.getPlanExecuteDate() != null
                 ? wishCreationRequest.getPlanExecuteDate() : null);
         wish.setStatus(OPEN);
+        wish.setExecutors(Collections.emptySet());
 
         return wish;
     }

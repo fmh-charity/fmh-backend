@@ -1,6 +1,11 @@
 package ru.iteco.fmh.model.wish;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -8,9 +13,23 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 /**
  * просьба
@@ -56,8 +75,8 @@ public class Wish {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> wishRoles;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wish")
-    List<WishExecutor> executors;
+    @OneToMany(mappedBy = "wish", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    Set<WishExecutor> executors;
 
     public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);
