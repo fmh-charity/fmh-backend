@@ -134,11 +134,21 @@ public interface WishService {
      * @return просьбу с назначенным исполнителем
      */
     WishDto joinWish(int wishId);
+
     /**
      * удаляет текущего исполнителя просьбы
      *
      * @param wishId ид просьбы
-     * @return просьбу с измененным статусом
+     * @return просьбу с измененным списком исполнителей
      */
     WishDto deleteExecutor(int wishId);
+
+    /**
+     * администратор удаляет исполнителя просьбы
+     *
+     * @param wishId ид просьбы
+     * @param userId ид пользователя
+     * @return просьбу с измененным списком исполнителей
+     */
+    WishDto deleteExecutorWithAdminRole(int wishId, int userId);
 }

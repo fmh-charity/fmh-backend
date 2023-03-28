@@ -75,7 +75,7 @@ public class Wish {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     List<Role> wishRoles;
 
-    @OneToMany(mappedBy = "wish", cascade = CascadeType.ALL, fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(mappedBy = "wish", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     Set<WishExecutor> executors;
 
     public void changeStatus(Status newStatus, User executor) {

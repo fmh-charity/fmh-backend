@@ -41,7 +41,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.wish.Status.*;
+import static ru.iteco.fmh.model.wish.Status.CANCELLED;
+import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
+import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 @Service
 @RequiredArgsConstructor
@@ -264,6 +266,22 @@ public class WishServiceImpl implements WishService {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
         User currentUser = Util.getCurrentLoggedInUser();
+        WishExecutor wishExecutor = foundWish.getExecutors()
+                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), currentUser.getId())).findFirst().get();
+        if (wishExecutor == null) {
+            throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
+        }
+        foundWish.getExecutors().remove(wishExecutor);
+        Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto deleteExecutorWithAdminRole(int wishId, int userId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с указанным идентификатором отсутствует"));
         WishExecutor wishExecutor = foundWish.getExecutors()
                 .stream().filter(el -> Objects.equals(el.getExecutor().getId(), currentUser.getId())).findFirst().get();
         if (wishExecutor == null) {
