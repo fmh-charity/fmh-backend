@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.PatientRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -25,11 +25,14 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.exceptions.UserExistsException;
+import ru.iteco.fmh.exceptions.UnavailableOperationException;
+import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
-import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -95,7 +98,7 @@ public class WishServiceImpl implements WishService {
         wish.setCreator(Util.getCurrentLoggedInUser());
         wish.setCreateDate(Instant.now());
         wish.setHelpRequest(false);
-        wish.setExecutors(Collections.emptyList());
+        wish.setExecutors(Collections.emptySet());
         wish = wishRepository.save(wish);
         return conversionService.convert(wish, WishDto.class);
     }
@@ -226,5 +229,34 @@ public class WishServiceImpl implements WishService {
         }
         Wish updatedWish = wishRepository.save(foundWish);
         return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto joinWish(int wishId) {
+        User currentUser = Util.getCurrentLoggedInUser();
+
+        Wish wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+
+        boolean isUserExecutorAndFinishDateNull = wish.getExecutors().stream()
+                .anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser) && wishExecutor.getFinishDate() == null);
+
+        if (isUserExecutorAndFinishDateNull) {
+            throw new UserExistsException("Пользователь уже является испольнителем этой просьбы");
+        }
+
+        if (wish.getFactExecuteDate() != null) {
+            throw new UnavailableOperationException("Невозможно присоедениться к выполненной просьбе");
+        }
+
+        wish.getExecutors().add(createExecutor(currentUser, wish));
+        wish.setHelpRequest(false);
+        Wish updatedWish = wishRepository.save(wish);
+
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    private WishExecutor createExecutor(User executor, Wish wish) {
+        return WishExecutor.builder().wish(wish).executor(executor).joinDate(Instant.now()).build();
     }
 }

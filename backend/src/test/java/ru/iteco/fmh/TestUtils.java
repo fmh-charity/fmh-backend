@@ -28,6 +28,7 @@ import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -81,6 +82,7 @@ public class TestUtils {
                 .factExecuteDate(Instant.now())
                 .status(status)
                 .wishRoles(List.of(getRole("ROLE_ADMINISTRATOR")))
+                .executors(Collections.emptySet())
                 .build();
     }
 

@@ -46,7 +46,7 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
     Wish findWishById(int id);
 
     @NonNull
-    @PostAuthorize("@roleMatchesService.findMatchesByRoleList(returnObject.get().wishRoles, authentication)"
-            + "|| authentication.name.equals(returnObject.creator.login)")
+    @PostAuthorize("@roleMatchesService.findRoleMatchesByWishOptional(returnObject, authentication)"
+            + "|| authentication.name.equals(returnObject.ifPresentOrElse(returnObject.get().creator.login, true))")
     Optional<Wish> findById(Integer id);
 }
