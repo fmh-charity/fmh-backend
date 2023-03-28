@@ -159,6 +159,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
         // given
         int wishId = 1;
@@ -284,6 +285,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void createWishCommentShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
@@ -294,7 +296,7 @@ public class WishServiceTest {
         WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
-        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
+        when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
 
         WishCommentInfoDto result = sut.createWishComment(wishId, wishCommentDto);
 
