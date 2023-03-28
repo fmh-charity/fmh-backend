@@ -111,6 +111,12 @@ public interface WishService {
      */
     WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
 
+    /**
+     * удаляет комментарий просьбы
+     *
+     * @param commentId идентификатор комментария
+     */
+    void deleteWishComment(int commentId);
 
     /**
      * создает список видимости просьбы из Role

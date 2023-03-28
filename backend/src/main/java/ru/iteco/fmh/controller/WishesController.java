@@ -126,6 +126,13 @@ public class WishesController {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
+    @Operation(summary = "Удаление комментария к просьбе")
+    @DeleteMapping("comments/{id}")
+    public void deleteWishComment(@Parameter(description = "Идентификатор комментария", required = true) @PathVariable("id") int id) {
+        wishService.deleteWishComment(id);
+    }
+
     @Operation(summary = "Область видимости для просьбы")
     @GetMapping("visibility")
     public List<WishVisibilityDto> getAvailableWishVisibility() {
