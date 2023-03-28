@@ -150,6 +150,14 @@ public interface WishService {
     WishDto confirmWishExecution(int wishId);
 
     /**
+     * меняет статус просьбы на IN_PROGRESS
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto declineWishExecution(int wishId);
+
+    /**
      * после исполнения просьбы менят статус на READY_CHECK
      *
      * @param wishId идентификатор просьбы

@@ -286,6 +286,15 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    public WishDto declineWishExecution(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        foundWish.setStatus(IN_PROGRESS);
+        Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
     public WishDto executeWish(int wishId) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new NotFoundException("Просьбы с таким ID не существует"));

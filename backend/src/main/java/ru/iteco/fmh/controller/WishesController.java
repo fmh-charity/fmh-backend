@@ -160,6 +160,14 @@ public class WishesController {
         return wishService.confirmWishExecution(wishId);
     }
 
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Отклонение исполнения просьбы")
+    @PostMapping("{wishId}/decline")
+    public WishDto declineWishExecution(@Parameter(description = "Идентификатор просьбы", required = true)
+                                            @PathVariable("wishId") int wishId) {
+        return wishService.declineWishExecution(wishId);
+    }
+
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Исполнение просьбы")
     @PostMapping("/{id}/executed")
