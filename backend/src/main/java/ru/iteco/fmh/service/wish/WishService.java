@@ -148,4 +148,12 @@ public interface WishService {
      * @return просьбу со статусом Ready
      */
     WishDto confirmWishExecution(int wishId);
+
+    /**
+     * меняет статус просьбы на IN_PROGRESS
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto declineWishExecution(int wishId);
 }

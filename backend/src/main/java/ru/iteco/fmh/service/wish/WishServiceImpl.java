@@ -279,4 +279,13 @@ public class WishServiceImpl implements WishService {
 
         return conversionService.convert(updatedWish, WishDto.class);
     }
+
+    @Override
+    public WishDto declineWishExecution(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        foundWish.setStatus(IN_PROGRESS);
+        Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
 }
