@@ -44,6 +44,7 @@ import static java.util.List.of;
 import static ru.iteco.fmh.model.wish.Status.CANCELLED;
 import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.READY;
 
 @Service
 @RequiredArgsConstructor
@@ -265,5 +266,17 @@ public class WishServiceImpl implements WishService {
 
     private WishExecutor createExecutor(User executor, Wish wish) {
         return WishExecutor.builder().wish(wish).executor(executor).joinDate(Instant.now()).build();
+    }
+
+    @Override
+    public WishDto confirmWishExecution(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+
+        foundWish.getExecutors().forEach(wishExecutor -> wishExecutor.setFinishDate(Instant.now()));
+        foundWish.setStatus(READY);
+        Wish updatedWish = wishRepository.save(foundWish);
+
+        return conversionService.convert(updatedWish, WishDto.class);
     }
 }

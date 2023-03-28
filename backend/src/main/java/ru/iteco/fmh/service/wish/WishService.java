@@ -140,4 +140,12 @@ public interface WishService {
      * @return просьбу с назначенным исполнителем
      */
     WishDto joinWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу со статусом Ready
+     */
+    WishDto confirmWishExecution(int wishId);
 }
