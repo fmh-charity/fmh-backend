@@ -318,7 +318,7 @@ public class WishServiceTest {
         Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
         Mockito.when(wishRepository.save(any())).thenReturn(wish);
         WishDto wishDto = sut.executeWish(wish.getId());
-        assertEquals(wishDto.getStatus(), READY_CHECK);
+        assertEquals(READY_CHECK, wishDto.getStatus());
     }
 
     @Test
