@@ -269,6 +269,7 @@ public class WishServiceImpl implements WishService {
         if (wishExecutor == null) {
             throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
         }
+        foundWish.getExecutors().remove(wishExecutor);
         Wish updatedWish = wishRepository.save(foundWish);
         return conversionService.convert(updatedWish, WishDto.class);
     }

@@ -144,7 +144,7 @@ public class WishesController {
     public WishDto joinWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.joinWish(id);
     }
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
     @Operation(summary = "Удаление текущего исполнителя просьбы")
     @DeleteMapping("{id}/executors")
     public WishDto deleteExecutor(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
