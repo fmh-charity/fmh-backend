@@ -126,4 +126,11 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto cancelWish(int wishId);
+    /**
+     * удаляет текущего исполнителя просьбы
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto deleteExecutor(int wishId);
 }

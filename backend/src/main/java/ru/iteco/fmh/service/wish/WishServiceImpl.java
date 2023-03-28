@@ -10,36 +10,26 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dao.repository.WishCommentRepository;
-import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishCreationRequest;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateRequest;
-import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.dao.repository.*;
+import ru.iteco.fmh.dto.wish.*;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
-import ru.iteco.fmh.model.user.Role;
-import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.wish.Status.CANCELLED;
-import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.wish.Status.OPEN;
+import static ru.iteco.fmh.model.wish.Status.*;
 
 @Service
 @RequiredArgsConstructor
@@ -221,6 +211,20 @@ public class WishServiceImpl implements WishService {
             foundWish.setStatus(CANCELLED);
         } else {
             throw new NoRightsException("Отменить просьбу может только создатель просьбы или администратор");
+        }
+        Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto deleteExecutor(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        User currentUser = Util.getCurrentLoggedInUser();
+        WishExecutor wishExecutor = foundWish.getExecutors()
+                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), currentUser.getId())).findFirst().get();
+        if (wishExecutor == null) {
+            throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
         }
         Wish updatedWish = wishRepository.save(foundWish);
         return conversionService.convert(updatedWish, WishDto.class);

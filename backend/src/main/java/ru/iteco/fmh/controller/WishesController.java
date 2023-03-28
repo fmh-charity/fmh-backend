@@ -116,7 +116,7 @@ public class WishesController {
     @Operation(summary = "Создание нового комментария")
     @PostMapping("{id}/comments")
     public WishCommentInfoDto createWishComment(@Parameter(description = "Идентификатор просьбы", required = true)
-                                                    @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+                                                @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
@@ -137,5 +137,11 @@ public class WishesController {
     @DeleteMapping("cancel/{id}")
     public WishDto cancelWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.cancelWish(id);
+    }
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Operation(summary = "Удаление текущего исполнителя просьбы")
+    @DeleteMapping("{id}/executors")
+    public WishDto deleteExecutor(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
+        return wishService.deleteExecutor(id);
     }
 }
