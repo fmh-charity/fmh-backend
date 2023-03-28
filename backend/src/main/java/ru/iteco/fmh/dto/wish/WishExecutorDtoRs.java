@@ -17,8 +17,6 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WishExecutorDtoRs {
-    @Schema(name = "id", description = "Идентификатор записи")
-    Integer id;
     @Schema(name = "executor", description = "ФИО Исполнителя просьбы")
     UserDtoIdFio executor;
     @Schema(name = "joinDate", description = "Дата присоединения к просьбе")

@@ -15,6 +15,7 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
+import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -26,6 +27,7 @@ import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.exceptions.UserExistsException;
+import ru.iteco.fmh.exceptions.UnavailableOperationException;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
@@ -190,12 +192,12 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishCommentInfoDto createWishComment(int wishId, WishCommentDto wishCommentDto) {
-        WishComment wishComment = conversionService.convert(wishCommentDto, WishComment.class);
-        wishComment.setWish(wishRepository.findById(wishId)
-                .orElseThrow(() -> new NotFoundException("Просьбы с таким ID не существует")));
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() -> new NotFoundException("Просьбы с таким ID не существует"));
+        User user = Util.getCurrentLoggedInUser();
+        WishComment wishComment = WishComment.builder().wish(wish)
+                .creator(user).createDate(Instant.now()).description(wishCommentDto.getDescription()).build();
         wishComment = wishCommentRepository.save(wishComment);
         return conversionService.convert(wishComment, WishCommentInfoDto.class);
-
     }
 
     @Transactional
@@ -243,10 +245,15 @@ public class WishServiceImpl implements WishService {
         Wish wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
 
-        boolean isUserExecutor = wish.getExecutors().stream().anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser));
+        boolean isUserExecutorAndFinishDateNull = wish.getExecutors().stream()
+                .anyMatch(wishExecutor -> wishExecutor.getExecutor().equals(currentUser) && wishExecutor.getFinishDate() == null);
 
-        if (isUserExecutor && wish.getFactExecuteDate() == null) {
+        if (isUserExecutorAndFinishDateNull) {
             throw new UserExistsException("Пользователь уже является испольнителем этой просьбы");
+        }
+
+        if (wish.getFactExecuteDate() != null) {
+            throw new UnavailableOperationException("Невозможно присоедениться к выполненной просьбе");
         }
 
         wish.getExecutors().add(createExecutor(currentUser, wish));

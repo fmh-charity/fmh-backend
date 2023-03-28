@@ -11,6 +11,7 @@ import ru.iteco.fmh.model.wish.WishExecutor;
 @Component
 @RequiredArgsConstructor
 public class WishExecutorToWishExecutorDtoRsConverter implements Converter<WishExecutor, WishExecutorDtoRs> {
+
     private final UserToUserDtoIdFioConverter userToUserDtoIdFioConverter;
 
     @Override
@@ -19,7 +20,6 @@ public class WishExecutorToWishExecutorDtoRsConverter implements Converter<WishE
         Long finishDate = source.getFinishDate() == null ? null : source.getFinishDate().toEpochMilli();
 
         return WishExecutorDtoRs.builder()
-                .id(source.getId())
                 .executor(wishExecutorFio)
                 .joinDate(source.getJoinDate().toEpochMilli())
                 .finishDate(finishDate)
