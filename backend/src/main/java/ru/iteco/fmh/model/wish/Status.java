@@ -54,7 +54,7 @@ public enum Status {
     READY_CHECK("Готово к проверке") {
         @Override
         public void changeStatus(Wish wish, Status newStatus, User executor) {
-            if (newStatus == READY_CHECK || newStatus == OPEN || newStatus == CANCELLED) {
+            if (newStatus != IN_PROGRESS || newStatus != EXECUTED) {
                 throw new IllegalArgumentException("нельзя перевести из статуса "
                         + this.getName()
                         + " в статус "
