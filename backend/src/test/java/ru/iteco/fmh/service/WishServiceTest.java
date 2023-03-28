@@ -28,8 +28,10 @@ import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.service.wish.WishService;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -312,7 +314,7 @@ public class WishServiceTest {
     @WithUserDetails
     public void executeWishShouldPassSuccess() {
         Wish wish = getWish(OPEN);
-        wish.setExecutors(List.of(WishExecutor.builder().executor(Util.getCurrentLoggedInUser()).build()));
+        wish.setExecutors(Set.of(WishExecutor.builder().executor(Util.getCurrentLoggedInUser()).joinDate(Instant.now()).build()));
         Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
         Mockito.when(wishRepository.save(any())).thenReturn(wish);
         WishDto wishDto = sut.executeWish(wish.getId());
@@ -324,10 +326,10 @@ public class WishServiceTest {
     public void executeWishShouldThrowsException() {
         PermissionDeniedException thrown = Assertions.assertThrows(PermissionDeniedException.class, () -> {
             Wish wish = getWish(OPEN);
-            wish.setExecutors(List.of(WishExecutor.builder().executor(getUser()).build()));
+            wish.setExecutors(Set.of(WishExecutor.builder().executor(getUser()).build()));
             Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
             Mockito.when(wishRepository.save(any())).thenReturn(wish);
-            WishDto wishDto = sut.executeWish(wish.getId());
+            sut.executeWish(wish.getId());
         });
 
         Assertions.assertEquals("Текущий пользователь отсутствует в списке исполнителей просьбы", thrown.getMessage());
