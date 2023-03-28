@@ -126,6 +126,13 @@ public class WishesController {
         return wishService.updateWishComment(wishCommentDto, authentication);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
+    @Operation(summary = "Удаление комментария к просьбе")
+    @DeleteMapping("comments/{id}")
+    public void deleteWishComment(@Parameter(description = "Идентификатор комментария", required = true) @PathVariable("id") int id) {
+        wishService.deleteWishComment(id);
+    }
+
     @Operation(summary = "Область видимости для просьбы")
     @GetMapping("visibility")
     public List<WishVisibilityDto> getAvailableWishVisibility() {
@@ -143,6 +150,14 @@ public class WishesController {
     @PostMapping("/{id}/executors")
     public WishDto joinWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.joinWish(id);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Подтверждение исполнения просьбы")
+    @PostMapping("/{wishId}/confirmation")
+    public WishDto confirmWishExecution(@Parameter(description = "Идентификатор просьбы", required = true)
+                                            @PathVariable("wishId") int wishId) {
+        return wishService.confirmWishExecution(wishId);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

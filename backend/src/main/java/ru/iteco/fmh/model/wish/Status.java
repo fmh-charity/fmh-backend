@@ -51,6 +51,13 @@ public enum Status {
         }
     },
 
+    READY("ГОТОВО") {
+        @Override
+        public void changeStatus(Wish task, Status newStatus, User executor) {
+            throw new IllegalArgumentException("нельзя перевести из статуса " + this.getName() + " в иной статус");
+        }
+    },
+
     READY_CHECK("Готово к проверке") {
         @Override
         public void changeStatus(Wish wish, Status newStatus, User executor) {
