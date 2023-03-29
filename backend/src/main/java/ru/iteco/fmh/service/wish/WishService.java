@@ -156,4 +156,12 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto declineWishExecution(int wishId);
+
+    /**
+     * после исполнения просьбы менят статус на READY_CHECK
+     *
+     * @param wishId идентификатор просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto executeWish(int wishId);
 }

@@ -16,7 +16,9 @@ public enum ErrorCodes {
     ERR_MAX_UPLOAD(HttpStatus.PAYLOAD_TOO_LARGE),
     ERR_SEND_MAIL(HttpStatus.INTERNAL_SERVER_ERROR),
     ERR_DUPLICATE_DATA(HttpStatus.BAD_REQUEST),
-    ERR_INCORRECT_DATA(HttpStatus.BAD_REQUEST);
+    ERR_INCORRECT_DATA(HttpStatus.BAD_REQUEST),
+
+    ERR_PERMISSION_DENIED(HttpStatus.FORBIDDEN);
 
     private final HttpStatus httpStatus;
 

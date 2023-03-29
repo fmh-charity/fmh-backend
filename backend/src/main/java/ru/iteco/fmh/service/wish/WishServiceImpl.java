@@ -15,7 +15,6 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -26,8 +25,9 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.exceptions.UserExistsException;
+import ru.iteco.fmh.exceptions.PermissionDeniedException;
 import ru.iteco.fmh.exceptions.UnavailableOperationException;
+import ru.iteco.fmh.exceptions.UserExistsException;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
@@ -38,6 +38,7 @@ import ru.iteco.fmh.model.wish.WishExecutor;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
@@ -45,6 +46,7 @@ import static ru.iteco.fmh.model.wish.Status.CANCELLED;
 import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 import static ru.iteco.fmh.model.wish.Status.READY;
+import static ru.iteco.fmh.model.wish.Status.READY_CHECK;
 
 @Service
 @RequiredArgsConstructor
@@ -286,6 +288,21 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
         foundWish.setStatus(IN_PROGRESS);
         Wish updatedWish = wishRepository.save(foundWish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
+
+    @Override
+    public WishDto executeWish(int wishId) {
+        Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
+                new NotFoundException("Просьбы с таким ID не существует"));
+        User executionInitiator = Util.getCurrentLoggedInUser();
+        if (wish.getExecutors().stream()
+                .noneMatch(el -> Objects.equals(el.getExecutor().getId(), executionInitiator.getId()))) {
+            throw new PermissionDeniedException("Текущий пользователь отсутствует в списке исполнителей просьбы");
+        }
+        wish.setExecutionInitiator(executionInitiator);
+        wish.setStatus(READY_CHECK);
+        Wish updatedWish = wishRepository.save(wish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
 }
