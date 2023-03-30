@@ -15,7 +15,6 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
@@ -26,8 +25,8 @@ import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.NoRightsException;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.exceptions.UserExistsException;
 import ru.iteco.fmh.exceptions.UnavailableOperationException;
+import ru.iteco.fmh.exceptions.UserExistsException;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
@@ -291,7 +290,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public WishDto deleteExecutor(int wishId) {
+    public WishDto detachFromWish(int wishId) {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
         User currentUser = Util.getCurrentLoggedInUser();
@@ -300,21 +299,25 @@ public class WishServiceImpl implements WishService {
         if (wishExecutor == null) {
             throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
         }
+        if (foundWish.getFactExecuteDate() != null) {
+            throw new IncorrectDataException("Невозможно удалить исполнителя , выполнение просьбы уже завершено");
+        }
         foundWish.getExecutors().remove(wishExecutor);
         Wish updatedWish = wishRepository.save(foundWish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
 
     @Override
-    public WishDto deleteExecutorWithAdminRole(int wishId, int userId) {
+    public WishDto detachExecutor(int wishId, int userId) {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
-        User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с указанным идентификатором отсутствует"));
         WishExecutor wishExecutor = foundWish.getExecutors()
-                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), currentUser.getId())).findFirst().get();
+                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), userId)).findFirst().get();
         if (wishExecutor == null) {
             throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
+        }
+        if (foundWish.getFactExecuteDate() != null) {
+            throw new IncorrectDataException("Невозможно удалить исполнителя , выполнение просьбы уже завершено");
         }
         foundWish.getExecutors().remove(wishExecutor);
         Wish updatedWish = wishRepository.save(foundWish);

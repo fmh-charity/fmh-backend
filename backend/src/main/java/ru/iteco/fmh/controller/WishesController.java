@@ -170,18 +170,18 @@ public class WishesController {
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
     @Operation(summary = "Удаление текущего исполнителя просьбы")
-    @DeleteMapping("{id}/executors")
-    public WishDto deleteExecutor(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
-        return wishService.deleteExecutor(id);
+    @DeleteMapping("{wishId}/executors")
+    public WishDto detachFromWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("wishId") int id) {
+        return wishService.detachFromWish(id);
     }
 
     @Secured({"ROLE_ADMINISTRATOR"})
     @Operation(summary = "Удаление исполнителя просьбы администратором")
     @DeleteMapping("{wishId}/executors/{userId}")
-    public WishDto deleteExecutorWithAdminRole(@Parameter(description = "Идентификатор просьбы", required = true)
+    public WishDto detachExecutor(@Parameter(description = "Идентификатор просьбы", required = true)
                                                @PathVariable("wishId") int id,
-                                               @Parameter(description = "Идентификатор пользователя", required = true)
+                                  @Parameter(description = "Идентификатор пользователя", required = true)
                                                @PathVariable("userId") int userId) {
-        return wishService.deleteExecutorWithAdminRole(id, userId);
+        return wishService.detachExecutor(id, userId);
     }
 }

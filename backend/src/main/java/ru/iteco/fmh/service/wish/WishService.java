@@ -163,7 +163,7 @@ public interface WishService {
      * @param wishId ид просьбы
      * @return просьбу с измененным списком исполнителей
      */
-    WishDto deleteExecutor(int wishId);
+    WishDto detachFromWish(int wishId);
 
     /**
      * администратор удаляет исполнителя просьбы
@@ -172,5 +172,5 @@ public interface WishService {
      * @param userId ид пользователя
      * @return просьбу с измененным списком исполнителей
      */
-    WishDto deleteExecutorWithAdminRole(int wishId, int userId);
+    WishDto detachExecutor(int wishId, int userId);
 }
