@@ -309,6 +309,9 @@ public class WishServiceImpl implements WishService {
 
     @Override
     public WishDto detachExecutor(int wishId, int userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("Пользователь с указанным идентификатором отсутствует");
+        }
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
         WishExecutor wishExecutor = foundWish.getExecutors()
