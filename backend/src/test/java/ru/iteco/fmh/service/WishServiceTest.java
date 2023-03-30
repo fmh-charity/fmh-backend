@@ -28,6 +28,7 @@ import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.WishPriority;
+import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.time.Instant;
