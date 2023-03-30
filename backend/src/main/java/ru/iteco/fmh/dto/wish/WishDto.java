@@ -65,8 +65,5 @@ public class WishDto {
 
     @Schema(name = "wishPriority", description = "Приоритет просьбы")
     WishPriority wishPriority;
-
-    @Schema(name = "wishExecutors", description = "Список исполнителей просьбы")
-    List<WishExecutorDtoRs> wishExecutors;
 }
 
