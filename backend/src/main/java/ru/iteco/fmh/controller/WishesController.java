@@ -168,6 +168,13 @@ public class WishesController {
         return wishService.declineWishExecution(wishId);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Operation(summary = "Исполнение просьбы")
+    @PostMapping("/{id}/executed")
+    public WishDto executeWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
+        return wishService.executeWish(id);
+    }
+
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
     @Operation(summary = "Удаление текущего исполнителя просьбы")
     @DeleteMapping("{wishId}/executors")
