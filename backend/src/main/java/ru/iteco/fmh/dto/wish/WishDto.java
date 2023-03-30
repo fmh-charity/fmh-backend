@@ -60,6 +60,9 @@ public class WishDto {
     @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;
 
+    @Schema(name = "wishExecutors", description = "Список исполнителей просьбы")
+    List<WishExecutorDtoRs> wishExecutors;
+
     @Schema(name = "wishPriority", description = "Приоритет просьбы")
     WishPriority wishPriority;
 }

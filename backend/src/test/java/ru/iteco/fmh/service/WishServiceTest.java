@@ -1,7 +1,9 @@
 package ru.iteco.fmh.service;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -9,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
 import ru.iteco.fmh.dao.repository.WishRepository;
@@ -18,14 +21,19 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.exceptions.PermissionDeniedException;
+import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
+import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.WishPriority;
 import ru.iteco.fmh.service.wish.WishService;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
@@ -157,6 +165,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
         // given
         int wishId = 1;
@@ -282,6 +291,7 @@ public class WishServiceTest {
     }
 
     @Test
+    @WithUserDetails
     public void createWishCommentShouldPassSuccess() {
         // given
         Wish wish = getWish(OPEN);
@@ -292,7 +302,7 @@ public class WishServiceTest {
         WishCommentDto wishCommentDto = conversionService.convert(wishComment, WishCommentDto.class);
 
         when(wishCommentRepository.save(any())).thenReturn(wishComment);
-        when(wishRepository.findById(any())).thenReturn(Optional.of(wish));
+        when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
 
         WishCommentInfoDto result = sut.createWishComment(wishId, wishCommentDto);
 
@@ -302,5 +312,30 @@ public class WishServiceTest {
                 () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateTime()),
                 () -> assertEquals(wishCommentDto.getCreatorId(), result.getUserDtoIdFio().id())
         );
+    }
+
+    @Test
+    @WithUserDetails
+    public void executeWishShouldPassSuccess() {
+        Wish wish = getWish(OPEN);
+        wish.setExecutors(Set.of(WishExecutor.builder().executor(Util.getCurrentLoggedInUser()).joinDate(Instant.now()).build()));
+        Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
+        Mockito.when(wishRepository.save(any())).thenReturn(wish);
+        WishDto wishDto = sut.executeWish(wish.getId());
+        assertEquals(READY_CHECK, wishDto.getStatus());
+    }
+
+    @Test
+    @WithUserDetails
+    public void executeWishShouldThrowsException() {
+        PermissionDeniedException thrown = Assertions.assertThrows(PermissionDeniedException.class, () -> {
+            Wish wish = getWish(OPEN);
+            wish.setExecutors(Set.of(WishExecutor.builder().executor(getUser()).build()));
+            Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
+            Mockito.when(wishRepository.save(any())).thenReturn(wish);
+            sut.executeWish(wish.getId());
+        });
+
+        Assertions.assertEquals("Текущий пользователь отсутствует в списке исполнителей просьбы", thrown.getMessage());
     }
 }
