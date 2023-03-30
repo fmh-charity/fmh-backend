@@ -30,9 +30,9 @@ import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_DUPLICATE_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INCORRECT_DATA;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_LOGIN;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_INVALID_REFRESH;
-import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_MAX_UPLOAD;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NOT_FOUND;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_NO_RIGHTS;
+import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_PERMISSION_DENIED;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_SEND_MAIL;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_UNEXPECTED;
 import static ru.iteco.fmh.exceptions.ErrorCodes.ERR_USER_EXISTS;
@@ -52,7 +52,8 @@ public class AppAdvice {
             UserExistsException.class, ERR_USER_EXISTS,
             MailException.class, ERR_SEND_MAIL,
             DuplicateDataException.class, ERR_DUPLICATE_DATA,
-            IncorrectDataException.class, ERR_INCORRECT_DATA
+            IncorrectDataException.class, ERR_INCORRECT_DATA,
+            PermissionDeniedException.class, ERR_PERMISSION_DENIED
     );
 
     @ExceptionHandler(Exception.class)

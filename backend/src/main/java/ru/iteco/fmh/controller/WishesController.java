@@ -1,15 +1,5 @@
 package ru.iteco.fmh.controller;
 
-import ru.iteco.fmh.dto.wish.WishCreationRequest;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishVisibilityDto;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateRequest;
-import ru.iteco.fmh.model.wish.Status;
-import ru.iteco.fmh.service.wish.WishService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,15 +8,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.wish.WishCommentDto;
+import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
+import ru.iteco.fmh.dto.wish.WishCreationRequest;
+import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateRequest;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.service.wish.WishService;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -116,7 +115,7 @@ public class WishesController {
     @Operation(summary = "Создание нового комментария")
     @PostMapping("{id}/comments")
     public WishCommentInfoDto createWishComment(@Parameter(description = "Идентификатор просьбы", required = true)
-                                                    @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
+                                                @PathVariable("id") int id, @RequestBody WishCommentDto wishCommentDto) {
         return wishService.createWishComment(id, wishCommentDto);
     }
 
@@ -125,6 +124,13 @@ public class WishesController {
     @PutMapping("comments")
     public WishCommentInfoDto updateWishComment(@RequestBody WishCommentDto wishCommentDto, Authentication authentication) {
         return wishService.updateWishComment(wishCommentDto, authentication);
+    }
+
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
+    @Operation(summary = "Удаление комментария к просьбе")
+    @DeleteMapping("comments/{id}")
+    public void deleteWishComment(@Parameter(description = "Идентификатор комментария", required = true) @PathVariable("id") int id) {
+        wishService.deleteWishComment(id);
     }
 
     @Operation(summary = "Область видимости для просьбы")
@@ -137,5 +143,35 @@ public class WishesController {
     @DeleteMapping("cancel/{id}")
     public WishDto cancelWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
         return wishService.cancelWish(id);
+    }
+
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER", "ROLE_VOLUNTEER", "ROLE_VOLUNTEER_COORDINATOR", "ROLE_PATIENT"})
+    @Operation(summary = "Присоединение к просьбе")
+    @PostMapping("/{id}/executors")
+    public WishDto joinWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
+        return wishService.joinWish(id);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Подтверждение исполнения просьбы")
+    @PostMapping("/{wishId}/confirmation")
+    public WishDto confirmWishExecution(@Parameter(description = "Идентификатор просьбы", required = true)
+                                            @PathVariable("wishId") int wishId) {
+        return wishService.confirmWishExecution(wishId);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Отклонение исполнения просьбы")
+    @PostMapping("{wishId}/decline")
+    public WishDto declineWishExecution(@Parameter(description = "Идентификатор просьбы", required = true)
+                                            @PathVariable("wishId") int wishId) {
+        return wishService.declineWishExecution(wishId);
+    }
+
+    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
+    @Operation(summary = "Исполнение просьбы")
+    @PostMapping("/{id}/executed")
+    public WishDto executeWish(@Parameter(description = "Идентификатор просьбы", required = true) @PathVariable("id") int id) {
+        return wishService.executeWish(id);
     }
 }

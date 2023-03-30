@@ -2,12 +2,12 @@ package ru.iteco.fmh.service.wish;
 
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
+import ru.iteco.fmh.dto.wish.WishUpdateRequest;
+import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.model.wish.Status;
 
 import java.util.List;
@@ -111,6 +111,12 @@ public interface WishService {
      */
     WishCommentInfoDto updateWishComment(WishCommentDto wishCommentDto, Authentication authentication);
 
+    /**
+     * удаляет комментарий просьбы
+     *
+     * @param commentId идентификатор комментария
+     */
+    void deleteWishComment(int commentId);
 
     /**
      * создает список видимости просьбы из Role
@@ -126,4 +132,36 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto cancelWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с назначенным исполнителем
+     */
+    WishDto joinWish(int wishId);
+
+    /**
+     * назначает исполнителя просьбе
+     *
+     * @param wishId ид просьбы
+     * @return просьбу со статусом Ready
+     */
+    WishDto confirmWishExecution(int wishId);
+
+    /**
+     * меняет статус просьбы на IN_PROGRESS
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto declineWishExecution(int wishId);
+
+    /**
+     * после исполнения просьбы менят статус на READY_CHECK
+     *
+     * @param wishId идентификатор просьбы
+     * @return просьбу с измененным статусом
+     */
+    WishDto executeWish(int wishId);
 }
