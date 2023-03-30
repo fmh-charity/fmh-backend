@@ -41,6 +41,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setFactExecuteDate(wish.getFactExecuteDate() != null ? wish.getFactExecuteDate().toEpochMilli() : null);
         dto.setRoom(roomDtoRs);
         dto.setWishVisibility(roleIdsList);
+        dto.setWishPriority(wish.getWishPriority(wish));
 
         return dto;
     }

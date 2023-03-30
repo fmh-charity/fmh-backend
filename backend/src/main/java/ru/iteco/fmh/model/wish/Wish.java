@@ -11,9 +11,9 @@ import ru.iteco.fmh.model.user.User;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,18 +69,17 @@ public class Wish {
         status.changeStatus(this, newStatus, executor);
     }
 
-    public static WishPriority getWishPriority(Wish wish) {
+    public WishPriority getWishPriority(Wish wish) {
         if (wish.planExecuteDate == null) {
             return null;
         } else {
-            Calendar sixHourCurrentDay = Calendar.getInstance();
-            sixHourCurrentDay.set(Calendar.HOUR, 6);
-            sixHourCurrentDay.set(Calendar.MINUTE, 0);
-            sixHourCurrentDay.set(Calendar.SECOND, 0);
-            Date calculatedDate = DateUtils.addHours(new Date(), 2);
+            ZonedDateTime now = Instant.now().atZone(ZoneId.of("Europe/Moscow"));
+            ZonedDateTime sixHourCurrentDay = now.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow")).plusHours(6);
+            ZonedDateTime calculatedDate = now.plusHours(2);
+
             if (wish.planExecuteDate.isBefore(calculatedDate.toInstant())) {
                 return WishPriority.RED;
-            } else if (Calendar.getInstance().after(sixHourCurrentDay)) {
+            } else if (now.isAfter(sixHourCurrentDay)) {
                 return WishPriority.GREEN;
             } else {
                 return WishPriority.YELLOW;

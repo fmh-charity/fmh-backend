@@ -107,7 +107,9 @@ public class WishServiceTest {
                 () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
                 () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
                 () -> assertNull(result.getExecutor()),
-                () -> assertNotNull(result.getCreator())
+                () -> assertNotNull(result.getCreator()),
+                () -> assertNotNull(result.getWishPriority()),
+                () -> assertEquals(WishPriority.RED, result.getWishPriority())
         );
     }
 
@@ -300,16 +302,5 @@ public class WishServiceTest {
                 () -> assertEquals(wishCommentDto.getCreateDate(), result.getCreateTime()),
                 () -> assertEquals(wishCommentDto.getCreatorId(), result.getUserDtoIdFio().id())
         );
-    }
-
-    @Test
-    public void getWishPriorityShouldPassSuccess(){
-        Wish wish = getWish(OPEN);
-        WishPriority result = Wish.getWishPriority(wish);
-        assertAll(
-                () -> assertNotNull(result),
-                () -> assertEquals(WishPriority.RED, result)
-        );
-
     }
 }

@@ -10,6 +10,7 @@ import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
 import ru.iteco.fmh.dto.room.RoomDtoRs;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.model.wish.Status;
+import ru.iteco.fmh.model.wish.WishPriority;
 
 import java.util.List;
 
@@ -58,4 +59,7 @@ public class WishDto {
 
     @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;
+
+    @Schema(name = "wishPriority", description = "Приоритет просьбы")
+    WishPriority wishPriority;
 }
