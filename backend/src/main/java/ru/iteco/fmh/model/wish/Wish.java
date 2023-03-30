@@ -92,15 +92,15 @@ public class Wish {
         status.changeStatus(this, newStatus, executor);
     }
 
-    public WishPriority getWishPriority(Wish wish) {
-        if (wish.planExecuteDate == null) {
+    public WishPriority getWishPriority() {
+        if (this.planExecuteDate == null) {
             return null;
         } else {
             ZonedDateTime now = Instant.now().atZone(ZoneId.of("Europe/Moscow"));
             ZonedDateTime sixHourCurrentDay = now.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow")).plusHours(6);
             ZonedDateTime calculatedDate = now.plusHours(2);
 
-            if (wish.planExecuteDate.isBefore(calculatedDate.toInstant())) {
+            if (this.planExecuteDate.isBefore(calculatedDate.toInstant())) {
                 return WishPriority.RED;
             } else if (now.isAfter(sixHourCurrentDay)) {
                 return WishPriority.GREEN;

@@ -46,7 +46,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setRoom(roomDtoRs);
         dto.setWishVisibility(roleIdsList);
         dto.setWishExecutors(wishExecutorDtoRsList);
-        dto.setWishPriority(wish.getWishPriority(wish));
+        dto.setWishPriority(wish.getWishPriority());
 
         return dto;
     }
