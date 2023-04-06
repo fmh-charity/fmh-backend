@@ -310,18 +310,8 @@ public class WishServiceImpl implements WishService {
     public WishDto detachFromWish(int wishId) {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
-        User currentUser = Util.getCurrentLoggedInUser();
-        WishExecutor wishExecutor = foundWish.getExecutors()
-                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), currentUser.getId())).findFirst().get();
-        if (wishExecutor == null) {
-            throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
-        }
-        if (foundWish.getFactExecuteDate() != null) {
-            throw new IncorrectDataException("Невозможно удалить исполнителя , выполнение просьбы уже завершено");
-        }
-        foundWish.getExecutors().remove(wishExecutor);
-        Wish updatedWish = wishRepository.save(foundWish);
-        return conversionService.convert(updatedWish, WishDto.class);
+        int userId = Util.getCurrentLoggedInUser().getId();
+        return deleteWishExecutorById(userId, foundWish);
     }
 
     @Override
@@ -331,16 +321,16 @@ public class WishServiceImpl implements WishService {
         }
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
-        WishExecutor wishExecutor = foundWish.getExecutors()
-                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), userId)).findFirst().get();
-        if (wishExecutor == null) {
-            throw new NotFoundException("Текущий пользователь не найден в списке исполнителей");
-        }
-        if (foundWish.getFactExecuteDate() != null) {
-            throw new IncorrectDataException("Невозможно удалить исполнителя , выполнение просьбы уже завершено");
-        }
-        foundWish.getExecutors().remove(wishExecutor);
-        Wish updatedWish = wishRepository.save(foundWish);
+        return deleteWishExecutorById(userId, foundWish);
+    }
+
+    private WishDto deleteWishExecutorById(int userId, Wish wish) {
+        WishExecutor wishExecutor = wish.getExecutors()
+                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), userId)
+                        && wish.getFactExecuteDate() == null).findFirst()
+                .orElseThrow(() -> new IncorrectDataException("Пользователь не найден в списке исполнителей,или просьбы выполнена"));
+        wish.getExecutors().remove(wishExecutor);
+        Wish updatedWish = wishRepository.save(wish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
 }
