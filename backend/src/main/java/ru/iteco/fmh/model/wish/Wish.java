@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ru.iteco.fmh.model.Patient;
@@ -29,11 +28,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Instant;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -96,11 +95,11 @@ public class Wish {
         if (this.planExecuteDate == null) {
             return null;
         } else {
-            ZonedDateTime now = Instant.now().atZone(ZoneId.of("Europe/Moscow"));
-            ZonedDateTime sixHourCurrentDay = now.toLocalDate().atStartOfDay(ZoneId.of("Europe/Moscow")).plusHours(6);
-            ZonedDateTime calculatedDate = now.plusHours(2);
+            Instant now = Instant.now();
+            Instant sixHourCurrentDay = LocalDateTime.of(LocalDate.now(), LocalTime.of(6, 0, 0)).toInstant(ZoneOffset.UTC);
+            Instant calculatedDate = now.plus(2, ChronoUnit.HOURS);
 
-            if (this.planExecuteDate.isBefore(calculatedDate.toInstant())) {
+            if (this.planExecuteDate.isBefore(calculatedDate)) {
                 return WishPriority.RED;
             } else if (now.isAfter(sixHourCurrentDay)) {
                 return WishPriority.GREEN;
