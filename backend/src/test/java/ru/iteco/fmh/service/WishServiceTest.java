@@ -26,6 +26,9 @@ import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
+import ru.iteco.fmh.model.user.User;
+import ru.iteco.fmh.model.wish.WishPriority;
+import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.time.Instant;
@@ -113,7 +116,9 @@ public class WishServiceTest {
                 () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
                 () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
                 () -> assertNull(result.getExecutor()),
-                () -> assertNotNull(result.getCreator())
+                () -> assertNotNull(result.getCreator()),
+                () -> assertNotNull(result.getWishPriority()),
+                () -> assertEquals(WishPriority.RED, result.getWishPriority())
         );
     }
 

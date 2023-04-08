@@ -28,6 +28,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -84,5 +89,23 @@ public class Wish {
 
     public void changeStatus(Status newStatus, User executor) {
         status.changeStatus(this, newStatus, executor);
+    }
+
+    public WishPriority getWishPriority() {
+        if (this.planExecuteDate == null) {
+            return null;
+        } else {
+            Instant now = Instant.now();
+            Instant sixHourCurrentDay = LocalDateTime.of(LocalDate.now(), LocalTime.of(6, 0, 0)).toInstant(ZoneOffset.UTC);
+            Instant calculatedDate = now.plus(2, ChronoUnit.HOURS);
+
+            if (this.planExecuteDate.isBefore(calculatedDate)) {
+                return WishPriority.RED;
+            } else if (now.isAfter(sixHourCurrentDay)) {
+                return WishPriority.GREEN;
+            } else {
+                return WishPriority.YELLOW;
+            }
+        }
     }
 }
