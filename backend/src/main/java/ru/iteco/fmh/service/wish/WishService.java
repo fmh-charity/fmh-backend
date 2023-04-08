@@ -164,4 +164,21 @@ public interface WishService {
      * @return просьбу с измененным статусом
      */
     WishDto executeWish(int wishId);
+
+    /**
+     * удаляет текущего исполнителя просьбы
+     *
+     * @param wishId ид просьбы
+     * @return просьбу с измененным списком исполнителей
+     */
+    WishDto detachFromWish(int wishId);
+
+    /**
+     * администратор удаляет исполнителя просьбы
+     *
+     * @param wishId ид просьбы
+     * @param userId ид пользователя
+     * @return просьбу с измененным списком исполнителей
+     */
+    WishDto detachExecutor(int wishId, int userId);
 }

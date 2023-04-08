@@ -305,4 +305,32 @@ public class WishServiceImpl implements WishService {
         Wish updatedWish = wishRepository.save(wish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
+
+    @Override
+    public WishDto detachFromWish(int wishId) {
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        int userId = Util.getCurrentLoggedInUser().getId();
+        return deleteWishExecutorById(userId, foundWish);
+    }
+
+    @Override
+    public WishDto detachExecutor(int wishId, int userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("Пользователь с указанным идентификатором отсутствует");
+        }
+        Wish foundWish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
+        return deleteWishExecutorById(userId, foundWish);
+    }
+
+    private WishDto deleteWishExecutorById(int userId, Wish wish) {
+        WishExecutor wishExecutor = wish.getExecutors()
+                .stream().filter(el -> Objects.equals(el.getExecutor().getId(), userId)
+                        && wish.getFactExecuteDate() == null).findFirst()
+                .orElseThrow(() -> new IncorrectDataException("Пользователь не найден в списке исполнителей,или просьбы выполнена"));
+        wish.getExecutors().remove(wishExecutor);
+        Wish updatedWish = wishRepository.save(wish);
+        return conversionService.convert(updatedWish, WishDto.class);
+    }
 }
