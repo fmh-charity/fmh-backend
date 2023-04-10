@@ -62,8 +62,10 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
 
         var entity = userRoleClaimRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Не найдено заявки на роль с id = " + id));
+        var role = roleRepository.findById(claimDto.getRoleId()).get();
+
         entity.setUserId(claimDto.getUserId());
-        entity.setRoleId(claimDto.getRoleId());
+        entity.setRole(role);
         entity.setStatus(claimDto.getStatus());
         entity.setUpdatedAt(Instant.now());
         return conversionService.convert(userRoleClaimRepository.save(entity), UserRoleClaimFull.class);
