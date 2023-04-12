@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.user;
 
+import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.model.user.User;
 
@@ -20,4 +21,10 @@ public interface UserService {
      *  Возвращает активного пользователя, если он есть
      */
     public User getActiveUserByLogin(String login);
+
+    /**
+     *
+     *  Возвращает информацию по пользователю, если он есть
+     */
+    UserInfoDto getUserInfo(Integer id);
 }

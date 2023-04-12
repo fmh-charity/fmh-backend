@@ -6,4 +6,5 @@ import ru.iteco.fmh.model.user.UserRoleClaim;
 
 @Repository
 public interface UserRoleClaimRepository extends JpaRepository<UserRoleClaim, Integer> {
+    UserRoleClaim findUserRoleClaimByUserId(Integer id);
 }
