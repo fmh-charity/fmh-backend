@@ -36,7 +36,7 @@ public class UserRoleClaim {
     @Column(name = "user_id")
     Integer userId;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
 

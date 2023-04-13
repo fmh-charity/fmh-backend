@@ -50,14 +50,12 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
         var userRoleClaim = userRoleClaimRepository.findByUserId(userId)
-                .stream().filter(el -> el.getStatus() == NEW).findFirst();
-        if (userRoleClaim.isEmpty()) {
-            throw new IncorrectDataException("У данного пользователя нет заявок на подтверждение роли");
-        }
-        user.getUserRoles().add(userRoleClaim.get().getRole());
-        userRoleClaim.get().setStatus(CONFIRMED);
+                .stream().filter(el -> el.getStatus() == NEW).findFirst()
+                .orElseThrow(() -> new IncorrectDataException("У данного пользователя нет заявок на подтверждение роли"));
+        user.getUserRoles().add(userRoleClaim.getRole());
+        userRoleClaim.setStatus(CONFIRMED);
         userRepository.save(user);
-        userRoleClaimRepository.save(userRoleClaim.get());
+        userRoleClaimRepository.save(userRoleClaim);
         return conversionService.convert(user, UserShortInfoDto.class);
     }
 }

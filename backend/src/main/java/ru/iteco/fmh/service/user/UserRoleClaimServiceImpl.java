@@ -35,10 +35,12 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
-
+        var role = roleRepository.findById(claimDto.getRoleId())
+                .orElseThrow(() -> new NotFoundException("Роли с таким id не существует"));
         UserRoleClaim entity = conversionService.convert(claimDto, UserRoleClaim.class);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(entity.getCreatedAt());
+        entity.setRole(role);
         return conversionService.convert(userRoleClaimRepository.save(entity), UserRoleClaimFull.class);
     }
 
