@@ -23,7 +23,7 @@ class UserRoleClaimShortToUserRoleClaimTest {
 
         assertAll(
                 () -> assertEquals(testDTO.getUserId(), actual.getUserId()),
-                () -> assertEquals(testDTO.getRoleId(), actual.getRoleId()),
+                () -> assertEquals(testDTO.getRoleId(), actual.getRole().getId()),
                 () -> assertEquals(testDTO.getStatus(), actual.getStatus()),
                 () -> assertNull(actual.getId()),
                 () -> assertNull(actual.getCreatedAt()),

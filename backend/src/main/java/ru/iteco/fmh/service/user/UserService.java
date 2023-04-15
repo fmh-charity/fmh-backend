@@ -20,4 +20,11 @@ public interface UserService {
      *  Возвращает активного пользователя, если он есть
      */
     public User getActiveUserByLogin(String login);
+
+
+    /**
+     *
+     *  Администратор подтверждает роль пользователя
+     */
+    UserShortInfoDto confirmUserRole(int userId);
 }

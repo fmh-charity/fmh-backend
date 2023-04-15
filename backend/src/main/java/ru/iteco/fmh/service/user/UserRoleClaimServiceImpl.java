@@ -35,10 +35,12 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
-
+        var role = roleRepository.findById(claimDto.getRoleId())
+                .orElseThrow(() -> new NotFoundException("Роли с таким id не существует"));
         UserRoleClaim entity = conversionService.convert(claimDto, UserRoleClaim.class);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(entity.getCreatedAt());
+        entity.setRole(role);
         return conversionService.convert(userRoleClaimRepository.save(entity), UserRoleClaimFull.class);
     }
 
@@ -62,8 +64,10 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
 
         var entity = userRoleClaimRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Не найдено заявки на роль с id = " + id));
+        var role = roleRepository.findById(claimDto.getRoleId()).get();
+
         entity.setUserId(claimDto.getUserId());
-        entity.setRoleId(claimDto.getRoleId());
+        entity.setRole(role);
         entity.setStatus(claimDto.getStatus());
         entity.setUpdatedAt(Instant.now());
         return conversionService.convert(userRoleClaimRepository.save(entity), UserRoleClaimFull.class);

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
@@ -47,12 +48,12 @@ class UserRoleClaimServiceImplTest {
         var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
         var claimConverted = new UserRoleClaim()
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED);
         var claim = new UserRoleClaim()
                 .setId(1000)
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(Instant.now())
                 .setUpdatedAt(Instant.now());
@@ -94,13 +95,13 @@ class UserRoleClaimServiceImplTest {
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())
                 .setUpdatedAt(Instant.now());
@@ -146,13 +147,13 @@ class UserRoleClaimServiceImplTest {
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
                 .setUserId(123)
-                .setRoleId(456)
+                .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())
                 .setUpdatedAt(Instant.now());
