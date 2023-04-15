@@ -11,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
@@ -100,7 +101,7 @@ public class WishServiceTest {
 
         Wish wish = conversionService.convert(wishCreationRequest, Wish.class);
         wish.setId(12);
-        wish.setCreator(getUser());
+        wish.setCreator(getUser(getProfile()));
         wish.setWishRoles(List.of());
         assertNotNull(wish);
 
@@ -155,7 +156,7 @@ public class WishServiceTest {
         // given
         int wishId = 1;
         Wish givenWish = getWish(OPEN);
-        User user = getUser();
+        User user = getUser(getProfile());
 
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
@@ -331,7 +332,7 @@ public class WishServiceTest {
     public void executeWishShouldThrowsException() {
         PermissionDeniedException thrown = Assertions.assertThrows(PermissionDeniedException.class, () -> {
             Wish wish = getWish(OPEN);
-            wish.setExecutors(Set.of(WishExecutor.builder().executor(getUser()).build()));
+            wish.setExecutors(Set.of(WishExecutor.builder().executor(getUser(getProfile())).build()));
             Mockito.when(wishRepository.findById(anyInt())).thenReturn(Optional.of(wish));
             Mockito.when(wishRepository.save(any())).thenReturn(wish);
             sut.executeWish(wish.getId());

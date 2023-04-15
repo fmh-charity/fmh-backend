@@ -39,10 +39,8 @@ public class WishRepositoryTest {
     public void testWriteSuccess() {
         patient = getPatient();
         patient = patientRepository.save(patient);
-        author = getUser();
-        userRepository.save(author);
-        doer = getUser();
-        userRepository.save(doer);
+        author =  userRepository.save(TestUtils.getUser(TestUtils.getProfile()));
+        doer = userRepository.save(TestUtils.getUser(TestUtils.getProfile()));
         entity = Wish.builder()
                 .description(TestUtils.getAlphabeticString())
                 .patient(patient)
@@ -51,7 +49,6 @@ public class WishRepositoryTest {
                 .factExecuteDate(null)
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
                 .status(Status.OPEN)
-
                 .build();
 
         entity = wishRepository.save(entity);
@@ -63,7 +60,6 @@ public class WishRepositoryTest {
                 .factExecuteDate(Instant.now())
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
                 .status(Status.EXECUTED)
-
                 .build();
 
         entity2 = wishRepository.save(entity2);
@@ -86,14 +82,6 @@ public class WishRepositoryTest {
                 .lastName(TestUtils.getAlphabeticString())
                 .middleName(TestUtils.getAlphabeticString())
                 .birthDate(LocalDate.now())
-                .build();
-    }
-
-    private User getUser() {
-        return User.builder()
-                .firstName(TestUtils.getAlphabeticString())
-                .lastName(TestUtils.getAlphabeticString())
-                .middleName(TestUtils.getAlphabeticString())
                 .build();
     }
 }

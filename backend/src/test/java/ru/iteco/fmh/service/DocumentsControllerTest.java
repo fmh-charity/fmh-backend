@@ -20,8 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.iteco.fmh.TestUtils.getDocumentCreationDtoRq;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 import ru.iteco.fmh.dao.repository.DocumentRepository;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
@@ -46,7 +45,7 @@ public class DocumentsControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         DocumentCreationDtoRq givenDto = getDocumentCreationDtoRq();
-        Document document = Document.builder().name(givenDto.getName()).description(givenDto.getDescription()).user(getUser()).build();
+        Document document = Document.builder().name(givenDto.getName()).description(givenDto.getDescription()).user(getUser(getProfile())).build();
         String givenDtoJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(givenDto);
         Mockito.when(documentRepository.save(Mockito.any())).thenReturn(document);
         mockMvc.perform(post("/documents").contentType(MediaType.APPLICATION_JSON).content(givenDtoJson))
@@ -58,7 +57,7 @@ public class DocumentsControllerTest {
     @Test
     public void getDocumentByIdShouldPassSuccess() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        Document document = Document.builder().id(2).name("Document").user(getUser()).build();
+        Document document = Document.builder().id(2).name("Document").user(getUser(getProfile())).build();
         Mockito.when(documentRepository.findById(Mockito.any())).thenReturn(Optional.of(document));
         mockMvc.perform(MockMvcRequestBuilders.get("/documents/{id}", document.getId()))
                 .andExpect(jsonPath("$.id").value(document.getId()))

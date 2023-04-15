@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getPatient;
-import static ru.iteco.fmh.TestUtils.getUser;
-import static ru.iteco.fmh.TestUtils.getWishDto;
+import static ru.iteco.fmh.TestUtils.*;
 
 class WishDtoToWishConverterTest {
 
@@ -28,7 +26,7 @@ class WishDtoToWishConverterTest {
     @Test
     void convert() {
         WishDto wishDto = getWishDto();
-        User user = getUser();
+        User user = getUser(getProfile());
         Patient patient = getPatient();
 
         user.setId(wishDto.getCreator().id());
