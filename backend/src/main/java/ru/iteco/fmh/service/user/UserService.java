@@ -1,6 +1,5 @@
 package ru.iteco.fmh.service.user;
 
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.model.user.User;
 
@@ -20,6 +19,12 @@ public interface UserService {
      *
      *  Возвращает активного пользователя, если он есть
      */
-    User getActiveUserByLogin(String login);
+    public User getActiveUserByLogin(String login);
 
+
+    /**
+     *
+     *  Администратор подтверждает роль пользователя
+     */
+    UserShortInfoDto confirmUserRole(int userId);
 }

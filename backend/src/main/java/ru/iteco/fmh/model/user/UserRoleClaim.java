@@ -35,8 +35,10 @@ public class UserRoleClaim {
 
     @Column(name = "user_id")
     Integer userId;
-    @Column(name = "role_id")
-    Integer roleId;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Role role;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
