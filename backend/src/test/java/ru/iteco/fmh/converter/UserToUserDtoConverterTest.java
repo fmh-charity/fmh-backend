@@ -28,7 +28,6 @@ public class UserToUserDtoConverterTest {
                 () -> assertEquals(userProfile.getLastName(), userDtoProfileDtoRs.getLastName()),
                 () -> assertEquals(userProfile.getMiddleName(), userDtoProfileDtoRs.getMiddleName()),
                 () -> assertEquals(user.getLogin(), userDto.getLogin()),
-                () -> assertEquals(user.getPassword(), userDto.getPassword()),
                 () -> assertEquals(userProfile.getEmail(), userDtoProfileDtoRs.getEmail())
         );
     }

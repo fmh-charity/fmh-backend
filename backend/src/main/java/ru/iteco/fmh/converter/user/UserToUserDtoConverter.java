@@ -21,6 +21,6 @@ public class UserToUserDtoConverter implements Converter<User, UserDto> {
     @Override
     public UserDto convert(@NonNull User user) {
         ProfileDtoRs userProfileDtoRs = profileToProfileDtoRsConverter.convert(user.getProfile());
-        return UserDto.builder().id(user.getId()).login(user.getLogin()).password(user.getPassword()).profile(userProfileDtoRs).build();
+        return UserDto.builder().id(user.getId()).login(user.getLogin()).profile(userProfileDtoRs).build();
     }
 }
