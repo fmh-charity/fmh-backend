@@ -22,6 +22,13 @@ public interface UserService {
      */
     public User getActiveUserByLogin(String login);
 
+
+    /**
+     *
+     *  Администратор подтверждает роль пользователя
+     */
+    UserShortInfoDto confirmUserRole(int userId);
+
     /**
      *
      *  Возвращает информацию по пользователю, если он есть

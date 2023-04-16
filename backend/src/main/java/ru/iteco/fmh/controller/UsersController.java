@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.UserInfoDto;
+import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
@@ -55,5 +56,13 @@ public class UsersController {
     @PostMapping("/verification-email")
     public void generateAndSendVerificationEmail() {
         verificationTokenService.generateAndSendVerificationEmail();
+    }
+
+    @Operation(summary = "Подтверждение роли пользователя")
+    @Secured("ROLE_ADMINISTRATOR")
+    @PostMapping("/{userId}/confirmRole")
+    public UserShortInfoDto confirmUserRole(@Parameter(description = "Идентификатор пользователя",
+            required = true) @PathVariable int userId) {
+        return userService.confirmUserRole(userId);
     }
 }

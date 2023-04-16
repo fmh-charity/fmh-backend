@@ -1,9 +1,8 @@
 package ru.iteco.fmh.converter;
 
 import org.junit.jupiter.api.Test;
-import ru.iteco.fmh.converter.user.UserRoleClaimShortToUserRoleClaim;
+import ru.iteco.fmh.TestUtils;
 import ru.iteco.fmh.converter.user.UserRoleClaimToUserRoleClaimFull;
-import ru.iteco.fmh.dto.user.UserRoleClaimShort;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.UserRoleClaim;
 
@@ -24,7 +23,7 @@ class UserRoleClaimToUserRoleClaimFullTest {
         var testEntity = new UserRoleClaim(
                 random.nextInt(5000),
                 random.nextInt(5000),
-                random.nextInt(5000),
+                TestUtils.getRole("ADMIN"),
                 RoleClaimStatus.NEW,
                 Instant.MAX,
                 Instant.now());
@@ -34,7 +33,7 @@ class UserRoleClaimToUserRoleClaimFullTest {
         assertAll(
                 () -> assertEquals(testEntity.getId(), actual.getId()),
                 () -> assertEquals(testEntity.getUserId(), actual.getUserId()),
-                () -> assertEquals(testEntity.getRoleId(), actual.getRoleId()),
+                () -> assertEquals(testEntity.getRole().getId(), actual.getRoleId()),
                 () -> assertEquals(testEntity.getStatus(), actual.getStatus()),
                 () -> assertEquals(testEntity.getCreatedAt(), actual.getCreatedAt()),
                 () -> assertEquals(testEntity.getUpdatedAt(), actual.getUpdatedAt())
