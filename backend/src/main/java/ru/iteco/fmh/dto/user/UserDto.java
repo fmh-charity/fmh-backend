@@ -20,13 +20,18 @@ public class UserDto {
     @Schema(name = "id", description = "Идентификатор пользователя")
     Integer id;
 
+    @Schema(name = "firstName", description = "Имя")
+    String firstName;
+
+    @Schema(name = "lastName", description = "Фамилия")
+    String lastName;
+
+    @Schema(name = "middleName", description = "Отчество")
+    String middleName;
+
     @Schema(name = "login", description = "Логин")
     String login;
 
-    @Schema(name = "password", description = "Пароль")
-    String password;
-
-    @Schema(name = "profile", description = "Профиль пользователя")
-    ProfileDtoRs profile;
-
+    @Schema(name = "email", description = "Электронная почта")
+    String email;
 }

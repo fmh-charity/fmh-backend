@@ -131,8 +131,10 @@ public class TestUtils {
         return UserDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
-                .password(getAlphabeticString())
-                .profile(profileDtoRs)
+                .firstName(profileDtoRs.getFirstName())
+                .lastName(profileDtoRs.getLastName())
+                .middleName(profileDtoRs.getMiddleName())
+                .email(profileDtoRs.getEmail())
                 .build();
     }
 

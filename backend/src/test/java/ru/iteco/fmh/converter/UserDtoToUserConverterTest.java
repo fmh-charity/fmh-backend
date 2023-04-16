@@ -18,8 +18,7 @@ public class UserDtoToUserConverterTest {
         User user = userDtoToUserConverter.convert(userDto);
         assertAll(
                 () -> assertEquals(userDto.getId(), user.getId()),
-                () -> assertEquals(userDto.getLogin(), user.getLogin()),
-                () -> assertEquals(userDto.getPassword(), user.getPassword())
+                () -> assertEquals(userDto.getLogin(), user.getLogin())
         );
     }
 }
