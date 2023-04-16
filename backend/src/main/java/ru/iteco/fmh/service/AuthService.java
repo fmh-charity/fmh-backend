@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.converter.user.UserToUserShortInfoDtoConverter;
+import ru.iteco.fmh.dao.repository.ProfileRepository;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -43,17 +44,17 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
-
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final RoleRepository roleRepository;
-
+    private final ProfileRepository profileRepository;
     private final ConversionService conversionService;
     private final UserToUserShortInfoDtoConverter userToUserShortInfoDtoConverter;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder encoder;
     private final UserRoleClaimService userRoleClaimService;
     private final UserService userService;
+    private static final List<String> availableToApplyRoles = List.of("ROLE_VOLUNTEER");
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -94,7 +95,6 @@ public class AuthService {
 
     }
 
-
     @Transactional
     public JwtResponse refreshToken(RefreshTokenRequest refreshToken) {
         Token token = tokenRepository.findTokenByRefreshToken(refreshToken.getRefreshToken());
@@ -130,9 +130,7 @@ public class AuthService {
             throw new UserExistsException("Пользователь с данным email уже существует");
         }
         User user = conversionService.convert(registrationRequest, User.class);
-
-        Optional<User> foundedUserByProfileEmail = userRepository.findUserByProfileEmail(registrationRequest.getEmail());
-        foundedUserByProfileEmail.ifPresent(value -> user.setProfile(value.getProfile()));
+        profileRepository.findByEmail(registrationRequest.getEmail()).ifPresent(profile -> user.setProfile(profile));
 
         List<Role> desiredRoles = roleRepository.findAllByIdIn(registrationRequest.getRoleIds());
         Set<Role> allowedRoles = getRolesListWithoutNeedConfirm(desiredRoles);
@@ -152,9 +150,8 @@ public class AuthService {
     }
 
     public void createRolesClaim(List<Role> roles, User user) {
-        final String availableRole = "ROLE_VOLUNTEER";
         Set<Role> rolesListWithNeedConfirm = roles.stream()
-                .filter(role -> role.isNeedConfirm() && role.getName().equals(availableRole)).collect(Collectors.toSet());
+                .filter(role -> role.isNeedConfirm() && availableToApplyRoles.contains(role.getName())).collect(Collectors.toSet());
         rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
                 UserRoleClaimShort.builder()
                         .roleId(role.getId())
@@ -176,8 +173,7 @@ public class AuthService {
     }
 
     public List<RoleDtoRs> getAvailableRoles() {
-        final String availableRole = "ROLE_VOLUNTEER";
-        return roleRepository.findAllByDeletedIsFalse().stream().filter(role -> role.getName().equals(availableRole))
-                .map(role -> conversionService.convert(role, RoleDtoRs.class)).toList();
+        return roleRepository.findAllByNeedConfirmIsTrueAndNameIn(availableToApplyRoles)
+                .stream().map(role -> conversionService.convert(role, RoleDtoRs.class)).collect(Collectors.toList());
     }
 }

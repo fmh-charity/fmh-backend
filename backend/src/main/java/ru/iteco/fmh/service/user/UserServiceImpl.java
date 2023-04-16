@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ConversionService conversionService;
-
 
     @Override
     public List<UserShortInfoDto> getAllUsers() {

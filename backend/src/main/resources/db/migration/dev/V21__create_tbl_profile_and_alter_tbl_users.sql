@@ -10,8 +10,8 @@ create table profile
     email_confirmed boolean not null default false
 );
 
-insert into profile(first_name, last_name, middle_name, email, deleted, date_of_birth, email_confirmed)
-select first_name, last_name, middle_name, email, deleted, date_of_birth, email_confirmed
+insert into profile(id, first_name, last_name, middle_name, email, deleted, date_of_birth, email_confirmed)
+select id, first_name, last_name, middle_name, email, deleted, date_of_birth, email_confirmed
 from users;
 
 alter table users

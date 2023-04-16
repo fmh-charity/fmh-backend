@@ -17,7 +17,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findUserByLogin(String login);
 
     List<User> findAll();
-
-    @Query(value = "SELECT u from User u inner join u.profile pr where pr.email = :userEmail")
-    Optional<User> findUserByProfileEmail(@Param("userEmail") String userEmail);
 }
