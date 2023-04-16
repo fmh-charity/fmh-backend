@@ -3,7 +3,7 @@ package ru.iteco.fmh.converter.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dto.user.UserEmailDto;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.model.user.Role;
@@ -19,22 +19,18 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class UserToUserInfoDtoConverter implements Converter<User, UserInfoDto> {
-    UserRoleClaimRepository userRoleClaimRepository;
-    UserRoleClaimToUserRoleClaimDtoConverter userRoleClaimToUserRoleClaimDtoConverter;
 
     @Override
     public UserInfoDto convert(@NonNull User source) {
         Set<Role> roles = source.getUserRoles();
-
-        UserInfoDto userInfoDto = new UserInfoDto();
-        userInfoDto.setId(source.getId());
-        userInfoDto.setFirstName(source.getFirstName());
-        userInfoDto.setLastName(source.getLastName());
-        userInfoDto.setMiddleName(source.getMiddleName());
-        userInfoDto.setAdmin(roles.stream().anyMatch(n -> n.getName().equals("ROLE_ADMINISTRATOR")));
-        userInfoDto.setEmail(UserEmailDto.builder().name(source.getEmail()).isConfirmed(source.isEmailConfirmed()).build());
-        userInfoDto.setRoles(roles.stream().map(Role::getName).collect(Collectors.toSet()));
-
-        return userInfoDto;
+        return UserInfoDto.builder()
+                .id(source.getId())
+                .firstName(source.getFirstName())
+                .lastName(source.getLastName())
+                .middleName(source.getMiddleName())
+                .isAdmin(Util.isAdmin(source))
+                .email(UserEmailDto.builder().name(source.getEmail()).isConfirmed(source.isEmailConfirmed()).build())
+                .roles(roles.stream().map(Role::getName).collect(Collectors.toSet()))
+                .build();
     }
 }

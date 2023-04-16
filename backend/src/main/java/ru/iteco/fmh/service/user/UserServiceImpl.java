@@ -13,7 +13,7 @@ import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.model.user.Role;
+import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
 
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     private final ConversionService conversionService;
-    private final UserRoleClaimRepository userRoleClaimRepository;
 
 
     @Override
@@ -76,18 +75,19 @@ public class UserServiceImpl implements UserService {
         }
 
         UserInfoDto userInfoDto = conversionService.convert(user, UserInfoDto.class);
-        assert userInfoDto != null;
 
+        UserRoleClaim userRoleClaim = userRoleClaimRepository.findFirstByUserIdAndStatusIn(id,
+                List.of(RoleClaimStatus.NEW, RoleClaimStatus.REJECTED));
         UserRoleClaimDto userRoleClaimDto;
-        UserRoleClaim userRoleClaim = userRoleClaimRepository.findUserRoleClaimByUserId(id);
         if (userRoleClaim != null) {
             userRoleClaimDto = conversionService.convert(userRoleClaim, UserRoleClaimDto.class);
-            assert userRoleClaimDto != null;
-            userRoleClaimDto.setRole(roleRepository.findById(userRoleClaim.getRoleId()).map(Role::getName).orElse(null));
+            userRoleClaimDto.setRole(userRoleClaim.getRole().getName());
             userInfoDto.setUserRoleClaim(userRoleClaimDto);
+            userInfoDto.setConfirmed(false);
         } else {
             userInfoDto.setConfirmed(true);
         }
+
         return userInfoDto;
     }
 }
