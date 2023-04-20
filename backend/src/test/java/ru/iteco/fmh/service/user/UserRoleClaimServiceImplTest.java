@@ -45,14 +45,15 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void create() {
+        var user = TestUtils.getUser();
         var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
         var claimConverted = new UserRoleClaim()
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED);
         var claim = new UserRoleClaim()
                 .setId(1000)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(Instant.now())
@@ -90,17 +91,18 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void updateWithDto() {
-        var id = 1000;
+        var user = TestUtils.getUser();
+        var id =1000;
         var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())
@@ -144,15 +146,16 @@ class UserRoleClaimServiceImplTest {
     @Test
     void updateWithStatus() {
         var id = 1000;
+        var user = TestUtils.getUser();
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())

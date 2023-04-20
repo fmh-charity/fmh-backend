@@ -1,13 +1,7 @@
 package ru.iteco.fmh.model.user;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
@@ -25,7 +19,6 @@ import java.time.Instant;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@ToString
 @Table(name = "user_role_claim")
 public class UserRoleClaim {
 
@@ -33,8 +26,9 @@ public class UserRoleClaim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "user_id")
-    Integer userId;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

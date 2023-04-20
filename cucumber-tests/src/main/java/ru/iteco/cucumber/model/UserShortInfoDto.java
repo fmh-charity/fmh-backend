@@ -28,5 +28,7 @@ public class UserShortInfoDto {
     private Set<String> roles;
     @JsonProperty("email")
     private UserEmailDto email;
+    @JsonProperty("isConfirmed")
+    private Boolean isConfirmed;
 
 }

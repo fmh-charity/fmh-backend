@@ -1,11 +1,12 @@
 package ru.iteco.fmh.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
-
-import javax.persistence.Column;
 
 import static lombok.AccessLevel.PRIVATE;
 

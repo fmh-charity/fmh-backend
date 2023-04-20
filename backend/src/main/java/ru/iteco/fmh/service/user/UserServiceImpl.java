@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
@@ -26,11 +27,26 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserShortInfoDto> getAllUsers() {
-        List<User> list = userRepository.findAll();
-        return list.stream()
-                .map(i -> conversionService.convert(i, UserShortInfoDto.class))
-                .collect(Collectors.toList());
+    public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
+        List<User> list;
+        if (showConfirmed == null) {
+            list = userRepository.findAll(pageRequest).getContent();
+        } else if (!showConfirmed) {
+            list = userRepository.findAllByRoleClaimIsNewOrRejected(pageRequest);
+        } else {
+            list = userRepository.findAllByRoleClaimIsConfirmedOrNull(pageRequest);
+        }
+        return list.stream().map(i -> {
+            if (i.getUserRoleClaim() == null || i.getUserRoleClaim().getStatus() == CONFIRMED) {
+                var user = conversionService.convert(i, UserShortInfoDto.class);
+                user.setIsConfirmed(true);
+                return user;
+            } else {
+                var user = conversionService.convert(i, UserShortInfoDto.class);
+                user.setIsConfirmed(false);
+                return user;
+            }
+        }).collect(Collectors.toList());
     }
 
     @Override

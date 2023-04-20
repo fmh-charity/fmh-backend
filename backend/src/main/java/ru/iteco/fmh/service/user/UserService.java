@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.user;
 
+import org.springframework.data.domain.PageRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.model.user.User;
 
@@ -13,18 +14,16 @@ public interface UserService {
     /**
      * возвращает список всех users
      */
-    List<UserShortInfoDto> getAllUsers();
+    List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed);
 
     /**
-     *
-     *  Возвращает активного пользователя, если он есть
+     * Возвращает активного пользователя, если он есть
      */
     public User getActiveUserByLogin(String login);
 
 
     /**
-     *
-     *  Администратор подтверждает роль пользователя
+     * Администратор подтверждает роль пользователя
      */
     UserShortInfoDto confirmUserRole(int userId);
 }

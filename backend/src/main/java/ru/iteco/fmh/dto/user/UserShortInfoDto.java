@@ -1,16 +1,15 @@
 package ru.iteco.fmh.dto.user;
 
-import static lombok.AccessLevel.PRIVATE;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.model.user.Role;
 
 import java.util.Set;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,4 +39,7 @@ public class UserShortInfoDto {
 
     @Schema(name = "email", description = "Электронная почта")
     UserEmailDto email;
+
+    @Schema(name = "isConfirmed", description = "Статус пользователя")
+    Boolean isConfirmed;
 }

@@ -22,7 +22,7 @@ class UserRoleClaimShortToUserRoleClaimTest {
         var actual = target.convert(testDTO);
 
         assertAll(
-                () -> assertEquals(testDTO.getUserId(), actual.getUserId()),
+                () -> assertEquals(testDTO.getUserId(), actual.getUser().getId()),
                 () -> assertEquals(testDTO.getRoleId(), actual.getRole().getId()),
                 () -> assertEquals(testDTO.getStatus(), actual.getStatus()),
                 () -> assertNull(actual.getId()),

@@ -1,6 +1,7 @@
 package ru.iteco.fmh.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -32,8 +36,14 @@ public class UsersController {
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Реестр всех пользователей ")
     @GetMapping
-    public List<UserShortInfoDto> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserShortInfoDto> getAllUsers(
+            @Parameter(name = "pages", description = "От 0")
+            @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
+            @Parameter(name = "elements", description = "От 1 до 200")
+            @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
+            @Parameter(name = "showConfirmed", description = "Сортировка по статусу пользователя")
+            @RequestParam(required = false) Boolean showConfirmed) {
+        return userService.getAllUsers(PageRequest.of(pages, elements), showConfirmed);
     }
 
     @Operation(summary = "Подтверждение Email пользователя")
