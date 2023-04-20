@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final ConversionService conversionService;
     private final UserRoleClaimRepository userRoleClaimRepository;
 
-
     @Override
     public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
         List<User> list;

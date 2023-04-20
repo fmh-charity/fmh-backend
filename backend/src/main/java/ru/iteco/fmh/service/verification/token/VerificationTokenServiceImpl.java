@@ -44,16 +44,16 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         }
 
         User userOnConfirmation = verificationToken.getUser();
-        userOnConfirmation.setEmailConfirmed(true);
+        userOnConfirmation.getProfile().setEmailConfirmed(true);
         userRepository.save(userOnConfirmation);
 
-        log.info("Email пользователя {} подтвержден.", userOnConfirmation.getEmail());
+        log.info("Email пользователя {} подтвержден.", userOnConfirmation.getProfile().getEmail());
     }
 
     public void generateAndSendVerificationEmail() {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
 
-        if (currentLoggedInUser.isEmailConfirmed()) {
+        if (currentLoggedInUser.getProfile().isEmailConfirmed()) {
             throw new UnavailableOperationException("Данный Email уже подтвержден");
         }
 
@@ -65,7 +65,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
             Если это письмо пришло вам по ошибке, просто проигнорируйте его.""".formatted(verificationUri);
 
         SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
-                .toAddress(currentLoggedInUser.getEmail())
+                .toAddress(currentLoggedInUser.getProfile().getEmail())
                 .fromAddress(emailFromAddress)
                 .senderName("Vhospice")
                 .subject("Подтверждение регистрации vhospice.org")

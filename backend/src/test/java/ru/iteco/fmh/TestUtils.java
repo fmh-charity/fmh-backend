@@ -7,6 +7,7 @@ import ru.iteco.fmh.dto.news.NewsDto;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.dto.patient.PatientDtoIdFio;
+import ru.iteco.fmh.dto.user.ProfileDtoRs;
 import ru.iteco.fmh.dto.user.UserDto;
 import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
@@ -19,6 +20,7 @@ import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
 import ru.iteco.fmh.model.news.News;
 import ru.iteco.fmh.model.news.NewsCategory;
+import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
@@ -75,7 +77,7 @@ public class TestUtils {
         return Wish.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .patient(getPatient())
-                .creator(getUser())
+                .creator(getUser(getProfile()))
                 .description(getAlphabeticString())
                 .createDate(Instant.now())
                 .planExecuteDate(Instant.now())
@@ -125,42 +127,54 @@ public class TestUtils {
         return patient;
     }
 
-    public static UserDto getUserDto() {
+    public static UserDto getUserDto(ProfileDtoRs profileDtoRs) {
         return UserDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
                 .login(getAlphabeticString())
-                .password(getAlphabeticString())
-                .phoneNumber(getAlphabeticString())
+                .firstName(profileDtoRs.getFirstName())
+                .lastName(profileDtoRs.getLastName())
+                .middleName(profileDtoRs.getMiddleName())
+                .email(profileDtoRs.getEmail())
                 .build();
     }
 
-    public static User getUser(Set<Role> roles) {
+    public static ProfileDtoRs getProfileDtoRs() {
+        return ProfileDtoRs.builder()
+                .firstName(getAlphabeticString())
+                .lastName(getAlphabeticString())
+                .middleName(getAlphabeticString())
+                .email(getAlphabeticString())
+                .dateOfBirth(LocalDate.now())
+                .build();
+    }
+
+    public static User getUser(Set<Role> roles, Profile profile) {
         return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
                 .password(getAlphabeticString())
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
-                .phoneNumber(getAlphabeticString())
-                .email(getAlphabeticString())
                 .userRoles(roles)
+                .profile(profile)
                 .build();
     }
 
-    public static User getUser() {
+    public static User getUser(Profile profile) {
         return User.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .login(getAlphabeticString())
                 .password(getAlphabeticString())
+                .profile(profile)
+                .build();
+    }
+
+    public static Profile getProfile() {
+        return Profile.builder()
+                .id(Integer.valueOf(getNumeric(2)))
                 .firstName(getAlphabeticString())
                 .lastName(getAlphabeticString())
                 .middleName(getAlphabeticString())
-                .phoneNumber(getAlphabeticString())
                 .email(getAlphabeticString())
+                .dateOfBirth(LocalDate.now())
                 .build();
     }
 
@@ -239,7 +253,7 @@ public class TestUtils {
                 .id(Integer.valueOf(getNumeric(2)))
                 .wish(getWish(wishStatus))
                 .description(getAlphabeticString())
-                .creator(getUser())
+                .creator(getUser(getProfile()))
                 .createDate(Instant.now())
                 .build();
     }
@@ -257,7 +271,7 @@ public class TestUtils {
     public static News getNews() {
         return News.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .creator(getUser())
+                .creator(getUser(getProfile()))
                 .newsCategory(getNewsCategory())
                 .createDate(Instant.now())
                 .title(getAlphabeticString())
@@ -329,15 +343,6 @@ public class TestUtils {
                 .build();
     }
 
-    public static Block getBlock() {
-        return Block.builder()
-                .id(Integer.valueOf(getNumeric(2)))
-                .name(getAlphabeticString())
-                .comment(getAlphabeticString())
-                .deleted(false)
-                .build();
-    }
-
     private static NurseStation getNurseStation() {
         return NurseStation.builder()
                 .id(Integer.valueOf(getNumeric(2)))
@@ -346,6 +351,7 @@ public class TestUtils {
                 .deleted(false)
                 .build();
     }
+
     public static DocumentCreationDtoRq getDocumentCreationDtoRq() {
         DocumentCreationDtoRq doc = DocumentCreationDtoRq.builder()
                 .name(getAlphabeticString())

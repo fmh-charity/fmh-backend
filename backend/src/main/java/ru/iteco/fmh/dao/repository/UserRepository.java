@@ -6,11 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.iteco.fmh.model.user.User;
 
-import java.util.List;
-
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
     User findUserById(Integer id);
 
     User findUserByLogin(String login);

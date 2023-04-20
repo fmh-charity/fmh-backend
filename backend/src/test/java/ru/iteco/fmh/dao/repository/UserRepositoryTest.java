@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
+import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.user.User;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -21,19 +24,23 @@ public class UserRepositoryTest {
 
     @Test
     public void testWriteSuccess() {
-        User entity = User.builder()
+        Profile profile = Profile.builder()
                 .firstName(TestUtils.getAlphabeticString())
                 .lastName(TestUtils.getAlphabeticString())
                 .middleName(TestUtils.getAlphabeticString())
+                .email(TestUtils.getAlphabeticString())
+                .dateOfBirth(LocalDate.now())
+                .build();
+        User entity = User.builder()
                 .login(TestUtils.getAlphabeticString())
                 .password(TestUtils.getAlphabeticString())
-                .password(TestUtils.getAlphabeticString())
-                .email(TestUtils.getAlphabeticString())
+                .profile(profile)
                 .deleted(false)
                 .build();
 
         entity = repository.save(entity);
         assertNotNull(entity.getId());
+        assertNotNull(entity.getProfile().getId());
         repository.delete(entity);
     }
 }

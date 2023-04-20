@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import ru.iteco.fmh.exceptions.NoRightsException;
+import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 
@@ -29,7 +30,8 @@ public class Util {
     }
 
     public static String getCreatorName(User user) {
-        return user.getLastName() + " " + user.getFirstName() + " " + user.getMiddleName();
+        Profile userProfile = user.getProfile();
+        return userProfile.getLastName() + " " + userProfile.getFirstName() + " " + userProfile.getMiddleName();
     }
 
     public static boolean checkUpdatePossibility(User userCreator) {
