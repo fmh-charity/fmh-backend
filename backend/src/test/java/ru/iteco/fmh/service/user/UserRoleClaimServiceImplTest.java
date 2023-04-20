@@ -45,7 +45,7 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void create() {
-        var user = TestUtils.getUser();
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
         var claimConverted = new UserRoleClaim()
                 .setUser(user)
@@ -91,7 +91,7 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void updateWithDto() {
-        var user = TestUtils.getUser();
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var id =1000;
         var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
         var claimFromDB = new UserRoleClaim()
@@ -146,7 +146,7 @@ class UserRoleClaimServiceImplTest {
     @Test
     void updateWithStatus() {
         var id = 1000;
-        var user = TestUtils.getUser();
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
                 .setUser(user)

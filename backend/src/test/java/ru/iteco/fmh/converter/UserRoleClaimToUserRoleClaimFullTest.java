@@ -19,7 +19,7 @@ class UserRoleClaimToUserRoleClaimFullTest {
     @Test
     void convert() {
         Random random = new Random();
-        var user = TestUtils.getUser();
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var testEntity = new UserRoleClaim(
                 random.nextInt(5000),
                 user,
