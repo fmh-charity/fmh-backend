@@ -13,8 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ru.iteco.fmh.TestUtils.getNews;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 public class NewsToNewsDtoConverterTest {
     UserRepository userRepository = mock(UserRepository.class);
@@ -25,7 +24,7 @@ public class NewsToNewsDtoConverterTest {
         // given
         News news = getNews();
 
-        User user = getUser();
+        User user = getUser(getProfile());
         user.setId(1);
         when(userRepository.findUserById(any())).thenReturn(user);
         NewsDto result = sut.convert(news);

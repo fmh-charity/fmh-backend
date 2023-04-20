@@ -35,14 +35,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     String login;
     String password;
-    String firstName;
-    String lastName;
-    String middleName;
-    String phoneNumber;
-    String email;
     boolean deleted;
-    boolean emailConfirmed;
-    LocalDate dateOfBirth;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
@@ -52,6 +45,10 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude
     List<Token> tokens;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    Profile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

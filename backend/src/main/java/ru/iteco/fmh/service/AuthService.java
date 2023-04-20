@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.iteco.fmh.Util;
 import ru.iteco.fmh.converter.user.UserToUserShortInfoDtoConverter;
+import ru.iteco.fmh.dao.repository.ProfileRepository;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.TokenRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -43,18 +44,17 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
-
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final RoleRepository roleRepository;
-
+    private final ProfileRepository profileRepository;
     private final ConversionService conversionService;
     private final UserToUserShortInfoDtoConverter userToUserShortInfoDtoConverter;
-
     private final JwtProvider jwtProvider;
     private final PasswordEncoder encoder;
     private final UserRoleClaimService userRoleClaimService;
     private final UserService userService;
+    private static final List<String> availableToApplyRoles = List.of("ROLE_VOLUNTEER");
 
     @Transactional
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -95,7 +95,7 @@ public class AuthService {
 
     }
 
-
+    @Transactional
     public JwtResponse refreshToken(RefreshTokenRequest refreshToken) {
         Token token = tokenRepository.findTokenByRefreshToken(refreshToken.getRefreshToken());
         if (token == null || token.isDisabled()) {
@@ -103,7 +103,6 @@ public class AuthService {
         }
         token.setDisabled(true);
         tokenRepository.save(token);
-
 
         User user = userRepository.findUserById(token.getUser().getId());
         String accessJwtToken = jwtProvider.generateAccessJwtToken(user);
@@ -120,24 +119,27 @@ public class AuthService {
         return new JwtResponse(accessJwtToken, refreshJwtToken);
     }
 
-    public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
-        User user = userRepository.findUserByLogin(authentication.getName());
-        return userToUserShortInfoDtoConverter.convert(user);
+    public UserShortInfoDto getAuthorizedUser() {
+        return userToUserShortInfoDtoConverter.convert(Util.getCurrentLoggedInUser());
     }
 
+    @Transactional
     public void userRegistration(RegistrationRequest registrationRequest) {
         User foundedUser = userRepository.findUserByLogin(registrationRequest.getEmail());
         if (foundedUser != null) {
             throw new UserExistsException("Пользователь с данным email уже существует");
         }
         User user = conversionService.convert(registrationRequest, User.class);
+        profileRepository.findByEmail(registrationRequest.getEmail()).ifPresent(profile -> user.setProfile(profile));
+
         List<Role> desiredRoles = roleRepository.findAllByIdIn(registrationRequest.getRoleIds());
         Set<Role> allowedRoles = getRolesListWithoutNeedConfirm(desiredRoles);
+
         user.setPassword(encoder.encode(registrationRequest.getPassword()));
         user.setUserRoles(allowedRoles);
         User dbUser = userRepository.save(user);
         createRolesClaim(desiredRoles, dbUser);
-        LOGGER.info(String.format("Пользователь с логином %s успешно зарегистрирован", dbUser.getEmail()));
+        LOGGER.info(String.format("Пользователь с логином %s успешно зарегистрирован", dbUser.getProfile().getEmail()));
     }
 
     public Set<Role> getRolesListWithoutNeedConfirm(List<Role> roles) {
@@ -148,7 +150,8 @@ public class AuthService {
     }
 
     public void createRolesClaim(List<Role> roles, User user) {
-        Set<Role> rolesListWithNeedConfirm = roles.stream().filter(Role::isNeedConfirm).collect(Collectors.toSet());
+        Set<Role> rolesListWithNeedConfirm = roles.stream()
+                .filter(role -> role.isNeedConfirm() && availableToApplyRoles.contains(role.getName())).collect(Collectors.toSet());
         rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
                 UserRoleClaimShort.builder()
                         .roleId(role.getId())
@@ -161,7 +164,7 @@ public class AuthService {
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
         String login = resetPasswordRequest.getLogin();
         User user = userService.getActiveUserByLogin(login);
-        if (!user.isEmailConfirmed()) {
+        if (!user.getProfile().isEmailConfirmed()) {
             throw new UnavailableOperationException("Email не подтверждён!");
         }
         String password = encoder.encode(resetPasswordRequest.getPassword());
@@ -170,7 +173,7 @@ public class AuthService {
     }
 
     public List<RoleDtoRs> getAvailableRoles() {
-        return roleRepository.findAllByDeletedIsFalse().stream()
-                .map(role -> conversionService.convert(role, RoleDtoRs.class)).toList();
+        return roleRepository.findAllByNeedConfirmIsTrueAndNameIn(availableToApplyRoles)
+                .stream().map(role -> conversionService.convert(role, RoleDtoRs.class)).collect(Collectors.toList());
     }
 }

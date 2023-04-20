@@ -292,6 +292,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
+    @Transactional
     public WishDto executeWish(int wishId) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new NotFoundException("Просьбы с таким ID не существует"));
