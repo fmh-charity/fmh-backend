@@ -14,8 +14,7 @@ import java.time.Instant;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static ru.iteco.fmh.TestUtils.getUser;
-import static ru.iteco.fmh.TestUtils.getWish;
+import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 
 @RunWith(SpringRunner.class)
@@ -31,7 +30,7 @@ public class WishCommentRepositoryTest {
     public void saveToRepositoryTestShouldPassSuccess() {
         Wish wish = getWish(OPEN);
         wish.setId(1);
-        User user = getUser();
+        User user = getUser(getProfile());
         user.setId(1);
 
         testEntity1 = WishComment.builder()

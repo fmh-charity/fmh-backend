@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
 
     private final ConversionService conversionService;
 
-
     @Override
     public List<UserShortInfoDto> getAllUsers() {
         List<User> list = userRepository.findAll();

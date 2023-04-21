@@ -32,8 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.mock;
-import static ru.iteco.fmh.TestUtils.getNews;
-import static ru.iteco.fmh.TestUtils.getUser;
+import static ru.iteco.fmh.TestUtils.*;
 
 
 @RunWith(SpringRunner.class)
@@ -57,7 +56,7 @@ public class NewsServiceTest {
         Pageable pageableList = PageRequest.of(0, 9, Sort.by("publishDate"));
         Page<News> pageableResult = new PageImpl<>(newsList, pageableList, 8);
         User userAdmin = getUser(Set.of(Role.builder().id(1)
-                .name("ROLE_ADMINISTRATOR").deleted(false).build()));
+                .name("ROLE_ADMINISTRATOR").deleted(false).build()), getProfile());
 
         when(userRepository.findUserById(any())).thenReturn(userAdmin);
         List<NewsDto> expected = newsList.stream()
@@ -84,7 +83,7 @@ public class NewsServiceTest {
         Pageable pageableList = PageRequest.of(0, 9, Sort.by("publishDate"));
         Page<News> pageableResult = new PageImpl<>(newsList, pageableList, 8);
         User userMedic = getUser(Set.of(Role.builder().id(2)
-                .name("ROLE_MEDICAL_WORKER").deleted(false).build()));
+                .name("ROLE_MEDICAL_WORKER").deleted(false).build()), getProfile());
 
         when(userRepository.findUserById(any())).thenReturn(userMedic);
         when(userRepository.findUserByLogin(any())).thenReturn(userMedic);
@@ -108,7 +107,7 @@ public class NewsServiceTest {
         // given
         int newsId = 10;
         News news = getNews();
-        User user= getUser(Set.of(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()));
+        User user= getUser(Set.of(Role.builder().id(1).name("ROLE_ADMINISTRATOR").deleted(false).build()), getProfile());
 
         when(userRepository.findUserById(any())).thenReturn(user);
 
@@ -127,7 +126,7 @@ public class NewsServiceTest {
     public void createOrUpdateNewsShouldPassSuccess() {
         // given
         News news = getNews();
-        User user = getUser();
+        User user = getUser(getProfile());
         when(userRepository.findUserById(any())).thenReturn(user);
 
         Authentication authentication = mock(Authentication.class);

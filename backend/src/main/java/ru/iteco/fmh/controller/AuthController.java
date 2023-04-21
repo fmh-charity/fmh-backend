@@ -14,8 +14,6 @@ import ru.iteco.fmh.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,10 +47,9 @@ public class AuthController {
     }
 
     @Operation(summary = "Получение текущего авторизованного пользователя")
-    @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @GetMapping("userInfo")
-    public UserShortInfoDto getAuthorizedUser(Authentication authentication) {
-        return authService.getAuthorizedUser(authentication);
+    public UserShortInfoDto getAuthorizedUser() {
+        return authService.getAuthorizedUser();
     }
 
     @Operation(summary = "Регистрация пользователя")

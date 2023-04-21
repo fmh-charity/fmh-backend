@@ -43,7 +43,7 @@ public class NewsControllerTest {
         List<String> expected = Stream.of("news-title1", "news-title8", "news-title7",
                 "news-title5", "news-title4", "news-title3", "news-title2", "news-title9", "news-title6")
                 .sorted().collect(Collectors.toList());
-        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_ADMINISTRATOR"))));
+        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_ADMINISTRATOR")), getProfile()));
         List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
         assertEquals(expected, result);
@@ -54,7 +54,7 @@ public class NewsControllerTest {
         //given
         List<String> expected = Stream.of("news-title1", "news-title2", "news-title3", "news-title4",
                 "news-title5", "news-title6", "news-title7", "news-title8").sorted().collect(Collectors.toList());
-        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_MEDICAL_WORKER"))));
+        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_MEDICAL_WORKER")), getProfile()));
 
         List<String> result = Objects.requireNonNull(sut.getNews(0, 9, true, null, null, null)
                         .getBody()).getElements().stream().map(NewsDto::getTitle).sorted().collect(Collectors.toList());
@@ -88,7 +88,7 @@ public class NewsControllerTest {
     public void getNewsShouldPassSuccess() {
         // given
         int newsId = 1;
-        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_ADMINISTRATOR"))));
+        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_ADMINISTRATOR")), getProfile()));
         NewsDto expected = conversionService.convert(newsRepository.findById(newsId).get(), NewsDto.class);
         NewsDto result = sut.getNews(newsId);
 
@@ -98,8 +98,8 @@ public class NewsControllerTest {
     @Test
     public void getNewsShouldThrowException() {
         // given
-        int newsId = 10;
-        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_GUEST"))));
+        int newsId = 9;
+        RequestContext.setCurrentUser(getUser(Set.of(getRole("ROLE_MEDICAL_WORKER")), getProfile()));
         assertThrows(NoRightsException.class, () -> sut.getNews(newsId));
     }
 

@@ -28,7 +28,7 @@ public class NewsDtoToNewsConverterTest {
         NewsDto newsDto = getNewsDtowithDateAndUser();
         newsDto.setNewsCategoryId(1);
         newsDto.setCreatorId(1);
-        User user = getUser();
+        User user = getUser(getProfile());
         user.setId(1);
         NewsCategory newsCategory = getNewsCategory();
         newsCategory.setId(1);
