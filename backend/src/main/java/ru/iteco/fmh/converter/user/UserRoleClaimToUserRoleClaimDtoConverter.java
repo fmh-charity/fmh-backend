@@ -18,8 +18,9 @@ public class UserRoleClaimToUserRoleClaimDtoConverter implements Converter<UserR
     public UserRoleClaimDto convert(UserRoleClaim source) {
         return UserRoleClaimDto.builder()
                 .id(source.getId())
-                .createdAt(source.getCreatedAt())
+                .role(source.getRole().getName())
                 .status(source.getStatus())
+                .createdAt(source.getCreatedAt())
                 .build();
     }
 }

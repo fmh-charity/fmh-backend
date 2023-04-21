@@ -25,11 +25,12 @@ public class UserToUserInfoDtoConverter implements Converter<User, UserInfoDto> 
         Set<Role> roles = source.getUserRoles();
         return UserInfoDto.builder()
                 .id(source.getId())
-                .firstName(source.getFirstName())
-                .lastName(source.getLastName())
-                .middleName(source.getMiddleName())
+                .firstName(source.getProfile().getFirstName())
+                .lastName(source.getProfile().getLastName())
+                .middleName(source.getProfile().getMiddleName())
                 .isAdmin(Util.isAdmin(source))
-                .email(UserEmailDto.builder().name(source.getEmail()).isConfirmed(source.isEmailConfirmed()).build())
+                .email(UserEmailDto.builder().name(source.getProfile().getEmail())
+                        .isConfirmed(source.getProfile().isEmailConfirmed()).build())
                 .roles(roles.stream().map(Role::getName).collect(Collectors.toSet()))
                 .build();
     }

@@ -77,10 +77,8 @@ public class UserServiceImpl implements UserService {
 
         UserRoleClaim userRoleClaim = userRoleClaimRepository.findFirstByUserIdAndStatusIn(id,
                 List.of(RoleClaimStatus.NEW, RoleClaimStatus.REJECTED));
-        UserRoleClaimDto userRoleClaimDto;
         if (userRoleClaim != null) {
-            userRoleClaimDto = conversionService.convert(userRoleClaim, UserRoleClaimDto.class);
-            userRoleClaimDto.setRole(userRoleClaim.getRole().getName());
+            UserRoleClaimDto userRoleClaimDto = conversionService.convert(userRoleClaim, UserRoleClaimDto.class);
             userInfoDto.setUserRoleClaim(userRoleClaimDto);
             userInfoDto.setConfirmed(false);
         } else {
