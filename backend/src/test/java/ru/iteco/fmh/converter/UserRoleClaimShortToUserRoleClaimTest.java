@@ -18,7 +18,7 @@ import static ru.iteco.fmh.TestUtils.*;
 class UserRoleClaimShortToUserRoleClaimTest {
     RoleRepository roleRepository = mock(RoleRepository.class);
 
-    UserRoleClaimShortToUserRoleClaim target = new UserRoleClaimShortToUserRoleClaim(roleRepository);
+    UserRoleClaimShortToUserRoleClaim target = new UserRoleClaimShortToUserRoleClaim();
 
     @Test
     void convert() {
@@ -29,31 +29,16 @@ class UserRoleClaimShortToUserRoleClaimTest {
 
         var actual = target.convert(testDTO);
 
+        assert actual != null;
+        actual.setRole(roleRepository.findRoleById(testDTO.getRoleId()));
+
         assertAll(
-                () -> {
-                    assert actual != null;
-                    assertEquals(testDTO.getUserId(), actual.getUserId());
-                },
-                () -> {
-                    assert actual != null;
-                    assertEquals(testDTO.getRoleId(), actual.getRole().getId());
-                },
-                () -> {
-                    assert actual != null;
-                    assertEquals(testDTO.getStatus(), actual.getStatus());
-                },
-                () -> {
-                    assert actual != null;
-                    assertNull(actual.getId());
-                },
-                () -> {
-                    assert actual != null;
-                    assertNull(actual.getCreatedAt());
-                },
-                () -> {
-                    assert actual != null;
-                    assertNull(actual.getUpdatedAt());
-                }
+                () -> assertEquals(testDTO.getUserId(), actual.getUserId()),
+                () -> assertEquals(testDTO.getRoleId(), actual.getRole().getId()),
+                () -> assertEquals(testDTO.getStatus(), actual.getStatus()),
+                () -> assertNull(actual.getId()),
+                () -> assertNull(actual.getCreatedAt()),
+                () -> assertNull(actual.getUpdatedAt())
         );
     }
 }
