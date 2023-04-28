@@ -14,6 +14,8 @@ import ru.iteco.fmh.model.user.User;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.model.user.RoleClaimStatus.CONFIRMED;
+
 @Component
 @RequiredArgsConstructor
 public class UserToUserShortInfoDtoConverter implements Converter<User, UserShortInfoDto> {
@@ -25,8 +27,7 @@ public class UserToUserShortInfoDtoConverter implements Converter<User, UserShor
         boolean isAdmin = Util.isAdmin(user);
         Set<String> userRoleNames = userRoles.stream().map(Role::getName).collect(Collectors.toSet());
         UserEmailDto userEmailDto = UserEmailDto.builder().name(userProfile.getEmail()).isConfirmed(userProfile.isEmailConfirmed()).build();
-
-        return UserShortInfoDto.builder()
+        var userShort = UserShortInfoDto.builder()
                 .id(user.getId())
                 .lastName(userProfile.getLastName())
                 .firstName(userProfile.getFirstName())
@@ -35,5 +36,7 @@ public class UserToUserShortInfoDtoConverter implements Converter<User, UserShor
                 .email(userEmailDto)
                 .roles(userRoleNames)
                 .build();
+        userShort.setIsConfirmed(user.getUserRoleClaim() == null || user.getUserRoleClaim().getStatus() == CONFIRMED);
+        return userShort;
     }
 }

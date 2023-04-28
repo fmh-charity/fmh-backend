@@ -46,7 +46,6 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
         entity.setUpdatedAt(entity.getCreatedAt());
         entity.setRole(role);
         entity.setUser(user);
-        user.setUserRoleClaim(entity);
         userRoleClaimRepository.save(entity);
         return conversionService.convert(entity, UserRoleClaimFull.class);
     }

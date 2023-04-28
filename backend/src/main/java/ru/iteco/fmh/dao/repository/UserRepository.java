@@ -16,9 +16,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findAll();
 
-    @Query(value = "SELECT  w from User w inner join w.userRoleClaim wr where wr.status='NEW'or wr.status='REJECTED'")
+    @Query(value = "SELECT  w from User w left join w.userRoleClaim wr where wr.status='NEW'or wr.status='REJECTED'")
     List<User> findAllByRoleClaimIsNewOrRejected(PageRequest pageRequest);
 
-    @Query(value = "SELECT  w from User w inner join w.userRoleClaim wr where wr.status='CONFIRMED'or wr.status='null'")
+    @Query(value = "SELECT  w from User w left join w.userRoleClaim wr where wr.status='CONFIRMED'or wr.status='null'")
     List<User> findAllByRoleClaimIsConfirmedOrNull(PageRequest pageRequest);
 }

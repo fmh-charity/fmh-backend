@@ -27,25 +27,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
-        List<User> list;
         if (showConfirmed == null) {
-            list = userRepository.findAll(pageRequest).getContent();
+            return userRepository.findAll(pageRequest).getContent().stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
         } else if (!showConfirmed) {
-            list = userRepository.findAllByRoleClaimIsNewOrRejected(pageRequest);
+            return userRepository.findAllByRoleClaimIsNewOrRejected(pageRequest).stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
         } else {
-            list = userRepository.findAllByRoleClaimIsConfirmedOrNull(pageRequest);
+            return userRepository.findAllByRoleClaimIsConfirmedOrNull(pageRequest).stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
         }
-        return list.stream().map(i -> {
-            if (i.getUserRoleClaim() == null || i.getUserRoleClaim().getStatus() == CONFIRMED) {
-                var user = conversionService.convert(i, UserShortInfoDto.class);
-                user.setIsConfirmed(true);
-                return user;
-            } else {
-                var user = conversionService.convert(i, UserShortInfoDto.class);
-                user.setIsConfirmed(false);
-                return user;
-            }
-        }).collect(Collectors.toList());
     }
 
     @Override
