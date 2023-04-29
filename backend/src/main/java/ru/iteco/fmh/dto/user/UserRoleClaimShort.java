@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
+import ru.iteco.fmh.model.user.User;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,7 +23,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class UserRoleClaimShort {
 
     @Schema(name = "userId", description = "Идентификатор пользователя")
-    Integer userId;
+    User user;
     @Schema(name = "roleId", description = "Идентификатор роли")
     Integer roleId;
     @Schema(name = "status", description = "Статус заявки на роль пользователя")

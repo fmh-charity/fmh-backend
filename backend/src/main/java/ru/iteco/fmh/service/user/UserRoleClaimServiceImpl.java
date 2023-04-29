@@ -31,21 +31,16 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
     @Transactional
     public UserRoleClaimFull create(UserRoleClaimShort claimDto) {
 
-        if (!userRepository.existsById(claimDto.getUserId())) {
-            throw new NotFoundException("Не найден пользователь с id = " + claimDto.getUserId());
-        }
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
         var role = roleRepository.findById(claimDto.getRoleId())
                 .orElseThrow(() -> new NotFoundException("Роли с таким id не существует"));
         UserRoleClaim entity = conversionService.convert(claimDto, UserRoleClaim.class);
-        var user = userRepository.findById(claimDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Ползователя с таким id не существует"));
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(entity.getCreatedAt());
         entity.setRole(role);
-        entity.setUser(user);
+        entity.setUser(claimDto.getUser());
         userRoleClaimRepository.save(entity);
         return conversionService.convert(entity, UserRoleClaimFull.class);
     }
@@ -61,19 +56,14 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
 
     @Override
     public UserRoleClaimFull update(int id, UserRoleClaimShort claimDto) {
-        if (!userRepository.existsById(claimDto.getUserId())) {
-            throw new NotFoundException("Не найден пользователь с id = " + claimDto.getUserId());
-        }
+
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
-
         var entity = userRoleClaimRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Не найдено заявки на роль с id = " + id));
         var role = roleRepository.findById(claimDto.getRoleId()).get();
-        var user = userRepository.findById(claimDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Ползователя с таким id не существует"));
-        entity.setUser(user);
+        entity.setUser(claimDto.getUser());
         entity.setRole(role);
         entity.setStatus(claimDto.getStatus());
         entity.setUpdatedAt(Instant.now());
