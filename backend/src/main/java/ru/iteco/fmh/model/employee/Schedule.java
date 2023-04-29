@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 
 @Builder
 @ToString
@@ -32,6 +33,9 @@ public class Schedule {
 
     @Column(name = "employment_type")
     EmploymentType employmentType;
+
+    @Column(name = "week")
+    int week;
 
     @Column(name = "month")
     Month month;

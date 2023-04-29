@@ -10,14 +10,14 @@ comment on column positions.position_name is 'Наименование долж�
 create table if not exists employees
 (
     id                  serial primary key,
-    positions_id        int not null references positions,
+    positions_id        int     not null references positions,
     description         varchar,
-    active              boolean not null ,
+    active              boolean not null,
     schedule_type       varchar,
     work_start_time     time,
     work_end_time       time,
     schedule_start_date date,
-    profile_id          int not null references profile
+    profile_id          int     not null references profile
 );
 comment on table employees is 'Сотрудники';
 comment on column employees.id is 'id в системе';
@@ -33,13 +33,14 @@ comment on column employees.profile_id is 'id профиля';
 create table if not exists schedule
 (
     id              serial primary key,
-    employee_id     int not null references employees,
+    employee_id     int         not null references employees,
+    week            int         not null,
     month           varchar(20) not null,
     year            int         not null,
-    date            date not null ,
+    date            date        not null,
     work_start_time time,
     work_end_time   time,
-    employment_type varchar not null
+    employment_type varchar     not null
 );
 comment on table schedule is 'График работы';
 comment on column schedule.id is 'id в системе';
@@ -53,3 +54,5 @@ comment on column schedule.employment_type is 'Тип занятости';
 
 create index employee_month_year_index
     on schedule (employee_id, month, year);
+create index week_year_index
+    on schedule (week, year);

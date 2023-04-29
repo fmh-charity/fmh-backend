@@ -10,7 +10,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Builder
-@ToString
 @Getter
 @Setter
 @NoArgsConstructor
