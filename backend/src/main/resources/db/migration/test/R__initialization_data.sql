@@ -114,3 +114,7 @@ values (1, 'document1', 'description1', false, 'NEW', '01/01/2023', '/documents/
        (11, 'document11', 'description11', false, 'PUBLISHED', '03/02/2023', '/documents/document11.doc', 4),
        (12, 'document12', 'description12', false, 'PUBLISHED', '03/02/2023', '/documents/document12.doc', 4),
        (13, 'document13', 'description13', false, 'PUBLISHED', '03/02/2023', '/documents/document13.doc', 4);
+
+insert into user_role_claim(id, user_id, role_id, status, created_at, updated_at)
+values (1, 3, 1, 'NEW', '03/02/2023', '03/02/2023'),
+       (2, 4, 4, 'CONFIRMED', '01/02/2023', '03/02/2023');

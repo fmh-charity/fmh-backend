@@ -13,7 +13,6 @@ import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.model.Block;
 import ru.iteco.fmh.model.NurseStation;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
@@ -67,9 +66,11 @@ public class TestUtils {
 
     public static Role getRole(String roleName) {
         return Role.builder()
-                .id(Integer.valueOf(getNumeric(2)))
+                .id(1)
                 .name(roleName)
                 .deleted(false)
+                .description(getAlphabeticString())
+                .needConfirm(true)
                 .build();
     }
 

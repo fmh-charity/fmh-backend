@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.user.UserInfoDto;
+import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
@@ -34,6 +36,14 @@ public class UsersController {
     @GetMapping
     public List<UserShortInfoDto> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "получение информации о пользователе по id")
+    @GetMapping("/{userId}")
+    public UserInfoDto getUserInfo(@Parameter (description = "Идентификатор пользователя", required = true)
+                                       @PathVariable("userId") int userId) {
+        return userService.getUserInfo(userId);
     }
 
     @Operation(summary = "Подтверждение Email пользователя")
