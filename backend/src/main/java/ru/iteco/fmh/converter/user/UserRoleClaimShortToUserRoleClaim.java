@@ -2,7 +2,6 @@ package ru.iteco.fmh.converter.user;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.iteco.fmh.dto.user.UserRoleClaimShort;
@@ -17,8 +16,9 @@ public class UserRoleClaimShortToUserRoleClaim implements Converter<UserRoleClai
 
     @Override
     public UserRoleClaim convert(@NonNull UserRoleClaimShort claimDto) {
-        var claim = new UserRoleClaim();
-        BeanUtils.copyProperties(claimDto, claim);
-        return claim;
+        return UserRoleClaim.builder()
+                .userId(claimDto.getUserId())
+                .status(claimDto.getStatus())
+                .build();
     }
 }
