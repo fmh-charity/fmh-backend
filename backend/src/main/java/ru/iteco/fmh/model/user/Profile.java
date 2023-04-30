@@ -2,6 +2,8 @@ package ru.iteco.fmh.model.user;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "profile")
+@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE profile SET deleted = true WHERE id=?")
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

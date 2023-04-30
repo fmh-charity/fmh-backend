@@ -18,8 +18,6 @@ import static ru.iteco.fmh.TestUtils.getPatient;
 public class PatientToPatientDtoConverterTest {
     @InjectMocks
     PatientToPatientDtoConverter patientToPatientDtoConverter;
-    @Mock
-    RoomEntityToRoomDtoRsConverter roomEntityToRoomDtoRsConverter;
 
     @Test
     void convert() {
@@ -27,10 +25,10 @@ public class PatientToPatientDtoConverterTest {
         PatientDto patientDto = patientToPatientDtoConverter.convert(patient);
         assertAll(
                 () -> assertEquals(patient.getId(), patientDto.getId()),
-                () -> assertEquals(patient.getFirstName(), patientDto.getFirstName()),
-                () -> assertEquals(patient.getLastName(), patientDto.getLastName()),
-                () -> assertEquals(patient.getMiddleName(), patientDto.getMiddleName()),
-                () -> assertEquals(patient.getBirthDate(), patientDto.getBirthDate())
+                () -> assertEquals(patient.getProfile().getFirstName(), patientDto.getFirstName()),
+                () -> assertEquals(patient.getProfile().getLastName(), patientDto.getLastName()),
+                () -> assertEquals(patient.getProfile().getMiddleName(), patientDto.getMiddleName()),
+                () -> assertEquals(patient.getProfile().getDateOfBirth(), patientDto.getBirthDate())
         );
     }
 }

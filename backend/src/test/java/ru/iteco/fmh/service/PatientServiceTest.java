@@ -80,15 +80,15 @@ public class PatientServiceTest {
 
         PatientUpdateInfoDtoRq given = PatientUpdateInfoDtoRq.builder()
                 .firstName("PatientSixFirstname")
-                .lastName(patient.getLastName())
-                .middleName(patient.getMiddleName())
-                .birthDate(patient.getBirthDate())
+                .lastName(patient.getProfile().getLastName())
+                .middleName(patient.getProfile().getMiddleName())
+                .birthDate(patient.getProfile().getDateOfBirth())
                 .status(patient.getStatus())
                 .build();
         PatientUpdateInfoDtoRs result = sut.updatePatient(patient.getId(), given);
 
         assertEquals(given.getFirstName(), result.getFirstName());
-        assertNotEquals(patient.getFirstName(), result.getFirstName());
+        assertNotEquals(patient.getProfile().getFirstName(), result.getFirstName());
     }
 
     @Test
@@ -117,20 +117,16 @@ public class PatientServiceTest {
     private Patient getAdmissionPatient(PatientStatus patientStatus) {
         return Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .profile(getProfile())
                 .status(patientStatus)
                 .build();
     }
 
     private Patient getEmptyAdmissionPatient() {
         return Patient.builder()
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .id(Integer.valueOf(getNumeric(2)))
+                .deleted(false)
+                .profile(getProfile())
                 .build();
     }
 }

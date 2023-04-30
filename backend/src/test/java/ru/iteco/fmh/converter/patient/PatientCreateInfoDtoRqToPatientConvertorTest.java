@@ -50,10 +50,10 @@ class PatientCreateInfoDtoRqToPatientConvertorTest {
         Patient patient = convertor.convert(dtoRq);
         assertAll(
                 () -> assertNotNull(patient),
-                () -> assertEquals(dtoRq.getFirstName(), patient.getFirstName()),
-                () -> assertEquals(dtoRq.getLastName(), patient.getLastName()),
-                () -> assertEquals(dtoRq.getMiddleName(), patient.getMiddleName()),
-                () -> assertEquals(dtoRq.getBirthDate(), patient.getBirthDate()),
+                () -> assertEquals(dtoRq.getFirstName(), patient.getProfile().getFirstName()),
+                () -> assertEquals(dtoRq.getLastName(), patient.getProfile().getLastName()),
+                () -> assertEquals(dtoRq.getMiddleName(), patient.getProfile().getMiddleName()),
+                () -> assertEquals(dtoRq.getBirthDate(), patient.getProfile().getDateOfBirth()),
                 () -> assertEquals(dtoRq.getStatus(), patient.getStatus()),
                 () -> assertEquals(dtoRq.getRoomId(), patient.getRoom().getId()),
                 () -> assertEquals(dtoRq.getDateIn(), patient.getFactDateIn()),
@@ -83,10 +83,10 @@ class PatientCreateInfoDtoRqToPatientConvertorTest {
         Patient patient = convertor.convert(dtoRq);
         assertAll(
                 () -> assertNotNull(patient),
-                () -> assertEquals(dtoRq.getFirstName(), patient.getFirstName()),
-                () -> assertEquals(dtoRq.getLastName(), patient.getLastName()),
-                () -> assertEquals(dtoRq.getMiddleName(), patient.getMiddleName()),
-                () -> assertEquals(dtoRq.getBirthDate(), patient.getBirthDate()),
+                () -> assertEquals(dtoRq.getFirstName(), patient.getProfile().getFirstName()),
+                () -> assertEquals(dtoRq.getLastName(), patient.getProfile().getLastName()),
+                () -> assertEquals(dtoRq.getMiddleName(), patient.getProfile().getMiddleName()),
+                () -> assertEquals(dtoRq.getBirthDate(), patient.getProfile().getDateOfBirth()),
                 () -> assertEquals(dtoRq.getStatus(), patient.getStatus()),
                 () -> assertEquals(dtoRq.getRoomId(), patient.getRoom().getId()),
                 () -> assertEquals(dtoRq.getDateIn(), patient.getPlanDateIn()),

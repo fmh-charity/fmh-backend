@@ -102,10 +102,7 @@ public class TestUtils {
     public static Patient getPatient() {
         Patient patient = Patient.builder()
                 .id(Integer.valueOf(getNumeric(2)))
-                .firstName(getAlphabeticString())
-                .lastName(getAlphabeticString())
-                .middleName(getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .profile(getProfile())
                 .planDateIn(LocalDate.now())
                 .factDateIn(LocalDate.now())
                 .planDateOut(LocalDate.now())

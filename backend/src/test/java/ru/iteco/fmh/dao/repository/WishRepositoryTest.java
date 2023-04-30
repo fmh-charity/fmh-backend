@@ -13,10 +13,10 @@ import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertNotNull;
+import static ru.iteco.fmh.TestUtils.getNumeric;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -78,10 +78,9 @@ public class WishRepositoryTest {
 
     private Patient getPatient() {
         return Patient.builder()
-                .firstName(TestUtils.getAlphabeticString())
-                .lastName(TestUtils.getAlphabeticString())
-                .middleName(TestUtils.getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .id(Integer.valueOf(getNumeric(2)))
+                .deleted(false)
+                .profile(TestUtils.getProfile())
                 .build();
     }
 }
