@@ -45,6 +45,7 @@ create table if not exists schedule
 comment on table schedule is 'График работы';
 comment on column schedule.id is 'id в системе';
 comment on column schedule.employee_id is 'id сотрудника';
+comment on column schedule.week is 'Неделя';
 comment on column schedule.month is 'Месяц';
 comment on column schedule.year is 'Год';
 comment on column schedule.date is 'Дата';
