@@ -55,5 +55,5 @@ comment on column schedule.employment_type is 'Тип занятости';
 
 create index employee_month_year_index
     on schedule (employee_id, month, year);
-create index week_year_index
-    on schedule (week, year);
+create index employee_week_year_index
+    on schedule (employee_id, week, year);
