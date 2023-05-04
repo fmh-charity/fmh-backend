@@ -17,7 +17,7 @@ public class UserRoleClaimShortToUserRoleClaim implements Converter<UserRoleClai
     @Override
     public UserRoleClaim convert(@NonNull UserRoleClaimShort claimDto) {
         return UserRoleClaim.builder()
-                .userId(claimDto.getUserId())
+                .user(claimDto.getUser())
                 .status(claimDto.getStatus())
                 .build();
     }

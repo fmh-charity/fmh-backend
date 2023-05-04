@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -33,11 +34,17 @@ public class UserServiceImpl implements UserService {
     private final ConversionService conversionService;
 
     @Override
-    public List<UserShortInfoDto> getAllUsers() {
-        List<User> list = userRepository.findAll();
-        return list.stream()
-                .map(i -> conversionService.convert(i, UserShortInfoDto.class))
-                .collect(Collectors.toList());
+    public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
+        if (showConfirmed == null) {
+            return userRepository.findAll(pageRequest).getContent().stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
+        } else if (!showConfirmed) {
+            return userRepository.findAllByRoleClaimIsNewOrRejected(pageRequest).stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
+        } else {
+            return userRepository.findAllByRoleClaimIsConfirmedOrNull(pageRequest).stream()
+                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
+        }
     }
 
     @Override

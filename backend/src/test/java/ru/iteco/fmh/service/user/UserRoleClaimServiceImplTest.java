@@ -45,14 +45,15 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void create() {
-        var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
+        var user = TestUtils.getUser(TestUtils.getProfile());
+        var claimDtoShort = new UserRoleClaimShort(user, 456, RoleClaimStatus.CONFIRMED);
         var claimConverted = new UserRoleClaim()
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED);
         var claim = new UserRoleClaim()
                 .setId(1000)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(Instant.now())
@@ -62,8 +63,6 @@ class UserRoleClaimServiceImplTest {
 
 
         var expected = claimDtoFull;
-
-        doReturn(true).when(userRepository).existsById(claimDtoShort.getUserId());
         doReturn(true).when(roleRepository).existsById(claimDtoShort.getRoleId());
         doReturn(claimConverted).when(conversionService).convert(claimDtoShort, UserRoleClaim.class);
         doReturn(claimDtoFull).when(conversionService).convert(claim, UserRoleClaimFull.class);
@@ -80,9 +79,8 @@ class UserRoleClaimServiceImplTest {
             "true, false",
     })
     void createFail(boolean userExist, boolean roleExist) {
-        var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
-
-        doReturn(userExist).when(userRepository).existsById(claimDtoShort.getUserId());
+        var user = TestUtils.getUser(TestUtils.getProfile());
+        var claimDtoShort = new UserRoleClaimShort(user, 456, RoleClaimStatus.CONFIRMED);
         lenient().doReturn(roleExist).when(roleRepository).existsById(claimDtoShort.getRoleId());
 
         assertThrows(NotFoundException.class, () -> subj.create(claimDtoShort));
@@ -90,17 +88,18 @@ class UserRoleClaimServiceImplTest {
 
     @Test
     void updateWithDto() {
-        var id = 1000;
-        var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
+        var user = TestUtils.getUser(TestUtils.getProfile());
+        var id =1000;
+        var claimDtoShort = new UserRoleClaimShort(user, 456, RoleClaimStatus.CONFIRMED);
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())
@@ -111,7 +110,6 @@ class UserRoleClaimServiceImplTest {
 
         var expected = claimDtoFull;
 
-        doReturn(true).when(userRepository).existsById(claimDtoShort.getUserId());
         doReturn(true).when(roleRepository).existsById(claimDtoShort.getRoleId());
         doReturn(Optional.of(claimFromDB)).when(repository).findById(id);
         doReturn(claim).when(repository).save(claimFromDB);
@@ -130,11 +128,11 @@ class UserRoleClaimServiceImplTest {
     })
     void updateWithDtoFail(boolean userExist, boolean roleExist, boolean claimExist) {
         var id = 1000;
-        var claimDtoShort = new UserRoleClaimShort(123, 456, RoleClaimStatus.CONFIRMED);
+        var user = TestUtils.getUser(TestUtils.getProfile());
+        var claimDtoShort = new UserRoleClaimShort(user, 456, RoleClaimStatus.CONFIRMED);
         UserRoleClaim claimFromDB = null;
         if (claimExist) claimFromDB = new UserRoleClaim();
 
-        doReturn(userExist).when(userRepository).existsById(claimDtoShort.getUserId());
         lenient().doReturn(roleExist).when(roleRepository).existsById(claimDtoShort.getRoleId());
         lenient().doReturn(Optional.ofNullable(claimFromDB)).when(repository).findById(id);
 
@@ -144,15 +142,16 @@ class UserRoleClaimServiceImplTest {
     @Test
     void updateWithStatus() {
         var id = 1000;
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var claimFromDB = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.NEW)
                 .setCreatedAt(Instant.now().minusSeconds(1000000));
         var claim = new UserRoleClaim()
                 .setId(id)
-                .setUserId(123)
+                .setUser(user)
                 .setRole(TestUtils.getRole("ADMIN"))
                 .setStatus(RoleClaimStatus.CONFIRMED)
                 .setCreatedAt(claimFromDB.getCreatedAt())

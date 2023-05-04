@@ -155,7 +155,7 @@ public class AuthService {
         rolesListWithNeedConfirm.forEach(role -> userRoleClaimService.create(
                 UserRoleClaimShort.builder()
                         .roleId(role.getId())
-                        .userId(user.getId())
+                        .user(user)
                         .status(RoleClaimStatus.NEW)
                         .build()));
 

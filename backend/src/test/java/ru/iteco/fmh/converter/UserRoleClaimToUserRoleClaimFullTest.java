@@ -19,10 +19,10 @@ class UserRoleClaimToUserRoleClaimFullTest {
     @Test
     void convert() {
         Random random = new Random();
-
+        var user = TestUtils.getUser(TestUtils.getProfile());
         var testEntity = new UserRoleClaim(
                 random.nextInt(5000),
-                random.nextInt(5000),
+                user,
                 TestUtils.getRole("ADMIN"),
                 RoleClaimStatus.NEW,
                 Instant.MAX,
@@ -32,7 +32,7 @@ class UserRoleClaimToUserRoleClaimFullTest {
 
         assertAll(
                 () -> assertEquals(testEntity.getId(), actual.getId()),
-                () -> assertEquals(testEntity.getUserId(), actual.getUserId()),
+                () -> assertEquals(testEntity.getUser().getId(), actual.getUserId()),
                 () -> assertEquals(testEntity.getRole().getId(), actual.getRoleId()),
                 () -> assertEquals(testEntity.getStatus(), actual.getStatus()),
                 () -> assertEquals(testEntity.getCreatedAt(), actual.getCreatedAt()),

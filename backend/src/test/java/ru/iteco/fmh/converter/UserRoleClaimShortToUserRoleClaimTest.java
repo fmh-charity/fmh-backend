@@ -8,12 +8,11 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 import static ru.iteco.fmh.TestUtils.*;
+
 
 class UserRoleClaimShortToUserRoleClaimTest {
     RoleRepository roleRepository = mock(RoleRepository.class);
@@ -22,7 +21,8 @@ class UserRoleClaimShortToUserRoleClaimTest {
 
     @Test
     void convert() {
-        var testDTO = new UserRoleClaimShort(1, 1, RoleClaimStatus.NEW);
+        var user = getUser(getProfile());
+        var testDTO = new UserRoleClaimShort(user, 1, RoleClaimStatus.NEW);
         Role role = getRole("ROLE_ADMINISTRATOR");
 
         when(roleRepository.findRoleById(any())).thenReturn(role);
@@ -33,7 +33,7 @@ class UserRoleClaimShortToUserRoleClaimTest {
         actual.setRole(roleRepository.findRoleById(testDTO.getRoleId()));
 
         assertAll(
-                () -> assertEquals(testDTO.getUserId(), actual.getUserId()),
+                () -> assertEquals(testDTO.getUser().getId(), actual.getUser().getId()),
                 () -> assertEquals(testDTO.getRoleId(), actual.getRole().getId()),
                 () -> assertEquals(testDTO.getStatus(), actual.getStatus()),
                 () -> assertNull(actual.getId()),

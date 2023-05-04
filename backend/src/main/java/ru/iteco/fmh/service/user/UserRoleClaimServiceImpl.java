@@ -3,6 +3,7 @@ package ru.iteco.fmh.service.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
@@ -27,11 +28,9 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public UserRoleClaimFull create(UserRoleClaimShort claimDto) {
 
-        if (!userRepository.existsById(claimDto.getUserId())) {
-            throw new NotFoundException("Не найден пользователь с id = " + claimDto.getUserId());
-        }
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
@@ -41,7 +40,9 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(entity.getCreatedAt());
         entity.setRole(role);
-        return conversionService.convert(userRoleClaimRepository.save(entity), UserRoleClaimFull.class);
+        entity.setUser(claimDto.getUser());
+        userRoleClaimRepository.save(entity);
+        return conversionService.convert(entity, UserRoleClaimFull.class);
     }
 
     @Override
@@ -55,18 +56,14 @@ public class UserRoleClaimServiceImpl implements UserRoleClaimService {
 
     @Override
     public UserRoleClaimFull update(int id, UserRoleClaimShort claimDto) {
-        if (!userRepository.existsById(claimDto.getUserId())) {
-            throw new NotFoundException("Не найден пользователь с id = " + claimDto.getUserId());
-        }
+
         if (!roleRepository.existsById(claimDto.getRoleId())) {
             throw new NotFoundException("Не найден роль с id = " + claimDto.getRoleId());
         }
-
         var entity = userRoleClaimRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Не найдено заявки на роль с id = " + id));
         var role = roleRepository.findById(claimDto.getRoleId()).get();
-
-        entity.setUserId(claimDto.getUserId());
+        entity.setUser(claimDto.getUser());
         entity.setRole(role);
         entity.setStatus(claimDto.getStatus());
         entity.setUpdatedAt(Instant.now());
