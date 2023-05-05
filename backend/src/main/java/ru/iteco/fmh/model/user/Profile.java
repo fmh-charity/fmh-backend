@@ -8,6 +8,9 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 @ToString
 @Builder
 @NoArgsConstructor
@@ -23,9 +26,18 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
+
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
     String firstName;
+
+    @NotBlank()
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
     String lastName;
+
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
+
     String email;
     LocalDate dateOfBirth;
     boolean deleted;

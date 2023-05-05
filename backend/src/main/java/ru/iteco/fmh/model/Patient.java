@@ -13,8 +13,6 @@ import org.hibernate.annotations.Where;
 import ru.iteco.fmh.model.user.Profile;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 /**
