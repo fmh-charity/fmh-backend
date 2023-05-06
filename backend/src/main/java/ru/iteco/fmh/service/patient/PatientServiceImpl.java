@@ -51,10 +51,11 @@ public class PatientServiceImpl implements PatientService {
     public PatientUpdateInfoDtoRs updatePatient(int id, PatientUpdateInfoDtoRq patientDto) {
         Patient patient = patientRepository.findPatientById(id);
 
-        patient.setFirstName(patientDto.getFirstName());
-        patient.setMiddleName(patientDto.getMiddleName());
-        patient.setLastName(patientDto.getLastName());
-        patient.setBirthDate(patientDto.getBirthDate());
+        patient.getProfile().setFirstName(patientDto.getFirstName());
+        patient.getProfile().setMiddleName(patientDto.getMiddleName());
+        patient.getProfile().setLastName(patientDto.getLastName());
+        patient.getProfile().setDateOfBirth(patientDto.getBirthDate());
+
         patient.setStatus(patientDto.getStatus());
         if (patientDto.getRoomId() != null) {
             Room room = roomRepository.getReferenceById(patientDto.getRoomId());

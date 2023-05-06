@@ -14,15 +14,6 @@ values ('room1', 1, 1, 10, 'room1-comment', false),
        ('room3', 2, 2, 10, 'room3-comment', false),
        ('room4', 2, 2, 10, 'room4-comment', false);
 
-insert into patient (first_name, middle_name, last_name, birth_date, deleted, plan_date_in,
-                     plan_date_out, fact_date_in, fact_date_out, status, room_id)
-values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
-       ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now(), false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
-       ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
-       ('PatientFourfirstname', 'PatientFourmiddlename', 'PatientFourlastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
-       ('PatientFivefirstname', 'PatientFivemiddlename', 'PatientFivelastname', now(), false, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1),
-       ('PatientSixfirstname', 'PatientSixmiddlename', 'PatientSixlastname', now(), false, null, null, null, null, 'EXPECTED', null);
-
 insert into profile (first_name, last_name, middle_name, email, date_of_birth)
 values ('Николай', 'Смирнов', 'Петрович','login1@gmail.com', '01.15.1990'),
        ('Данил', 'Лебедев', 'Александрович', 'login2@gmail.com', '02.16.1991'),
@@ -30,12 +21,29 @@ values ('Николай', 'Смирнов', 'Петрович','login1@gmail.com
        ('Алия', 'Цветкова', 'Валерьяновна', 'login4@gmail.com', '04.18.1993'),
        ('Зоя', 'Прохорова', 'Альфредовна', 'login5@gmail.com', '05.19.1994');
 
+insert into profile (first_name, last_name, middle_name, date_of_birth)
+values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now()),
+       ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now()),
+       ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now()),
+       ('PatientFourfirstname', 'PatientFourmiddlename', 'PatientFourlastname', now()),
+       ('PatientFivefirstname', 'PatientFivemiddlename', 'PatientFivelastname', now()),
+       ('PatientSixfirstname', 'PatientSixmiddlename', 'PatientSixlastname', now());
+
 insert into users (login, password, deleted, profile_id)
 values ('login1', '$2a$10$/qkdAUtfdxMs.V5iil9xNO0Laa1uwdqDlDbIi.9X5I5.ieJ9nxk8G', false, 1),
        ('login2', '$2a$10$hwGTJx3p2yA0AnP.qxQCgey/w8pKn9YmGLtlV5w76O1n2c0bgDrDq', false, 2),
        ('login3', '$2a$10$zCwKmp.DN9bOb5tn.DVydOn1IidVmt7dgwjqefrLLkKpO7T7F18Hm', false, 3),
        ('login4', '$2a$10$dkp74SIWxF5XzutsqUkSMu7qcs/VXNlOHpaZQjrb6n2NIfs75Bll2', false, 4),
        ('login5', '$2a$10$NSeshtrQF4nWbNNazaREiuQVbNVReCvQH/KQo0qLj/RpeUl9yhhe2', false, 5);
+
+insert into patient (profile_id, deleted, plan_date_in,
+                     plan_date_out, fact_date_in, fact_date_out, status, room_id)
+values (6, false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       (7, false, '01/01/2000', '01/01/2000', null, null, 'EXPECTED', 1),
+       (8, false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       (9, false, '01/01/2000', '01/01/2000', '01/01/2020', null, 'ACTIVE', 1),
+       (10, false, '01/01/2000', '01/01/2000', '01/01/2020', '01/01/2020', 'DISCHARGED', 1),
+       (11, false, null, null, null, null, 'EXPECTED', null);
 
 insert into wish (patient_id, title, description, creator_id, create_date, plan_execute_date,
                   fact_execute_date, status, deleted)

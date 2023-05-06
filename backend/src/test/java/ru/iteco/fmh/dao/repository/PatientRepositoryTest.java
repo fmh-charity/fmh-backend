@@ -5,11 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.iteco.fmh.TestUtils;
+import static ru.iteco.fmh.TestUtils.*;
 import ru.iteco.fmh.model.Patient;
-
-import java.time.Instant;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -24,10 +21,9 @@ public class PatientRepositoryTest {
     @Test
     public void testWriteSuccess() {
         entity = Patient.builder()
-                .firstName(TestUtils.getAlphabeticString())
-                .lastName(TestUtils.getAlphabeticString())
-                .middleName(TestUtils.getAlphabeticString())
-                .birthDate(LocalDate.now())
+                .id(Integer.valueOf(getNumeric(2)))
+                .deleted(false)
+                .profile(getProfile())
                 .build();
         entity = repository.save(entity);
         assertNotNull(entity.getId());

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.iteco.fmh.converter.room.RoomEntityToRoomDtoRsConverter;
 import ru.iteco.fmh.dto.patient.PatientDto;
 import ru.iteco.fmh.model.Patient;
+import ru.iteco.fmh.model.user.Profile;
 
 import java.time.LocalDate;
 
@@ -19,6 +20,8 @@ public class PatientToPatientDtoConverter implements Converter<Patient, PatientD
 
     @Override
     public PatientDto convert(Patient patient) {
+        Profile profile = patient.getProfile();
+
         LocalDate factDateIn = patient.getFactDateIn();
         LocalDate factDateOut = patient.getFactDateOut();
         LocalDate planDateIn = patient.getPlanDateIn();
@@ -26,10 +29,10 @@ public class PatientToPatientDtoConverter implements Converter<Patient, PatientD
 
         PatientDto patientDto = PatientDto.builder()
                 .id(patient.getId())
-                .firstName(patient.getFirstName())
-                .lastName(patient.getLastName())
-                .middleName(patient.getMiddleName())
-                .birthDate(patient.getBirthDate())
+                .firstName(profile.getFirstName())
+                .lastName(profile.getLastName())
+                .middleName(profile.getMiddleName())
+                .birthDate(profile.getDateOfBirth())
                 .status(patient.getStatus())
                 .build();
 
