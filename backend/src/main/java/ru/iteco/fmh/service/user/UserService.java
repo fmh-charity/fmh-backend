@@ -1,5 +1,7 @@
 package ru.iteco.fmh.service.user;
 
+import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
+import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import org.springframework.data.domain.PageRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -29,8 +31,14 @@ public interface UserService {
     UserShortInfoDto confirmUserRole(int userId);
 
     /**
-     *
-     *  Возвращает информацию по пользователю, если он есть
+     * Возвращает информацию по пользователю, если он есть
      */
     UserInfoDto getUserInfo(Integer id);
+
+    /**
+     * создает новую карточку сотрудника
+     * @param request информация по сотруднику для создания
+     * @return сущность
+     */
+    EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request);
 }
