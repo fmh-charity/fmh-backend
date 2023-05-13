@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
@@ -47,6 +48,8 @@ public class UserServiceImpl implements UserService {
     @Value("${spring.mail.username}")
     private String emailFromAddress;
     private final Notifier<SendEmailNotifierContext> sendEmailNotifier;
+
+    private final PasswordEncoder encoder;
 
     @Override
     public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
@@ -113,7 +116,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request) {
-        var user = User.builder().login(request.getEmail()).password(generateRandomPassword())
+        String password = generateRandomPassword();
+        var user = User.builder().login(request.getEmail())
+                .password(encoder.encode(password))
                 .userRoles(new HashSet<>()).build();
         var role = roleRepository.findRoleByName("ROLE_MEDICAL_WORKER").get();
         user.getUserRoles().add(role);
@@ -129,8 +134,8 @@ public class UserServiceImpl implements UserService {
                 .scheduleStartDate(request.getScheduleStartDate()).build();
         userRepository.save(user);
         employeeRepository.save(employee);
-        String content = "Вы успешно зарегестрированы в приложени Вхосписе. Ваш логин :"
-                + user.getLogin() + " Ваш пароль : " + user.getPassword();
+        String content = "Вы успешно зарегестрированы в приложени Вхосписе. Ваш логин : "
+                + user.getLogin() + " Ваш пароль : " + password;
 
         SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
                 .toAddress(user.getProfile().getEmail())
@@ -140,7 +145,20 @@ public class UserServiceImpl implements UserService {
                 .content(content)
                 .build();
         sendEmailNotifier.send(sendEmailNotifierContext);
-        return null;
+        return EmployeeRegistrationResponse.builder()
+                .employeeId(employee.getId())
+                .lastName(profile.getLastName())
+                .firstName(profile.getFirstName())
+                .middleName(profile.getMiddleName())
+                .email(user.getLogin())
+                .dateOfBirth(profile.getDateOfBirth())
+                .position(employee.getPosition().getName())
+                .description(employee.getDescription())
+                .isActive(employee.getActive())
+                .scheduleType(employee.getScheduleType())
+                .scheduleStartDate(employee.getScheduleStartDate())
+                .workStartTime(employee.getWorkStartTime())
+                .workEndTime(employee.getWorkEndTime()).build();
     }
 
     public static String generateRandomPassword() {
