@@ -8,17 +8,20 @@ import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
+import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ru.iteco.fmh.model.user.RoleClaimStatus.CONFIRMED;
@@ -93,5 +96,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return userInfoDto;
+    }
+
+    @Override
+    public UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest) {
+        User user = userRepository.findUserById(userId);
+
+        Profile profile = user.getProfile();
+        profile.setFirstName(profileChangingRequest.getFirstName());
+        profile.setLastName(profileChangingRequest.getLastName());
+        profile.setMiddleName(profileChangingRequest.getMiddleName());
+        profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
+        profile.setEmail(profileChangingRequest.getEmail());
+        user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
+
+        userRepository.save(user);
+
+        return conversionService.convert(user, UserShortInfoDto.class);
     }
 }

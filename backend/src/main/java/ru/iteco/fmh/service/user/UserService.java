@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.user;
 
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import org.springframework.data.domain.PageRequest;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -20,7 +21,7 @@ public interface UserService {
     /**
      * Возвращает активного пользователя, если он есть
      */
-    public User getActiveUserByLogin(String login);
+    User getActiveUserByLogin(String login);
 
 
     /**
@@ -33,4 +34,10 @@ public interface UserService {
      *  Возвращает информацию по пользователю, если он есть
      */
     UserInfoDto getUserInfo(Integer id);
+
+    /**
+     *
+     *  Изменяет информацию по пользователю, если он есть
+     */
+    UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest);
 }

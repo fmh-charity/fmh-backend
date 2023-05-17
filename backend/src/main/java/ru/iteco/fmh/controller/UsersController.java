@@ -5,11 +5,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
-import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
@@ -54,6 +56,16 @@ public class UsersController {
     public UserInfoDto getUserInfo(@Parameter (description = "Идентификатор пользователя", required = true)
                                        @PathVariable("userId") int userId) {
         return userService.getUserInfo(userId);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Редактирование карточки Пользователя")
+    @PutMapping("/{userId}")
+    public UserShortInfoDto changeUser(@Parameter(description = "Идентификатор пользователя", required = true)
+                                       @PathVariable("userId") int userId,
+                                       @Parameter(description = "Информация для обновления пользователя", required = true)
+                                       @RequestBody ProfileChangingRequest profileChangingRequest) {
+        return userService.updateUser(userId, profileChangingRequest);
     }
 
     @Operation(summary = "Подтверждение Email пользователя")
