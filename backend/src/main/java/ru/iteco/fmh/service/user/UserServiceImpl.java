@@ -101,6 +101,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest) {
         User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundException("Пользователь не найден");
+        }
 
         Profile profile = user.getProfile();
         profile.setFirstName(profileChangingRequest.getFirstName());
