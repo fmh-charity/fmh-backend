@@ -8,12 +8,13 @@ Backend сервис для приложения «Мобильный хоспи
 
 1. Скачать проект с гитхаба https://github.com/fmh-charity/fmh-backend
 2. Обновить мавен зависимости
-3. Добавить в конфигурацию идеи environment variables DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123;DB_NAME=FMH_DB;SWAGGER_HOST=; DOCUMENTS_STATIC_PATH=;STATIC_HOST=;
+3. Добавить в конфигурацию идеи environment variables DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123;DB_NAME=FMH_DB;SWAGGER_HOST=localhost:8080;DOCUMENTS_STATIC_PATH=/var;STATIC_HOST=test.vhospice.org;APP_MAIL_USERNAME=test@vhospice.org;APP_MAIL_PASSWORD=G3ttdHGrgjqtfjkjpHeF;
 4. Установить докер(десктоп версию под Win or Mac)
 5. запустить локальный файл компоуз для поднятия бд либо через idea либо в терминале `docker-compose -f docker-compose-env-only.yml up`
-6. под профилем dev сделать clean package
-7. запустить Application
-8. Прогнать скрипт в бд R__init_users.sql для создания тестовых пользователей
+6. Внутри файла можно использовать дамп тестовой бд. Для этого в поле image используем образ ghcr.io/fmh-charity/dump_db:latest
+7. под профилем dev сделать clean package
+8. запустить Application
+9. Прогнать скрипт в бд R__init_users.sql для создания тестовых пользователей
 
 
 #Тестирование эндпоинтов:
@@ -39,14 +40,14 @@ Content-Type: application/json
 
 ## Вариант 1, backend сервис и окружение в докере
 
-1. Собрать docker image: `docker build -t fmh_back:1.0`  
+1. Собрать docker image из корня: `docker build -t fmh_back:1.0`  
 2. Выполнить в корне `docker-compose up`
 3. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/index.html` 
 
 ## Вариант 2, backend запустить локально, а окружение в докере
 
 1. Выполнить в корне `docker-compose -f docker-compose-env-only.yml up`
-2. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123`
+2. Установить переменные окружения (env vars): `DB_PORT=5400;DB_HOST=localhost;DB_USER=postgres;DB_PASS=123;DB_NAME=FMH_DB;SWAGGER_HOST=localhost:8080;DOCUMENTS_STATIC_PATH=/var;STATIC_HOST=test.vhospice.org;APP_MAIL_USERNAME=test@vhospice.org;APP_MAIL_PASSWORD=G3ttdHGrgjqtfjkjpHeF`
 3. Запустить backend сервис
 4. Перейти в Swagger - `http://localhost:8080/fmh/swagger-ui/index.html`
 
@@ -59,3 +60,9 @@ Content-Type: application/json
 1. В локальной БД удалить все таблицы из схемы public, используя cascade.
 2. Запустить Application с профилем dev, чтоб прошли все flyway-миграции.
 3. Выполнить все скрипты из файла _src/main/resources/db/migration/test/R__initialization_data.sql_.
+
+# Подключение к тестовой среде:
+1. Адрес тестового swagger https://test.vhospice.org/api/fmh/swagger-ui/index.html#/
+2. Адрес тестового веб приложения https://test.vhospice.org
+3. Адрес тестовой бд при необходимости спросить коллег
+4. Раз в неделю происходит снятия дампа тестовой бд в докер образ ghcr.io/fmh-charity/dump_db:latest

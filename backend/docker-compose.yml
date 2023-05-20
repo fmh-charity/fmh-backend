@@ -3,7 +3,7 @@ version: '3'
 services:
   pg_db:
     container_name: pg_database
-    image: library/postgres:12
+    image: ghcr.io/fmh-charity/dump_db:latest
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -13,7 +13,8 @@ services:
       - "5400:5432"
   backend:
     container_name: fmh_backend
-    image: ghcr.io/fmh-charity/fmh-backend:latest
+#    image: ghcr.io/fmh-charity/fmh-backend:latest
+    image: fmh_back:1.0
     depends_on:
       - pg_db
     environment:
@@ -23,28 +24,7 @@ services:
       DB_NAME: FMH_DB
       DB_PASS: 123
       SWAGGER_HOST: vhospice.org/api
-  nginx:
-    container_name: nginx
-    image: nginx:latest
-    links:
-      - backend
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /usr/src/docker/certs/:/src/certs/
-      - ./nginx/main.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      - ./nginx/certbot/www:/var/www/certbot
-      - ./build:/opt/front
-      - ./fmh/static/documents/:/var/www/fmh/static/documents/
-    depends_on:
-      - backend
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-  certbot:
-    container_name: certbot
-    image: certbot/certbot
-    volumes:
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      - ./nginx/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+      DOCUMENTS_STATIC_PATH: /var/www/fmh/static/documents/
+      STATIC_HOST: test.vhospice.org
+      APP_MAIL_USERNAME: test@vhospice.org
+      APP_MAIL_PASSWORD: G3ttdHGrgjqtfjkjpHeF
