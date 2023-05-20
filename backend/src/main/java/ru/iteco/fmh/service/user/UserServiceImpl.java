@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.iteco.fmh.Util.MEDICAL_WORKER_ROLE;
 import static ru.iteco.fmh.model.user.RoleClaimStatus.CONFIRMED;
 import static ru.iteco.fmh.model.user.RoleClaimStatus.NEW;
 
@@ -120,7 +121,8 @@ public class UserServiceImpl implements UserService {
         var user = User.builder().login(request.getEmail())
                 .password(encoder.encode(password))
                 .userRoles(new HashSet<>()).build();
-        var role = roleRepository.findRoleByName("ROLE_MEDICAL_WORKER").get();
+        var role = roleRepository.findRoleByName(MEDICAL_WORKER_ROLE)
+                .orElseThrow(() -> new IllegalArgumentException("Не найдена роль мед сотрудника"));
         user.getUserRoles().add(role);
         var profile = Profile.builder().firstName(request.getFirstName()).lastName(request.getLastName())
                 .middleName(request.getMiddleName()).email(request.getEmail()).dateOfBirth(request.getDateOfBirth())
@@ -128,9 +130,14 @@ public class UserServiceImpl implements UserService {
         user.setProfile(profile);
         var position = positionRepository.findById(request.getPositionId())
                 .orElseThrow(() -> new NotFoundException("Должности с таким id не существует"));
-        var employee = Employee.builder().profile(profile).position(position)
-                .description(request.getDescription()).scheduleType(request.getScheduleType()).active(false)
-                .workStartTime(request.getWorkStartTime()).workEndTime(request.getWorkEndTime())
+        var employee = Employee.builder()
+                .profile(profile)
+                .position(position)
+                .description(request.getDescription())
+                .scheduleType(request.getScheduleType())
+                .active(true)
+                .workStartTime(request.getWorkStartTime())
+                .workEndTime(request.getWorkEndTime())
                 .scheduleStartDate(request.getScheduleStartDate()).build();
         userRepository.save(user);
         employeeRepository.save(employee);

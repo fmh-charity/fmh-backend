@@ -20,6 +20,7 @@ import java.time.ZoneId;
 public class Util {
 
     private static final String ADMIN_ROLE = "ROLE_ADMINISTRATOR";
+    public static final String MEDICAL_WORKER_ROLE = "ROLE_MEDICAL_WORKER";
 
     public static Instant getInstantFromLocalDateAtStartOfDay(LocalDate localDate) {
         return localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();

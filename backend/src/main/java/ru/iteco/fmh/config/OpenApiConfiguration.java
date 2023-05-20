@@ -53,7 +53,13 @@ public class OpenApiConfiguration {
                 .info(apiInfo());
     }
 
-    static {
+    /**
+     * Метод преобразует LocalDate в String
+     * для более удобного визуального отображения
+     * и избежания ошибок парсинга
+     */
+    @Bean
+    public void configureLocalTimeSchema() {
         var schema = new Schema<LocalTime>();
         schema.example(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, schema);
