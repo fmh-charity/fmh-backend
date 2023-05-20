@@ -56,7 +56,7 @@ public class OpenApiConfiguration {
     /**
      * Метод преобразует LocalDate в String
      * для более удобного визуального отображения
-     * и избежания ошибок парсинга
+     * и избежания ошибок сериализации
      */
     @Bean
     public void configureLocalTimeSchema() {
