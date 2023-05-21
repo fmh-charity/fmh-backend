@@ -52,12 +52,19 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     public void generateAndSendVerificationEmail() {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
+        generateAndSendVerificationEmailByUser(currentLoggedInUser);
+    }
 
-        if (currentLoggedInUser.getProfile().isEmailConfirmed()) {
+    public void generateAndSendVerificationEmail(User user) {
+        generateAndSendVerificationEmailByUser(user);
+    }
+
+    private void generateAndSendVerificationEmailByUser(User user) {
+        if (user.getProfile().isEmailConfirmed()) {
             throw new UnavailableOperationException("Данный Email уже подтвержден");
         }
 
-        String verificationToken = createVerificationToken(currentLoggedInUser);
+        String verificationToken = createVerificationToken(user);
         String verificationUri = "https://" + staticHost + "/users/verify/email?token=" + verificationToken;
         String content = """
             Уважаемый пользователь!
@@ -65,7 +72,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
             Если это письмо пришло вам по ошибке, просто проигнорируйте его.""".formatted(verificationUri);
 
         SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
-                .toAddress(currentLoggedInUser.getProfile().getEmail())
+                .toAddress(user.getProfile().getEmail())
                 .fromAddress(emailFromAddress)
                 .senderName("Vhospice")
                 .subject("Подтверждение регистрации vhospice.org")
@@ -73,7 +80,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
                 .build();
 
         sendEmailNotifier.send(sendEmailNotifierContext);
-        log.info("Ссылка для подтверждения Email пользователя {} успешно отправлена", currentLoggedInUser.getLogin());
+        log.info("Ссылка для подтверждения Email пользователя {} успешно отправлена", user.getLogin());
     }
 
     private String createVerificationToken(User currentLoggedInUser) {

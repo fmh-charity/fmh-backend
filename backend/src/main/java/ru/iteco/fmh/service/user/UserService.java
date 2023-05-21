@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.user;
 
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
 import ru.iteco.fmh.dto.user.UserInfoDto;
@@ -22,7 +23,7 @@ public interface UserService {
     /**
      * Возвращает активного пользователя, если он есть
      */
-    public User getActiveUserByLogin(String login);
+    User getActiveUserByLogin(String login);
 
 
     /**
@@ -31,9 +32,16 @@ public interface UserService {
     UserShortInfoDto confirmUserRole(int userId);
 
     /**
-     * Возвращает информацию по пользователю, если он есть
+     *
+     *  Возвращает информацию по пользователю, если он есть
      */
     UserInfoDto getUserInfo(Integer id);
+
+    /**
+     *
+     *  Изменяет информацию по пользователю, если он есть
+     */
+    UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest);
 
     /**
      * создает новую карточку сотрудника

@@ -2,14 +2,15 @@ package ru.iteco.cucumber.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
+@Builder
+@Data
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonFormat
 public class UserShortInfoDto {
