@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
-import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
@@ -15,10 +14,10 @@ import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
+import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
 import java.util.List;
 import java.util.Set;
@@ -35,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     private final ConversionService conversionService;
+    private final VerificationTokenService verificationTokenService;
 
     @Override
     public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
@@ -100,18 +100,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest) {
-        User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден");
-        }
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
+        var profile = user.getProfile();
 
-        Profile profile = user.getProfile();
         profile.setFirstName(profileChangingRequest.getFirstName());
         profile.setLastName(profileChangingRequest.getLastName());
         profile.setMiddleName(profileChangingRequest.getMiddleName());
         profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
-        profile.setEmail(profileChangingRequest.getEmail());
         user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
+
+        if (!profile.getEmail().equals(profileChangingRequest.getEmail())) {
+            profile.setEmailConfirmed(false);
+            profile.setEmail(profileChangingRequest.getEmail());
+            verificationTokenService.generateAndSendVerificationEmail(user);
+        }
 
         userRepository.save(user);
 
