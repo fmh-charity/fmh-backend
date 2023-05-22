@@ -145,14 +145,20 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request) {
         String password = generateRandomPassword();
-        var user = User.builder().login(request.getEmail())
+        var user = User.builder()
+                .login(request.getEmail())
                 .password(encoder.encode(password))
                 .userRoles(new HashSet<>()).build();
         var role = roleRepository.findRoleByName(MEDICAL_WORKER_ROLE)
                 .orElseThrow(() -> new IllegalArgumentException("Не найдена роль мед сотрудника"));
         user.getUserRoles().add(role);
-        var profile = Profile.builder().firstName(request.getFirstName()).lastName(request.getLastName())
-                .middleName(request.getMiddleName()).email(request.getEmail()).dateOfBirth(request.getDateOfBirth())
+        var profile = Profile.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .middleName(request.getMiddleName())
+                .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
+                .user(user)
                 .build();
         user.setProfile(profile);
         var position = positionRepository.findById(request.getPositionId())
@@ -168,31 +174,8 @@ public class UserServiceImpl implements UserService {
                 .scheduleStartDate(request.getScheduleStartDate()).build();
         userRepository.save(user);
         employeeRepository.save(employee);
-        String content = "Вы успешно зарегестрированы в приложени Вхосписе. Ваш логин : "
-                + user.getLogin() + " Ваш пароль : " + password;
-
-        SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
-                .toAddress(user.getProfile().getEmail())
-                .fromAddress(emailFromAddress)
-                .senderName("Vhospice")
-                .subject("Регистрация vhospice.org")
-                .content(content)
-                .build();
-        sendEmailNotifier.send(sendEmailNotifierContext);
-        return EmployeeRegistrationResponse.builder()
-                .employeeId(employee.getId())
-                .lastName(profile.getLastName())
-                .firstName(profile.getFirstName())
-                .middleName(profile.getMiddleName())
-                .email(user.getLogin())
-                .dateOfBirth(profile.getDateOfBirth())
-                .position(employee.getPosition().getName())
-                .description(employee.getDescription())
-                .isActive(employee.getActive())
-                .scheduleType(employee.getScheduleType())
-                .scheduleStartDate(employee.getScheduleStartDate())
-                .workStartTime(employee.getWorkStartTime())
-                .workEndTime(employee.getWorkEndTime()).build();
+        sendingAnEmployeeRegistrationMessage(user, password);
+        return conversionService.convert(employee, EmployeeRegistrationResponse.class);
     }
 
     public static String generateRandomPassword() {
@@ -207,5 +190,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return sb.toString();
+    }
+
+    private void sendingAnEmployeeRegistrationMessage(User user, String password) {
+        String content = "Вы успешно зарегестрированы в приложени Вхосписе. Ваш логин : "
+                + user.getLogin() + " Ваш пароль : " + password;
+
+        SendEmailNotifierContext sendEmailNotifierContext = SendEmailNotifierContext.builder()
+                .toAddress(user.getProfile().getEmail())
+                .fromAddress(emailFromAddress)
+                .senderName("Vhospice")
+                .subject("Регистрация vhospice.org")
+                .content(content)
+                .build();
+        sendEmailNotifier.send(sendEmailNotifierContext);
     }
 }
