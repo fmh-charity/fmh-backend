@@ -37,6 +37,7 @@ public class Employee {
     Boolean active;
 
     @Column(name = "schedule_type")
+    @Enumerated(EnumType.STRING)
     ScheduleType scheduleType;
 
     @Column(name = "work_start_time")

@@ -1,17 +1,22 @@
 package ru.iteco.fmh.config;
 
-import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
-import static io.swagger.v3.oas.models.security.SecurityScheme.Type.APIKEY;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.SpringDocUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import static io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER;
+import static io.swagger.v3.oas.models.security.SecurityScheme.Type.APIKEY;
 
 /**
  * OpenApiConfiguration.
@@ -46,6 +51,18 @@ public class OpenApiConfiguration {
                 .addSecurityItem(getSecurityItem())
                 .components(getComponents())
                 .info(apiInfo());
+    }
+
+    /**
+     * Метод преобразует LocalDate в String
+     * для более удобного визуального отображения
+     * и избежания ошибок сериализации
+     */
+    @Bean
+    public void configureLocalTimeSchema() {
+        var schema = new Schema<LocalTime>();
+        schema.example(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, schema);
     }
 
     /**

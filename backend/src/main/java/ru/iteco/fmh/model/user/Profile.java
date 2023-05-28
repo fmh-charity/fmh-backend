@@ -6,10 +6,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 
 @ToString
 @Builder
@@ -38,6 +37,8 @@ public class Profile {
     @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
     String middleName;
 
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    User user;
     String email;
     LocalDate dateOfBirth;
     boolean deleted;
