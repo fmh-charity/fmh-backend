@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.user;
 
+import org.springframework.data.domain.Pageable;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
@@ -17,8 +18,14 @@ public interface UserService {
 
     /**
      * возвращает список всех users
+     @param pageable настройки вывода на экране
+     Следующие параметры являются необязательными. Выборка будет осуществляться с учётом каждого из трёх при наличии:
+     @param text фильтрация по одному из: firstName, lastName, middleName, email
+     @param roleIds фильтрация по одному из идентификатору ролей
+     @param isConfirmed фильтрация по статусу подтверждения пользователя
+     @return краткая информация о пользователе
      */
-    List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed);
+    List<UserShortInfoDto> getAllUsers(Pageable pageable, String text, List<Integer> roleIds, Boolean isConfirmed);
 
     /**
      * Возвращает активного пользователя, если он есть

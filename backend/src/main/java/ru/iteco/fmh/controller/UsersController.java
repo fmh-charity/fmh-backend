@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +48,13 @@ public class UsersController {
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @Parameter(name = "showConfirmed", description = "Сортировка по статусу пользователя")
-            @RequestParam(required = false) Boolean showConfirmed) {
-        return userService.getAllUsers(PageRequest.of(pages, elements), showConfirmed);
+            @Parameter(name = "text", description = "Фильтрация по одному из: имя, фамилия, отчество, email")
+            @RequestParam(required = false) String text,
+            @Parameter(name = "roleIds", description = "Список идентификаторов ролей")
+            @RequestParam(required = false) List<Integer> roleIds,
+            @Parameter(name = "confirmed", description = "Cтатус подтверждения пользователя")
+            @RequestParam(value = "confirmed", required = false) Boolean confirmed) {
+        return userService.getAllUsers(PageRequest.of(pages, elements), text, roleIds, confirmed);
     }
 
     @Secured("ROLE_ADMINISTRATOR")
