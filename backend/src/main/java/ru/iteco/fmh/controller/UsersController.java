@@ -11,19 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
-import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
-import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
@@ -90,12 +86,5 @@ public class UsersController {
     public UserShortInfoDto confirmUserRole(@Parameter(description = "Идентификатор пользователя",
             required = true) @PathVariable int userId) {
         return userService.confirmUserRole(userId);
-    }
-
-    @Secured("ROLE_ADMINISTRATOR")
-    @Operation(summary = "Регистрация сотрудника")
-    @PostMapping("employee")
-    public EmployeeRegistrationResponse createEmployee(@RequestBody @Valid EmployeeRegistrationRequest request) {
-        return userService.createEmployee(request);
     }
 }
