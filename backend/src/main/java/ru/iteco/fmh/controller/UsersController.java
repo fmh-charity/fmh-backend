@@ -52,7 +52,7 @@ public class UsersController {
             @RequestParam(required = false) String text,
             @Parameter(name = "roleIds", description = "Список идентификаторов ролей")
             @RequestParam(required = false) List<Integer> roleIds,
-            @Parameter(name = "confirmed", description = "Cтатус подтверждения пользователя")
+            @Parameter(name = "confirmed", description = "Показывать только подтвержденных пользователей")
             @RequestParam(value = "confirmed", required = false) Boolean confirmed) {
         return userService.getAllUsers(PageRequest.of(pages, elements), text, roleIds, confirmed);
     }

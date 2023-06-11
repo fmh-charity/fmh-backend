@@ -67,34 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserShortInfoDto> getAllUsers(Pageable pageable, String text, List<Integer> roleIds, Boolean isConfirmed) {
-
-        Specification<User> createSpecification = (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (text != null && !text.isEmpty()) {
-                predicates.add(criteriaBuilder.or(
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("firstName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("lastName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("middleName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("email")), "%" + text.toLowerCase() + "%")
-                        ));
-            }
-            if (roleIds != null && !roleIds.isEmpty()) {
-                predicates.add(root.join("userRoles").get("id").in(roleIds));
-            }
-            if (isConfirmed != null) {
-                if (isConfirmed) {
-                    predicates.add(criteriaBuilder.or(root.join("userRoleClaim", JoinType.LEFT).isNull(),
-                            criteriaBuilder.equal(root.get("userRoleClaim").get("status"), CONFIRMED)));
-                } else {
-                    predicates.add(criteriaBuilder.notEqual(root.get("userRoleClaim").get("status"), CONFIRMED));
-                }
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
-
-        return userSpecificationRepository.findAll(createSpecification, pageable).stream()
+        return userSpecificationRepository.findAll(createQueryByOnePredicate(text, roleIds, isConfirmed), pageable).stream()
                 .distinct()
                 .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
     }
@@ -233,5 +206,60 @@ public class UserServiceImpl implements UserService {
                 .content(content)
                 .build();
         sendEmailNotifier.send(sendEmailNotifierContext);
+    }
+
+    private Specification<User> createQuery(String text, List<Integer> roleIds, Boolean isConfirmed) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (text != null && !text.isEmpty()) {
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("firstName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("lastName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("middleName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("email")), "%" + text.toLowerCase() + "%")
+                ));
+            }
+            if (roleIds != null && !roleIds.isEmpty()) {
+                predicates.add(root.join("userRoles").get("id").in(roleIds));
+            }
+            if (isConfirmed != null) {
+                if (isConfirmed) {
+                    predicates.add(criteriaBuilder.or(root.join("userRoleClaim", JoinType.LEFT).isNull(),
+                            criteriaBuilder.equal(root.get("userRoleClaim").get("status"), CONFIRMED)));
+                } else {
+                    predicates.add(criteriaBuilder.notEqual(root.get("userRoleClaim").get("status"), CONFIRMED));
+                }
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private Specification<User> createQueryByOnePredicate(String text, List<Integer> roleIds, Boolean isConfirmed) {
+        return (root, query, criteriaBuilder) -> {
+
+            if (text != null && !text.isEmpty()) {
+                return criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("firstName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("lastName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("middleName")), "%" + text.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("email")), "%" + text.toLowerCase() + "%")
+                );
+            }
+            if (roleIds != null && !roleIds.isEmpty()) {
+                return root.join("userRoles").get("id").in(roleIds);
+            }
+            if (isConfirmed != null) {
+                if (isConfirmed) {
+                    return criteriaBuilder.or(root.join("userRoleClaim", JoinType.LEFT).isNull(),
+                            criteriaBuilder.equal(root.get("userRoleClaim").get("status"), CONFIRMED));
+                } else {
+                    return criteriaBuilder.notEqual(root.get("userRoleClaim").get("status"), CONFIRMED);
+                }
+            }
+
+            return null;
+        };
     }
 }
