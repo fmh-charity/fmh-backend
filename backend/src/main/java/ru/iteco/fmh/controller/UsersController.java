@@ -20,6 +20,7 @@ import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.service.user.UserService;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.PositiveOrZero;
@@ -64,7 +65,7 @@ public class UsersController {
     public UserShortInfoDto changeUser(@Parameter(description = "Идентификатор пользователя", required = true)
                                        @PathVariable("userId") int userId,
                                        @Parameter(description = "Информация для обновления пользователя", required = true)
-                                       @RequestBody ProfileChangingRequest profileChangingRequest) {
+                                       @RequestBody @Valid ProfileChangingRequest profileChangingRequest) {
         return userService.updateUser(userId, profileChangingRequest);
     }
 

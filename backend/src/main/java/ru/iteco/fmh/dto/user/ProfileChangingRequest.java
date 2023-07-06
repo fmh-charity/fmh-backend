@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.iteco.fmh.validation.age.Age;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -33,15 +36,15 @@ public class ProfileChangingRequest {
     @Schema(name = "middleName", description = "Отчество")
     String middleName;
 
-    @NotBlank()
+    @Age(min = 18, max = 100, message = "Возраст должен быть больше 18 и меньше 100 лет")
     @Schema(name = "dateOfBirth", description = "Дата рождения")
     LocalDate dateOfBirth;
 
-    @NotBlank()
+    @Email(message = "Некорректный адрес электронной почты")
     @Schema(name = "email", description = "Электронная почта")
     String email;
 
-    @NotBlank()
+    @NotEmpty
     @Schema(name = "roleIds", description = "Множество идентификаторов ролей пользователя")
     Set<Integer> roleIds;
 }
