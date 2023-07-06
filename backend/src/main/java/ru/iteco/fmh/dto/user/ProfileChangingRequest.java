@@ -6,11 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.iteco.fmh.validation.age.Age;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -36,7 +37,9 @@ public class ProfileChangingRequest {
     @Schema(name = "middleName", description = "Отчество")
     String middleName;
 
-    @Age(min = 18, max = 100, message = "Возраст должен быть больше 18 и меньше 100 лет")
+
+    @NotNull(message = "Дата не может быть пустой")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Schema(name = "dateOfBirth", description = "Дата рождения")
     LocalDate dateOfBirth;
 
