@@ -40,6 +40,7 @@ public class ProfileChangingRequest {
     @Schema(name = "dateOfBirth", description = "Дата рождения")
     LocalDate dateOfBirth;
 
+    @NotBlank
     @Email(message = "Некорректный адрес электронной почты")
     @Schema(name = "email", description = "Электронная почта")
     String email;
