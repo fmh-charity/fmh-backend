@@ -8,12 +8,15 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
+import ru.iteco.fmh.dto.employee.EmployeeInfoScheduleDto;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
 import ru.iteco.fmh.service.employee.EmployeeService;
 import ru.iteco.fmh.service.user.UserService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @Tag(name = "Сотрудники")
@@ -38,5 +41,17 @@ public class EmployeesController {
     public EmployeeInfoDto getEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true)
                                            @PathVariable int employeeId) {
         return employeeService.getEmployeeById(employeeId);
+   }
+
+   // в разработке
+   @Secured("ROLE_ADMINISTRATOR")
+   @GetMapping("")
+   public List<EmployeeInfoScheduleDto> getEmployeeList(@RequestParam String fullName,
+                                                        @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateStart,
+                                                        @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateEnd,
+                                                        @RequestParam(defaultValue = "true") boolean isActiveOnly,
+                                                        @RequestParam(defaultValue = "true") boolean returnWorkTime) {
+        employeeService.getEmployeeList(fullName, dateStart, dateEnd, isActiveOnly, returnWorkTime);
+        return List.of();
    }
 }
