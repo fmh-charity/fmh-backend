@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.apache.logging.log4j.util.Base64Util.encode;
 import static ru.iteco.fmh.Util.MEDICAL_WORKER_ROLE;
 import static ru.iteco.fmh.model.user.RoleClaimStatus.CONFIRMED;
 import static ru.iteco.fmh.model.user.RoleClaimStatus.NEW;
@@ -119,29 +120,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
-        var profile = user.getProfile();
-
-        profile.setFirstName(profileChangingRequest.getFirstName());
-        profile.setLastName(profileChangingRequest.getLastName());
-        profile.setMiddleName(profileChangingRequest.getMiddleName());
-        profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
-        user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
-
-        if (!profile.getEmail().equals(profileChangingRequest.getEmail())) {
-            profile.setEmailConfirmed(false);
-            profile.setEmail(profileChangingRequest.getEmail());
-            verificationTokenService.generateAndSendVerificationEmail(user);
-        }
-
-        userRepository.save(user);
-
-        return conversionService.convert(user, UserShortInfoDto.class);
-    }
-
-    @Override
     @Transactional
     public EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request) {
         String password = generateRandomPassword();
@@ -177,6 +155,31 @@ public class UserServiceImpl implements UserService {
         sendingAnEmployeeRegistrationMessage(user, password);
         return conversionService.convert(employee, EmployeeRegistrationResponse.class);
     }
+
+    @Override
+    public UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
+        var profile = user.getProfile();
+
+        profile.setFirstName(profileChangingRequest.getFirstName());
+        profile.setLastName(profileChangingRequest.getLastName());
+        profile.setMiddleName(profileChangingRequest.getMiddleName());
+        profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
+        user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
+
+        if (!profile.getEmail().equals(profileChangingRequest.getEmail())) {
+            profile.setEmailConfirmed(false);
+            profile.setEmail(profileChangingRequest.getEmail());
+            verificationTokenService.generateAndSendVerificationEmail(user);
+        }
+
+        userRepository.save(user);
+
+        return conversionService.convert(user, UserShortInfoDto.class);
+    }
+
+
 
     public static String generateRandomPassword() {
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

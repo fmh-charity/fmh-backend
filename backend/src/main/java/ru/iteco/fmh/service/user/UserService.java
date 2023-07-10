@@ -49,4 +49,5 @@ public interface UserService {
      * @return сущность
      */
     EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request);
+
 }

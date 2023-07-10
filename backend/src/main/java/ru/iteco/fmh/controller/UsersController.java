@@ -92,10 +92,5 @@ public class UsersController {
         return userService.confirmUserRole(userId);
     }
 
-    @Secured("ROLE_ADMINISTRATOR")
-    @Operation(summary = "Регистрация сотрудника")
-    @PostMapping("employee")
-    public EmployeeRegistrationResponse createEmployee(@RequestBody @Valid EmployeeRegistrationRequest request) {
-        return userService.createEmployee(request);
-    }
+
 }
