@@ -18,6 +18,7 @@ import ru.iteco.fmh.dto.role.RoleDtoRs;
 import ru.iteco.fmh.dto.user.ResetPasswordRequest;
 import ru.iteco.fmh.dto.user.UserRoleClaimShort;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
+import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.InvalidTokenException;
 import ru.iteco.fmh.exceptions.UnavailableOperationException;
@@ -133,6 +134,9 @@ public class AuthService {
         profileRepository.findByEmail(registrationRequest.getEmail()).ifPresent(profile -> user.setProfile(profile));
 
         List<Role> desiredRoles = roleRepository.findAllByIdIn(registrationRequest.getRoleIds());
+        if (desiredRoles.isEmpty()) {
+            throw new IncorrectDataException("Вы передали не существующие роли");
+        }
         Set<Role> allowedRoles = getRolesListWithoutNeedConfirm(desiredRoles);
 
         user.setPassword(encoder.encode(registrationRequest.getPassword()));
