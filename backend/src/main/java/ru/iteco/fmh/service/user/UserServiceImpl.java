@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
+import ru.iteco.fmh.dao.repository.ProfileRepository;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
-import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -23,12 +24,13 @@ import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
 import ru.iteco.fmh.model.user.Profile;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
-import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 import ru.iteco.fmh.service.mail.notifier.Notifier;
 import ru.iteco.fmh.service.mail.notifier.SendEmailNotifierContext;
+import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
 import java.security.SecureRandom;
 import java.util.HashSet;
@@ -50,6 +52,8 @@ public class UserServiceImpl implements UserService {
     private final VerificationTokenService verificationTokenService;
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
+
+    private final ProfileRepository profileRepository;
     @Value("${spring.mail.username}")
     private String emailFromAddress;
     private final Notifier<SendEmailNotifierContext> sendEmailNotifier;
@@ -123,13 +127,19 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
         var profile = user.getProfile();
-
+        if (!profile.getEmail().equals(profileChangingRequest.getEmail())
+                && profileRepository.existsByEmail(profileChangingRequest.getEmail())) {
+            throw new IncorrectDataException("Этот емайл уже занят");
+        }
         profile.setFirstName(profileChangingRequest.getFirstName());
         profile.setLastName(profileChangingRequest.getLastName());
         profile.setMiddleName(profileChangingRequest.getMiddleName());
         profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
-        user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
-
+        Set<Role> roles = Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds())));
+        if (roles.isEmpty()) {
+            throw new IncorrectDataException("Вы передали не существующие роли");
+        }
+        user.setUserRoles(roles);
         if (!profile.getEmail().equals(profileChangingRequest.getEmail())) {
             profile.setEmailConfirmed(false);
             profile.setEmail(profileChangingRequest.getEmail());
