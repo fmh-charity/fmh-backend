@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.iteco.fmh.dto.role.RoleDto;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -54,8 +55,8 @@ public class UsersController {
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "получение информации о пользователе по id")
     @GetMapping("/{userId}")
-    public UserInfoDto getUserInfo(@Parameter (description = "Идентификатор пользователя", required = true)
-                                       @PathVariable("userId") int userId) {
+    public UserInfoDto getUserInfo(@Parameter(description = "Идентификатор пользователя", required = true)
+                                   @PathVariable("userId") int userId) {
         return userService.getUserInfo(userId);
     }
 
@@ -87,5 +88,12 @@ public class UsersController {
     public UserShortInfoDto confirmUserRole(@Parameter(description = "Идентификатор пользователя",
             required = true) @PathVariable int userId) {
         return userService.confirmUserRole(userId);
+    }
+
+    @Operation(summary = "Получение списка ролей для администратора")
+    @Secured("ROLE_ADMINISTRATOR")
+    @GetMapping("/roles")
+    public List<RoleDto> getAllRoles() {
+        return userService.getAllRoles();
     }
 }
