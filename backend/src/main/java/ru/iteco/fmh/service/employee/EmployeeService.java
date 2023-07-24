@@ -15,6 +15,7 @@ public interface EmployeeService {
      */
     EmployeeInfoDto getEmployeeById(int id);
 
-    List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate, LocalDate endDate, boolean isActiveOnly, boolean returnWorkTime);
+    List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate,
+                                                  LocalDate endDate, boolean isActiveOnly, boolean returnWorkTime);
 
 }

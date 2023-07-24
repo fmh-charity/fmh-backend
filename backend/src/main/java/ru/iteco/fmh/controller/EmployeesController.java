@@ -46,7 +46,7 @@ public class EmployeesController {
    // в разработке
    @Secured("ROLE_ADMINISTRATOR")
    @GetMapping("")
-   public List<EmployeeInfoScheduleDto> getEmployeeList(@RequestParam String fullName,
+   public List<EmployeeInfoScheduleDto> getEmployeeList(@RequestParam(required = false) String fullName,
                                                         @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateStart,
                                                         @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateEnd,
                                                         @RequestParam(defaultValue = "true") boolean isActiveOnly,

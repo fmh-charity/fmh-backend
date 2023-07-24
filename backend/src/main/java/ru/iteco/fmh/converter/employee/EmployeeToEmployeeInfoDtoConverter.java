@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * конвертер из {@link User} в {@link UserInfoDto}//для «Управление пользователями» (Для userInfoDto)
+ * конвертер из {@link Employee} в {@link EmployeeInfoDto}//для «Управление сотрудниками»
  */
 @Component
 @RequiredArgsConstructor
@@ -28,7 +28,12 @@ public class EmployeeToEmployeeInfoDtoConverter implements Converter<Employee, E
                 .id(source.getId())
                 .firstName(source.getProfile().getFirstName())
                 .lastName(source.getProfile().getLastName())
+                .middleName(source.getProfile().getMiddleName())
+                .workEndTime(source.getWorkEndTime())
+                .workStartTime(source.getWorkStartTime())
                 .active(source.getActive())
+                .scheduleStartDate(source.getScheduleStartDate())
+                .scheduleType(source.getScheduleType())
                 .build();
     }
 }

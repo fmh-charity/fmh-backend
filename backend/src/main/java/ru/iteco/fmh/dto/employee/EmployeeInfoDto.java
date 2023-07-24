@@ -46,8 +46,7 @@ public class EmployeeInfoDto {
     @Schema(name = "active", description = "активность")
     Boolean active;
 
-    @Column(name = "schedule_type")
-    @Enumerated(EnumType.STRING)
+    @Schema(name = "schedule_type", description = "расписание")
     ScheduleType scheduleType;
 
 

@@ -28,6 +28,7 @@ public class Employee {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     Profile profile;
 
+    // один со стороны Position
     @ManyToOne
     @JoinColumn(name = "positions_id")
     Position position;
@@ -51,6 +52,7 @@ public class Employee {
     @Column(name = "schedule_start_date")
     LocalDate scheduleStartDate;
 
+    // значение
     @OneToMany(mappedBy = "employee")
     List<Schedule> scheduleList;
 }

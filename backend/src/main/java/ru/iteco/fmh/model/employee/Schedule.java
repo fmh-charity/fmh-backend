@@ -32,6 +32,7 @@ public class Schedule {
     LocalTime workEndTime;
 
     @Column(name = "employment_type")
+            @Enumerated(EnumType.STRING)
     EmploymentType employmentType;
 
     @Column(name = "week")
