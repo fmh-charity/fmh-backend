@@ -43,15 +43,4 @@ public class EmployeesController {
         return employeeService.getEmployeeById(employeeId);
    }
 
-   // в разработке
-   @Secured("ROLE_ADMINISTRATOR")
-   @GetMapping("")
-   public List<EmployeeInfoScheduleDto> getEmployeeList(@RequestParam(required = false) String fullName,
-                                                        @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateStart,
-                                                        @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateEnd,
-                                                        @RequestParam(defaultValue = "true") boolean isActiveOnly,
-                                                        @RequestParam(defaultValue = "true") boolean returnWorkTime) {
-
-        return employeeService.getEmployeeList(fullName, dateStart, dateEnd, isActiveOnly, returnWorkTime);
-   }
 }
