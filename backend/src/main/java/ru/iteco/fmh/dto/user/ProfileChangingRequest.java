@@ -6,8 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -33,15 +37,18 @@ public class ProfileChangingRequest {
     @Schema(name = "middleName", description = "Отчество")
     String middleName;
 
-    @NotBlank()
+
+    @NotNull(message = "Дата не может быть пустой")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Schema(name = "dateOfBirth", description = "Дата рождения")
     LocalDate dateOfBirth;
 
-    @NotBlank()
+    @NotBlank
+    @Email(message = "Некорректный адрес электронной почты")
     @Schema(name = "email", description = "Электронная почта")
     String email;
 
-    @NotBlank()
+    @NotEmpty
     @Schema(name = "roleIds", description = "Множество идентификаторов ролей пользователя")
     Set<Integer> roleIds;
 }
