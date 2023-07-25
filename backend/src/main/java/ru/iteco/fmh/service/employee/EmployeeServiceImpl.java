@@ -11,9 +11,11 @@ import ru.iteco.fmh.model.employee.Employee;
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+
     private final EmployeeRepository employeeRepository;
+
     private final ConversionService conversionService;
-    private final ConversionService conversionServiceForScheduledEmployee;
+
 
     @Override
     public EmployeeInfoDto getEmployeeById(int id) {
@@ -21,7 +23,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee == null) {
             throw new NotFoundException("Cотрудник не найден");
         }
-        EmployeeInfoDto employeeInfoDto = conversionService.convert(employee, EmployeeInfoDto.class);
+        EmployeeInfoDto employeeInfoDto = conversionService
+                .convert(employee, EmployeeInfoDto.class);
         return employeeInfoDto;
     }
 }
