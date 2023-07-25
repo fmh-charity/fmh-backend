@@ -41,8 +41,9 @@ public class EmployeesController {
     @Secured("ROLE_ADMINISTRATOR")
     @Operation(summary = "Получение информации о сотруднике")
     @GetMapping("/{employeeId}")
-    public EmployeeInfoDto getEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true) @PathVariable int employeeId) {
+    public EmployeeInfoDto getEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true)
+                                               @PathVariable int employeeId) {
         return employeeService.getEmployeeById(employeeId);
-   }
+    }
 
 }
