@@ -48,7 +48,4 @@ public class EmployeeInfoDto {
 
     @Schema(name = "schedule_type", description = "расписание")
     ScheduleType scheduleType;
-
-
-
 }

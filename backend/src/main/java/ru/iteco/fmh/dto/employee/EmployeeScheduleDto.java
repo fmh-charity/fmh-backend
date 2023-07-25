@@ -18,8 +18,13 @@ import java.time.LocalTime;
 public class EmployeeScheduleDto {
 
     private final int sheduleId;
+
     private final LocalDate date;
+
     private final LocalTime timeStartWork;
+
     private final LocalTime timeEndWork;
+
     private final EmploymentType employmentType;
+
 }
