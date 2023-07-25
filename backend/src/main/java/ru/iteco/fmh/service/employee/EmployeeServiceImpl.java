@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
 import ru.iteco.fmh.dto.employee.EmployeeInfoScheduleDto;
+import ru.iteco.fmh.dto.employee.EmployeeScheduleDto;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
+import ru.iteco.fmh.model.employee.Schedule;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,11 +38,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<Employee> listEmployee = employeeRepository.findListEmployee(fullName, startDate, endDate, isActiveOnly);
 
-        conversionServiceForScheduledEmployee.convert(listEmployee,
+        List<EmployeeInfoScheduleDto> employeeInfoScheduleDtos = (List<EmployeeInfoScheduleDto>) conversionServiceForScheduledEmployee.convert(listEmployee,
                 TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Employee.class)),
                 TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(EmployeeInfoScheduleDto.class)));
 
-
-        return null;
+        return employeeInfoScheduleDtos;
     }
 }

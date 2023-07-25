@@ -51,7 +51,7 @@ public class EmployeesController {
                                                         @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateEnd,
                                                         @RequestParam(defaultValue = "true") boolean isActiveOnly,
                                                         @RequestParam(defaultValue = "true") boolean returnWorkTime) {
-        employeeService.getEmployeeList(fullName, dateStart, dateEnd, isActiveOnly, returnWorkTime);
-        return List.of();
+
+        return employeeService.getEmployeeList(fullName, dateStart, dateEnd, isActiveOnly, returnWorkTime);
    }
 }
