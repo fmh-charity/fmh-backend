@@ -37,11 +37,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                                                          boolean isActiveOnly, boolean returnWorkTime) {
 
         List<Employee> listEmployee = employeeRepository.findListEmployee(fullName, startDate, endDate, isActiveOnly);
-
         List<EmployeeInfoScheduleDto> employeeInfoScheduleDtos = (List<EmployeeInfoScheduleDto>) conversionServiceForScheduledEmployee.convert(listEmployee,
                 TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Employee.class)),
                 TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(EmployeeInfoScheduleDto.class)));
-
         return employeeInfoScheduleDtos;
     }
 }
