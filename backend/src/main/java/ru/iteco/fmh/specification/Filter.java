@@ -59,7 +59,7 @@ public class Filter implements Specification<User> {
     }
 
     private Predicate buildContainsRoleIdsPredicate(Condition condition, Root root) {
-            return root.join("userRoles").get("id").in((List<Integer>) condition.getValue());
+        return root.join("userRoles").get("id").in((List<Integer>) condition.getValue());
     }
 
     private Predicate buildContainsIsConfirmedTruePredicate(Root root, CriteriaBuilder criteriaBuilder) {
