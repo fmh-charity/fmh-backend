@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
+import ru.iteco.fmh.dao.repository.ProfileRepository;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
@@ -17,6 +18,7 @@ import ru.iteco.fmh.dao.repository.specification.UserSpecificationRepository;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -25,19 +27,17 @@ import ru.iteco.fmh.exceptions.InvalidLoginException;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
 import ru.iteco.fmh.model.user.Profile;
+import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.RoleClaimStatus;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
-import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 import ru.iteco.fmh.service.mail.notifier.Notifier;
 import ru.iteco.fmh.service.mail.notifier.SendEmailNotifierContext;
 import ru.iteco.fmh.specification.Comparision;
 import ru.iteco.fmh.specification.Condition;
 import ru.iteco.fmh.specification.Filter;
+import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
@@ -62,6 +62,8 @@ public class UserServiceImpl implements UserService {
     private final ConversionService conversionService;
     private final VerificationTokenService verificationTokenService;
 
+
+    private final ProfileRepository profileRepository;
     @Value("${spring.mail.username}")
     private String emailFromAddress;
     private final Notifier<SendEmailNotifierContext> sendEmailNotifier;
@@ -82,7 +84,6 @@ public class UserServiceImpl implements UserService {
                     Comparision.NOT_CONFIRMED_USER).value(isConfirmed).build());
         }
         return userSpecificationRepository.findAll(filter, pageable).stream()
-                //return userSpecificationRepository.findAll(createQuery(text, roleIds, isConfirmed), pageable).stream()
                 .distinct()
                 .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
     }
@@ -140,13 +141,19 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким id не найден"));
         var profile = user.getProfile();
-
+        if (!profile.getEmail().equals(profileChangingRequest.getEmail())
+                && profileRepository.existsByEmail(profileChangingRequest.getEmail())) {
+            throw new IncorrectDataException("Этот емайл уже занят");
+        }
         profile.setFirstName(profileChangingRequest.getFirstName());
         profile.setLastName(profileChangingRequest.getLastName());
         profile.setMiddleName(profileChangingRequest.getMiddleName());
         profile.setDateOfBirth(profileChangingRequest.getDateOfBirth());
-        user.setUserRoles(Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds()))));
-
+        Set<Role> roles = Set.copyOf(roleRepository.findAllByIdIn(List.copyOf(profileChangingRequest.getRoleIds())));
+        if (roles.isEmpty()) {
+            throw new IncorrectDataException("Вы передали не существующие роли");
+        }
+        user.setUserRoles(roles);
         if (!profile.getEmail().equals(profileChangingRequest.getEmail())) {
             profile.setEmailConfirmed(false);
             profile.setEmail(profileChangingRequest.getEmail());
@@ -222,32 +229,4 @@ public class UserServiceImpl implements UserService {
                 .build();
         sendEmailNotifier.send(sendEmailNotifierContext);
     }
-
-    /*private Specification<User> createQuery(String text, List<Integer> roleIds, Boolean isConfirmed) {
-        return (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (text != null && !text.isEmpty()) {
-                predicates.add(criteriaBuilder.or(
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("firstName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("lastName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("middleName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("email")), "%" + text.toLowerCase() + "%")
-                ));
-            }
-            if (roleIds != null && !roleIds.isEmpty()) {
-                predicates.add(root.join("userRoles").get("id").in(roleIds));
-            }
-            if (isConfirmed != null) {
-                if (isConfirmed) {
-                    predicates.add(criteriaBuilder.or(root.join("userRoleClaim", JoinType.LEFT).isNull(),
-                            criteriaBuilder.equal(root.get("userRoleClaim").get("status"), CONFIRMED)));
-                } else {
-                    predicates.add(criteriaBuilder.notEqual(root.get("userRoleClaim").get("status"), CONFIRMED));
-                }
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
-    }*/
 }
