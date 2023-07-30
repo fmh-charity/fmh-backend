@@ -27,7 +27,6 @@ public class Filter implements Specification<User> {
             return null;
         }
         List<Predicate> predicates = buildPredicates(root, criteriaBuilder);
-        System.out.println(predicates.size());
         return predicates.size() > 1
                 ? criteriaBuilder.and(predicates.toArray(new Predicate[0]))
                 : predicates.get(0);
@@ -60,11 +59,7 @@ public class Filter implements Specification<User> {
     }
 
     private Predicate buildContainsRoleIdsPredicate(Condition condition, Root root) {
-        if (condition.getValue() != null) {
             return root.join("userRoles").get("id").in((List<Integer>) condition.getValue());
-        } else {
-            return null;
-        }
     }
 
     private Predicate buildContainsIsConfirmedTruePredicate(Root root, CriteriaBuilder criteriaBuilder) {
