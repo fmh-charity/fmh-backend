@@ -11,5 +11,5 @@ Feature: 2. Сценарии использования над разделом 
       | login1  | password1 | 0     | 8        | Горбунов         |         |           |
       | login2  | password2 | 0     | 1        | Николай          |         |           |
       | login2  | password2 | 0     | 4        | Валерьяновна     |         | true      |
-      | login1  | password1 | 0     | 16       | login2@gmail.com | 2       |           |
+      | login1  | password1 | 0     | 8        | login2@gmail.com | 2       |           |
       | login5  | password5 | 0     | 200      |                  | 1       | true      |

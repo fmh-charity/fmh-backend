@@ -31,6 +31,9 @@ import ru.iteco.fmh.model.user.UserRoleClaim;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 import ru.iteco.fmh.service.mail.notifier.Notifier;
 import ru.iteco.fmh.service.mail.notifier.SendEmailNotifierContext;
+import ru.iteco.fmh.specification.Comparision;
+import ru.iteco.fmh.specification.Condition;
+import ru.iteco.fmh.specification.Filter;
 
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
@@ -67,7 +70,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserShortInfoDto> getAllUsers(Pageable pageable, String text, List<Integer> roleIds, Boolean isConfirmed) {
-        return userSpecificationRepository.findAll(createQueryByOnePredicate(text, roleIds, isConfirmed), pageable).stream()
+        Filter filter = new Filter();
+        if (text != null && !text.isEmpty()) {
+            filter.addCondition(Condition.builder().comparision(Comparision.CONTAINS_IN_PROFILE).value(text).build());
+        }
+        if (roleIds != null && !roleIds.isEmpty()) {
+            filter.addCondition(Condition.builder().comparision(Comparision.CONTAINS_IN_ROLE_IDS).value(roleIds).build());
+        }
+        if (isConfirmed != null) {
+            filter.addCondition(Condition.builder().comparision(isConfirmed ? Comparision.CONFIRMED_USER :
+                    Comparision.NOT_CONFIRMED_USER).value(isConfirmed).build());
+        }
+        return userSpecificationRepository.findAll(filter, pageable).stream()
+                //return userSpecificationRepository.findAll(createQuery(text, roleIds, isConfirmed), pageable).stream()
                 .distinct()
                 .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
     }
@@ -208,7 +223,7 @@ public class UserServiceImpl implements UserService {
         sendEmailNotifier.send(sendEmailNotifierContext);
     }
 
-    private Specification<User> createQuery(String text, List<Integer> roleIds, Boolean isConfirmed) {
+    /*private Specification<User> createQuery(String text, List<Integer> roleIds, Boolean isConfirmed) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -234,32 +249,5 @@ public class UserServiceImpl implements UserService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-    }
-
-    private Specification<User> createQueryByOnePredicate(String text, List<Integer> roleIds, Boolean isConfirmed) {
-        return (root, query, criteriaBuilder) -> {
-
-            if (text != null && !text.isEmpty()) {
-                return criteriaBuilder.or(
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("firstName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("lastName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("middleName")), "%" + text.toLowerCase() + "%"),
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("profile").get("email")), "%" + text.toLowerCase() + "%")
-                );
-            }
-            if (roleIds != null && !roleIds.isEmpty()) {
-                return root.join("userRoles").get("id").in(roleIds);
-            }
-            if (isConfirmed != null) {
-                if (isConfirmed) {
-                    return criteriaBuilder.or(root.join("userRoleClaim", JoinType.LEFT).isNull(),
-                            criteriaBuilder.equal(root.get("userRoleClaim").get("status"), CONFIRMED));
-                } else {
-                    return criteriaBuilder.notEqual(root.get("userRoleClaim").get("status"), CONFIRMED);
-                }
-            }
-
-            return null;
-        };
-    }
+    }*/
 }
