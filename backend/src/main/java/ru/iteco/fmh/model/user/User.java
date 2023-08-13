@@ -36,7 +36,7 @@ public class User implements UserDetails {
     String login;
     String password;
     boolean deleted;
-    //???????????
+
     @OneToOne(mappedBy = "user")
     UserRoleClaim userRoleClaim;
 

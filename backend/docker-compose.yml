@@ -13,7 +13,7 @@ services:
       - "5400:5432"
   backend:
     container_name: fmh_backend
-    #    image: ghcr.io/fmh-charity/fmh-backend:latest
+#    image: ghcr.io/fmh-charity/fmh-backend:latest
     image: fmh_back:1.0
     depends_on:
       - pg_db
