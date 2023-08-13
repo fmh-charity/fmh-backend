@@ -8,6 +8,8 @@ import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -19,12 +21,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeInfoDto getEmployeeById(int id) {
-        Employee employee = employeeRepository.findEmployeeById(id);
-        if (employee == null) {
-            throw new NotFoundException("Cотрудник не найден");
-        }
-        EmployeeInfoDto employeeInfoDto = conversionService
-                .convert(employee, EmployeeInfoDto.class);
-        return employeeInfoDto;
+        Optional<Employee> employeeFindById = employeeRepository.findById(id);
+        return employeeFindById.map(e -> conversionService.convert(e, EmployeeInfoDto.class))
+                .orElseThrow(() -> new NotFoundException("Cотрудник не найден"));
+
     }
 }
