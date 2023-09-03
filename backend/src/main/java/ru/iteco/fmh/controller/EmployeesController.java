@@ -9,13 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 
-import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
-import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
-import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
-import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
+import ru.iteco.fmh.dto.employee.*;
 import ru.iteco.fmh.service.employee.EmployeeService;
 import ru.iteco.fmh.service.user.UserService;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 
 @RestController
@@ -51,6 +50,17 @@ public class EmployeesController {
                                                   @PathVariable int employeeId,
                                               @RequestBody @Valid EmployeeChangingRequest employeeChangingRequest) {
         return employeeService.updateEmployeeById(employeeId, employeeChangingRequest);
+    }
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @GetMapping("")
+    public List<EmployeeInfoScheduleDto> getEmployeeList(@RequestParam(required = false) String fullName,
+                                                         @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateStart,
+                                                         @RequestParam(defaultValue = "#{T(java.time.LocalDate).now()}") LocalDate dateEnd,
+                                                         @RequestParam(defaultValue = "true") boolean isActiveOnly,
+                                                         @RequestParam(defaultValue = "true") boolean returnWorkTime) {
+
+        return employeeService.getEmployeeList(fullName, dateStart, dateEnd, isActiveOnly, returnWorkTime);
     }
 }
 
