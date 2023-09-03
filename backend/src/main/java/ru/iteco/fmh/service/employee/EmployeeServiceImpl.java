@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.employee;
 
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Service;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
@@ -73,7 +74,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate, LocalDate endDate, boolean isActiveOnly, boolean returnWorkTime) {
-        return null;
+    public List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate, LocalDate endDate,
+                                                         boolean isActiveOnly, boolean returnWorkTime) {
+
+        List<Employee> listEmployee = employeeRepository.findListEmployee(fullName, startDate, endDate, isActiveOnly);
+        List<EmployeeInfoScheduleDto> employeeInfoScheduleDtos = (List<EmployeeInfoScheduleDto>) conversionServiceForScheduledEmployee.convert(listEmployee,
+                TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Employee.class)),
+                TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(EmployeeInfoScheduleDto.class)));
+        return employeeInfoScheduleDtos;
     }
 }
