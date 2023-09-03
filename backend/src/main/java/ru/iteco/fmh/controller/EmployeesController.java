@@ -2,17 +2,14 @@ package ru.iteco.fmh.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
@@ -46,4 +43,16 @@ public class EmployeesController {
         return employeeService.getEmployeeById(employeeId);
     }
 
+
+    @Secured("ROLE_ADMINISTRATOR")
+    @Operation(summary = "Изменение информации о сотруднике")
+    @PutMapping("/{employeeId}")
+    public EmployeeInfoDto updateEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true)
+                                                  @PathVariable int employeeId,
+                                              @RequestBody @Valid EmployeeChangingRequest employeeChangingRequest) {
+        return employeeService.updateEmployeeById(employeeId, employeeChangingRequest);
+    }
 }
+
+
+

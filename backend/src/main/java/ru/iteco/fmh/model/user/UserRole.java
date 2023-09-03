@@ -35,11 +35,11 @@ public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    //many userRole can have one user
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
-    //many userRole can have one role
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
