@@ -7,11 +7,14 @@ import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
 import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
+import ru.iteco.fmh.dto.employee.EmployeeInfoScheduleDto;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
 import ru.iteco.fmh.model.employee.Position;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,5 +70,10 @@ public class EmployeeServiceImpl implements EmployeeService {
        employeeRepository.save(employee);
 
         return conversionService.convert(employee, EmployeeInfoDto.class);
+    }
+
+    @Override
+    public List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate, LocalDate endDate, boolean isActiveOnly, boolean returnWorkTime) {
+        return null;
     }
 }
