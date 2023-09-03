@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     private final ConversionService conversionService;
-
+    private final ConversionService conversionServiceForScheduledEmployee;
     private final PositionRepository positionRepository;
 
 
