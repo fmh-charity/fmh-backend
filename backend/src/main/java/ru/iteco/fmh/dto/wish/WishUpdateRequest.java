@@ -39,4 +39,7 @@ public class WishUpdateRequest {
 
     @Schema(name = "wishVisibility", description = "Область видимости")
     List<Integer> wishVisibility;
+
+    @Schema(name = "description", description = "Признак Нужная помощь")
+    Boolean helpRequest;
 }
