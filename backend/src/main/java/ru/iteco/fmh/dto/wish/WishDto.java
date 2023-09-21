@@ -65,5 +65,8 @@ public class WishDto {
 
     @Schema(name = "wishPriority", description = "Приоритет просьбы")
     WishPriority wishPriority;
+
+    @Schema(name = "description", description = "Признак Нужная помощь")
+    Boolean helpRequest;
 }
 
