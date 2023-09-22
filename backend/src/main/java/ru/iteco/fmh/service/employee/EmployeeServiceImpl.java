@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
 import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
@@ -15,6 +16,7 @@ import ru.iteco.fmh.model.employee.Employee;
 import ru.iteco.fmh.model.employee.Position;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     private final ConversionService conversionService;
-    private final ConversionService conversionServiceForScheduledEmployee;
+
     private final PositionRepository positionRepository;
 
 
@@ -74,13 +76,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public List<EmployeeInfoScheduleDto> getEmployeeList(String fullName, LocalDate startDate, LocalDate endDate,
                                                          boolean isActiveOnly, boolean returnWorkTime) {
 
         List<Employee> listEmployee = employeeRepository.findListEmployee(fullName, startDate, endDate, isActiveOnly);
-        List<EmployeeInfoScheduleDto> employeeInfoScheduleDtos = (List<EmployeeInfoScheduleDto>) conversionServiceForScheduledEmployee.convert(listEmployee,
-                TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Employee.class)),
-                TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(EmployeeInfoScheduleDto.class)));
+        List<EmployeeInfoScheduleDto> employeeInfoScheduleDtos = (List<EmployeeInfoScheduleDto>) conversionService.convert(listEmployee,
+                TypeDescriptor.collection(ArrayList.class, TypeDescriptor.valueOf(Employee.class)),
+                TypeDescriptor.collection(ArrayList.class, TypeDescriptor.valueOf(EmployeeInfoScheduleDto.class)));
         return employeeInfoScheduleDtos;
     }
 }

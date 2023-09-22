@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-@ToString
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

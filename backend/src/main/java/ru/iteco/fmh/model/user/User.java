@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Пользователь
  */
-@ToString
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
