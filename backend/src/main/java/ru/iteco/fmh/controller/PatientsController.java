@@ -54,7 +54,7 @@ public class PatientsController {
             @Parameter(name = "elements", description = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @Parameter(name = "search", description = "Строка для поиска")
-            @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "") String search,
             @Parameter(name = "sortDirection", description = "Направление сортировки , допустимые значения asc, desc")
             @RequestParam(required = false, defaultValue = "ASC") String sortDirection,
             @Parameter(name = "sortField", description = "Поле по которому будет осуществляться сортирока ,"
