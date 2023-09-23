@@ -47,6 +47,7 @@ public class WishToWishDtoConverter implements Converter<Wish, WishDto> {
         dto.setWishVisibility(roleIdsList);
         dto.setWishExecutors(wishExecutorDtoRsList);
         dto.setWishPriority(wish.getWishPriority());
+        dto.setHelpRequest(wish.isHelpRequest());
 
         return dto;
     }
