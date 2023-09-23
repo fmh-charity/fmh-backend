@@ -1,34 +1,36 @@
 package ru.iteco.fmh.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import ru.iteco.fmh.controller.PatientsController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dto.patient.PatientByStatusRs;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
-import ru.iteco.fmh.dto.patient.PatientDto;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
-import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
+import ru.iteco.fmh.dto.patient.*;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.service.patient.PatientService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.iteco.fmh.TestUtils.getPatientCreateInfoDtoRq;
-import static ru.iteco.fmh.model.PatientStatus.ACTIVE;
 import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
-import static ru.iteco.fmh.model.PatientStatus.EXPECTED;
-
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 @RunWith(SpringRunner.class)
@@ -38,32 +40,34 @@ public class PatientsControllerTest {
     @Autowired
     PatientsController sut;
 
+
     @Autowired
     PatientRepository patientRepository;
     @Autowired
     ConversionService conversionService;
+    @Mock
+    private PatientService patientService;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
 
     @Test
-    public void getAllPatientsByStatusTestShouldPassSuccess() {
-        // given
-        int countExpected = 3;
-        int countActive = 2;
-        int countDischarged = 1;
-        int countAll = 6;
-
-        List<PatientByStatusRs> resultExpected = sut.getAllPatientsByStatus(List.of(EXPECTED.name()));
-        List<PatientByStatusRs> resultActive = sut.getAllPatientsByStatus(List.of(ACTIVE.name()));
-        List<PatientByStatusRs> resultDischarged = sut.getAllPatientsByStatus(List.of(DISCHARGED.name()));
-        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name()));
-
-        assertAll(
-                () -> assertEquals(countExpected, resultExpected.size()),
-                () -> assertEquals(countActive, resultActive.size()),
-                () -> assertEquals(countDischarged, resultDischarged.size()),
-                () -> assertEquals(countAll, resultAll.size())
-        );
+    @WithUserDetails()
+    public void testGetAllPatientsByStatus() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc.perform(get("/patients")
+                        .param("pages", "0")
+                        .param("elements", "3")
+                        .param("search", "")
+                        .param("sortDirection", "ASC")
+                        .param("sortField", "id")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3))); // Замените эту часть кода в соответствии с ожидаемым результатом
     }
+
 
     @Test
     public void createPatientShouldPassSuccess() {

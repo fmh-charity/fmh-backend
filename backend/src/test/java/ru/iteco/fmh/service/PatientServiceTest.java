@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dto.patient.*;
@@ -12,12 +14,12 @@ import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.service.patient.PatientService;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.PatientStatus.*;
 
@@ -35,31 +37,15 @@ public class PatientServiceTest {
 
     @Test
     public void getAllPatientsByStatusShouldPassSuccess() {
-        // given
-        List<String> statusListAll = List.of(EXPECTED.name(),
-                ACTIVE.name(), DISCHARGED.name());
-        List<String> statusListDISCHARGED = List.of(DISCHARGED.name());
-        List<String> statusListACTIVE = List.of(ACTIVE.name());
-        List<String> statusListEXPECTED = List.of(EXPECTED.name());
-        List<String> statusListMIXED = List.of(EXPECTED.name(), DISCHARGED.name());
-        List<String> statusListEmpty = List.of();
+        int pages =0;
+        int elements =2;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest =PageRequest.of(pages, elements, sort);
 
-        // result
-        List<PatientByStatusRs> resultAll = sut.getAllPatientsByStatus(statusListAll);
-        List<PatientByStatusRs> resultDISCHARGED = sut.getAllPatientsByStatus(statusListDISCHARGED);
-        List<PatientByStatusRs> resultACTIVE = sut.getAllPatientsByStatus(statusListACTIVE);
-        List<PatientByStatusRs> resultEXPECTED = sut.getAllPatientsByStatus(statusListEXPECTED);
-        List<PatientByStatusRs> resultMIXED = sut.getAllPatientsByStatus(statusListMIXED);
-        List<PatientByStatusRs> resultEmpty = sut.getAllPatientsByStatus(statusListEmpty);
+        List<PatientByStatusRs> result = sut.getAllPatientsByStatus(pageRequest,"OnefirstName");
 
-        assertAll(
-                () -> assertEquals(6, resultAll.size()),
-                () -> assertEquals(1, resultDISCHARGED.size()),
-                () -> assertEquals(2, resultACTIVE.size()),
-                () -> assertEquals(3, resultEXPECTED.size()),
-                () -> assertEquals(4, resultMIXED.size()),
-                () -> assertEquals(0, resultEmpty.size())
-        );
+        assertEquals(1,result.size());
+
     }
 
     @Test

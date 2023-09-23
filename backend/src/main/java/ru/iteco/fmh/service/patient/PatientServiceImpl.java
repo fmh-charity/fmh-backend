@@ -2,6 +2,7 @@ package ru.iteco.fmh.service.patient;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.PatientRepository;
@@ -14,7 +15,6 @@ import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientUpdateInfoDtoRs;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.Patient;
-import ru.iteco.fmh.model.PatientStatus;
 import ru.iteco.fmh.model.Room;
 
 import java.util.List;
@@ -29,13 +29,9 @@ public class PatientServiceImpl implements PatientService {
     private final RoomRepository roomRepository;
 
     @Override
-    public List<PatientByStatusRs> getAllPatientsByStatus(List<String> statusList) {
-        List<PatientStatus> patientStatuses = statusList.stream().map(PatientStatus::valueOf).collect(Collectors.toList());
-        List<Patient> patientList = patientRepository.findAllByStatusIn(patientStatuses);
-
-        return patientList.stream()
-                .map(patient -> conversionService.convert(patient, PatientByStatusRs.class))
-                .collect(Collectors.toList());
+    public List<PatientByStatusRs> getAllPatientsByStatus(PageRequest pageRequest, String search) {
+        return patientRepository.findAllByParameters(pageRequest, search).stream()
+                .map(i -> conversionService.convert(i, PatientByStatusRs.class)).collect(Collectors.toList());
     }
 
     @Override

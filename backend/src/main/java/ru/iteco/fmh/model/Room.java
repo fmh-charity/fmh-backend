@@ -1,5 +1,6 @@
 package ru.iteco.fmh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,7 @@ public class Room {
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "nurse_station_id")
     NurseStation nurseStation;
 
