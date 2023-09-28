@@ -33,8 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeInfoDto getEmployeeById(int id) {
-        Optional<Employee> employeeFindById = employeeRepository.findById(id);
-        return employeeFindById.map(e -> conversionService.convert(e, EmployeeInfoDto.class))
+        Optional<Employee> employee = employeeRepository.findById(id);
+        return employee.map(e -> conversionService.convert(e, EmployeeInfoDto.class))
                 .orElseThrow(() -> new NotFoundException("Cотрудник не найден"));
 
     }

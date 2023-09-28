@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    Employee findEmployeeById(int id);
-
     @Query(value = "SELECT * FROM employees as e INNER JOIN profile as p on e.profile_id = p.id WHERE (CONCAT(p.first_name, ' ', p.last_name) = :fullName or :fullName is null) and " +
             "e.schedule_start_date between :dateStart and :dateEnd  and e.active in (TRUE, :isActiveOnly)", nativeQuery = true)
     List<Employee> findListEmployee(@Param("fullName") String fullName, @Param("dateStart") LocalDate dateStart,
