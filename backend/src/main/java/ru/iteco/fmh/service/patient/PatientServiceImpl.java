@@ -29,6 +29,7 @@ public class PatientServiceImpl implements PatientService {
     private final RoomRepository roomRepository;
 
     @Override
+    @Transactional
     public List<PatientByStatusRs> getAllPatientsByStatus(PageRequest pageRequest, String search) {
         return patientRepository.findAllByParameters(pageRequest, search).stream()
                 .map(i -> conversionService.convert(i, PatientByStatusRs.class)).collect(Collectors.toList());
