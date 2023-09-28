@@ -17,6 +17,7 @@ import ru.iteco.fmh.dao.repository.specification.UserSpecificationRepository;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
+import ru.iteco.fmh.dto.role.RoleDto;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -198,6 +199,13 @@ public class UserServiceImpl implements UserService {
         employeeRepository.save(employee);
         sendingAnEmployeeRegistrationMessage(user, password);
         return conversionService.convert(employee, EmployeeRegistrationResponse.class);
+    }
+
+    @Override
+    public List<RoleDto> getAllRoles() {
+        List<Role> roleList = roleRepository.findAll();
+        return roleList.stream().map(el -> conversionService.convert(el, RoleDto.class))
+                .collect(Collectors.toList());
     }
 
     public static String generateRandomPassword() {

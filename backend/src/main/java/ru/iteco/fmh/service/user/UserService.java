@@ -1,6 +1,7 @@
 package ru.iteco.fmh.service.user;
 
 import org.springframework.data.domain.Pageable;
+import ru.iteco.fmh.dto.role.RoleDto;
 import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
@@ -39,21 +40,25 @@ public interface UserService {
     UserShortInfoDto confirmUserRole(int userId);
 
     /**
-     *
-     *  Возвращает информацию по пользователю, если он есть
+     * Возвращает информацию по пользователю, если он есть
      */
     UserInfoDto getUserInfo(Integer id);
 
     /**
-     *
-     *  Изменяет информацию по пользователю, если он есть
+     * Изменяет информацию по пользователю, если он есть
      */
     UserShortInfoDto updateUser(int userId, ProfileChangingRequest profileChangingRequest);
 
     /**
      * создает новую карточку сотрудника
+     *
      * @param request информация по сотруднику для создания
      * @return сущность
      */
     EmployeeRegistrationResponse createEmployee(EmployeeRegistrationRequest request);
+
+    /**
+     * возвращает список всех ролей
+     */
+    List<RoleDto> getAllRoles();
 }
