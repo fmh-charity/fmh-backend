@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.patient;
 
+import org.springframework.data.domain.PageRequest;
 import ru.iteco.fmh.dto.patient.PatientByStatusRs;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRq;
 import ru.iteco.fmh.dto.patient.PatientCreateInfoDtoRs;
@@ -12,10 +13,10 @@ import java.util.List;
 public interface PatientService {
     /**
      * возвращает список всех пациентов с активной госпитализацией
-     * @param patientStatusList список значений для фильтра по госпитализации
-     * @return список всех пациентов с активной госпитализацией
+     * @param search строка для фильтра
+     * @return список всех пациентов
      */
-    List<PatientByStatusRs> getAllPatientsByStatus(List<String> patientStatusList);
+    List<PatientByStatusRs> getAllPatientsByStatus(PageRequest pageRequest, String search);
 
     /**
      * создает новую карточку пациента
