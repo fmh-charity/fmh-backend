@@ -39,7 +39,6 @@ public class EmployeeChangingRequest {
     @Schema(name = "middleName", description = "Отчество сотрудника")
     String middleName;
 
-    @NotBlank
     @Schema(name = "positionId")
     int positionId;
 
