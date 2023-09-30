@@ -24,7 +24,7 @@ public class Employee {
 
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @JoinColumn(name = "profile_id")
     Profile profile;
 
     @ManyToOne
