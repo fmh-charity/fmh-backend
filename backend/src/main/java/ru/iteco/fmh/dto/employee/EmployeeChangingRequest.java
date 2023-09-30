@@ -25,19 +25,18 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE)
 public class EmployeeChangingRequest {
 
-    @NotBlank
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+(-[а-яА-ЯёЁa-zA-Z]+)?$")
-    @Schema(name = "lastName", description = "Фамилия сотрудника")
+    @NotBlank()
+    @Schema(name = "lastName", description = "Фамилия")
     String lastName;
 
-    @NotBlank
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$")
-    @Schema(name = "firstName", description = "Имя сотрудника")
+    @NotBlank()
+    @Schema(name = "firstName", description = "Имя")
     String firstName;
 
-    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z-]+$")
-    @Schema(name = "middleName", description = "Отчество сотрудника")
+    @NotBlank()
+    @Schema(name = "middleName", description = "Отчество")
     String middleName;
+
 
     @Schema(name = "positionId")
     int positionId;
