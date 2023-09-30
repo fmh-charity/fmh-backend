@@ -10,10 +10,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Builder
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "employees")
@@ -22,7 +22,8 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")
     Profile profile;
 
