@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 
+import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
@@ -49,6 +50,8 @@ public class EmployeesController {
     public EmployeeInfoDto updateEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true)
                                               @PathVariable int employeeId,
                                               @Parameter(description = "Информация для обновления", required = true)
-                                              @RequestBody @Valid )
+                                              @RequestBody @Valid EmployeeChangingRequest employeeChangingRequest) {
+        return employeeService
+    }
 
 }
