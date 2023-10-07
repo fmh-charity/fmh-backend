@@ -3,7 +3,7 @@ package ru.iteco.fmh.service.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +13,11 @@ import ru.iteco.fmh.dao.repository.ProfileRepository;
 import ru.iteco.fmh.dao.repository.RoleRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.UserRoleClaimRepository;
+import ru.iteco.fmh.dao.repository.specification.UserSpecificationRepository;
+import ru.iteco.fmh.dto.user.ProfileChangingRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
-import ru.iteco.fmh.dto.user.ProfileChangingRequest;
+import ru.iteco.fmh.dto.role.RoleDto;
 import ru.iteco.fmh.dto.user.UserInfoDto;
 import ru.iteco.fmh.dto.user.UserRoleClaimDto;
 import ru.iteco.fmh.dto.user.UserShortInfoDto;
@@ -30,6 +32,9 @@ import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.user.UserRoleClaim;
 import ru.iteco.fmh.service.mail.notifier.Notifier;
 import ru.iteco.fmh.service.mail.notifier.SendEmailNotifierContext;
+import ru.iteco.fmh.specification.Comparision;
+import ru.iteco.fmh.specification.Condition;
+import ru.iteco.fmh.specification.Filter;
 import ru.iteco.fmh.service.verification.token.VerificationTokenService;
 
 import java.security.SecureRandom;
@@ -48,10 +53,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRoleClaimRepository userRoleClaimRepository;
     private final RoleRepository roleRepository;
-    private final ConversionService conversionService;
-    private final VerificationTokenService verificationTokenService;
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
+
+    private final UserSpecificationRepository userSpecificationRepository;
+
+    private final ConversionService conversionService;
+    private final VerificationTokenService verificationTokenService;
+
 
     private final ProfileRepository profileRepository;
     @Value("${spring.mail.username}")
@@ -61,17 +70,21 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public List<UserShortInfoDto> getAllUsers(PageRequest pageRequest, Boolean showConfirmed) {
-        if (showConfirmed == null) {
-            return userRepository.findAll(pageRequest).getContent().stream()
-                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
-        } else if (!showConfirmed) {
-            return userRepository.findAllByRoleClaimIsNewOrRejected(pageRequest).stream()
-                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
-        } else {
-            return userRepository.findAllByRoleClaimIsConfirmedOrNull(pageRequest).stream()
-                    .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
+    public List<UserShortInfoDto> getAllUsers(Pageable pageable, String text, List<Integer> roleIds, Boolean isConfirmed) {
+        Filter filter = new Filter();
+        if (text != null && !text.isEmpty()) {
+            filter.addCondition(Condition.builder().comparision(Comparision.CONTAINS_IN_PROFILE).value(text).build());
         }
+        if (roleIds != null && !roleIds.isEmpty()) {
+            filter.addCondition(Condition.builder().comparision(Comparision.CONTAINS_IN_ROLE_IDS).value(roleIds).build());
+        }
+        if (isConfirmed != null) {
+            filter.addCondition(Condition.builder().comparision(isConfirmed ? Comparision.CONFIRMED_USER :
+                    Comparision.NOT_CONFIRMED_USER).value(isConfirmed).build());
+        }
+        return userSpecificationRepository.findAll(filter, pageable).stream()
+                .distinct()
+                .map(i -> conversionService.convert(i, UserShortInfoDto.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -186,6 +199,13 @@ public class UserServiceImpl implements UserService {
         employeeRepository.save(employee);
         sendingAnEmployeeRegistrationMessage(user, password);
         return conversionService.convert(employee, EmployeeRegistrationResponse.class);
+    }
+
+    @Override
+    public List<RoleDto> getAllRoles() {
+        List<Role> roleList = roleRepository.findAll();
+        return roleList.stream().map(el -> conversionService.convert(el, RoleDto.class))
+                .collect(Collectors.toList());
     }
 
     public static String generateRandomPassword() {

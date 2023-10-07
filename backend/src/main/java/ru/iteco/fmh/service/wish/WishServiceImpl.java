@@ -288,6 +288,7 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
 
         foundWish.getExecutors().forEach(wishExecutor -> wishExecutor.setFinishDate(Instant.now()));
+        foundWish.setFactExecuteDate(Instant.now());
         foundWish.setStatus(READY);
         Wish updatedWish = wishRepository.save(foundWish);
 
