@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import ru.iteco.fmh.dto.wish.WishDto;
 import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
+import ru.iteco.fmh.exceptions.IncorrectDataException;
 import ru.iteco.fmh.model.wish.Status;
 import ru.iteco.fmh.service.wish.WishService;
 
@@ -40,6 +43,10 @@ import java.util.List;
 public class WishesController {
 
     private final WishService wishService;
+    private final List<String> fields = List.of("id", "status", "patient.profile.firstName", "patient.profile.lastName",
+            "patient.profile.middleName", "executors.executor.profile.firstName", "executors.executor.profile.lastName",
+            "executors.executor.profile.middleName");
+    private final List<String> directions = List.of("asc", "desc");
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех просьб")
@@ -49,11 +56,24 @@ public class WishesController {
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
-            @Parameter(name = "status", description = "[IN_PROGRESS, CANCELLED, OPEN, EXECUTED]")
-            @RequestParam(name = "status", required = false) List<Status> status,
-            @Parameter(name = "planExecuteDate", description = "Сортировка по дате исполнения")
-            @RequestParam(defaultValue = "true") boolean planExecuteDate) {
-        return ResponseEntity.ok(wishService.getWishes(pages, elements, status, planExecuteDate));
+            @Parameter(name = "searchValue", description = "Строка для поиска")
+            @RequestParam(required = false, defaultValue = "") String searchValue,
+            @Parameter(name = "sortDirection", description = "Направление сортировки, допустимые значения asc, desc")
+            @RequestParam(defaultValue = "ASC", required = false) String sortDirection,
+            @Parameter(name = "sortField", description = "Параметр по которому будет осуществляться сортировка. "
+                    + "Допустимые поля: id, status, patient.profile.firstName, patient.profile.lastName, patient.profile.middleName, "
+                    + "executors.executor.profile.firstName, executors.executor.profile.lastName, executors.executor.profile.middleName")
+            @RequestParam(required = false, defaultValue = "id") String sortField
+    ) {
+        sortDirection = sortDirection.toLowerCase();
+        if (!directions.contains(sortDirection)) {
+            throw new IncorrectDataException("Неверное значение в поле направления сортировки");
+        }
+        if (!fields.contains(sortField)) {
+            throw new IncorrectDataException("Неверное значение в поле сортировки");
+        }
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        return ResponseEntity.ok(wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

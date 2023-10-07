@@ -1,7 +1,7 @@
 package ru.iteco.fmh.dao.repository;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,13 +19,43 @@ import java.util.Optional;
 @Repository
 public interface WishRepository extends JpaRepository<Wish, Integer> {
 
-    @Query(value = "SELECT distinct w from Wish w inner join w.wishRoles wr where w.deleted is false "
-            + "and w.status in :status and (wr.name in :roleNames or w.creator.login = :creatorLogin)")
-    Page<Wish> findAllByCurrentRoles(
-            @Param("status") List<Status> status,
+    @Query(value =
+            "SELECT distinct w "
+                    + "from Wish w "
+                    + "inner join w.wishRoles wr "
+                    + "left JOIN w.executors we "
+                    + "where w.deleted is false "
+                    + "    and (wr.name in :roleNames or w.creator.login = :creatorLogin) "
+                    + "    and (lower(w.status) like lower(concat('%', :searchValue, '%')) "
+                    + "        or lower(w.patient.profile.firstName) like lower(concat('%', :searchValue, '%')) "
+                    + "        or lower(w.patient.profile.lastName) like lower(concat('%', :searchValue, '%')) "
+                    + "        or lower(w.patient.profile.middleName) like lower(concat('%', :searchValue, '%')) "
+                    + "        or lower(we.executor.profile.firstName) like lower(concat('%', :searchValue, '%'))"
+                    + "        or lower(we.executor.profile.lastName) like lower(concat('%', :searchValue, '%'))"
+                    + "        or lower(we.executor.profile.middleName) like lower(concat('%', :searchValue, '%')))"
+            )
+    Page<Wish> findAllBySearchValueWithExecutors(
             @Param("roleNames") List<String> roleNames,
             @Param("creatorLogin") String creatorLogin,
-            Pageable pageable);
+            @Param("searchValue") String searchValue,
+            PageRequest pageRequest);
+
+    @Query(value =
+            "SELECT DISTINCT w FROM Wish w "
+                    + "INNER JOIN w.wishRoles wr "
+                    + "WHERE w.deleted is false "
+                    + "AND (wr.name IN :roleNames OR w.creator.login = :creatorLogin) "
+                    + "AND (SELECT COUNT(we) FROM w.executors we) = 0 "
+                    + "AND (lower(w.status) LIKE lower(concat('%', :searchValue, '%')) "
+                    + "    OR lower(w.patient.profile.firstName) LIKE lower(concat('%', :searchValue, '%')) "
+                    + "    OR lower(w.patient.profile.lastName) LIKE lower(concat('%', :searchValue, '%')) "
+                    + "    OR lower(w.patient.profile.middleName) LIKE lower(concat('%', :searchValue, '%'))) "
+    )
+    Page<Wish> findAllBySearchValueWithoutExecutors(
+            @Param("roleNames") List<String> roleNames,
+            @Param("creatorLogin") String creatorLogin,
+            @Param("searchValue") String searchValue,
+            PageRequest pageRequest);
 
     @PostFilter("@roleMatchesService.findMatchesByRoleList(filterObject.wishRoles, authentication)"
             + "|| authentication.name.equals(filterObject.creator.login)")

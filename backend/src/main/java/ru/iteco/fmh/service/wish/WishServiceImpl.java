@@ -3,9 +3,8 @@ package ru.iteco.fmh.service.wish;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +35,7 @@ import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -60,28 +60,39 @@ public class WishServiceImpl implements WishService {
     private final RoleRepository roleRepository;
 
     @Override
-    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
+    public WishPaginationDto getWishes(PageRequest pageRequest, String searchValue) {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
         String currentUserLogin = currentLoggedInUser.getLogin();
-
         List<String> currentUserRoleNamesList = currentLoggedInUser.getUserRoles().stream().map(Role::getName).toList();
 
-        Pageable pageableList = planExecuteDate
-                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
-                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
-
-        Page<Wish> list = (status == null || status.isEmpty())
-                ? wishRepository.findAllByCurrentRoles(List.of(OPEN, IN_PROGRESS), currentUserRoleNamesList, currentUserLogin, pageableList)
-                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, currentUserLogin, pageableList);
-
+        List<Page<Wish>> pages = new ArrayList<>();
+        if (searchValue == null || searchValue.isEmpty()) {
+            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
+                    "OPEN", pageRequest));
+            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
+                    "IN_PROGRESS", pageRequest));
+            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
+                    "OPEN", pageRequest));
+            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
+                    "IN_PROGRESS", pageRequest));
+        } else {
+            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
+                    searchValue, pageRequest));
+            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
+                    searchValue, pageRequest));
+        }
+        List<Wish> mutableList = pages.stream()
+                .flatMap(page -> page.getContent().stream()).collect(Collectors.toList());
+        Page<Wish> wishes = new PageImpl<>(mutableList, pageRequest, mutableList.size());
         return WishPaginationDto.builder()
-                .pages(list.getTotalPages() - 1)
+                .pages(wishes.getTotalPages() - 1)
                 .elements(
-                        list.stream()
+                        wishes.stream()
                                 .map(i -> conversionService.convert(i, WishDto.class))
                                 .collect(Collectors.toList()))
                 .build();
     }
+
 
     @Override
     public List<WishDto> getOpenInProgressWishes() {

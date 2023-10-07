@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service.wish;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
@@ -18,8 +19,11 @@ import java.util.List;
 public interface WishService {
     /**
      * возвращает список всех просьб
+     * @param pageRequest список значений для отображения
+     * @param searchValue строка с элементами для фильтрации
+     * @return список просьб с пагинацией
      */
-    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate);
+    WishPaginationDto getWishes(PageRequest pageRequest, String searchValue);
 
     /**
      * возвращает список всех просьб co статусом open/in_progress

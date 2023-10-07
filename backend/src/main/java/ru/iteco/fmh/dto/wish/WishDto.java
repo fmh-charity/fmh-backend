@@ -39,9 +39,6 @@ public class WishDto {
     @Schema(name = "creator", description = "Создатель просьбы")
     UserDtoIdFio creator;
 
-    @Schema(name = "executor", description = "Исполнитель просьбы")
-    UserDtoIdFio executor;
-
     @Schema(name = "createDate", description = "Дата создания")
     Long createDate;
 
