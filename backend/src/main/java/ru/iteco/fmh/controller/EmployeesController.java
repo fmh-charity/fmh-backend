@@ -3,7 +3,7 @@ package ru.iteco.fmh.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+//import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -44,13 +44,16 @@ public class EmployeesController {
 
 
     @Secured("ROLE_ADMINISTRATOR")
-    @Operation(summary = "Изменение информации о сотруднике")
-    @PutMapping("/{employeeId}")
-    public EmployeeInfoDto updateEmployeeById(@Parameter(description = "Идентификатор сотрудника", required = true)
-                                                  @PathVariable int employeeId,
-                                              @RequestBody @Valid EmployeeChangingRequest employeeChangingRequest) {
-        return employeeService.updateEmployeeById(employeeId, employeeChangingRequest);
+    @Operation(summary = "Редактирование карточки Пользователя")
+    @PutMapping("/{userId}")
+    public EmployeeInfoDto changeUser(@Parameter(description = "Идентификатор пользователя", required = true)
+                                       @PathVariable("userId") int userId,
+                                       @Parameter(description = "Информация для обновления пользователя", required = true)
+                                       @org.springframework.web.bind.annotation.RequestBody @Valid EmployeeChangingRequest profileChangingRequest) {
+        return employeeService.updateEmployee(userId, profileChangingRequest);
+
     }
+
 
     @Secured("ROLE_ADMINISTRATOR")
     @GetMapping("")
