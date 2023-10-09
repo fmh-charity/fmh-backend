@@ -21,9 +21,9 @@ public interface WishService {
      * возвращает список всех просьб
      * @param pageRequest список значений для отображения
      * @param searchValue строка с элементами для фильтрации
-     * @return список просьб с пагинацией
+     * @return список просьб
      */
-    WishPaginationDto getWishes(PageRequest pageRequest, String searchValue);
+    List<WishDto> getWishes(PageRequest pageRequest, String searchValue);
 
     /**
      * возвращает список всех просьб co статусом open/in_progress

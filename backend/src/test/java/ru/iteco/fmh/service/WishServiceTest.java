@@ -82,7 +82,7 @@ public class WishServiceTest {
                 .collect(Collectors.toList());
         Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
-        doReturn(pageableResult).when(wishRepository).findAllBySearchValueWithExecutors(any(), any(), any(), any());
+        doReturn(pageableResult).when(wishRepository).findAllBySearchValue(any(), any(), any(), any());
 
         //Sort sort = Sort.by(Sort.Direction.fromString("desc"), "status");
         //Sort sort = Sort.by("planExecuteDate").and(Sort.by("createDate").descending();
@@ -93,10 +93,7 @@ public class WishServiceTest {
         int elements = 2;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(pages, elements, sort);
-
-        List<WishDto> result = sut.getWishes(pageRequest, "IN_PROGRESS")
-                .getElements().stream().toList();
-
+        List<WishDto> result = sut.getWishes(pageRequest, "IN_PROGRESS");
         assertEquals(expected, result);
     }
 

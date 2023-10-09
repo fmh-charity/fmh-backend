@@ -3,7 +3,6 @@ package ru.iteco.fmh.service.wish;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
@@ -60,37 +58,15 @@ public class WishServiceImpl implements WishService {
     private final RoleRepository roleRepository;
 
     @Override
-    public WishPaginationDto getWishes(PageRequest pageRequest, String searchValue) {
+    public List<WishDto> getWishes(PageRequest pageRequest, String searchValue) {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
         String currentUserLogin = currentLoggedInUser.getLogin();
         List<String> currentUserRoleNamesList = currentLoggedInUser.getUserRoles().stream().map(Role::getName).toList();
 
-        List<Page<Wish>> pages = new ArrayList<>();
-        if (searchValue == null || searchValue.isEmpty()) {
-            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
-                    "OPEN", pageRequest));
-            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
-                    "IN_PROGRESS", pageRequest));
-            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
-                    "OPEN", pageRequest));
-            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
-                    "IN_PROGRESS", pageRequest));
-        } else {
-            pages.add(wishRepository.findAllBySearchValueWithExecutors(currentUserRoleNamesList, currentUserLogin,
-                    searchValue, pageRequest));
-            pages.add(wishRepository.findAllBySearchValueWithoutExecutors(currentUserRoleNamesList, currentUserLogin,
-                    searchValue, pageRequest));
-        }
-        List<Wish> mutableList = pages.stream()
-                .flatMap(page -> page.getContent().stream()).collect(Collectors.toList());
-        Page<Wish> wishes = new PageImpl<>(mutableList, pageRequest, mutableList.size());
-        return WishPaginationDto.builder()
-                .pages(wishes.getTotalPages() - 1)
-                .elements(
-                        wishes.stream()
-                                .map(i -> conversionService.convert(i, WishDto.class))
-                                .collect(Collectors.toList()))
-                .build();
+        return wishRepository.findAllBySearchValue(currentUserRoleNamesList, currentUserLogin, searchValue, pageRequest)
+                .stream()
+                .map(i -> conversionService.convert(i, WishDto.class))
+                .collect(Collectors.toList());
     }
 
 

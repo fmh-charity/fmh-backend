@@ -51,7 +51,7 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех просьб")
     @GetMapping
-    public ResponseEntity<WishPaginationDto> getWishes(
+    public List<WishDto> getWishes(
             @Parameter(name = "pages", description = "От 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
@@ -73,7 +73,7 @@ public class WishesController {
             throw new IncorrectDataException("Неверное значение в поле сортировки");
         }
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-        return ResponseEntity.ok(wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue));
+        return wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue);
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

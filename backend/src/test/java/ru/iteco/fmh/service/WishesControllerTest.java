@@ -70,9 +70,9 @@ public class WishesControllerTest {
         List<String> expected = List.of("wish-title2", "wish-title5");
 
         List<String> result = Objects.requireNonNull(
-                        sut.getWishes(0, 8, "IN_PROGRESS", "desc", "status")
-                                .getBody()).getElements().stream()
-                .map(WishDto::getTitle).collect(Collectors.toList());
+                sut.getWishes(0, 8, "IN_PROGRESS", "desc", "status")
+                        .stream()
+                        .map(WishDto::getTitle).collect(Collectors.toList()));
 
         assertEquals(expected, result);
     }
@@ -80,7 +80,7 @@ public class WishesControllerTest {
     @Test
     @WithUserDetails()
     public void createOpenWishShouldPassSuccess() {
-       // given
+        // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
 
         WishDto givenWish = sut.createWish(wishCreationRequest);
@@ -243,10 +243,11 @@ public class WishesControllerTest {
     @WithUserDetails()
     public void getAllWishesByNecessaryRoleAndWishCreatorShouldPassSuccess() {
         // given
-        WishPaginationDto response = sut.getWishes(0, 8, "OPEN", "desc", "status").getBody();
+        //WishPaginationDto response = sut.getWishes(0, 8, "OPEN", "desc", "status").getBody();
+        List<WishDto> response = sut.getWishes(0, 8, "OPEN", "desc", "status");
 
         assertNotNull(response);
-        assertEquals(3, response.getElements().size());
+        assertEquals(3, response.size());
     }
 
     @Test
