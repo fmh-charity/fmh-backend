@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.dao.repository.EmployeeRepository;
 import ru.iteco.fmh.dao.repository.PositionRepository;
-import ru.iteco.fmh.dto.employee.EmployeeChangingRequest;
-import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
-import ru.iteco.fmh.dto.employee.EmployeeInfoScheduleDto;
-import ru.iteco.fmh.dto.employee.EmployeeRegistrationRequest;
+import ru.iteco.fmh.dto.employee.*;
+import ru.iteco.fmh.dto.user.UserShortInfoDto;
 import ru.iteco.fmh.exceptions.NotFoundException;
 import ru.iteco.fmh.model.employee.Employee;
 import ru.iteco.fmh.model.employee.Position;
@@ -40,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeInfoDto updateEmployeeById(int id, EmployeeChangingRequest employeeChangingRequest) {
+    public EmployeeInfoDto updateEmployee(int id, EmployeeChangingRequest employeeChangingRequest) {
         Optional<Employee> employeeFindById = employeeRepository.findById(id);
 
         if (employeeFindById.isEmpty()) {
