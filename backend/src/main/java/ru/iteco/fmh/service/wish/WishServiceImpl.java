@@ -10,24 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
-import ru.iteco.fmh.dao.repository.PatientRepository;
-import ru.iteco.fmh.dao.repository.RoleRepository;
-import ru.iteco.fmh.dao.repository.UserRepository;
-import ru.iteco.fmh.dao.repository.WishCommentRepository;
-import ru.iteco.fmh.dao.repository.WishRepository;
-import ru.iteco.fmh.dto.wish.WishCommentDto;
-import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
-import ru.iteco.fmh.dto.wish.WishCreationRequest;
-import ru.iteco.fmh.dto.wish.WishDto;
-import ru.iteco.fmh.dto.wish.WishPaginationDto;
-import ru.iteco.fmh.dto.wish.WishUpdateRequest;
-import ru.iteco.fmh.dto.wish.WishVisibilityDto;
-import ru.iteco.fmh.exceptions.IncorrectDataException;
-import ru.iteco.fmh.exceptions.NoRightsException;
-import ru.iteco.fmh.exceptions.NotFoundException;
-import ru.iteco.fmh.exceptions.PermissionDeniedException;
-import ru.iteco.fmh.exceptions.UnavailableOperationException;
-import ru.iteco.fmh.exceptions.UserExistsException;
+import ru.iteco.fmh.dao.repository.*;
+import ru.iteco.fmh.dto.wish.*;
+import ru.iteco.fmh.exceptions.*;
 import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Status;
@@ -39,14 +24,11 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.wish.Status.CANCELLED;
-import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.wish.Status.OPEN;
-import static ru.iteco.fmh.model.wish.Status.READY;
-import static ru.iteco.fmh.model.wish.Status.READY_CHECK;
+import static ru.iteco.fmh.model.wish.Status.*;
 
 @Service
 @RequiredArgsConstructor
@@ -98,7 +80,8 @@ public class WishServiceImpl implements WishService {
         List<Role> roleList = roleRepository.findAllByIdIn(wishCreationRequest.getWishVisibility());
         Wish wish = conversionService.convert(wishCreationRequest, Wish.class);
         wish.setWishRoles(roleList);
-        wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
+        Optional.ofNullable(wishCreationRequest.getPatientId())
+                .map(patientRepository::findPatientById).ifPresent(wish::setPatient);
         wish.setCreator(Util.getCurrentLoggedInUser());
         wish.setCreateDate(Instant.now());
         wish.setHelpRequest(false);
@@ -124,7 +107,8 @@ public class WishServiceImpl implements WishService {
         }
         User userCreator = wish.getCreator();
         Util.checkUpdatePossibility(userCreator);
-        wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
+        Optional.ofNullable(wishUpdateRequest.getPatientId())
+                .map(patientRepository::findPatientById).ifPresent(wish::setPatient);
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
