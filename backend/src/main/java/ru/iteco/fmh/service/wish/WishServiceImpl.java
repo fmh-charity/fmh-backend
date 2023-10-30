@@ -33,7 +33,6 @@ import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

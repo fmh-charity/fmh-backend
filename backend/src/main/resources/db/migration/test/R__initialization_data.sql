@@ -21,7 +21,7 @@ values ('Николай', 'Смирнов', 'Петрович','login1@gmail.com
        ('Алия', 'Цветкова', 'Валерьяновна', 'login4@gmail.com', '04.18.1993'),
        ('Зоя', 'Прохорова', 'Альфредовна', 'login5@gmail.com', '05.19.1994');
 
-insert into profile (first_name, last_name, middle_name, date_of_birth)
+insert into profile (first_name, middle_name, last_name, date_of_birth)
 values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now()),
        ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now()),
        ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now()),
@@ -131,4 +131,4 @@ insert into wish_executors (wish_id, executor_id, join_date, finish_date)
 values (1, 1, now(), now() + interval '1 day'),
        (2, 1, now(), now() + interval '1 day'),
        (2, 2, now(), now() + interval '1 day'),
-       (5, 3, now(), now() + interval '1 day');;
+       (5, 3, now(), now() + interval '1 day');

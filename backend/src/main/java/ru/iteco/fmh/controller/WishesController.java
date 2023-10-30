@@ -43,9 +43,7 @@ import java.util.List;
 public class WishesController {
 
     private final WishService wishService;
-    private final List<String> fields = List.of("id", "status", "patient.profile.firstName", "patient.profile.lastName",
-            "patient.profile.middleName", "executors.executor.profile.firstName", "executors.executor.profile.lastName",
-            "executors.executor.profile.middleName");
+    private final List<String> fields = List.of("id", "status");
     private final List<String> directions = List.of("asc", "desc");
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
@@ -61,8 +59,7 @@ public class WishesController {
             @Parameter(name = "sortDirection", description = "Направление сортировки, допустимые значения asc, desc")
             @RequestParam(defaultValue = "ASC", required = false) String sortDirection,
             @Parameter(name = "sortField", description = "Параметр по которому будет осуществляться сортировка. "
-                    + "Допустимые поля: id, status, patient.profile.firstName, patient.profile.lastName, patient.profile.middleName, "
-                    + "executors.executor.profile.firstName, executors.executor.profile.lastName, executors.executor.profile.middleName")
+                    + "Допустимые поля: id, status")
             @RequestParam(required = false, defaultValue = "id") String sortField
     ) {
         sortDirection = sortDirection.toLowerCase();
@@ -73,6 +70,7 @@ public class WishesController {
             throw new IncorrectDataException("Неверное значение в поле сортировки");
         }
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        List<WishDto> wishDtos = wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue);
         return wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue);
     }
 
