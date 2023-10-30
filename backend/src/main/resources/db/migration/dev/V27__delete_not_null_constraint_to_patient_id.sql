@@ -1,0 +1,1 @@
+alter table wish alter column patient_id drop not null;
