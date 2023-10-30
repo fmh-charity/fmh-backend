@@ -9,4 +9,5 @@ public class BackendUrls {
     public static final String DOCUMENTS_BASE_URL = "/documents";
     public static final String ADMIN_BASE_URL = "/admin";
     public static final String USERS_BASE_URL = "/users";
+    public static final String WISHES_BASE_URL = "/wishes";
 }
