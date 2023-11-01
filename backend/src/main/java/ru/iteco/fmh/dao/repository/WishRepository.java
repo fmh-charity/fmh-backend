@@ -22,54 +22,25 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
 
     @Query(nativeQuery = true, value =
             """
-                    select distinct w.* from wish w
-                             join wish_visibility wv on w.id = wv.wish_id
-                             join roles r on wv.role_id = r.id
-                             left join wish_executors we on w.id = we.wish_id
-                             left join patient p on p.id = w.patient_id
-                             left join profile pp on pp.id = p.profile_id
-                             left join users uc on uc.id = w.creator_id
-                             left join users ue on ue.id = we.executor_id
-                             left join profile pe on ue.profile_id = pe.id
-                    where w.deleted = false
-                      and (r.name in :roleNames or uc.login = :creatorLogin)
-                      and ((lower(w.status) like lower(concat('%', :searchValue, '%')))
-                        or (
-                               (
-                                           lower(pp.first_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pp.first_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
-                        or (
-                               (
-                                           lower(pp.last_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pp.last_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
-                        or (
-                               (
-                                           lower(pp.middle_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pp.middle_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
-                        or (
-                               (
-                                           lower(pe.first_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pe.first_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
-                        or (
-                               (
-                                           lower(pe.last_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pe.last_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
-                        or (
-                               (
-                                           lower(pe.middle_name) like lower(concat('%', :searchValue, '%'))
-                                       and coalesce(lower(pe.middle_name), '') like lower(concat('%', :searchValue, '%'))
-                                   )
-                               )
+                        select distinct w.*
+                        from wish w
+                        join wish_visibility wv on w.id = wv.wish_id
+                        join roles r on wv.role_id = r.id
+                        left join wish_executors we on w.id = we.wish_id
+                        left join users u on u.id = we.executor_id
+                        left join profile p on u.profile_id = p.id
+                        left join patient pt on pt.id = w.patient_id
+                        left join profile pr on pr.id = pt.profile_id
+                        left join users uc on uc.id = w.creator_id
+                        where w.deleted = false
+                        and (r.name in :roleNames or uc.login = :creatorLogin)
+                        and (lower(w.status) like lower(concat('%', :searchValue, '%'))
+                        or lower(p.first_name) like lower(concat('%', :searchValue, '%'))
+                        or lower(p.last_name) like lower(concat('%', :searchValue, '%'))
+                        or lower(p.middle_name) like lower(concat('%', :searchValue, '%'))
+                        or lower(pr.first_name) like lower(concat('%', :searchValue, '%'))
+                        or lower(pr.last_name) like lower(concat('%', :searchValue, '%'))
+                        or lower(pr.middle_name) like lower(concat('%', :searchValue, '%'))
                         )"""
     )
     Page<Wish> findAllBySearchValue(
