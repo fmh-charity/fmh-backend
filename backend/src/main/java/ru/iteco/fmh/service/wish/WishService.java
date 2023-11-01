@@ -19,11 +19,14 @@ import java.util.List;
 public interface WishService {
     /**
      * возвращает список всех просьб
-     * @param pageRequest список значений для отображения
-     * @param searchValue строка с элементами для фильтрации
-     * @return список просьб
+     * @param pages количество страниц
+     * @param elements количество елементов в странице
+     * @param searchValue строка с элементом для фильтрации
+     * @param sortField значение сортировки
+     * @param sortDirection направление сортировки
+     * @return список просьб с пагинацией
      */
-    List<WishDto> getWishes(PageRequest pageRequest, String searchValue);
+    WishPaginationDto getWishes(int pages, int elements, String searchValue, String sortField, String sortDirection);
 
     /**
      * возвращает список всех просьб co статусом open/in_progress

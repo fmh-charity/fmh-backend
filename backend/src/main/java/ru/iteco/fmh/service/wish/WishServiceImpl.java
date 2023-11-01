@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCommentInfoDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishPaginationDto;
 import ru.iteco.fmh.dto.wish.WishUpdateRequest;
 import ru.iteco.fmh.dto.wish.WishVisibilityDto;
 import ru.iteco.fmh.exceptions.IncorrectDataException;
@@ -36,14 +39,10 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.List.of;
-import static ru.iteco.fmh.model.wish.Status.CANCELLED;
-import static ru.iteco.fmh.model.wish.Status.IN_PROGRESS;
-import static ru.iteco.fmh.model.wish.Status.OPEN;
-import static ru.iteco.fmh.model.wish.Status.READY;
-import static ru.iteco.fmh.model.wish.Status.READY_CHECK;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +56,7 @@ public class WishServiceImpl implements WishService {
     private final RoleRepository roleRepository;
 
     @Override
-    public List<WishDto> getWishes(PageRequest pageRequest, String searchValue) {
+    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
         String currentUserLogin = currentLoggedInUser.getLogin();
         List<String> currentUserRoleNamesList = currentLoggedInUser.getUserRoles().stream().map(Role::getName).toList();
@@ -66,13 +65,29 @@ public class WishServiceImpl implements WishService {
                 .stream()
                 .map(i -> conversionService.convert(i, WishDto.class))
                 .collect(Collectors.toList());
+        Pageable pageableList = planExecuteDate
+                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
+                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
+
+        Page<Wish> list = (status == null || status.isEmpty())
+                ? wishRepository.findAllByCurrentRoles(List.of(Status.OPEN, Status.IN_PROGRESS),
+                currentUserRoleNamesList, currentUserLogin, pageableList)
+                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, currentUserLogin, pageableList);
+
+        return WishPaginationDto.builder()
+                .pages(list.getTotalPages() - 1)
+                .elements(
+                        list.stream()
+                                .map(i -> conversionService.convert(i, WishDto.class))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
 
     @Override
     public List<WishDto> getOpenInProgressWishes() {
         List<Wish> list = wishRepository
-                .findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(of(OPEN, IN_PROGRESS));
+                .findAllByStatusInAndDeletedIsFalseOrderByPlanExecuteDateAscCreateDateAsc(of(Status.OPEN, Status.IN_PROGRESS));
         return list.stream()
                 .map(i -> conversionService.convert(i, WishDto.class))
                 .collect(Collectors.toList());
@@ -84,7 +99,8 @@ public class WishServiceImpl implements WishService {
         List<Role> roleList = roleRepository.findAllByIdIn(wishCreationRequest.getWishVisibility());
         Wish wish = conversionService.convert(wishCreationRequest, Wish.class);
         wish.setWishRoles(roleList);
-        wish.setPatient(patientRepository.findPatientById(wishCreationRequest.getPatientId()));
+        Optional.ofNullable(wishCreationRequest.getPatientId())
+                .map(patientRepository::findPatientById).ifPresent(wish::setPatient);
         wish.setCreator(Util.getCurrentLoggedInUser());
         wish.setCreateDate(Instant.now());
         wish.setHelpRequest(false);
@@ -105,12 +121,13 @@ public class WishServiceImpl implements WishService {
     @Override
     public WishDto updateWish(WishUpdateRequest wishUpdateRequest, Authentication authentication, Integer id) {
         Wish wish = wishRepository.findWishById(id);
-        if (!wish.getStatus().equals(OPEN)) {
+        if (!wish.getStatus().equals(Status.OPEN)) {
             throw new IncorrectDataException("Редактировать просьбу можно только в статусе Открыта");
         }
         User userCreator = wish.getCreator();
         Util.checkUpdatePossibility(userCreator);
-        wish.setPatient(patientRepository.findPatientById(wishUpdateRequest.getPatientId()));
+        Optional.ofNullable(wishUpdateRequest.getPatientId())
+                .map(patientRepository::findPatientById).ifPresent(wish::setPatient);
         wish.setTitle(wishUpdateRequest.getTitle());
         wish.setDescription(wishUpdateRequest.getDescription());
         wish.setPlanExecuteDate(wishUpdateRequest.getPlanExecuteDate() == null
@@ -134,7 +151,7 @@ public class WishServiceImpl implements WishService {
     public List<WishDto> getPatientOpenInProgressWishes(int patientId) {
         return wishRepository
                 .findAllByPatient_IdAndDeletedIsFalseAndStatusInOrderByPlanExecuteDateAscCreateDateAsc(
-                        patientId, of(OPEN, IN_PROGRESS)
+                        patientId, of(Status.OPEN, Status.IN_PROGRESS)
                 )
                 .stream()
                 .map(wish -> conversionService.convert(wish, WishDto.class))
@@ -146,7 +163,7 @@ public class WishServiceImpl implements WishService {
     public WishDto changeStatus(int wishId, Status status, Integer executorId, WishCommentDto wishCommentDto) {
         Wish wish = wishRepository.findById(wishId).orElseThrow(() ->
                 new NotFoundException("Просьбы с таким ID не существует"));
-        if (wish.getStatus() == IN_PROGRESS && status != CANCELLED) {
+        if (wish.getStatus() == Status.IN_PROGRESS && status != Status.CANCELLED) {
             if (!wishCommentDto.getDescription().equals("")) {
                 createWishComment(wishId, wishCommentDto);
             } else {
@@ -220,7 +237,7 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
         User currentUser = Util.getCurrentLoggedInUser();
         if (foundWish.getCreator().equals(currentUser) || Util.isAdmin(currentUser)) {
-            foundWish.setStatus(CANCELLED);
+            foundWish.setStatus(Status.CANCELLED);
         } else {
             throw new NoRightsException("Отменить просьбу может только создатель просьбы или администратор");
         }
@@ -264,7 +281,7 @@ public class WishServiceImpl implements WishService {
 
         foundWish.getExecutors().forEach(wishExecutor -> wishExecutor.setFinishDate(Instant.now()));
         foundWish.setFactExecuteDate(Instant.now());
-        foundWish.setStatus(READY);
+        foundWish.setStatus(Status.READY);
         Wish updatedWish = wishRepository.save(foundWish);
 
         return conversionService.convert(updatedWish, WishDto.class);
@@ -274,7 +291,7 @@ public class WishServiceImpl implements WishService {
     public WishDto declineWishExecution(int wishId) {
         Wish foundWish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Просьба с указанным идентификатором отсутствует"));
-        foundWish.setStatus(IN_PROGRESS);
+        foundWish.setStatus(Status.IN_PROGRESS);
         Wish updatedWish = wishRepository.save(foundWish);
         return conversionService.convert(updatedWish, WishDto.class);
     }
@@ -290,7 +307,7 @@ public class WishServiceImpl implements WishService {
             throw new PermissionDeniedException("Текущий пользователь отсутствует в списке исполнителей просьбы");
         }
         wish.setExecutionInitiator(executionInitiator);
-        wish.setStatus(READY_CHECK);
+        wish.setStatus(Status.READY_CHECK);
         Wish updatedWish = wishRepository.save(wish);
         return conversionService.convert(updatedWish, WishDto.class);
     }

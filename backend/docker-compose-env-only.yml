@@ -3,8 +3,8 @@ version: '3'
 services:
   pg_db:
     container_name: pg_database
-#    image: ghcr.io/fmh-charity/dump_db:latest
-    image: library/postgres:12
+    image: ghcr.io/fmh-charity/dump_db:latest
+    #image: library/postgres:12
     restart: always
     environment:
       POSTGRES_USER: postgres

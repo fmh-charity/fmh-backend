@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import ru.iteco.cucumber.model.UserShortInfoDto;
 import ru.iteco.cucumber.model.wish.WishDto;
+import ru.iteco.cucumber.model.wish.WishPaginationDto;
 
 import java.util.List;
 
@@ -35,11 +36,11 @@ public class WishSteps {
                         "sortField=%s", pages, elements, searchValue, sortDirection, sortField))
                 .getBody();
         assertNotNull(responseBody);
-        TypeReference<List<WishDto>> wishes = new TypeReference<>(){};
-        List<WishDto> listWishDto = objectMapper.readValue(responseBody, wishes);
+        TypeReference<WishPaginationDto> wishes = new TypeReference<>(){};
+        WishPaginationDto listWishDto = objectMapper.readValue(responseBody, wishes);
         assertNotNull(listWishDto);
-        Assertions.assertNotEquals(0, listWishDto.size());
-        log.info("SIZE: {}", listWishDto.size());
+        Assertions.assertNotEquals(0, listWishDto.getElements().size());
+        log.info("SIZE: {}", listWishDto.getElements().size());
         log.info("ALL USERS INFO: {}", listWishDto);
     }
 }

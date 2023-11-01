@@ -1,6 +1,8 @@
 package ru.iteco.fmh.dao.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -70,11 +72,11 @@ public interface WishRepository extends JpaRepository<Wish, Integer> {
                                )
                         )"""
     )
-    List<Wish> findAllBySearchValue(
+    Page<Wish> findAllBySearchValue(
             @Param("roleNames") List<String> roleNames,
             @Param("creatorLogin") String creatorLogin,
             @Param("searchValue") String searchValue,
-            PageRequest pageRequest);
+            Pageable pageable);
 
     /*@Query(value =
             "SELECT DISTINCT w FROM Wish w "

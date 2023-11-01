@@ -49,18 +49,18 @@ public class WishesController {
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})
     @Operation(summary = "Реестр всех просьб")
     @GetMapping
-    public List<WishDto> getWishes(
+    public ResponseEntity<WishPaginationDto> getWishes(
             @Parameter(name = "pages", description = "От 0")
             @RequestParam(defaultValue = "0") @PositiveOrZero int pages,
             @Parameter(name = "elements", description = "От 1 до 200")
             @RequestParam(defaultValue = "8") @Min(value = 1) @Max(value = 200) int elements,
             @Parameter(name = "searchValue", description = "Строка для поиска")
             @RequestParam(required = false, defaultValue = "") String searchValue,
-            @Parameter(name = "sortDirection", description = "Направление сортировки, допустимые значения asc, desc")
-            @RequestParam(defaultValue = "ASC", required = false) String sortDirection,
             @Parameter(name = "sortField", description = "Параметр по которому будет осуществляться сортировка. "
                     + "Допустимые поля: id, status")
-            @RequestParam(required = false, defaultValue = "id") String sortField
+            @RequestParam(required = false, defaultValue = "id") String sortField,
+            @Parameter(name = "sortDirection", description = "Направление сортировки, допустимые значения asc, desc")
+            @RequestParam(defaultValue = "ASC", required = false) String sortDirection
     ) {
         sortDirection = sortDirection.toLowerCase();
         if (!directions.contains(sortDirection)) {
@@ -69,9 +69,7 @@ public class WishesController {
         if (!fields.contains(sortField)) {
             throw new IncorrectDataException("Неверное значение в поле сортировки");
         }
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-        List<WishDto> wishDtos = wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue);
-        return wishService.getWishes(PageRequest.of(pages, elements, sort), searchValue);
+        return ResponseEntity.ok(wishService.getWishes(pages, elements, searchValue, sortField, sortDirection));
     }
 
     @Secured({"ROLE_ADMINISTRATOR", "ROLE_MEDICAL_WORKER"})

@@ -75,23 +75,19 @@ public class WishServiceTest {
     }
 
     @Test
-    @Ignore
     @WithUserDetails()
     public void getAllWishesShouldPassSuccess() {
         // given
-        List<Wish> wishList = List.of(getWish(IN_PROGRESS));
+        List<Wish> wishList = List.of(getWish(OPEN));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
-        Pageable pageableList = PageRequest.of(0, 8, Sort.by("id").descending());
-        //Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList,, 8);
-        doReturn(expected).when(wishRepository).findAllBySearchValue(any(), any(), any(), any());
+        Pageable pageableList = PageRequest.of(0, 8, Sort.by("status").descending());
+        Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
 
-        int pages = 0;
-        int elements = 8;
-        //Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        Sort sort = Sort.by(Sort.Direction.fromString("asc"), "id");
-        PageRequest pageRequest = PageRequest.of(pages, elements, sort);
-        List<WishDto> result = sut.getWishes(PageRequest.of(pages, elements, sort), "");
+        doReturn(pageableResult).when(wishRepository).findAllBySearchValue(any(), any(), any(), any());
+        List<WishDto> result = sut.getWishes(0, 8, "OPEN", "status", "asc")
+                .getElements().stream().toList();
+
         assertEquals(expected, result);
     }
 

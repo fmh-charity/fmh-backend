@@ -29,17 +29,17 @@ public class WishDtoToWishConverter implements Converter<WishDto, Wish> {
         Wish entity = new Wish();
         BeanUtils.copyProperties(dto, entity);
 
-        Patient patient = dto.getPatient() != null ? patientRepository.findPatientById(dto.getPatient().id()) : null;
+        /*Patient patient = dto.getPatient() != null ? patientRepository.findPatientById(dto.getPatient().id()) : null;
         User creator = dto.getCreator() != null ? userRepository.findUserById(dto.getCreator().id()) : null;
-        Set<WishExecutor> executors = dto.getWishExecutors() != null ? wishExecutorsRepository.findAllByWishId(dto.getId()) : null;
+        Set<WishExecutor> executors = dto.getWishExecutors() != null ? wishExecutorsRepository.findAllByWishId(dto.getId()) : null;*/
 
         entity.setCreateDate(dto.getCreateDate() != null ? Instant.ofEpochMilli(dto.getCreateDate()) : null);
         entity.setPlanExecuteDate(dto.getPlanExecuteDate() != null ? Instant.ofEpochMilli(dto.getPlanExecuteDate()) : null);
         entity.setFactExecuteDate(dto.getFactExecuteDate() != null ? Instant.ofEpochMilli(dto.getFactExecuteDate()) : null);
 
-        entity.setPatient(patient);
+        /*entity.setPatient(patient);
         entity.setCreator(creator);
-        entity.setExecutors(executors);
+        entity.setExecutors(executors);*/
         return entity;
     }
 }
