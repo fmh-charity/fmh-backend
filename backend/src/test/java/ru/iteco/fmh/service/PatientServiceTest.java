@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.PatientStatus.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 public class PatientServiceTest {
     @Autowired

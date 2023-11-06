@@ -21,6 +21,7 @@
     <properties>
         <spring-boot-starter-version>2.7.7</spring-boot-starter-version>
         <testcontainers>1.17.6</testcontainers>
+        <surfire>3.2.1</surfire>
     </properties>
 
     <profiles>
@@ -178,7 +179,11 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring-boot-starter-version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>

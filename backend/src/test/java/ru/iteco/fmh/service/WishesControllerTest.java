@@ -16,6 +16,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.*;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
+import ru.iteco.fmh.test.extensions.ClearDatabase;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,8 +30,9 @@ import static ru.iteco.fmh.model.wish.Status.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
-@RunWith(SpringRunner.class)
-@SpringBootTest()
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ClearDatabase
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class WishesControllerTest {
     @Autowired

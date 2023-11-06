@@ -14,7 +14,7 @@
 //import static org.junit.Assert.assertNotNull;
 //import static ru.iteco.fmh.TestUtils.getAlphabeticString;
 //
-//@RunWith(SpringRunner.class)
+//
 //@SpringBootTest
 //public class AdvertisementRepositoryTest {
 //

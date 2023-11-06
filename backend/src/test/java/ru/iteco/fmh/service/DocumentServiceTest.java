@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.iteco.fmh.TestUtils.getDocumentCreationDtoRq;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class DocumentServiceTest {

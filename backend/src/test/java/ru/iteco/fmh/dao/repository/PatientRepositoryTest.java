@@ -10,7 +10,7 @@ import ru.iteco.fmh.model.Patient;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 public class PatientRepositoryTest {
 

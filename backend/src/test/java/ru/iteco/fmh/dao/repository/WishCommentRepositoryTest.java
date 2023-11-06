@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 public class WishCommentRepositoryTest {
     @Autowired
