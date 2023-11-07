@@ -56,27 +56,21 @@ public class WishServiceImpl implements WishService {
     private final RoleRepository roleRepository;
 
     @Override
-    public WishPaginationDto getWishes(int pages, int elements, List<Status> status, boolean planExecuteDate) {
+    public WishPaginationDto getWishes(int pages, int elements, String searchValue, String sortField, String sortDirection) {
         User currentLoggedInUser = Util.getCurrentLoggedInUser();
         String currentUserLogin = currentLoggedInUser.getLogin();
-
         List<String> currentUserRoleNamesList = currentLoggedInUser.getUserRoles().stream().map(Role::getName).toList();
 
-        Pageable pageableList = planExecuteDate
-                ? PageRequest.of(pages, elements, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()))
-                : PageRequest.of(pages, elements, Sort.by("createDate").descending());
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        Pageable pageable = PageRequest.of(pages, elements, sort);
 
-        Page<Wish> list = (status == null || status.isEmpty())
-                ? wishRepository.findAllByCurrentRoles(List.of(Status.OPEN, Status.IN_PROGRESS),
-                currentUserRoleNamesList, currentUserLogin, pageableList)
-                : wishRepository.findAllByCurrentRoles(status, currentUserRoleNamesList, currentUserLogin, pageableList);
+        Page<Wish> wishPage = wishRepository.findAllBySearchValue(currentUserRoleNamesList, currentUserLogin, searchValue, pageable);
 
         return WishPaginationDto.builder()
-                .pages(list.getTotalPages() - 1)
-                .elements(
-                        list.stream()
-                                .map(i -> conversionService.convert(i, WishDto.class))
-                                .collect(Collectors.toList()))
+                .pages(wishPage.getTotalPages() - 1)
+                .elements(wishPage.stream()
+                        .map(i -> conversionService.convert(i, WishDto.class))
+                        .collect(Collectors.toList()))
                 .build();
     }
 

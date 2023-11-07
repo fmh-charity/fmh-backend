@@ -21,7 +21,7 @@ values ('Николай', 'Смирнов', 'Петрович','login1@gmail.com
        ('Алия', 'Цветкова', 'Валерьяновна', 'login4@gmail.com', '04.18.1993'),
        ('Зоя', 'Прохорова', 'Альфредовна', 'login5@gmail.com', '05.19.1994');
 
-insert into profile (first_name, last_name, middle_name, date_of_birth)
+insert into profile (first_name, middle_name, last_name, date_of_birth)
 values ('PatientOnefirstname', 'PatientOnemiddlename', 'PatientOnelastname', now()),
        ('PatientTwofirstname', 'PatientTwomiddlename', 'PatientTwolastname', now()),
        ('PatientThreefirstname', 'PatientThreemiddlename', 'PatientThreelastname', now()),
@@ -55,7 +55,7 @@ values (1, 'wish-title1', 'wish1-description', 1, now(), now(), null, 'OPEN', fa
        (1, 'wish-title4', 'wish4-description', 4, now() - INTERVAL '3 DAY', now() + INTERVAL '3 DAY', now(),
         'EXECUTED', false),
        (5, 'wish-title5', 'wish5-description', 5, now() - INTERVAL '4 DAY', now() + INTERVAL '2 DAYS', null,
-        'OPEN', false),
+        'IN_PROGRESS', false),
        (1, 'wish-title6', 'wish6-description', 5, now() - INTERVAL '7 DAY', now() + INTERVAL '1 DAY', null,
         'OPEN', false),
        (1, 'wish-title7', 'wish7-description', 5, now() - INTERVAL '9 DAY', now() + INTERVAL '1 DAY', null,
@@ -126,3 +126,9 @@ values (1, 'document1', 'description1', false, 'NEW', '01/01/2023', '/documents/
 insert into user_role_claim(id, user_id, role_id, status, created_at, updated_at)
 values (1, 3, 1, 'NEW', '03/02/2023', '03/02/2023'),
        (2, 4, 4, 'CONFIRMED', '01/02/2023', '03/02/2023');
+
+insert into wish_executors (wish_id, executor_id, join_date, finish_date)
+values (1, 1, now(), now() + interval '1 day'),
+       (2, 1, now(), now() + interval '1 day'),
+       (2, 2, now(), now() + interval '1 day'),
+       (5, 3, now(), now() + interval '1 day');

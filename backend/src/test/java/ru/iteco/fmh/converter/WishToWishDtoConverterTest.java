@@ -41,7 +41,7 @@ class WishToWishDtoConverterTest {
                 () -> assertEquals(dto.getFactExecuteDate(), wish.getFactExecuteDate().toEpochMilli()),
                 () -> assertEquals(wish.getStatus(), dto.getStatus()),
                 () -> assertEquals(dto.getCreator().id(), wish.getCreator().getId()),
-                () -> assertNull(dto.getExecutor())
+                () -> assertEquals(dto.getWishExecutors().size(), wish.getExecutors().size())
 
         );
     }
@@ -62,7 +62,3 @@ class WishToWishDtoConverterTest {
         );
     }
 }
-
-
-
-

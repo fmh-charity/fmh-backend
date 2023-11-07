@@ -67,12 +67,13 @@ public class WishesControllerTest {
     @Test
     @WithUserDetails()
     public void getAllWishesShouldPassSuccess() {
-        List<String> expected = List.of("wish-title4", "wish-title3", "wish-title2");
+        List<String> expected = List.of("wish-title2", "wish-title5");
 
         List<String> result = Objects.requireNonNull(
-                        sut.getWishes(0, 8, List.of(IN_PROGRESS, EXECUTED, CANCELLED), true)
-                                .getBody()).getElements().stream()
-                .map(WishDto::getTitle).collect(Collectors.toList());
+                Objects.requireNonNull(sut.getWishes(0, 8, "IN_PROGRESS", "status", "asc")
+                                .getBody()).getElements()
+                        .stream()
+                        .map(WishDto::getTitle).collect(Collectors.toList()));
 
         assertEquals(expected, result);
     }
@@ -80,7 +81,7 @@ public class WishesControllerTest {
     @Test
     @WithUserDetails()
     public void createOpenWishShouldPassSuccess() {
-       // given
+        // given
         WishCreationRequest wishCreationRequest = getWishCreationInfoDto();
 
         WishDto givenWish = sut.createWish(wishCreationRequest);
@@ -143,9 +144,9 @@ public class WishesControllerTest {
     @WithUserDetails
     public void changeStatusInProgressToExecutedShouldPassSuccess() {
         // given
-        int wishInProgressId = 2;
+        int wishInProgressId = 5;
 
-        WishDto result = sut.changeStatus(wishInProgressId, EXECUTED, null, getWishCommentDto(EXECUTED));
+        WishDto result = sut.changeStatus(wishInProgressId, EXECUTED, null, getWishCommentDto());
 
         assertEquals(EXECUTED, result.getStatus());
         assertNotNull(result.getFactExecuteDate());
@@ -161,11 +162,11 @@ public class WishesControllerTest {
     public void changeStatusInProgressToOpenShouldPassSuccess() {
         // given
         int wishInProgressId = 2;
-        WishCommentDto wishCommentDto = getWishCommentDto(OPEN);
+        WishCommentDto wishCommentDto = getWishCommentDto();
         WishDto result = sut.changeStatus(wishInProgressId, OPEN, null, wishCommentDto);
         assertNotNull(wishCommentRepository.findById(wishCommentDto.getId()));
         assertEquals(OPEN, result.getStatus());
-        assertNull(result.getExecutor());
+        assertEquals(2, result.getWishExecutors().size());
 
         // after
         Wish wish = wishRepository.findById(wishInProgressId).get();
@@ -204,7 +205,7 @@ public class WishesControllerTest {
     @WithUserDetails
     public void createWishCommentShouldPassSuccess() {
         // given
-        WishCommentDto givenWishCommentDto = getWishCommentDto(OPEN);
+        WishCommentDto givenWishCommentDto = getWishCommentDto();
 
         givenWishCommentDto.setCreatorId(userRepository.findUserById(1).getId());
         givenWishCommentDto.setWishId(wishRepository.findWishById(1).getId());
@@ -243,10 +244,10 @@ public class WishesControllerTest {
     @WithUserDetails()
     public void getAllWishesByNecessaryRoleAndWishCreatorShouldPassSuccess() {
         // given
-        WishPaginationDto response = sut.getWishes(0, 8, List.of(OPEN, IN_PROGRESS, EXECUTED), true).getBody();
+        WishPaginationDto response = sut.getWishes(0, 8, "OPEN", "status", "asc").getBody();
 
         assertNotNull(response);
-        assertEquals(6, response.getElements().size());
+        assertEquals(3, response.getElements().size());
     }
 
     @Test
