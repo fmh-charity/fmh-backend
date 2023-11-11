@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static ru.iteco.fmh.TestUtils.*;
 
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class NewsServiceTest {

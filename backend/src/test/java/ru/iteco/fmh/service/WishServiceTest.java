@@ -44,7 +44,7 @@ import static org.mockito.Mockito.*;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
 public class WishServiceTest {
     @Autowired

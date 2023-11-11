@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit;
 import static org.junit.Assert.assertNotNull;
 import static ru.iteco.fmh.TestUtils.getNumeric;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 public class WishRepositoryTest {
 

@@ -29,7 +29,7 @@ import static ru.iteco.fmh.model.wish.Status.*;
 
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class WishesControllerTest {
