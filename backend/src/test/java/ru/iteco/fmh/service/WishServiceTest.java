@@ -1,5 +1,6 @@
 package ru.iteco.fmh.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -11,7 +12,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.iteco.fmh.Util;
 import ru.iteco.fmh.dao.repository.UserRepository;
 import ru.iteco.fmh.dao.repository.WishCommentRepository;
@@ -27,9 +27,7 @@ import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.model.wish.WishComment;
 import ru.iteco.fmh.model.wish.WishExecutor;
-import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.model.wish.WishPriority;
-import ru.iteco.fmh.model.wish.WishExecutor;
 import ru.iteco.fmh.service.wish.WishService;
 
 import java.time.Instant;
@@ -80,14 +78,14 @@ public class WishServiceTest {
     @WithUserDetails()
     public void getAllWishesShouldPassSuccess() {
         // given
-        List<Wish> wishList = List.of(getWish(OPEN), getWish(IN_PROGRESS));
+        List<Wish> wishList = List.of(getWish(OPEN));
         List<WishDto> expected = wishList.stream().map(wish -> conversionService.convert(wish, WishDto.class))
                 .collect(Collectors.toList());
-        Pageable pageableList = PageRequest.of(0, 8, Sort.by("planExecuteDate").and(Sort.by("createDate").descending()));
+        Pageable pageableList = PageRequest.of(0, 8, Sort.by("status").descending());
         Page<Wish> pageableResult = new PageImpl<>(wishList, pageableList, 8);
 
-        doReturn(pageableResult).when(wishRepository).findAllByCurrentRoles(any(), any(), any(), any());
-        List<WishDto> result = sut.getWishes(0, 8, null, true)
+        doReturn(pageableResult).when(wishRepository).findAllBySearchValue(any(), any(), any(), any());
+        List<WishDto> result = sut.getWishes(0, 8, "OPEN", "status", "asc")
                 .getElements().stream().toList();
 
         assertEquals(expected, result);
@@ -116,7 +114,7 @@ public class WishServiceTest {
                 () -> assertEquals(wish.getStatus(), result.getStatus()),
                 () -> assertEquals(conversionService.convert(wish.getCreator(), UserDtoIdFio.class), result.getCreator()),
                 () -> assertEquals(conversionService.convert(wish.getPatient(), PatientDtoIdFio.class), result.getPatient()),
-                () -> assertNull(result.getExecutor()),
+                () -> assertEquals(result.getWishExecutors().size(), wish.getExecutors().size()),
                 () -> assertNotNull(result.getCreator()),
                 () -> assertNotNull(result.getWishPriority()),
                 () -> assertEquals(WishPriority.RED, result.getWishPriority())
@@ -177,7 +175,7 @@ public class WishServiceTest {
         when(wishRepository.findById(any())).thenReturn(Optional.of(givenWish));
         when(wishRepository.save(any())).thenReturn(givenWish);
 
-        WishDto result = sut.changeStatus(wishId, EXECUTED, null, getWishCommentDto(EXECUTED));
+        WishDto result = sut.changeStatus(wishId, EXECUTED, null, getWishCommentDto());
         assertEquals(EXECUTED, result.getStatus());
         assertNotNull(result.getFactExecuteDate());
     }

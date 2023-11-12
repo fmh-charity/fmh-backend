@@ -13,6 +13,7 @@ import ru.iteco.fmh.dto.user.UserDtoIdFio;
 import ru.iteco.fmh.dto.wish.WishCommentDto;
 import ru.iteco.fmh.dto.wish.WishCreationRequest;
 import ru.iteco.fmh.dto.wish.WishDto;
+import ru.iteco.fmh.dto.wish.WishExecutorDtoRs;
 import ru.iteco.fmh.model.NurseStation;
 import ru.iteco.fmh.model.Patient;
 import ru.iteco.fmh.model.PatientStatus;
@@ -27,6 +28,7 @@ import ru.iteco.fmh.model.user.Role;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.dto.registration.RegistrationRequest;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -190,11 +192,14 @@ public class TestUtils {
                 .planExecuteDate(Instant.now().toEpochMilli())
                 .createDate(Instant.now().toEpochMilli())
                 .factExecuteDate(null)
-                .executor(new UserDtoIdFio(444, "ExecutorTestName",
-                        "ExecutorTestMiddleName", "ExecutorTestLastName"))
+                .wishExecutors(List.of(new WishExecutorDtoRs(new UserDtoIdFio(444, "ExecutorTestName",
+                        "ExecutorTestMiddleName", "ExecutorTestLastName"),
+                        Instant.now().minus(Duration.ofDays(1)).toEpochMilli(),
+                        Instant.now().plus(Duration.ofDays(1)).toEpochMilli())))
                 .creator(new UserDtoIdFio(555, "CreatorTestName",
                         "CreatorTestMiddleName", "CreatorTestLastName"))
                 .status(Status.OPEN)
+                .helpRequest(true)
                 .build();
     }
 
@@ -256,7 +261,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static WishCommentDto getWishCommentDto(Status wishStatus) {
+    public static WishCommentDto getWishCommentDto() {
         return WishCommentDto.builder()
                 .id(Integer.valueOf(getNumeric(2)))
                 .wishId(1)

@@ -14,6 +14,7 @@ import ru.iteco.fmh.model.user.User;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 
 import static org.junit.Assert.assertNotNull;
 import static ru.iteco.fmh.TestUtils.getNumeric;
@@ -48,6 +49,7 @@ public class WishRepositoryTest {
                 .createDate(Instant.now())
                 .factExecuteDate(null)
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
+                .executors(Collections.emptySet())
                 .status(Status.OPEN)
                 .build();
 
@@ -59,6 +61,7 @@ public class WishRepositoryTest {
                 .createDate(Instant.now().minus(1, ChronoUnit.DAYS))
                 .factExecuteDate(Instant.now())
                 .planExecuteDate(Instant.now().plus(2, ChronoUnit.DAYS))
+                .executors(Collections.emptySet())
                 .status(Status.EXECUTED)
                 .build();
 
