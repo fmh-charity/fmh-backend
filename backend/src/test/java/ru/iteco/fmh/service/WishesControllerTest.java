@@ -1,13 +1,12 @@
 package ru.iteco.fmh.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.controller.WishesController;
 import ru.iteco.fmh.dao.repository.PatientRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
@@ -16,7 +15,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.*;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
-import ru.iteco.fmh.testExtensions.ClearDatabase;
+import ru.iteco.fmh.test.extensions.ClearDatabase;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.*;
 
-
+//@Ignore
+//
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

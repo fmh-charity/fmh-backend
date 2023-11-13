@@ -1,12 +1,10 @@
-package ru.iteco.fmh.testExtensions;
+package ru.iteco.fmh.test.extensions;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.test.context.TestPropertySource;
 

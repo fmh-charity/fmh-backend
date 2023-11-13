@@ -1,7 +1,8 @@
 package ru.iteco.fmh.dao.repository;
 
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +23,7 @@ public class DocumentRepositoryTest {
     DocumentRepository repository;
     Document entity;
 
-    @Ignore
+    @Disabled
     @Test
     public void testWriteSuccess() {
         entity = Document.builder()

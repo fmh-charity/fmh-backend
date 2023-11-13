@@ -1,6 +1,6 @@
 package ru.iteco.fmh.converter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.news.NewsDtoToNewsConverter;
 import ru.iteco.fmh.dao.repository.NewsCategoryRepository;
 import ru.iteco.fmh.dao.repository.UserRepository;
