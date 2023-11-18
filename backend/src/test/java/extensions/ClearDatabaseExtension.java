@@ -1,4 +1,4 @@
-package ru.iteco.fmh.test.extensions;
+package extensions;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.extension.BeforeEachCallback;

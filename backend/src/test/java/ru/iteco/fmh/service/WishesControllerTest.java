@@ -1,6 +1,7 @@
 package ru.iteco.fmh.service;
 
 
+import extensions.ClearDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,7 @@ import ru.iteco.fmh.dao.repository.WishRepository;
 import ru.iteco.fmh.dto.wish.*;
 import ru.iteco.fmh.model.wish.Wish;
 import ru.iteco.fmh.security.UserDetailsServiceImpl;
-import ru.iteco.fmh.test.extensions.ClearDatabase;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +33,7 @@ import static ru.iteco.fmh.model.wish.Status.*;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ClearDatabase
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class WishesControllerTest {
     @Autowired

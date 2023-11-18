@@ -1,6 +1,7 @@
 package ru.iteco.fmh.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import extensions.ClearDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -35,6 +36,7 @@ import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
 
 @SpringBootTest()
+@ClearDatabase
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class PatientsControllerTest {
     @Autowired
@@ -84,7 +86,7 @@ public class PatientsControllerTest {
                 () -> assertEquals(givenDto.getBirthDate(), resultDto.getBirthDate()),
                 () -> assertNotNull(resultDto.getId())
         );
-        patientRepository.deleteById(resultDto.getId());
+
     }
 
     @Test
