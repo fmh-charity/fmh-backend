@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          lob.non_contextual_creation: true
+        format_sql: true
+  flyway:
+    locations: classpath:db/migration/dev
+server:
+  servlet:
+    context-path: /fmh
+  forward-headers-strategy: framework
+
+logging:
+  level:
+    ru.iteco.fmh: DEBUG
+
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
+    operations-sorter: method
+
+swagger:
+  info:
+    title: "API Мобильный хоспис"
+    description: "Backend сервис для приложения «Мобильный хоспис»"
+  security:
+    schemeName: "Authorization"
+    format: "JWT"
+
+static-host:
+  host: ${STATIC_HOST:test.vhospice.org}
+
+upload:
+  path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}

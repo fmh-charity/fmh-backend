@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:12:///FMH_TEST
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  flyway:
+    locations: classpath:db/migration/dev, classpath:db/migration/test
+static-host:
+  host: ${STATIC_HOST:test.vhospice.org}
+
+upload:
+  path: ${DOCUMENTS_STATIC_PATH:./backend/fmh/static/documents/}

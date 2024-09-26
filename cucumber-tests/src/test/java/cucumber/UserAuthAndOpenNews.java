@@ -1,0 +1,61 @@
+package cucumber;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.utils.BackendUrls;
+import cucumber.utils.RestTemplateUtil;
+import io.cucumber.java.en.And;
+
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import ru.iteco.cucumber.model.NewsDto;
+import ru.iteco.cucumber.model.NewsPaginationDto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+
+@Slf4j
+@RequiredArgsConstructor
+public class UserAuthAndOpenNews {
+
+    private final RestTemplateUtil rest = new RestTemplateUtil();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final UserCommonSteps userCommonSteps;
+    private final ResultSteps resultSteps;
+    private String jwt;
+
+    private final String newsUrl = BackendUrls.NEWS_BASE_URL;
+
+    @SneakyThrows
+    @And("Пользователь просматривает список доступных новостей {string} {string} {string} {string} {string} {string}")
+    public void getAllNews(String pages, String elements, String publishDate, String newsCategoryId,
+                           String publishDateFrom, String publishDateTo) {
+        jwt = userCommonSteps.getJwt();
+        String responseBody = rest
+                .getRq(jwt, newsUrl + String.format("?pages=%s&elements=%s&publishDate=%s&newsCategoryId=%s&" +
+                        "publishDateFrom=%s&publishDateTo=%s", pages, elements, publishDate, newsCategoryId, publishDateFrom, publishDateTo))
+                .getBody();
+        assertNotNull(responseBody);
+        NewsPaginationDto news = objectMapper.readValue(responseBody, NewsPaginationDto.class);
+        assertNotNull(news);
+        log.info("SIZE: {}", news.getElements().size());
+        log.info("ALL NEWS: {}", news.getElements());
+    }
+
+    @SneakyThrows
+    @And("Пользователь просматривает новость {string}")
+    public void getNewsById(String news) {
+        int id = Integer.parseInt(news);
+        String responseBody = rest
+                .getRq(jwt, newsUrl + "/" + id)
+                .getBody();
+        assertNotNull(responseBody);
+        log.info("NEWS: {}", responseBody);
+        resultSteps.setStatus("SUCCESS");
+    }
+
+}

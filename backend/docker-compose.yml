@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  pg_db:
+    container_name: pg_database
+    image: ghcr.io/fmh-charity/dump_db:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: FMH_DB
+    ports:
+      - "5400:5432"
+  backend:
+    container_name: fmh_backend
+#    image: ghcr.io/fmh-charity/fmh-backend:latest
+    image: fmh_back:1.0
+    depends_on:
+      - pg_db
+    environment:
+      DB_PORT: 5432
+      DB_HOST: pg_database
+      DB_USER: postgres
+      DB_NAME: FMH_DB
+      DB_PASS: 123
+      SWAGGER_HOST: vhospice.org/api
+      DOCUMENTS_STATIC_PATH: /var/www/fmh/static/documents/
+      STATIC_HOST: test.vhospice.org
+      APP_MAIL_USERNAME: test@vhospice.org
+      APP_MAIL_PASSWORD: G3ttdHGrgjqtfjkjpHeF

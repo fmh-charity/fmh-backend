@@ -1,0 +1,1 @@
+drop table claim, claim_comment, claim_visibility

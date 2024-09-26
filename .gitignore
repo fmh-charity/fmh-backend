@@ -1,5 +1,6 @@
 /target/
-!.mvn/wrapper/maven-wrapper.jar
+.vscode
+!backend/.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
 .apt_generated
@@ -11,10 +12,12 @@
 .sts4-cache
 
 ### IntelliJ IDEA ###
+target/
 .idea
 *.iws
 *.iml
 *.ipr
+*/.DS_Store
 
 ### NetBeans ###
 /nbproject/private/
@@ -23,3 +26,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/.github/
+/cucumber-tests/.idea/
+/cucumber-tests/target/
+**/cucumber-tests/*.iml
