@@ -3,9 +3,13 @@ package ru.iteco.fmh.converter.employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import ru.iteco.fmh.dto.employee.EmployeeInfoDto;
 import ru.iteco.fmh.dto.employee.EmployeeRegistrationResponse;
 import ru.iteco.fmh.model.employee.Employee;
 
+/**
+ * конвертер из {@link Employee} в {@link EmployeeRegistrationResponse}//для «Управление сотрудниками»
+ */
 @Component
 @RequiredArgsConstructor
 public class EmployeeToEmployeeRegistrationResponse implements Converter<Employee, EmployeeRegistrationResponse> {
