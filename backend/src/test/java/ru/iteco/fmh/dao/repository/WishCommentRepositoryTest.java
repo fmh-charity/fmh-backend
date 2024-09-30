@@ -1,8 +1,9 @@
 package ru.iteco.fmh.dao.repository;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.iteco.fmh.TestUtils;
@@ -17,14 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.wish.Status.OPEN;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 public class WishCommentRepositoryTest {
     @Autowired
     WishCommentRepository sut;
 
-    static WishComment testEntity1;
-    static WishComment testEntity2;
+
+
 
     @Test
     public void saveToRepositoryTestShouldPassSuccess() {
@@ -33,31 +36,24 @@ public class WishCommentRepositoryTest {
         User user = getUser(getProfile());
         user.setId(1);
 
-        testEntity1 = WishComment.builder()
+
+
+        WishComment testEntity1 = WishComment.builder()
                 .description(TestUtils.getAlphabeticString())
                 .createDate(Instant.now())
                 .creator(user)
                 .wish(wish)
                 .build();
 
-        testEntity1 = sut.save(testEntity1);
+        final WishComment testEntity1AfterSave = sut.save(testEntity1);
 
-        testEntity2 = WishComment.builder()
-                .description(TestUtils.getAlphabeticString())
-                .createDate(Instant.now())
-                .creator(user)
-                .wish(wish)
-                .build();
 
-        testEntity2 = sut.save(testEntity2);
 
         assertAll(
-                () -> assertNotNull(testEntity1.getId()),
-                () -> assertNotNull(testEntity2.getId())
+                () -> assertNotNull(testEntity1AfterSave.getId())
+
         );
 
-        // after
-        sut.delete(testEntity1);
-        sut.delete(testEntity2);
+
     }
 }

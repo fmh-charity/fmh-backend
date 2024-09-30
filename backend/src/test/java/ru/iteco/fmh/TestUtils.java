@@ -1,5 +1,6 @@
 package ru.iteco.fmh;
 
+import org.apache.commons.lang3.RandomUtils;
 import ru.iteco.fmh.dto.admission.AdmissionDto;
 import ru.iteco.fmh.dto.document.DocumentCreationDtoRq;
 import ru.iteco.fmh.dto.news.NewsCategoryDto;
@@ -59,11 +60,12 @@ public class TestUtils {
         int leftLimit = 48; // letter 'a'
         int rightLimit = 57; // letter 'z'
         Random random = new Random();
+        if (targetStringLength<1) {
+            throw new IllegalArgumentException("Wrong");
+        }
 
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+        return String.valueOf(random.nextInt((int) Math.pow(10, targetStringLength-1),
+                (int) Math.pow(10, targetStringLength) -1));
     }
 
     public static Role getRole(String roleName) {

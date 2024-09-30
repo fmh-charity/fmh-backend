@@ -1,6 +1,6 @@
 package ru.iteco.fmh.converter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.iteco.fmh.converter.user.RegistrationRequestToUserConverter;
 import ru.iteco.fmh.model.user.Profile;
 import ru.iteco.fmh.model.user.User;

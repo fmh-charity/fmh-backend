@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.iteco.fmh.TestUtils.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class NewsControllerTest {

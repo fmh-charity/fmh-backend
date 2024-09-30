@@ -2,8 +2,7 @@ package ru.iteco.fmh.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.core.StringEndsWith;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +27,7 @@ import ru.iteco.fmh.model.document.Document;
 
 import java.util.Optional;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class DocumentsControllerTest {

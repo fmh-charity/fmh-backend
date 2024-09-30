@@ -1,7 +1,8 @@
 package ru.iteco.fmh.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import extensions.ClearDatabase;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,9 @@ import static ru.iteco.fmh.TestUtils.getPatientCreateInfoDtoRq;
 import static ru.iteco.fmh.model.PatientStatus.DISCHARGED;
 
 // ТЕСТЫ ЗАВЯЗАНЫ НА ТЕСТОВЫЕ ДАННЫЕ В БД!!
-@RunWith(SpringRunner.class)
+
 @SpringBootTest()
+@ClearDatabase
 @WithMockUser(username = "login1", password = "password1", roles = "ADMINISTRATOR")
 public class PatientsControllerTest {
     @Autowired
@@ -84,7 +86,7 @@ public class PatientsControllerTest {
                 () -> assertEquals(givenDto.getBirthDate(), resultDto.getBirthDate()),
                 () -> assertNotNull(resultDto.getId())
         );
-        patientRepository.deleteById(resultDto.getId());
+
     }
 
     @Test

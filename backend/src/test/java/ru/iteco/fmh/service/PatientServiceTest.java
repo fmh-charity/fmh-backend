@@ -1,6 +1,6 @@
 package ru.iteco.fmh.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.iteco.fmh.TestUtils.*;
 import static ru.iteco.fmh.model.PatientStatus.*;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
 public class PatientServiceTest {
     @Autowired
