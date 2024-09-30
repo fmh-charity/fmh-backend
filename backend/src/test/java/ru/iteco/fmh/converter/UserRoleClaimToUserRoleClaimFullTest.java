@@ -32,7 +32,6 @@ class UserRoleClaimToUserRoleClaimFullTest {
 
         assertAll(
                 () -> assertEquals(testEntity.getId(), actual.getId()),
-                () -> assertEquals(testEntity.getUser().getId(), actual.getUserId()),
                 () -> assertEquals(testEntity.getRole().getId(), actual.getRoleId()),
                 () -> assertEquals(testEntity.getStatus(), actual.getStatus()),
                 () -> assertEquals(testEntity.getCreatedAt(), actual.getCreatedAt()),

@@ -22,6 +22,7 @@ import ru.iteco.fmh.model.news.NewsCategory;
 import ru.iteco.fmh.model.user.User;
 import ru.iteco.fmh.security.RequestContext;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -35,11 +36,15 @@ public class NewsServiceImpl implements NewsService {
     private final ConversionService conversionService;
     private final NewsCategoryRepository newsCategoryRepository;
 
+    protected User getCurrentUser() {
+        return RequestContext.getCurrentUser();
+    }
+
     @Override
     public NewsPaginationDto getNews(int pages, int elements, boolean publishDate, Integer newsCategoryId,
                                      LocalDate publishDateFrom, LocalDate publishDateTo) {
 
-        User currentUser = RequestContext.getCurrentUser();
+        User currentUser = getCurrentUser();
         NewsCategory newsCategory = Optional.ofNullable(newsCategoryId)
                 .map(newsCategoryRepository::findNewsCategoryById).orElse(null);
         Instant instantValuePublishDateFrom = Optional.ofNullable(publishDateFrom)
@@ -68,7 +73,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDto getNews(int id) {
-        User currentUser = RequestContext.getCurrentUser();
+        User currentUser = getCurrentUser();
         if (Util.isAdmin(currentUser)) {
             News news = newsRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Новости с таким ID не существует"));

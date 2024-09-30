@@ -108,9 +108,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.2.1</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -196,6 +197,7 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring-boot-starter-version}</version>
         </dependency>
+
 
     </dependencies>
 

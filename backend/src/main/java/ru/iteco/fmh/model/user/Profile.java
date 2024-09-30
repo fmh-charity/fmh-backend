@@ -43,4 +43,15 @@ public class Profile {
     LocalDate dateOfBirth;
     boolean deleted;
     boolean emailConfirmed;
+
+    public Profile(String test, String test1, String test2, User user, String alphabeticString, LocalDate now, boolean b, boolean b1) {
+        this.firstName = test;
+        this.lastName = test1;
+        this.middleName = test2;
+        this.user = user;
+        this.email = alphabeticString;
+        this.dateOfBirth = now;
+        this.deleted = b;
+        this.emailConfirmed = b1;
+    }
 }

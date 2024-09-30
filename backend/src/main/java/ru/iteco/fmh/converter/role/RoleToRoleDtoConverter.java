@@ -11,6 +11,9 @@ import ru.iteco.fmh.model.user.Role;
 public class RoleToRoleDtoConverter implements Converter<Role, RoleDto> {
     @Override
     public RoleDto convert(Role source) {
-        return RoleDto.builder().id(source.getId()).name(source.getName()).build();
+        return RoleDto.builder()
+                .build();
+        /*  return RoleDto.builder()
+        .id(source.getId()).name(source.getName()).build();*/
     }
 }
